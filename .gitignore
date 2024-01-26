@@ -1,3 +1,7 @@
+// Backend files
 backend/node_modules
-
 backend/src/data
+backend/.env
+
+// Frontend files
+frontend/node_modules
