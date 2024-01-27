@@ -11,9 +11,13 @@
 
 // Main imports in order to run the server
 import path from "path";
-import express from "express";
+import session, { Session } from "express-session";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { createMongooseConnection, SESSION_URI, MONGODB_USERNAME } from "./data/connection";
+import cookieParser from "cookie-parser";
+import MongoStore from "connect-mongo";
+import flash from "connect-flash";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -28,3 +32,64 @@ dotenv.config();
 
 // Be able to instantiate our express server
 const app = express();
+
+// Get our port number from our environment file
+const port = process.env.EXPRESS_PORT;
+
+// Enable cookie parsing middleware
+app.use( cookieParser() );
+
+// Allow flash messages to be used
+app.use( flash() );
+
+// Here we create a session, but unlike before, we store it on the server side.
+// We instead store a secret key that's passed through to the backend
+// It cannot be guessed, but our session data is also usable whenever we run our applications since we don't store it in memory
+// The options also end sessions after 2 weeks, and check this and run the end innately in MongoDB
+
+
+// Create our middleware
+// Middleware refers to software or "code" that allows a connection and interaction with a database
+// Executes on every request
+app.use( async ( request : Request, response : Response, next : NextFunction ) => {
+
+    session({
+        // Set our secret which is turned into a hashkey
+        secret : "Adeptus",
+        resave : false,
+        saveUninitialized : false,
+        name : "Adeptus",
+
+        // Store on the server instead of memory
+        store : MongoStore.create({
+            mongoUrl : SESSION_URI,
+            dbName : "shop",
+            // Note : set a collection name you're not already using, in this case, we use "sessions"
+            collectionName : "sessions",
+            autoRemove : "native",
+            autoRemoveInterval : 10
+        })  
+    });
+});
+
+// Generate a random CSRF token without using a deprecated package
+const generateCSRFToken = () => {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+// Spin up the local server on the port to 
+const startServer = async () => {
+
+    // Create a Mongoose connection
+    await createMongooseConnection(() => {
+
+        // Listen to the port
+        const server = app.listen(port, () => {
+            console.log(`[Server]: Server is running on http://localhost:${port}`);
+        });
+
+    });
+};
+
+// Start the server
+startServer();
