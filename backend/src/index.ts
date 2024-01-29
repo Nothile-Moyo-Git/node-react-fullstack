@@ -72,11 +72,34 @@ const fileStorage = multer.diskStorage({
     }
 });
 
+// Only store image files
+const fileFilter = (request : Request, file : Express.Multer.File, callback : multer.FileFilterCallback ) => {
+    
+    if (
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg"
+    ) {
+        callback(null, true);
+    }else{
+        callback(null, false);
+    }
+};
+
+// In order to handle file uploads, we must instantly call our multer method
+// The trailing method defines how many files we expect to upload, in this case its one
+// We then need to name the name of the field we're going to upload files from, in this case, it's image
+app.use( multer({storage : fileStorage, fileFilter : fileFilter }).single("image") );
+
 // Enable cookie parsing middleware
 app.use( cookieParser() );
 
 // Allow flash messages to be used
 app.use( flash() );
+
+// Add our routes 
+app.use('/feed', ),
+app.use('/auth', );
 
 // Here we create a session, but unlike before, we store it on the server side.
 // We instead store a secret key that's passed through to the backend

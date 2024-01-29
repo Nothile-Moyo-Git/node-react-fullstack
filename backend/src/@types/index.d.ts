@@ -28,3 +28,16 @@ declare module "*.jpeg"{
     const content: string;
     export default content;  
 }
+
+export interface UserInterface{
+    _id : ObjectId,
+    name : string,
+    email : string,
+    password ?: string,
+    resetToken ?: string,
+    resetTokenExpiration ?: Date
+}
+
+export interface UserMethodsInterface {
+    
+}
