@@ -29,15 +29,36 @@ declare module "*.jpeg"{
     export default content;  
 }
 
+export interface PostsInterface {
+    type : ObjectId,
+    ref : string
+}
+
 export interface UserInterface{
     _id : ObjectId,
     name : string,
     email : string,
     password ?: string,
-    resetToken ?: string,
-    resetTokenExpiration ?: Date
+    status ?: string,
+    posts ?: PostsInterface[]
 }
 
 export interface UserMethodsInterface {
-    
+    generateHash : (password : string) => string
+}
+
+export interface PostsInterface {
+    _id : ObjectId,
+    title : string,
+    imageUrl : string,
+    content : string,
+    creator : {
+        type : ObjectId,
+        ref : string,
+        required : true
+    }
+}
+
+export interface PostsMethodsInterface {
+    addPosts : () => void
 }

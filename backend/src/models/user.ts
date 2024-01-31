@@ -21,7 +21,6 @@ import { UserInterface , UserMethodsInterface } from "../@types";
 type UserModel = Model<UserInterface, {}, UserMethodsInterface>;
 
 // Define our mongoose user schema
-// Mongoose automatically adds in _id to every table when working with schemas, so you must set it to false
 const userSchema = new mongoose.Schema<UserInterface>({
     name : { type : String, required : [true, "Add a name to the User object you're sending to MongoDB"] },
     email : {
@@ -30,16 +29,12 @@ const userSchema = new mongoose.Schema<UserInterface>({
         unique : true,
         required : [true, "Add a name to the User object you're sending to MongoDB"]
     },
-    password : { type : String, required : false },
-    resetToken : {
-        type : String,
-        lowercase : true,
-        required : false
-    },
-    resetTokenExpiration : {
-        type : Date,
-        required : false
-    }
+    password : { type : String, required : true },
+    status : { type : String, required : true },
+    posts : [{ 
+        type : mongoose.Schema.Types.ObjectId,
+        ref : String
+    }]
 });
 
 // Create a hash sync for a new user
