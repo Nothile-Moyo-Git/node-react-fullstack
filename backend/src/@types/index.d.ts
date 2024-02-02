@@ -62,3 +62,10 @@ export interface PostsInterface {
 export interface PostsMethodsInterface {
     addPosts : () => void
 }
+
+// Auth Controller Request interface
+export interface AuthRequestInterface extends Request {
+    email : string,
+    name : string,
+    password : string
+}
