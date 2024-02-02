@@ -38,7 +38,7 @@ export interface UserInterface{
     _id : ObjectId,
     name : string,
     email : string,
-    password ?: string,
+    password : string,
     status ?: string,
     posts ?: PostsInterface[]
 }
@@ -61,4 +61,11 @@ export interface PostsInterface {
 
 export interface PostsMethodsInterface {
     addPosts : () => void
+}
+
+// Auth Controller Request interface
+export interface AuthRequestInterface extends Request {
+    email : string,
+    name : string,
+    password : string
 }
