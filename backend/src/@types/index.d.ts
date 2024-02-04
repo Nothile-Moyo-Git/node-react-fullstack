@@ -67,5 +67,6 @@ export interface PostsMethodsInterface {
 export interface AuthRequestInterface extends Request {
     email : string,
     name : string,
-    password : string
+    password : string,
+    userId : ObjectId
 }
