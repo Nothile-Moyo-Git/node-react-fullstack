@@ -70,3 +70,7 @@ export interface AuthRequestInterface extends Request {
     password : string,
     userId : ObjectId
 }
+
+export interface FeedRequestInterface extends Request {
+    filename : string
+}
