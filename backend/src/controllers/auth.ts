@@ -1,5 +1,6 @@
 /**
- * Date Created : Nothile Moyo
+ * Date Created : 01/02/2024
+ * Author : Nothile Moyo
  * 
  * Auth Controller file
  * 
@@ -7,8 +8,11 @@
  * 
  * Note: This does not cover the middleware which is used to authenticate requests before execution
  * 
- * @method signup : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
- * @method login : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostSignupController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostLoginController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
+ * @method GetUserStatusController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostUpdateUserStatusController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
+ * 
  */
 
 import { Response, NextFunction } from "express";
@@ -58,8 +62,8 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         response.json({ message : 'User created!', userId: result._id });
 
     } catch (error) {
-        error.statusCode(500);
-
+        
+        response.status(500).json({ message : "There was a server error" });
         next(error);
     }
 };
@@ -70,7 +74,6 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
     // Get values from the form
     const email = request.body.email;
     const password = request.body.password;
-    let loadedUser;
 
     try {
 
@@ -85,8 +88,76 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
         // Compare the passwords
         const passwordsMatch = await bcrypt.compare(password, user.password);
 
+        // If the passwords don't match
+        if (passwordsMatch !== false) {
+
+            const error = new Error('Wrong password, please try again');
+            throw error;
+        }
+
+        // Return the response of the object
+        response.status(200).json({ message: 'User created!', userId : user._id });
+
     }catch(error){
 
+        response.status(500).json({ message : "There was a server error" });
+        next(error);
     }
+};
 
+// Get the user status
+export const GetUserStatusController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+    try {
+
+        // Find the user based on the ID passed through
+        const user = await User.findById(request.userId);
+
+        // Output an error if we don't find a user
+        if (!user) {
+
+            const error = new Error('User not found');
+            throw error;
+        }else{
+
+            // Send the json response back to the front end
+            response.status(200).json({ userStatus : user.status });
+        }
+
+    } catch (error) {
+
+        response.status(500).json({ message : "There was a server error" });
+        next(error);
+    }
+};
+
+export const PostUpdateUserStatusController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+    // Create a new status
+    const newStatus = request.body.status;
+
+    // Update the user status to something new in a try catch block
+    try {
+
+        // Get the current user based on the ID from the frontend
+        const currentUser = await User.findById(request.userId);
+
+        // Handle previous error
+        if (currentUser === null || currentUser === undefined) {
+            const error = new Error('User not found');
+            response.status(404).json({ message : 'User not found'});
+            throw error;
+        }else{
+
+            // Set the new user status if our user is valid
+            currentUser.status = newStatus;
+            await currentUser.save();
+            response.status(200).json({ message : "User successfully updated" });
+        }
+
+    } catch (error) {
+
+        response.status(400).json({ message : error});
+        next(error);
+    }
 };
