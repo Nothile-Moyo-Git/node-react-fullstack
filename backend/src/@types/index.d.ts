@@ -73,4 +73,9 @@ export interface AuthRequestInterface extends Request {
 
 export interface FeedRequestInterface extends Request {
     filename : string
+    userId : ObjectId
+}
+
+export interface ErrorInterface extends Error {
+    statusCode ?: number
 }
