@@ -19,6 +19,7 @@ import User from "../models/user";
 import { FeedRequestInterface, ErrorInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
+import { ObjectId } from "mongodb";
 
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
@@ -118,6 +119,86 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
             });
         }
 
+    } catch (error) {
+
+        next(error);
+    }
+};
+
+export const GetPostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+
+    // Get the postId from the url passed through
+    const postId = new ObjectId(request.params.postId);
+
+    // Get the post
+    const post = await Post.findById(postId);
+
+    try {
+
+        if (!post) {
+
+            // Error handling if a post wasn't found
+            const error : ErrorInterface = new Error('Error: Could not find post.');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Send a response if the request is successful
+        response.status(200).json({ message: 'Post fetched.', post: post });
+
+    } catch (error : any) {
+
+        error.statusCode = 500;
+        next(error);
+    }
+};
+
+export const PostUpdatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+
+    // Grabving the postId
+    const postId = new ObjectId(request.params.postId);
+    const errors = validationResult(request);
+
+    // If the inputs are incorrect, send a response
+    if (!errors.isEmpty()) {
+
+        const error : ErrorInterface = new Error('Validation failed, entered data is incorrect');
+        error.statusCode = 422;
+        throw error;
+    }
+
+    // Get form inputs from the frontend
+    const title = request.body.title;
+    const content = request.body.content;
+    let imageUrl = request.body.image;
+
+    // Get the image URL
+    if (request.file) { imageUrl = request.file.path; }
+
+    // If there is no image
+    if (!imageUrl) {
+
+        const error : ErrorInterface = new Error('No file picked.');
+        error.statusCode = 422;
+        throw error;
+    }
+
+    // Update post data
+    try {
+
+        // Get the post data
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            
+            const error : ErrorInterface = new Error('Could not find post.');
+            error.statusCode = 422;
+            throw error;
+        }
+
+        if (post.creator.toString() !== request.userId.toString()) {
+
+        }
     } catch (error) {
 
         next(error);
