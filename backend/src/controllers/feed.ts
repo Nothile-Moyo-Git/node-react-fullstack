@@ -10,6 +10,11 @@
  * Note: This does not cover the middleware which is used to authenticate requests before execution
  * 
  * @method GetPostsController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostCreatePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method GetPostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostUpdatePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method PostDeletePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method ClearImage : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  */
 
 import fs from "fs";
@@ -173,7 +178,9 @@ export const PostUpdatePostController = async (request : FeedRequestInterface, r
     let imageUrl = request.body.image;
 
     // Get the image URL
-    if (request.file) { imageUrl = request.file.path; }
+    if (request.file) { 
+        imageUrl = request.file.path; 
+    }
 
     // If there is no image
     if (!imageUrl) {
@@ -189,18 +196,78 @@ export const PostUpdatePostController = async (request : FeedRequestInterface, r
         // Get the post data
         const post = await Post.findById(postId);
 
+        // Error message if there is no post data
         if (!post) {
             
+            // Respond to the error
             const error : ErrorInterface = new Error('Could not find post.');
-            error.statusCode = 422;
+            error.statusCode = 404;
             throw error;
         }
 
+        // Error message if we didn't attach the current user to the request
         if (post.creator.toString() !== request.userId.toString()) {
 
+            // Return a 403 response with an error
+            const error : ErrorInterface = new Error('Not authorized!');
+            error.statusCode = 403;
+            throw error;
         }
-    } catch (error) {
 
+        // If there's a new image, delete the old one
+        if (imageUrl !== post.imageUrl) {
+            clearImage(post.imageUrl);
+        }
+
+        // Update post details
+        post.title = title;
+        post.imageUrl = imageUrl;
+        post.content = content;
+        const result = await post.save();
+        response.status(200).json({ message : 'Post updated!', post : result });
+
+    } catch (error) {
         next(error);
     }
 };
+
+// Delete the post controller
+export const PostDeletePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+
+    // Get the postId
+    const postId = request.params.postId;
+
+    try {
+
+        // Get the post data
+        const post = await Post.findById(postId);
+
+        if (!post) {
+
+            // Get the post data
+            const error : ErrorInterface = new Error('Could not find post');
+            error.statusCode = 404;
+            throw error;
+        }
+
+    } catch (error) {
+
+    }
+};
+
+// Test endpoint
+export const testEndpoint = (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+
+    // Send a response to the browser or the frontend
+    response.status(201);
+    response.json({ message : 'Test' });
+};
+
+// Delete image controller for the page
+const clearImage = (filepath : string) => {
+
+    // Delete the image
+    filepath = path.join(__dirname, '..', filepath);
+    fs.unlink(filepath, error => console.log(error));
+};
+
