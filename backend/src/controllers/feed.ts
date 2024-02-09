@@ -242,6 +242,7 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
         // Get the post data
         const post = await Post.findById(postId);
 
+        // If there's no post, return an error
         if (!post) {
 
             // Get the post data
@@ -250,8 +251,26 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
             throw error;
         }
 
+        // If the user isn't authorized, respond with an error
+        if (post.creator.toString() !== request.userId.toString()) {
+
+            const error : ErrorInterface = new Error('Not authorized!');
+            error.statusCode = 403;
+            throw error;
+        }
+
+        // Check logged in User
+        clearImage(post.imageUrl);
+        await Post.findByIdAndDelete(postId);
+
+        // Remove the reference for the post from MongoDB
+        const user = await User.findById(request.userId);
+        // user?.posts?.splice
+        await user?.save();
+
     } catch (error) {
 
+        next(error);
     }
 };
 

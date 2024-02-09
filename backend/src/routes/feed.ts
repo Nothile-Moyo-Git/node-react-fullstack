@@ -6,7 +6,11 @@
  */
 
 import express from "express";
+import { testEndpoint } from "../controllers/feed";
 
 const feedRoutes = express.Router({ strict : true });
+
+// Handle our api routes
+feedRoutes.get('/test', testEndpoint);
 
 export default feedRoutes;

@@ -10,7 +10,8 @@
  */
 
 // Main imports in order to run the server
-
+import fs from "fs";
+import path from "path";
 import session from "express-session";
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
@@ -18,6 +19,8 @@ import { createMongooseConnection, SESSION_URI } from "./data/connection";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import flash from "connect-flash";
+import multer from "multer";
+import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -44,6 +47,54 @@ const port = process.env.EXPRESS_PORT;
 // Register a templating engine even it's not the default, we do this with ejs
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
+
+// Set up options for disk storage, we do this because we store the files as a hashcode and a manual extention needs to be added
+const fileStorage = multer.diskStorage({
+    destination : (request : Request, file : Express.Multer.File, callback : (error: Error | null, destination: string) => void) => {
+
+        // Set the folder path
+        const folderPath = `src/uploads/${ getFolderPathFromDate() }`;
+
+        // Check if our folder path already exists
+        const folderExists = fs.existsSync(folderPath);
+
+        // Create our folder path if it doesn't exist
+        if (folderExists === false) {
+            fs.mkdirSync(folderPath, {recursive : true});
+        }
+
+        callback(null, folderPath);
+    },
+    filename : (request : Request, file : Express.Multer.File, callback : (error: Error | null, destination: string) => void) => {
+        
+        // Set the filepath with the name
+        const fileName = getFileNamePrefixWithDate() + '_' + file.originalname;
+
+        // Passing the fileName through so that when we create our random suffix, we don't create a second one
+        request.fileName = fileName;
+
+        callback(null, fileName);
+    }
+});
+
+// Only store image files
+const fileFilter = (request : Request, file : Express.Multer.File, callback : multer.FileFilterCallback ) => {
+    
+    if (
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "image/jpeg"
+    ) {
+        callback(null, true);
+    }else{
+        callback(null, false);
+    }
+}; 
+
+// In order to handle file uploads, we must instantly call our multer method
+// The trailing method defines how many files we expect to upload, in this case its one
+// We then need to name the name of the field we're going to upload files from, in this case, it's image
+app.use(multer({storage : fileStorage, fileFilter : fileFilter }).single("image"));
 
 // Enable cookie parsing middleware
 app.use( cookieParser() );
@@ -75,6 +126,9 @@ app.use(
         })  
     })
 );
+
+// Serve our uploaded images statically
+app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 
 // Generate a random CSRF token without using a deprecated package
 const generateCSRFToken = () => {
