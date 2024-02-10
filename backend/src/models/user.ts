@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema<UserInterface>({
     status : { type : String, required : true },
     posts : [{ 
         type : mongoose.Schema.Types.ObjectId,
-        ref : String
+        ref : String,
+        required : true
     }]
 });
 
