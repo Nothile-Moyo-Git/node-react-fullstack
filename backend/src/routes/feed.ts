@@ -6,11 +6,23 @@
  */
 
 import express from "express";
-import { testEndpoint } from "../controllers/feed";
+import { 
+    testEndpoint, 
+    GetPostsController, 
+    GetPostController, 
+    PostCreatePostController,
+    PostDeletePostController,
+    PostUpdatePostController
+} from "../controllers/feed";
 
 const feedRoutes = express.Router({ strict : true });
 
 // Handle our api routes
 feedRoutes.get('/test', testEndpoint);
+feedRoutes.get('/post/:postId', GetPostController);
+feedRoutes.get('/posts', GetPostsController);
+feedRoutes.post('/create-post', PostCreatePostController);
+feedRoutes.post('/delete-post/:postId', PostDeletePostController);
+feedRoutes.post('/update-post/:postId', PostUpdatePostController);
 
 export default feedRoutes;

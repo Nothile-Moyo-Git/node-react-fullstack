@@ -12,6 +12,7 @@
 // Main imports in order to run the server
 import fs from "fs";
 import path from "path";
+import feedRoutes from "./routes/feed";
 import session from "express-session";
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
@@ -148,14 +149,8 @@ app.use( async( request : Request, response : Response, next : NextFunction ) =>
     next();
 });
 
-app.get("/hello", ( request : Request, response : Response, next : NextFunction ) => {
-
-    console.clear();
-    console.log("Default route");
-
-    response.status(200);
-    response.json({ success : true});
-});
+// Implement Route handlers here
+app.use( feedRoutes );
 
 // Spin up the local server on the port to 
 const startServer = async () => {

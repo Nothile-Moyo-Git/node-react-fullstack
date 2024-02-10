@@ -15,6 +15,7 @@
  * @method PostUpdatePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  * @method PostDeletePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  * @method ClearImage : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
+ * @method testEndpoint : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  */
 
 import fs from "fs";
