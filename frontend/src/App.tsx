@@ -4,12 +4,13 @@
  */
 
 import { FC } from 'react';
+import { LoginPage } from './pages/Auth/Login';
 import logo from './logo.svg';
 import './App.css';
 
 const App : FC = () => {
   return (
-    <div className="App">
+    <main className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -24,7 +25,8 @@ const App : FC = () => {
           Learn React
         </a>
       </header>
-    </div>
+      <LoginPage/>
+    </main>
   );
 }
 
