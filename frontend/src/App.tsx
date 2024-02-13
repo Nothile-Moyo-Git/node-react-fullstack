@@ -4,11 +4,11 @@
  */
 
 import { FC } from 'react';
-import { LoginPage } from './pages/Auth/Login';
 import logo from './logo.svg';
 import './App.css';
 
 const App : FC = () => {
+
   return (
     <main className="App">
       <header className="App-header">
@@ -25,7 +25,6 @@ const App : FC = () => {
           Learn React
         </a>
       </header>
-      <LoginPage/>
     </main>
   );
 }

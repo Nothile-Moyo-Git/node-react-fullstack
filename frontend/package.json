@@ -44,5 +44,6 @@
   },
   "devDependencies": {
     "scss": "^0.2.4"
-  }
+  },
+  "homepage" : "/typescript-fullstack"
 }
