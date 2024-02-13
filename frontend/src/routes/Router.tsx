@@ -14,8 +14,10 @@ import App from '../App';
 import { 
     createBrowserRouter, 
     createRoutesFromElements, 
-    Route,
+    Route
 } from 'react-router-dom';
+
+const BASENAME = '/typescript-fullstack'
 
 // Set our routes so we can also set our basename in browser router
 const routes = createRoutesFromElements(
@@ -29,5 +31,5 @@ const routes = createRoutesFromElements(
 // We create the router here but we're not creating a component
 export const router = createBrowserRouter(
     routes,
-    { basename : "/typescript-fullstack" }
+    { basename : BASENAME }
 );
