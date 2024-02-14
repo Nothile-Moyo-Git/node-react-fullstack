@@ -3,11 +3,42 @@
  * Author : Nothile Moyo
  */
 
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 
 const App : FC = () => {
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  // Query the backend to see if we're logged in
+  useEffect(() => {
+
+    const fetchAuthentication = async () => {
+
+      // Query the backend to see if we're authenticated
+      const response = await fetch("http://localhost:4000/test",{
+        method : "GET",
+        headers : {
+          "Content-Type" : "application/json"
+        },
+        body : null
+      });
+
+      console.clear();
+      console.log("Response");
+      console.log("\n");
+      console.log(response);
+    };
+
+
+    fetchAuthentication();
+
+
+  },[isAuthenticated]);
 
   return (
     <main className="App">
