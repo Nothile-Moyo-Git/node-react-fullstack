@@ -32,6 +32,12 @@ const App : FC = () => {
       console.log("Response");
       console.log("\n");
       console.log(response);
+
+      const data = await response.json();
+
+      console.log("\n");
+      console.log("Data");
+      console.log(data);
     };
 
 
