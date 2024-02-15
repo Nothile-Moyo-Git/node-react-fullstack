@@ -10,6 +10,7 @@
  */
 
 // Main imports in order to run the server
+import cors from "cors";
 import fs from "fs";
 import path from "path";
 import feedRoutes from "./routes/feed";
@@ -99,6 +100,9 @@ app.use(multer({storage : fileStorage, fileFilter : fileFilter }).single("image"
 
 // Enable cookie parsing middleware
 app.use( cookieParser() );
+
+// Allow CORS. This allows the frontend to query the backend
+app.use( cors() );
 
 // Allow flash messages to be used
 app.use( flash() );
