@@ -12,7 +12,6 @@
  * @method PostLoginController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
  * @method GetUserStatusController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
  * @method PostUpdateUserStatusController : (request : AuthRequestInterface, response : Response, next : NextFunction) => void
- * 
  */
 
 import { Response, NextFunction } from "express";

@@ -20,8 +20,6 @@ export const LoginPage : FC = () => {
 
         // Don't reload the page
         event.preventDefault();
-
-
     };
 
     return(

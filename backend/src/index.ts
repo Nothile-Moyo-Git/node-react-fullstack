@@ -14,6 +14,7 @@ import cors from "cors";
 import fs from "fs";
 import path from "path";
 import feedRoutes from "./routes/feed";
+import errorRoutes from "./routes/feed";
 import session from "express-session";
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
@@ -155,6 +156,9 @@ app.use( async( request : Request, response : Response, next : NextFunction ) =>
 
 // Implement Route handlers here
 app.use( feedRoutes );
+
+// Fallback route, in case no other route gets handled
+app.use( errorRoutes );
 
 // Spin up the local server on the port to 
 const startServer = async () => {

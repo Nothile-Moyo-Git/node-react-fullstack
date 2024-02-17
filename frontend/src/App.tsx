@@ -38,11 +38,12 @@ const App : FC = () => {
       console.log("\n");
       console.log("Data");
       console.log(data);
+
+      // We have a response so we're not loading data anymore
+      setIsLoading(false);
     };
 
-
     fetchAuthentication();
-
 
   },[isAuthenticated]);
 
