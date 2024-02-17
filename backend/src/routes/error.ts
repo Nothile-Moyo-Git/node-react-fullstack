@@ -7,6 +7,11 @@
 
 import express from "express";
 
+import { Get404Page } from "../controllers/error";
+
 const errorRoutes = express.Router({ strict : true });
+
+// Handle our fallback router, this uses the * value
+errorRoutes.get("*", Get404Page);
 
 export default errorRoutes;
