@@ -9,6 +9,7 @@
  */
 
 import { LoginPage } from '../pages/Auth/Login';
+import { SignupPage } from '../pages/Auth/Signup';
 import App from '../App';
 
 import { 
@@ -22,9 +23,10 @@ const BASENAME = '/typescript-fullstack'
 // Set our routes so we can also set our basename in browser router
 const routes = createRoutesFromElements(
     <Route>
-        <Route path="/" element={<App/>}/>
-        <Route path="/login" element={<LoginPage/>}/>
-        <Route path="*" element={<App/>}/>
+        <Route path="/" element={<App/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/signup" element={<SignupPage/>} />
+        <Route path="*" element={<App/>} />
     </Route>
 );
 

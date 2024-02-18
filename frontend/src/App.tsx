@@ -19,25 +19,30 @@ const App : FC = () => {
 
     const fetchAuthentication = async () => {
 
-      // Query the backend to see if we're authenticated
-      const response = await fetch("http://localhost:4000/test",{
-        method : "GET",
-        headers : {
-          "Content-Type" : "application/json"
-        },
-        body : null
-      });
+      try {
 
-      console.clear();
-      console.log("Response");
-      console.log("\n");
-      console.log(response);
+        // Query the backend to see if we're authenticated
+        const response = await fetch("http://localhost:4000/test",{
+          method : "GET",
+          headers : {
+            "Content-Type" : "application/json"
+          },
+          body : null
+        });
 
-      const data = await response.json();
+        // Get the JSON from the request
+        const data = await response.json();
 
-      console.log("\n");
-      console.log("Data");
-      console.log(data);
+        // Set our authentication state
+        if (data.isAuthenticated) {
+          setIsAuthenticated(data.isAuthenticated);
+        }
+
+      }catch(error){
+
+        console.log("Request failed");
+        console.log(error);
+      }
 
       // We have a response so we're not loading data anymore
       setIsLoading(false);
