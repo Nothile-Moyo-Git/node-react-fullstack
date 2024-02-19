@@ -23,6 +23,11 @@ import bcrypt from "bcrypt";
 // Signup controller
 export const PostSignupController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
+    // Test response
+    response.status(200);
+    response.json({ message : "Request successful" });
+
+    /*
     // Handle error validation
     const errors = validationResult(request);
 
@@ -65,6 +70,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         response.status(500).json({ message : "There was a server error" });
         next(error);
     }
+    */
 };
 
 // Login Controller
