@@ -29,9 +29,15 @@ export const SignupPage : FC = () => {
         let confirmPassword = null;
 
         // check if we have inputs and validate the form
-        if (emailRef.current) {  emailAddress = emailRef.current.value;  }
-        if (passwordRef.current) {  password = passwordRef.current.value;  }
-        if (confirmPasswordRef.current) {  confirmPassword = confirmPasswordRef.current.value;  }
+        if (emailRef.current) {  
+            emailAddress = emailRef.current.value;  
+        }
+        if (passwordRef.current) {  
+            password = passwordRef.current.value;  
+        }
+        if (confirmPasswordRef.current) {  
+            confirmPassword = confirmPasswordRef.current.value;  
+        }
 
         // Perform the signup request to the backend
         try{
@@ -42,11 +48,24 @@ export const SignupPage : FC = () => {
                 headers : {
                     "Content-Type" : "application/json"
                 },
-                body : null
+                body : JSON.stringify({
+                    email : emailAddress,
+                    password : password,
+                    confirmPassword : confirmPassword
+                })
             });
   
             // Get the JSON from the request
             const data = await response.json();
+
+            console.clear();
+            console.log("Request successful");
+            console.log(response);
+
+            console.log("\n\n");
+            
+            console.log("Data");
+            console.log(data);
 
         }catch(error){
 

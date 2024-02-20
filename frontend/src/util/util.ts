@@ -1,5 +1,16 @@
+/**
+ * Date created : 20/02/2024
+ *  
+ *
+ */
+
+/**
+ * Method to check whether the URL is valid
+ * @param url : string
+ * @returns bool
+ */
 export const isValidUrl = (url : string) => {
-    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+    let urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path

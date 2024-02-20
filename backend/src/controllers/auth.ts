@@ -23,14 +23,14 @@ import bcrypt from "bcrypt";
 // Signup controller
 export const PostSignupController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-    // Test response
-    response.status(200);
-    response.json({ message : "Request successful" });
-
-    /*
     // Handle error validation
     const errors = validationResult(request);
 
+    // Test response
+    response.status(200);
+    response.json({ message : "Request successful", errors : errors });
+
+    /*
     // Output an error if the request fails
     if (!errors.isEmpty()) {
         const currentError = new Error('Validation failed');
