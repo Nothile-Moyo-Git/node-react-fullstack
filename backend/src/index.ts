@@ -10,6 +10,7 @@
  */
 
 // Main imports in order to run the server
+import authroutes from "./routes/auth";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
@@ -24,6 +25,7 @@ import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
+import authRoutes from "./routes/auth";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -156,6 +158,7 @@ app.use( async( request : Request, response : Response, next : NextFunction ) =>
 
 // Implement Route handlers here
 app.use( feedRoutes );
+app.use( authRoutes );
 
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
