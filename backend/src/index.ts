@@ -10,12 +10,13 @@
  */
 
 // Main imports in order to run the server
-import authroutes from "./routes/auth";
+import authRoutes from "./routes/auth";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
 import feedRoutes from "./routes/feed";
 import errorRoutes from "./routes/feed";
+import { RequestInterface } from "./@types";
 import session from "express-session";
 import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
@@ -25,7 +26,6 @@ import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
-import authRoutes from "./routes/auth";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -53,6 +53,9 @@ const port = process.env.EXPRESS_PORT;
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 
+// Run the urlEncoded bodyParser to get the body of our objects
+// app.use( bodyParser.urlencoded({ extended : true }) );
+
 // Set up options for disk storage, we do this because we store the files as a hashcode and a manual extention needs to be added
 const fileStorage = multer.diskStorage({
     destination : (request : Request, file : Express.Multer.File, callback : (error: Error | null, destination: string) => void) => {
@@ -62,6 +65,9 @@ const fileStorage = multer.diskStorage({
 
         // Check if our folder path already exists
         const folderExists = fs.existsSync(folderPath);
+
+        console.log("File options");
+        console.log(request.body);
 
         // Create our folder path if it doesn't exist
         if (folderExists === false) {
@@ -83,7 +89,7 @@ const fileStorage = multer.diskStorage({
 });
 
 // Only store image files
-const fileFilter = (request : Request, file : Express.Multer.File, callback : multer.FileFilterCallback ) => {
+const fileFilter = (request : RequestInterface, file : Express.Multer.File, callback : multer.FileFilterCallback ) => {
     
     if (
         file.mimetype === "image/png" ||

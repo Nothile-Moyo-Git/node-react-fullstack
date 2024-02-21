@@ -24,9 +24,9 @@ export const SignupPage : FC = () => {
         event.preventDefault();
 
         // Create values, we will overwrite them if they're set
-        let emailAddress = null;
-        let password = null;
-        let confirmPassword = null;
+        let emailAddress = "";
+        let password = "";
+        let confirmPassword = "";
 
         // check if we have inputs and validate the form
         if (emailRef.current) {  
@@ -42,17 +42,20 @@ export const SignupPage : FC = () => {
         // Perform the signup request to the backend
         try{
 
+            // Set the form data
+            const fields = new FormData();
+            fields.append('confirmPassword', confirmPassword);
+            fields.append('email', emailAddress);
+            fields.append('password', password);
+
             // Query the backend to see if we're authenticated
             const response = await fetch("http://localhost:4000/signup",{
                 method : "POST",
+                mode : "cors",
                 headers : {
-                    "Content-Type" : "application/json"
+                    "Content-Type" : "multipart/form-data"
                 },
-                body : JSON.stringify({
-                    email : emailAddress,
-                    password : password,
-                    confirmPassword : confirmPassword
-                })
+                body : fields
             });
   
             // Get the JSON from the request

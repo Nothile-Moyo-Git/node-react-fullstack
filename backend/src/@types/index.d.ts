@@ -63,12 +63,27 @@ export interface PostsMethodsInterface {
     addPosts : () => void
 }
 
+export interface RequestInterface extends Request {
+    filename : string,
+    body : {
+        email : string,
+        password : string,
+        confirmPassword : string
+    }
+}
+
 // Auth Controller Request interface
 export interface AuthRequestInterface extends Request {
     email : string,
     name : string,
     password : string,
-    userId : ObjectId
+    userId : ObjectId,
+    body : {
+        email : string,
+        password : string,
+        confirmPassword : string,
+        status : string
+    }
 }
 
 export interface FeedRequestInterface extends Request {
