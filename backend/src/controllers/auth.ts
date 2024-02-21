@@ -26,20 +26,27 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
     // Handle error validation
     const errors = validationResult(request);
 
-    // Test response
-    response.status(200);
-    response.json({ message : "Request successful", errors : errors });
-
-    /*
     // Output an error if the request fails
     if (!errors.isEmpty()) {
+        /*
         const currentError = new Error('Validation failed');
         response.status(422);
         console.clear();
         console.log("Errors", errors.array());
 
         throw currentError;
+        */
     }
+
+    console.clear();
+    console.log("Request body");
+    console.log(request.body);
+
+    // Test response
+    response.status(200);
+    response.json({ message : "Request successful", errors : errors });
+
+    /*
 
     // Get body of request
     const email = request.body.email;
