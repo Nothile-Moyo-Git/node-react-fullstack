@@ -9,10 +9,12 @@ import { FC, useState, useRef, FormEvent } from "react";
 export const SignupPage : FC = () => {
 
     // State values
+    const nameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
+    const [isNameValid, setIsNameValid] = useState<boolean>(true);
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
@@ -51,10 +53,6 @@ export const SignupPage : FC = () => {
             // Query the backend to see if we're authenticated
             const response = await fetch("http://localhost:4000/signup",{
                 method : "POST",
-                mode : "cors",
-                headers : {
-                    "Content-Type" : "multipart/form-data"
-                },
                 body : fields
             });
   
@@ -81,6 +79,10 @@ export const SignupPage : FC = () => {
         <section>
 
             <form onSubmit={submitHandler}>
+
+                <div>
+                    <label>Name*</label>
+                </div>
 
                 <div>
                     <label 

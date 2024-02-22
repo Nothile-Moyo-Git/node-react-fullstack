@@ -23,28 +23,44 @@ import bcrypt from "bcrypt";
 // Signup controller
 export const PostSignupController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-    // Handle error validation
-    const errors = validationResult(request);
+    try {
 
-    // Output an error if the request fails
-    if (!errors.isEmpty()) {
-        /*
-        const currentError = new Error('Validation failed');
-        response.status(422);
-        console.clear();
-        console.log("Errors", errors.array());
+         // Handle error validation
+        const errors = validationResult(request);
 
-        throw currentError;
-        */
+        // Output an error if the request fails
+        if (!errors.isEmpty()) {
+            
+            console.clear();
+            console.log("Errors", errors.array());
+
+            response.status(422);
+            response.json({ message : "Error: Some of the fields are not valid" });
+            response.end();
+
+        }else{
+
+            console.clear();
+            console.log("Request body");
+            console.log(request.body);
+
+            // Get body of request
+            const confirmPassword = request.body.confirmPassword;
+            const email = request.body.email;
+            // const name = request.body.name;
+            const password = request.body.password;
+    
+            // Test response
+            response.status(200);
+            response.json({ message : "Request successful", errors : errors });
+
+        }
+
+    }catch(error){
+        
+        response.status(500).json({ message : "There was a server error" });
+        next(error);
     }
-
-    console.clear();
-    console.log("Request body");
-    console.log(request.body);
-
-    // Test response
-    response.status(200);
-    response.json({ message : "Request successful", errors : errors });
 
     /*
 

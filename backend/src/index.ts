@@ -53,9 +53,6 @@ const port = process.env.EXPRESS_PORT;
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 
-// Run the urlEncoded bodyParser to get the body of our objects
-// app.use( bodyParser.urlencoded({ extended : true }) );
-
 // Set up options for disk storage, we do this because we store the files as a hashcode and a manual extention needs to be added
 const fileStorage = multer.diskStorage({
     destination : (request : Request, file : Express.Multer.File, callback : (error: Error | null, destination: string) => void) => {
@@ -105,7 +102,7 @@ const fileFilter = (request : RequestInterface, file : Express.Multer.File, call
 // In order to handle file uploads, we must instantly call our multer method
 // The trailing method defines how many files we expect to upload, in this case its one
 // We then need to name the name of the field we're going to upload files from, in this case, it's image
-app.use(multer({storage : fileStorage, fileFilter : fileFilter }).single("image"));
+app.use( multer({storage : fileStorage, fileFilter : fileFilter }).single("image") );
 
 // Enable cookie parsing middleware
 app.use( cookieParser() );

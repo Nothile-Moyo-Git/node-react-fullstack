@@ -80,6 +80,7 @@ export interface AuthRequestInterface extends Request {
     userId : ObjectId,
     body : {
         email : string,
+        name : string,
         password : string,
         confirmPassword : string,
         status : string
