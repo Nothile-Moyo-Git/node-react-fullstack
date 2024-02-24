@@ -2,9 +2,14 @@
  * Date created : 17/02/2024
  * 
  * Author : Nothile Moyo
+ * 
+ * Signup component, currently handles the signup page functionality
  */
 
 import { FC, useState, useRef, FormEvent } from "react";
+
+import Label from "../../components/form/Label";
+import Input from "../../components/form/Input";
 
 export const SignupPage : FC = () => {
 
@@ -27,6 +32,7 @@ export const SignupPage : FC = () => {
 
         // Create values, we will overwrite them if they're set
         let emailAddress = "";
+        let name = "";
         let password = "";
         let confirmPassword = "";
 
@@ -40,6 +46,14 @@ export const SignupPage : FC = () => {
         if (confirmPasswordRef.current) {  
             confirmPassword = confirmPasswordRef.current.value;  
         }
+        if (nameRef.current) {
+            name = nameRef.current.value;
+        }
+
+        console.clear();
+        console.log("Inputs");
+        console.log("name");
+        console.log(name);
 
         // Perform the signup request to the backend
         try{
@@ -49,6 +63,7 @@ export const SignupPage : FC = () => {
             fields.append('confirmPassword', confirmPassword);
             fields.append('email', emailAddress);
             fields.append('password', password);
+            fields.append('name', name);
 
             // Query the backend to see if we're authenticated
             const response = await fetch("http://localhost:4000/signup",{
@@ -81,7 +96,18 @@ export const SignupPage : FC = () => {
             <form onSubmit={submitHandler}>
 
                 <div>
-                    <label>Name*</label>
+                    <Label
+                        id="nameLabel"
+                        htmlFor="name"
+                    >Name*
+                    </Label>
+                    <Input
+                        ariaLabelledBy="nameLabel"
+                        name="name"
+                        placeholder="Please enter your name"
+                        ref={nameRef}
+                        type="text"
+                    />
                 </div>
 
                 <div>
