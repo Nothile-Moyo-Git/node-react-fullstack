@@ -1,0 +1,6 @@
+@use "../../scss/partials/branding";
+
+main{
+    background: branding.$backdrop_color_one;
+    min-height: 100vh;
+}
