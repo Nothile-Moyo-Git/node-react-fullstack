@@ -8,8 +8,9 @@
 
 import { FC, useState, useRef, FormEvent } from "react";
 
-import Label from "../../components/form/Label";
+import Form from "../../components/form/Form";
 import Input from "../../components/form/Input";
+import Label from "../../components/form/Label";
 
 export const SignupPage : FC = () => {
 
@@ -93,14 +94,13 @@ export const SignupPage : FC = () => {
     return (
         <section>
 
-            <form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler}>
 
                 <div>
                     <Label
-                        id="nameLabel"
                         htmlFor="name"
-                    >Name*
-                    </Label>
+                        id="nameLabel"
+                    >Name*</Label>
                     <Input
                         ariaLabelledBy="nameLabel"
                         name="name"
@@ -154,7 +154,7 @@ export const SignupPage : FC = () => {
 
                 <button>Submit</button>
 
-            </form>
+            </Form>
 
         </section>
     );
