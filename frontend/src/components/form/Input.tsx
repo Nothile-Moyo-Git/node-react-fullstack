@@ -8,7 +8,7 @@
  * Props passed through to this component will represent the HTML properties of the element
  */
 
-import React, { FC, ReactNode } from "react";
+import React, { ReactNode, forwardRef } from "react";
 
 interface ComponentProps {
     ariaLabelledBy : string,
@@ -20,17 +20,17 @@ interface ComponentProps {
 
 };
 
-const Input : FC<ComponentProps> = ({ ariaLabelledBy, children, name, placeholder, ref, type }) => {
+export const Input = forwardRef<HTMLInputElement, ComponentProps>(function InputComponent(props, ref) {
 
-    return (
+    return(
         <input
-            aria-labelledby={ariaLabelledBy}
-            name={name}
-            placeholder={placeholder}
+            aria-labelledby={props.ariaLabelledBy}
+            name={props.name}
+            placeholder={props.placeholder}
             ref={ref}
-            type={type}
+            type={props.type}
         />
     );
-};
+});
 
 export default Input;

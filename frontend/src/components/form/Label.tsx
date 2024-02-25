@@ -11,6 +11,8 @@
 
 import { FC, ReactNode } from "react";
 
+import "./Label.scss";
+
 interface ComponentProps {
     children : ReactNode,
     htmlFor : string,
@@ -26,7 +28,7 @@ interface ComponentProps {
 const Label : FC<ComponentProps> = ({children, id, htmlFor}) => {
 
     return(
-        <label id={id} htmlFor={htmlFor}>
+        <label id={id} htmlFor={htmlFor} className="label">
             {children}
         </label>
     );
