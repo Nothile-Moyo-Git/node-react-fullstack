@@ -9,8 +9,10 @@
 import { FC, useState, useRef, FormEvent } from "react";
 
 import Form from "../../components/form/Form";
+import Field from "../../components/form/Field";
 import Input from "../../components/form/Input";
 import Label from "../../components/form/Label";
+import Title from "../../components/form/Title";
 
 export const SignupPage : FC = () => {
 
@@ -53,8 +55,14 @@ export const SignupPage : FC = () => {
 
         console.clear();
         console.log("Inputs");
+
         console.log("name");
-        console.log(name);
+        console.log(name, "\n");
+
+        console.log("Email address");
+        console.log(emailAddress, "\n");
+
+
 
         // Perform the signup request to the backend
         try{
@@ -81,8 +89,8 @@ export const SignupPage : FC = () => {
 
             console.log("\n\n");
             
-            console.log("Data");
-            console.log(data);
+            console.log("fields");
+            console.log(fields);
 
         }catch(error){
 
@@ -96,7 +104,9 @@ export const SignupPage : FC = () => {
 
             <Form onSubmit={submitHandler}>
 
-                <div>
+                <Title>Signup</Title>
+
+                <Field>
                     <Label
                         htmlFor="name"
                         id="nameLabel"
@@ -108,49 +118,49 @@ export const SignupPage : FC = () => {
                         ref={nameRef}
                         type="text"
                     />
-                </div>
+                </Field>
 
-                <div>
-                    <label 
+                <Field>
+                    <Label
                         htmlFor="emailAddress" 
                         id="emailLabel"
-                    >Email*</label>
-                    <input 
-                        aria-labelledby="emailLabel"
+                    >Email*</Label>
+                    <Input
+                        ariaLabelledBy="emailLabel"
                         name="emailAddress"
                         placeholder="Please enter your email"
                         ref={emailRef}
                         type="email"
                     />
-                </div>
+                </Field>
 
-                <div>
-                    <label 
+                <Field>
+                    <Label
                         htmlFor="firstPassword"
                         id="passwordLabel"
-                    >Password*</label>
-                    <input 
-                        aria-labelledby="firstPassword"
+                    >Password*</Label>
+                    <Input
+                        ariaLabelledBy="firstPassword"
                         name="firstPassword"
                         placeholder="Please enter your password"
                         ref={passwordRef}
                         type="password"
                     />
-                </div>
+                </Field>
 
-                <div>
-                    <label 
+                <Field>
+                    <Label
                         htmlFor="confirmPassword"
                         id="confirmPasswordLabel"
-                    >Confirm Password*</label>
-                    <input 
-                        aria-labelledby="confirmPassword"
+                    >Confirm Password*</Label>
+                    <Input
+                        ariaLabelledBy="confirmPassword"
                         name="confirmPassword"
                         placeholder="Please confirm your password"
                         ref={confirmPasswordRef}
                         type="password"
                     />
-                </div>
+                </Field>
 
                 <button>Submit</button>
 
