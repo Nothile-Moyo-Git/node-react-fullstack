@@ -8,6 +8,8 @@
  * Props passed through to this component will represent the HTML properties of the element
  */
 
+import "./Input.scss";
+
 import React, { ReactNode, forwardRef } from "react";
 
 interface ComponentProps {
@@ -25,6 +27,7 @@ export const Input = forwardRef<HTMLInputElement, ComponentProps>(function Input
     return(
         <input
             aria-labelledby={props.ariaLabelledBy}
+            className="input"
             name={props.name}
             placeholder={props.placeholder}
             ref={ref}

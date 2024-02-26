@@ -1,4 +1,4 @@
-@use "../../scss/partials/branding";
+@use "../../scss/partials/branding" as branding;
 
 main{
     background: branding.$backdrop_color_one;
