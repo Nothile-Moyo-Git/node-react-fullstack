@@ -6,8 +6,9 @@
  * Signup component, currently handles the signup page functionality
  */
 
-import { FC, useState, useRef, FormEvent } from "react";
+import { FC, useState, MouseEvent, useRef, FormEvent } from "react";
 
+import Button from "../../components/button/Button";
 import Form from "../../components/form/Form";
 import Field from "../../components/form/Field";
 import Input from "../../components/form/Input";
@@ -22,10 +23,11 @@ export const SignupPage : FC = () => {
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-    const [isNameValid, setIsNameValid] = useState<boolean>(true);
-    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
-    const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
+    // const [isNameValid, setIsNameValid] = useState<boolean>(true);
+    // const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    // const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    // const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
+    const [isFormValid, setIsFormValid] = useState<boolean>(true);
 
     // Submit handler
     const submitHandler = async (event : FormEvent) => {
@@ -104,7 +106,7 @@ export const SignupPage : FC = () => {
 
             <Form onSubmit={submitHandler}>
 
-                <Title>Signup</Title>
+                <Title>{isFormValid ? 'Signup' : 'Error: Please check the fields'}</Title>
 
                 <Field>
                     <Label
@@ -162,7 +164,7 @@ export const SignupPage : FC = () => {
                     />
                 </Field>
 
-                <button>Submit</button>
+                <Button>Submit</Button>
 
             </Form>
 
