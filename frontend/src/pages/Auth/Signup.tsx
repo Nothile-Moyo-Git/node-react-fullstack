@@ -6,7 +6,7 @@
  * Signup component, currently handles the signup page functionality
  */
 
-import { FC, useState, MouseEvent, useRef, FormEvent } from "react";
+import { FC, useState, useRef, FormEvent } from "react";
 
 import Button from "../../components/button/Button";
 import Form from "../../components/form/Form";
@@ -14,6 +14,7 @@ import Field from "../../components/form/Field";
 import Input from "../../components/form/Input";
 import Label from "../../components/form/Label";
 import Title from "../../components/form/Title";
+import Menu from "../../components/menu/Menu";
 
 export const SignupPage : FC = () => {
 
@@ -24,7 +25,8 @@ export const SignupPage : FC = () => {
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
     // const [isNameValid, setIsNameValid] = useState<boolean>(true);
-    // const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
     // const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     // const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
     const [isFormValid, setIsFormValid] = useState<boolean>(true);
@@ -43,7 +45,7 @@ export const SignupPage : FC = () => {
 
         // check if we have inputs and validate the form
         if (emailRef.current) {  
-            emailAddress = emailRef.current.value;  
+            emailAddress = emailRef.current.value;
         }
         if (passwordRef.current) {  
             password = passwordRef.current.value;  
@@ -119,6 +121,7 @@ export const SignupPage : FC = () => {
                         placeholder="Please enter your name"
                         ref={nameRef}
                         type="text"
+                        required={true}
                     />
                 </Field>
 
@@ -133,6 +136,7 @@ export const SignupPage : FC = () => {
                         placeholder="Please enter your email"
                         ref={emailRef}
                         type="email"
+                        required={true}
                     />
                 </Field>
 
@@ -147,6 +151,7 @@ export const SignupPage : FC = () => {
                         placeholder="Please enter your password"
                         ref={passwordRef}
                         type="password"
+                        required={true}
                     />
                 </Field>
 
@@ -161,6 +166,7 @@ export const SignupPage : FC = () => {
                         placeholder="Please confirm your password"
                         ref={confirmPasswordRef}
                         type="password"
+                        required={true}
                     />
                 </Field>
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import PageWrapper from './components/globals/PageWrapper';
 import './index.css';
-import { router } from './routes/Router';
+import { nestedRouter } from './routes/Router';
 import { RouterProvider } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
@@ -10,8 +9,6 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <PageWrapper>
-      <RouterProvider router={router}/>
-    </PageWrapper>
+    <RouterProvider router={nestedRouter}/>
   </React.StrictMode>
 );

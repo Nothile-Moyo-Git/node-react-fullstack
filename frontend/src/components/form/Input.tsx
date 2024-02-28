@@ -19,6 +19,7 @@ interface ComponentProps {
     placeholder : string,
     ref : React.RefObject<HTMLInputElement>,
     type : string,
+    required ?: boolean
 
 };
 
@@ -32,6 +33,7 @@ export const Input = forwardRef<HTMLInputElement, ComponentProps>(function Input
             placeholder={props.placeholder}
             ref={ref}
             type={props.type}
+            required={props.required}
         />
     );
 });

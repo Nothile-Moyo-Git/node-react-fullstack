@@ -10,28 +10,32 @@
 
 import { LoginPage } from '../pages/Auth/Login';
 import { SignupPage } from '../pages/Auth/Signup';
+import PageWrapper from '../components/globals/PageWrapper';
 import App from '../App';
 
 import { 
-    createBrowserRouter, 
-    createRoutesFromElements, 
-    Route
+    createBrowserRouter,
 } from 'react-router-dom';
 
 const BASENAME = '/typescript-fullstack'
 
-// Set our routes so we can also set our basename in browser router
-const routes = createRoutesFromElements(
-    <Route>
-        <Route path="/" element={<App/>} />
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/signup" element={<SignupPage/>} />
-        <Route path="*" element={<App/>} />
-    </Route>
-);
-
-// We create the router here but we're not creating a component
-export const router = createBrowserRouter(
-    routes,
-    { basename : BASENAME }
-);
+export const nestedRouter = createBrowserRouter([
+    {
+        path : "/",
+        element: <PageWrapper/>,
+        children : [
+            {
+                path : BASENAME,
+                element : <App/>
+            },
+            {
+                path : BASENAME + "/login",
+                element : <LoginPage/>
+            },
+            {
+                path : BASENAME + "/signup",
+                element : <SignupPage/>
+            }
+        ]
+    }
+]);

@@ -8,7 +8,7 @@
  * This is the main menu which will render at the top of every page which has the menu
  */
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { NavLink } from "react-router-dom";
 
 const Menu : FC = () => {
@@ -18,13 +18,15 @@ const Menu : FC = () => {
             <ul>
 
                 <li>
-                    <NavLink to="/">
-                    </NavLink>
+                    <NavLink to="/">Home</NavLink>
                 </li>
 
                 <li>
-                    <NavLink to="/login">
-                    </NavLink>
+                    <NavLink to="/login">Login</NavLink>
+                </li>
+
+                <li>
+                    <NavLink to="/signup">Signup</NavLink>
                 </li>
 
             </ul>
