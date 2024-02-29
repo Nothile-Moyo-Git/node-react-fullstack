@@ -8,21 +8,22 @@
  * Note: when using the basename, in your local server, navigate to the URL
  */
 
+import { ErrorPage } from '../pages/Error/404';
 import { LoginPage } from '../pages/Auth/Login';
 import { SignupPage } from '../pages/Auth/Signup';
 import PageWrapper from '../components/globals/PageWrapper';
+import { BASENAME } from '../util/util';
 import App from '../App';
 
 import { 
     createBrowserRouter,
 } from 'react-router-dom';
 
-const BASENAME = '/typescript-fullstack'
-
 export const nestedRouter = createBrowserRouter([
     {
         path : "/",
         element: <PageWrapper/>,
+        errorElement: <ErrorPage/>,
         children : [
             {
                 path : BASENAME,

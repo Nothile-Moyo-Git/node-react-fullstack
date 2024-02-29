@@ -19,3 +19,5 @@ export const isValidUrl = (url : string) => {
     '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
     return !!urlPattern.test(url);
 };
+
+export const BASENAME = '/typescript-fullstack';

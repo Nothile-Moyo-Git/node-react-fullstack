@@ -10,23 +10,25 @@
 
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
+import { BASENAME } from "../../util/util";
+import "./Menu.scss";
 
 const Menu : FC = () => {
 
     return(
         <nav>
-            <ul>
+            <ul className="menu">
 
-                <li>
-                    <NavLink to="/">Home</NavLink>
+                <li className="menu__item">
+                    <NavLink to={BASENAME} className="menu__link">Home</NavLink>
                 </li>
 
-                <li>
-                    <NavLink to="/login">Login</NavLink>
+                <li className="menu__item">
+                    <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
                 </li>
 
-                <li>
-                    <NavLink to="/signup">Signup</NavLink>
+                <li className="menu__item">
+                    <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
                 </li>
 
             </ul>
