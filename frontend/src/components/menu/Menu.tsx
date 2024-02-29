@@ -8,23 +8,27 @@
  * This is the main menu which will render at the top of every page which has the menu
  */
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { NavLink } from "react-router-dom";
+import { BASENAME } from "../../util/util";
+import "./Menu.scss";
 
 const Menu : FC = () => {
 
     return(
         <nav>
-            <ul>
+            <ul className="menu">
 
-                <li>
-                    <NavLink to="/">
-                    </NavLink>
+                <li className="menu__item">
+                    <NavLink to={BASENAME} className="menu__link">Home</NavLink>
                 </li>
 
-                <li>
-                    <NavLink to="/login">
-                    </NavLink>
+                <li className="menu__item">
+                    <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
+                </li>
+
+                <li className="menu__item">
+                    <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
                 </li>
 
             </ul>

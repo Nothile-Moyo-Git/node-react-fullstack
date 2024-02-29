@@ -1,6 +1,7 @@
 /**
  * Date created : 20/02/2024
  *  
+ * Author : 28/02/2024
  *
  */
 
@@ -18,3 +19,5 @@ export const isValidUrl = (url : string) => {
     '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
     return !!urlPattern.test(url);
 };
+
+export const BASENAME = '/typescript-fullstack';

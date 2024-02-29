@@ -8,18 +8,21 @@
  * 
  */
 
+import { Outlet } from "react-router-dom";
 import { FC, ReactNode } from "react";
+import Menu from "../menu/Menu";
 import "./PageWrapper.scss";
 
 interface ComponentProps {
-    children : ReactNode
+    children ?: ReactNode
 }
 
 const PageWrapper : FC<ComponentProps> = ({ children }) => {
 
     return (
         <main>
-            {children}
+            <Menu/>
+            <Outlet />
         </main>
     );
 };
