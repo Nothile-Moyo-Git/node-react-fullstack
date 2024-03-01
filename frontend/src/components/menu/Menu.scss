@@ -19,6 +19,10 @@ nav{
     overflow: hidden;
     transition: animations.$standard_transition;
 
+    @include responsive.breakpoint(tablet){
+        height: 110px;
+    }
+
     @include mixins.backgroundGradientEffect(){
         background: branding.$gradient_color_three;
     }
@@ -56,6 +60,10 @@ nav{
 
     @include mixins.backgroundGradientEffect(){
         background: branding.$gradient_color_three;
+    }
+
+    @include responsive.breakpoint(tablet){
+        height: 105px;
     }
 
     &__logged-in{
@@ -174,14 +182,5 @@ nav{
         @include mixins.state(){
             fill : white;
         }
-    }
-}
-
-.menu-open{
-
-    margin-top: 82px;
-
-    @include responsive.breakpoint(tablet){
-        margin-top: 314px;
     }
 }

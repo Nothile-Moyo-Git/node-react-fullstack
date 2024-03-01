@@ -1,6 +1,19 @@
 @use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/responsive" as responsive;
+@use "../../scss/partials/animations" as animations;
 
 main{
     background: branding.$backdrop_color_one;
-    min-height: 100vh;
+    animation: fade-in 0.2s linear;
+}
+
+.menu-open{
+    height: 100%;
+    margin-top: 55px;
+    min-height: calc(100vh - 55px);
+
+    @include responsive.breakpoint(tablet){
+        margin-top: 105px;
+        min-height: calc(100vh - 105px);
+    }
 }

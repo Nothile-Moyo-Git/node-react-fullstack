@@ -9,19 +9,18 @@
  */
 
 import { Outlet } from "react-router-dom";
-import { FC, ReactNode } from "react";
+import { FC, useState } from "react";
 import Menu from "../menu/Menu";
 import "./PageWrapper.scss";
 
-interface ComponentProps {
-    children ?: ReactNode
-}
 
-const PageWrapper : FC<ComponentProps> = ({ children }) => {
+const PageWrapper : FC = () => {
+
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
 
     return (
-        <main>
-            <Menu/>
+        <main className={isMenuOpen ? 'menu-open' : undefined}>
+            <Menu toggleMenu={setIsMenuOpen}/>
             <Outlet />
         </main>
     );
