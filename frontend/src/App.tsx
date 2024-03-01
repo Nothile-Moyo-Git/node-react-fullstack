@@ -53,7 +53,7 @@ const App : FC = () => {
   },[isAuthenticated]);
 
   return (
-    <main className="App">
+    <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -68,7 +68,7 @@ const App : FC = () => {
           Learn React
         </a>
       </header>
-    </main>
+    </div>
   );
 }
 
