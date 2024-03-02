@@ -21,22 +21,25 @@ interface ComponentProps {
 const Menu : FC<ComponentProps> = ({ toggleMenu }) => {
 
     return(
-        <nav>
-            <ul className="menu">
+        <header>
+            <nav>
+                <ul className="menu">
 
-                <li className="menu__item">
-                    <NavLink to={BASENAME} className="menu__link">Home</NavLink>
-                </li>
+                    <li className="menu__item">
+                        <NavLink to={BASENAME} className="menu__link">Home</NavLink>
+                    </li>
 
-                <li className="menu__item">
-                    <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
-                </li>
+                    <li className="menu__item">
+                        <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
+                    </li>
 
-                <li className="menu__item">
-                    <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
-                </li>
+                    <li className="menu__item">
+                        <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
+                    </li>
 
-            </ul>
+                </ul>
+
+            </nav>
 
             <div className="toggle-menu-button" id="show_menu">
                 <svg viewBox="0 0 100 80" width="25" height="30">
@@ -51,8 +54,7 @@ const Menu : FC<ComponentProps> = ({ toggleMenu }) => {
                     <polygon points="456.851,0 245,212.564 33.149,0 0.708,32.337 212.669,245.004 0.708,457.678 33.149,490 245,277.443 456.851,490   489.292,457.678 277.331,245.004 489.292,32.337 "/>
                 </svg>
             </div>
-
-        </nav>
+        </header>
     );
 };
 
