@@ -19,7 +19,7 @@ const PageWrapper : FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
 
     return (
-        <main className={isMenuOpen ? 'menu-open' : undefined}>
+        <main className={isMenuOpen ? 'menu-open' : 'menu-closed'}>
             <Menu toggleMenu={setIsMenuOpen}/>
             <Outlet />
         </main>

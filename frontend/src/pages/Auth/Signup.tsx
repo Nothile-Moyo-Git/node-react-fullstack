@@ -6,6 +6,8 @@
  * Signup component, currently handles the signup page functionality
  */
 
+import "./Signup.scss";
+
 import { FC, useState, useRef, FormEvent } from "react";
 
 import Button from "../../components/button/Button";
@@ -14,7 +16,6 @@ import Field from "../../components/form/Field";
 import Input from "../../components/form/Input";
 import Label from "../../components/form/Label";
 import Title from "../../components/form/Title";
-import Menu from "../../components/menu/Menu";
 
 export const SignupPage : FC = () => {
 
@@ -104,7 +105,7 @@ export const SignupPage : FC = () => {
     };
 
     return (
-        <section>
+        <section className="signup">
 
             <Form onSubmit={submitHandler}>
 
