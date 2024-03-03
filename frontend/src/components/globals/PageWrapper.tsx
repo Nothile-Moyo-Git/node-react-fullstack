@@ -20,7 +20,10 @@ const PageWrapper : FC = () => {
 
     return (
         <main className={isMenuOpen ? 'menu-open' : 'menu-closed'}>
-            <Menu toggleMenu={setIsMenuOpen}/>
+            <Menu 
+                isMenuOpen={isMenuOpen}
+                toggleMenu={setIsMenuOpen}
+            />
             <Outlet />
         </main>
     );
