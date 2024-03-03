@@ -57,6 +57,7 @@ nav{
     z-index: 2;
     overflow: hidden;
     transition: animations.$standard_transition;
+    animation: fade-in 0.15s linear;
 
     @include mixins.backgroundGradientEffect(){
         background: branding.$gradient_color_three;
@@ -140,15 +141,11 @@ nav{
 .toggle-menu-button{
     position: absolute;
     z-index: 3;
-    display: none;
     animation: fade-in 0.2s linear;
     cursor: pointer;
 
     @include responsive.breakpoint(tablet){
-        
-        &__show{
-            display: block;
-        }
+        display: block;
     }
 }
 
@@ -165,7 +162,6 @@ nav{
         }
     }
 
-
     @include responsive.breakpoint-min(tablet){
         display: none !important;
     }
@@ -174,6 +170,10 @@ nav{
 #hide_menu{
     top: 3px;
     right: 3px;
+
+    @include responsive.breakpoint-min(tablet){
+        display: none;
+    }
 
     svg{
 
