@@ -207,3 +207,32 @@ export const getPaginationValues = (currentPage: number, numberOfPages : number)
 
     return { currentPage, numberOfPreviousPages : paginationPrevPagesCount, numberOfUpcomingPages : paginationNextPagesCount };
 };
+
+/**
+ * @method validateInputLength
+ * 
+ * This function checks the length of the input in comparison to the offered value
+ * 
+ * @params input : string, maxLength : number
+ * 
+ * @returns boolean
+ */
+export const validateInputLength = (input : string, maxLength : number) => {
+
+    return input.length >= maxLength;
+};
+
+/**
+ * @method validateEmailAddress
+ * 
+ * This function validates the email address entered
+ * 
+ * @params email : string
+ * 
+ * @returns boolean
+ */
+export const validateEmailAddress = (email : string) => {
+
+    const regex = /\S+@\S+\.\S+/;
+    return regex.test(email);
+};

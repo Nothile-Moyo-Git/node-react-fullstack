@@ -93,6 +93,11 @@ export const SignupPage : FC = () => {
             console.log(response);
 
             console.log("\n\n");
+
+            console.log("Data");
+            console.log(data);
+
+            console.log("\n\n");
             
             console.log("fields");
             console.log(fields);
