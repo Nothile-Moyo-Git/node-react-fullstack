@@ -17,6 +17,7 @@
 import { Response, NextFunction } from "express";
 import { AuthRequestInterface } from "../@types";
 import { validationResult } from "express-validator";
+import { validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
 import bcrypt from "bcrypt";
 
@@ -40,19 +41,55 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 
         }else{
 
+            /*
             console.clear();
             console.log("Request body");
             console.log(request.body);
+            console.log("\n\n");
+            */
 
             // Get body of request
             const confirmPassword = request.body.confirmPassword;
             const email = request.body.email;
-            // const name = request.body.name;
+            const name = request.body.name;
             const password = request.body.password;
+
+            // Check if the inputs are valid
+            const isNameValid = validateInputLength(name, 6);
+            const isEmailValid = validateEmailAddress(email);
+            const isPasswordValid = validateInputLength(password, 6);
+            const doPasswordsMatch = password === confirmPassword;
+
+            /*
+            console.log("Is the name valid");
+            console.log(isNameValid);
+            console.log("\n\n");
+
+            console.log("Is the email valid");
+            console.log(isEmailValid);
+            console.log("\n\n");
+
+            console.log("Is the password valid");
+            console.log(isPasswordValid);
+            console.log("\n\n");
+
+            console.log("Do the passwords match");
+            console.log(doPasswordsMatch);
+            console.log("\n\n");
+            */
+
+            if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
+                
+            }
     
             // Test response
             response.status(200);
-            response.json({ message : "Request successful", errors : errors });
+            response.json({ 
+                isNameValid,
+                isEmailValid,
+                isPasswordValid,
+                doPasswordsMatch
+             });
 
         }
 
