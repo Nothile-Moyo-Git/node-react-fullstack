@@ -153,8 +153,13 @@ app.use( async( request : Request, response : Response, next : NextFunction ) =>
 
     // Create a new CSRF token and save it on the server session
     if (!request.session.csrfToken) {
-        request.session.csrfToken = generateCSRFToken();
+        // request.session.csrfToken = generateCSRFToken();
     }
+
+    console.clear();
+    console.log("\n\n");
+    console.log("Request session info");
+    console.log(request.session.csrfToken);
 
     next();
 });
