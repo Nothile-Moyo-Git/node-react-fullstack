@@ -107,39 +107,8 @@ app.use( multer({storage : fileStorage, fileFilter : fileFilter }).single("image
 // Enable cookie parsing middleware
 app.use( cookieParser() );
 
-// Create the whitelisting options for cors so that we don't need csrf protection
-const whiteList = ['http://localhost:3000', 'http://localhost:4000'];
-const corsOptionsDelegate = (request : any, callback : any) => {
-    let corsOptions : { origin : boolean } ;
-
-    // Check whitelist
-    if (whiteList.indexOf(request.header('Origin')) !== -1) {
-        corsOptions = { origin: true };
-    }else{
-        corsOptions = { origin: false };
-    }
-
-    callback(null, corsOptions);
-};
-
-const corsOptions = {
-    origin: (origin : string | undefined, callback) => {
-
-        console.clear();
-        console.log("Origin");
-        console.log(origin);
-
-        if (origin !== undefined && whiteList.indexOf(origin) !== -1) {
-            callback(null, true);
-        }else{
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    optionsSuccessStatus: 200
-};
-
 // Allow CORS. This allows the frontend to query the backend
-app.use( cors(corsOptions) );
+app.use( cors({ credentials : true }) );
 
 // Allow flash messages to be used
 app.use( flash() );
@@ -171,24 +140,6 @@ app.use(
 
 // Serve our uploaded images statically
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
-
-// Generate a random CSRF token without using a deprecated package
-const generateCSRFToken = () => {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-};
-
-// Create our middleware
-// Middleware refers to s oftware or "code" that allows a connection and interaction with a database
-// Executes on every request
-app.use( async( request : Request, response : Response, next : NextFunction ) => {
-
-    // Create a new CSRF token and save it on the server session
-    if (!request.session.csrfToken) {
-        // request.session.csrfToken = generateCSRFToken();
-    }
-
-    next();
-});
 
 // Implement Route handlers here
 app.use( feedRoutes );

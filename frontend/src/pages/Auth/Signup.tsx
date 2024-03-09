@@ -68,7 +68,6 @@ export const SignupPage : FC = () => {
         console.log(emailAddress, "\n");
 
 
-
         // Perform the signup request to the backend
         try{
 

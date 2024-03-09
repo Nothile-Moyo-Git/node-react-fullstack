@@ -60,6 +60,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
             const isPasswordValid = validateInputLength(password, 6);
             const doPasswordsMatch = password === confirmPassword;
 
+
             /*
             console.log("Is the name valid");
             console.log(isNameValid);
@@ -80,6 +81,20 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 
             if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
                 
+                console.clear();
+                console.log("Every input is valid");
+
+                const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+
+                const newUser = new User({
+                    email : email,
+                    name : name,
+                    password : encryptedPassword
+                });
+
+                console.log("\n\n");
+                console.log("New user signed up");
+                console.log(newUser);
             }
     
             // Test response
