@@ -41,13 +41,6 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 
         }else{
 
-            /*
-            console.clear();
-            console.log("Request body");
-            console.log(request.body);
-            console.log("\n\n");
-            */
-
             // Get body of request
             const confirmPassword = request.body.confirmPassword;
             const email = request.body.email;
@@ -60,52 +53,39 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
             const isPasswordValid = validateInputLength(password, 6);
             const doPasswordsMatch = password === confirmPassword;
 
-
-            /*
-            console.log("Is the name valid");
-            console.log(isNameValid);
-            console.log("\n\n");
-
-            console.log("Is the email valid");
-            console.log(isEmailValid);
-            console.log("\n\n");
-
-            console.log("Is the password valid");
-            console.log(isPasswordValid);
-            console.log("\n\n");
-
-            console.log("Do the passwords match");
-            console.log(doPasswordsMatch);
-            console.log("\n\n");
-            */
-
             if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
                 
                 console.clear();
                 console.log("Every input is valid");
 
-                const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+                // Check if the user already exists in the database
+                const users = await User.find({ email : email });
+                const userExists = users.length > 0;
 
-                const newUser = new User({
-                    email : email,
-                    name : name,
-                    password : encryptedPassword
-                });
+                if (userExists === true) {
 
-                console.log("\n\n");
-                console.log("New user signed up");
-                console.log(newUser);
-            }
+                    response.status(200);
+                    response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists });
+
+                }else{
+
+                    const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+
+                    // Create a new user in the database if they don't exist already
+                    const newUser = new User({ email, name, password : encryptedPassword, status : "active" });
+
+                    await newUser.save();
     
-            // Test response
-            response.status(200);
-            response.json({ 
-                isNameValid,
-                isEmailValid,
-                isPasswordValid,
-                doPasswordsMatch
-             });
+                    // Return a response
+                    response.status(201);
+                    response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists });
+                }
 
+            }else{
+
+                response.status(200);
+                response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists : false });
+            }
         }
 
     }catch(error){
