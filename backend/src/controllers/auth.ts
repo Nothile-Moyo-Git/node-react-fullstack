@@ -20,6 +20,7 @@ import { validationResult } from "express-validator";
 import { validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 // Signup controller
 export const PostSignupController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
@@ -94,38 +95,6 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         next(error);
     }
 
-    /*
-
-    // Get body of request
-    const email = request.body.email;
-    const name = request.body.name;
-    const password = request.body.password;
-
-    try{
-
-        // Hash our password
-        const hashedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-
-        // Create the user if the checks are valid
-        const user = new User({
-            email : email,
-            name : name,
-            password : hashedPassword
-        });
-
-        // Save the new user
-        const result = await user.save();
-
-        // Send a response to the frontend with a status code of 201
-        response.status(201);
-        response.json({ message : 'User created!', userId: result._id });
-
-    } catch (error) {
-        
-        response.status(500).json({ message : "There was a server error" });
-        next(error);
-    }
-    */
 };
 
 // Login Controller
@@ -140,28 +109,64 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
         // Find the user by email
         const user = await User.findOne({ email : email });
 
+        // Return an error if there's no user
         if (!user) {
-            const error = new Error('A user with this email could not be found');
-            throw error;
+            response.status(401);
+            response.json({
+               userExists : false,
+               success : false,
+               emailValid : false,
+               passwordValid : true,
+               error : "A user with this email could not be found",
+               token : null
+            });
+        }else{
+
+            // Compare the passwords
+            const passwordsMatch = await bcrypt.compare(password, user.password);
+
+            // If the passwords don't match
+            if (passwordsMatch === false) {
+
+                // Send a response to the front end
+                response.status(401);
+                response.json({
+                    userExists : true,
+                    success : false,
+                    emailValid : true,
+                    passwordValid : false,
+                    error : "The password is invalid",
+                    token : null
+                });
+
+            }else{
+
+                // Create our web token and send it to the front end
+                /*
+                jwt.sign({
+
+                }); */
+
+                // Send our response to the front end
+                response.status(200);
+                response.json({
+                    userExists : true,
+                    success : true,
+                    emailValid : false,
+                    passwordValid : true,
+                    error : null,
+                    token : null
+                });
+            }
+
+            // Return the response of the object
+            response.status(200).json({ message: 'User created!', userId : user._id });
         }
-        
-        // Compare the passwords
-        const passwordsMatch = await bcrypt.compare(password, user.password);
-
-        // If the passwords don't match
-        if (passwordsMatch !== false) {
-
-            const error = new Error('Wrong password, please try again');
-            throw error;
-        }
-
-        // Return the response of the object
-        response.status(200).json({ message: 'User created!', userId : user._id });
 
     }catch(error){
 
-        response.status(500).json({ message : "There was a server error" });
-        next(error);
+        response.status(500);
+        response.json({ message : "There was a server error" });
     }
 };
 
