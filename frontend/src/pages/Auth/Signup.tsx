@@ -58,16 +58,6 @@ export const SignupPage : FC = () => {
             name = nameRef.current.value;
         }
 
-        console.clear();
-        console.log("Inputs");
-
-        console.log("name");
-        console.log(name, "\n");
-
-        console.log("Email address");
-        console.log(emailAddress, "\n");
-
-
         // Perform the signup request to the backend
         try{
 
