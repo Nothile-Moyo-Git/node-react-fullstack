@@ -27,10 +27,58 @@ export const LoginPage : FC = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    const submitHandler = (event : FormEvent) => {
+    const submitHandler = async (event : FormEvent) => {
 
         // Don't reload the page
         event.preventDefault();
+
+        // Get the values from the input
+        let emailAddress = "";
+        let password = "";
+
+        if (emailRef.current) {
+            emailAddress = emailRef.current.value;
+        }
+
+        if (passwordRef.current) {
+            password = passwordRef.current.value;
+        }
+
+        // Perform the login request to the backend
+        try {
+
+            // Set the fields for the api request
+            const fields = new FormData();
+            fields.append('email', emailAddress);
+            fields.append('password', password);
+
+            // Get response from the backend
+            const response = await fetch('http://localhost:4000/login', {
+                method : "POST",
+                body : fields
+            });
+
+            // Get the json response from the backend
+            const data = await response.json();
+
+            console.clear();
+            console.log("Response");
+            console.log(data);
+
+            // Save our local storage results
+            if (data.success === true) {
+
+                const remainingTime = new Date();
+                remainingTime.setDate(remainingTime.getDate() + 14);
+
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.userId);
+                localStorage.setItem('expiresIn', data.expiresIn);
+            }
+
+        }catch(error){
+
+        }
     };
 
     return(

@@ -44,7 +44,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 
             // Get body of request
             const confirmPassword = request.body.confirmPassword;
-            const email = request.body.email;
+            const email = request.body.email.toLowerCase();
             const name = request.body.name;
             const password = request.body.password;
 
@@ -101,7 +101,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 export const PostLoginController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
     // Get values from the form
-    const email = request.body.email;
+    const email = request.body.email.toLowerCase();
     const password = request.body.password;
 
     try {
@@ -110,7 +110,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
         const user = await User.findOne({ email : email });
 
         // Return an error if there's no user
-        if (!user) {
+        if (user === null) {
             response.status(401);
             response.json({
                userExists : false,
@@ -118,7 +118,8 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                emailValid : false,
                passwordValid : true,
                error : "A user with this email could not be found",
-               token : null
+               token : null,
+               userId : null
             });
         }else{
 
@@ -136,31 +137,34 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     emailValid : true,
                     passwordValid : false,
                     error : "The password is invalid",
-                    token : null
+                    token : null,
+                    userId : null
                 });
 
             }else{
 
                 // Create our web token and send it to the front end
-                /*
-                jwt.sign({
-
-                }); */
+                const token = jwt.sign(
+                    {
+                        email : user.email,
+                        userId : user._id.toString()
+                    },
+                    "Adeptus",
+                    { expiresIn: '14d' }
+                );
 
                 // Send our response to the front end
                 response.status(200);
                 response.json({
                     userExists : true,
                     success : true,
-                    emailValid : false,
+                    emailValid : true,
                     passwordValid : true,
                     error : null,
-                    token : null
+                    token : token,
+                    userId : user._id.toString()
                 });
             }
-
-            // Return the response of the object
-            response.status(200).json({ message: 'User created!', userId : user._id });
         }
 
     }catch(error){
