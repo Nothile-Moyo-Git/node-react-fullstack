@@ -65,6 +65,17 @@ export const LoginPage : FC = () => {
             console.log("Response");
             console.log(data);
 
+            // Save our local storage results
+            if (data.success === true) {
+
+                const remainingTime = new Date();
+                remainingTime.setDate(remainingTime.getDate() + 14);
+
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.userId);
+                localStorage.setItem('expiresIn', data.expiresIn);
+            }
+
         }catch(error){
 
         }

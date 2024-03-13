@@ -109,11 +109,6 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
         // Find the user by email
         const user = await User.findOne({ email : email });
 
-        console.clear();
-        console.log("User");
-        console.log(user);
-
-
         // Return an error if there's no user
         if (user === null) {
             response.status(401);
@@ -142,7 +137,8 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     emailValid : true,
                     passwordValid : false,
                     error : "The password is invalid",
-                    token : null
+                    token : null,
+                    userId : null
                 });
 
             }else{
@@ -165,7 +161,8 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     emailValid : true,
                     passwordValid : true,
                     error : null,
-                    token : token
+                    token : token,
+                    userId : user._id.toString()
                 });
             }
         }
