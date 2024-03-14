@@ -9,12 +9,15 @@
  */
 
 import { Outlet } from "react-router-dom";
-import { FC, useState } from "react";
+import { FC, useState, ReactNode } from "react";
 import Menu from "../menu/Menu";
 import "./PageWrapper.scss";
 
+interface ComponentProps {
+    children ?: ReactNode
+}
 
-const PageWrapper : FC = () => {
+const PageWrapper : FC<ComponentProps> = ({children}) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
 
@@ -24,6 +27,7 @@ const PageWrapper : FC = () => {
                 isMenuOpen={isMenuOpen}
                 toggleMenu={setIsMenuOpen}
             />
+            {children}
             <Outlet />
         </main>
     );
