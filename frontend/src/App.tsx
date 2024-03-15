@@ -3,7 +3,8 @@
  * Author : Nothile Moyo
  */
 
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useContext } from 'react';
+import { AppContext } from './context/appContext';
 import logo from './logo.svg';
 import './App.scss';
 
@@ -13,6 +14,9 @@ const App : FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [token, setToken] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  // Get the method from the backend to query
+  const appContextInstance = useContext(AppContext);
 
   // Query the backend to see if we're logged in
   useEffect(() => {
@@ -38,11 +42,21 @@ const App : FC = () => {
           setIsAuthenticated(data.isAuthenticated);
         }
 
+        console.clear();
+        console.log("Response");
+        console.log(response);
+
+        console.log("\n\n");
+
+        console.log(appContextInstance?.startApp());
+
       }catch(error){
 
         console.log("Request failed");
         console.log(error);
       }
+
+
 
       // We have a response so we're not loading data anymore
       setIsLoading(false);

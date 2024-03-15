@@ -16,7 +16,10 @@ import React, { useState, ReactNode } from "react";
 // Typing for everything related to state management
 interface ContextProps {
     token ?: string,
-    expiresIn ?: string
+    userId ?: string,
+    expiresIn ?: string,
+    userAuthenticated ?: boolean,
+    startApp : () => void
 };
 
 interface ComponentProps {
@@ -26,19 +29,38 @@ interface ComponentProps {
 
 export const AppContext = React.createContext<ContextProps | null>(null);
 
-export const AppContextProvider = ({ children, value } : ComponentProps) => {
+const AppContextProvider = ({ children, value } : ComponentProps) => {
 
     // Set our token and expiration states
     const [token, setToken] = useState<string>("");
+    const [userId, setUserId] = useState<string>("");
+    const [expiresIn, setExpiresIn] = useState<string>("");
+    const [userAuthenticated, setUserAuthenticated] = useState<boolean>(false);
 
     // Check whether the user is successfully logged in or not
-    const checkLoggedInState = () => {
+    const startApp = () => {
 
+        const storageToken = localStorage.getItem("token");
+        const storageUserId = localStorage.getItem("userId");
+        const storageExpiresIn = localStorage.getItem("expiresIn");
+
+        // Set the values if we have them
+        storageToken && setToken(storageToken);
+        storageUserId && setUserId(storageUserId);
+        storageExpiresIn && setExpiresIn(storageExpiresIn);
+
+        // If we have a token stored locally and the expiry date hasn't passed, then authenticate the user
+        const currentDate = new Date();
+
+        console.log("Date");
+        console.log(currentDate);
     };
 
     return (
-        <AppContext.Provider value={{}}>
+        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, startApp }}>
             {children}
         </AppContext.Provider>
     );
 };
+
+export default AppContextProvider

@@ -73,7 +73,9 @@ export const LoginPage : FC = () => {
 
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userId', data.userId);
-                localStorage.setItem('expiresIn', data.expiresIn);
+                localStorage.setItem('expiresIn', remainingTime.toISOString());                
+
+                console.log("\n\n");
             }
 
         }catch(error){
