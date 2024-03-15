@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { nestedRouter } from './routes/Router';
 import { RouterProvider } from 'react-router-dom';
+import AppContextProvider from './context/appContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={nestedRouter}/>
+    <AppContextProvider>
+      <RouterProvider router={nestedRouter}/>
+    </AppContextProvider>
   </React.StrictMode>
 );
