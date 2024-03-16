@@ -4,16 +4,13 @@
  */
 
 import { FC, useState, useEffect, useContext } from 'react';
-import { AppContext } from './context/appContext';
+import { AppContext } from './context/AppContext';
 import logo from './logo.svg';
 import './App.scss';
 
 const App : FC = () => {
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [token, setToken] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
 
   // Get the method from the backend to query
   const appContextInstance = useContext(AppContext);
@@ -25,30 +22,7 @@ const App : FC = () => {
 
       try {
 
-        // Query the backend to see if we're authenticated
-        const response = await fetch("http://localhost:4000/test",{
-          method : "GET",
-          headers : {
-            "Content-Type" : "application/json"
-          },
-          body : null
-        });
-
-        // Get the JSON from the request
-        const data = await response.json();
-
-        // Set our authentication state
-        if (data.isAuthenticated) {
-          setIsAuthenticated(data.isAuthenticated);
-        }
-
-        console.clear();
-        console.log("Response");
-        console.log(response);
-
-        console.log("\n\n");
-
-        console.log(appContextInstance?.startApp());
+        appContextInstance?.startApp();
 
       }catch(error){
 
@@ -56,15 +30,14 @@ const App : FC = () => {
         console.log(error);
       }
 
-
-
       // We have a response so we're not loading data anymore
       setIsLoading(false);
     };
 
     fetchAuthentication();
 
-  },[isAuthenticated]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return (
     <div className="App">

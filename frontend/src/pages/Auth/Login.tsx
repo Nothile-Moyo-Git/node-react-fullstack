@@ -63,7 +63,7 @@ export const LoginPage : FC = () => {
 
             console.clear();
             console.log("Response");
-            console.log(data);
+            console.log(data.body);
 
             // Save our local storage results
             if (data.success === true) {
@@ -74,8 +74,6 @@ export const LoginPage : FC = () => {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userId', data.userId);
                 localStorage.setItem('expiresIn', remainingTime.toISOString());                
-
-                console.log("\n\n");
             }
 
         }catch(error){

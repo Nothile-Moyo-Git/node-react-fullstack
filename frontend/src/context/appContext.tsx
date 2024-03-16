@@ -40,6 +40,7 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     // Check whether the user is successfully logged in or not
     const startApp = () => {
 
+        // Get local data
         const storageToken = localStorage.getItem("token");
         const storageUserId = localStorage.getItem("userId");
         const storageExpiresIn = localStorage.getItem("expiresIn");
@@ -50,11 +51,21 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
         storageExpiresIn && setExpiresIn(storageExpiresIn);
 
         // If we have a token stored locally and the expiry date hasn't passed, then authenticate the user
-        const currentDate = new Date();
+        if (storageExpiresIn !== null) {
+            const currentDate = new Date();
+            const expirationDate = new Date(storageExpiresIn);
 
-        console.log("Date");
-        console.log(currentDate);
-    };
+            // Determine if the user is authenticated or not
+            if (currentDate <= expirationDate) {
+                setUserAuthenticated(true);
+            }else{
+                setUserAuthenticated(false);
+                localStorage.removeItem("token");
+                localStorage.removeItem("userId");
+                localStorage.removeItem("expiresIn");
+            }    
+        }
+    }
 
     return (
         <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, startApp }}>
@@ -63,4 +74,4 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     );
 };
 
-export default AppContextProvider
+export default AppContextProvider;
