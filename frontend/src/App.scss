@@ -1,5 +1,9 @@
 @use "./scss/partials/animations" as animations;
 
+*{
+  font-size: 16px;
+}
+
 .App {
   text-align: center;
   animation: fade-in 0.2s linear;
