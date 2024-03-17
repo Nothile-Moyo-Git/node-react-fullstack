@@ -7,12 +7,15 @@
  * This should be used in suspense components
  */
 
-import React from "react";
+import "./LoadingSpinner.scss";
 
 const LoadingSpinner = () => {
 
     return(
-        <div></div>
+        <div className="loadingWrapper">
+            <span className="loadingSpinner"></span>
+            <p>Loading, please wait...</p>
+        </div>
     );
 };
 
