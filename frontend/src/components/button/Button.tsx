@@ -14,13 +14,36 @@ import { FC, MouseEvent, ReactNode } from "react";
 
 interface ComponentProps {
     children : ReactNode,
+    variant ?: string,
     onClick ?: (event : MouseEvent) => void
 };
 
-const Button : FC<ComponentProps> = ({children, onClick}) => {
+const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
+
+    let variantClassName = "";
+
+    // Implement styling for the variant
+    switch(variant){
+
+        case "primary":
+            variantClassName = "button__primary";
+            break;
+        
+        case "secondary":
+            variantClassName = "button__secondary";
+            break;
+
+        case "menu":
+            variantClassName = "button__menu";
+            break;
+        
+        default:
+            variantClassName = "";
+            break;
+    }
 
     return(
-        <button className="button" onClick={onClick}>{children}</button>
+        <button className={`button ${variantClassName}`} onClick={onClick}>{children}</button>
     );
 };
 

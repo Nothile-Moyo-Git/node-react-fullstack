@@ -19,7 +19,8 @@ interface ContextProps {
     userId ?: string,
     expiresIn ?: string,
     userAuthenticated ?: boolean,
-    startApp : () => void
+    startApp : () => void,
+    logoutUser : () => void
 };
 
 interface ComponentProps {
@@ -67,8 +68,23 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
         }
     }
 
+    // Log the user out intentionally
+    const logoutUser = () => {
+
+        // Remove all the items from local storage
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("expiresIn");
+
+        // Reset our states
+        setToken("");
+        setUserId("");
+        setExpiresIn("");
+        setUserAuthenticated(false);
+    };
+
     return (
-        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, startApp }}>
+        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, startApp, logoutUser }}>
             {children}
         </AppContext.Provider>
     );

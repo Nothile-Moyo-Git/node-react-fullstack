@@ -20,6 +20,26 @@
     filter: contrast(90%);
     display: flex;
 
+    &__primary{
+        @include mixins.state(){
+            cursor: pointer;
+            filter: contrast(150%);
+            box-shadow: branding.$box_shadow_blue;
+        }
+    }
+
+    &__menu{
+        color: rgba(0, 0, 0, 0.9);
+        border: 0;
+        font-size: 15px;
+        margin: auto 0;
+
+        @include mixins.state(){
+            filter: contrast(100%);
+            background-color: branding.$brand_color_three__alt_1;
+        }
+    }
+
     &--yellow{
         @include mixins.backgroundGradientEffect(){
             background : branding.$gradient_color_one;
@@ -28,11 +48,5 @@
 
     &--center{
         margin: auto;
-    }
-
-    @include mixins.state(){
-        cursor: pointer;
-        filter: contrast(150%);
-        box-shadow: branding.$box_shadow_blue;
     }
 }

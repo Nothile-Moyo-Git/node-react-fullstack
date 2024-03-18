@@ -8,8 +8,10 @@
  * This is the main menu which will render at the top of every page which has the menu
  */
 
-import React, { FC, ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import React, { FC, ReactNode, useContext, MouseEvent } from "react";
+import Button from "../button/Button";
+import { Link } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import "./Menu.scss";
 
@@ -21,9 +23,18 @@ interface ComponentProps {
 
 const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
+    // Get the auth state
+    const appContextInstance = useContext(AppContext);
+    const isAuthenticated = appContextInstance?.userAuthenticated;
+
     // Toggle the menu and the icon to show or hide it
     const handleToggleMenu = () => {
         toggleMenu((previousState : boolean) => { return !previousState; });
+    };
+
+    const handleLogoutUser = (event : MouseEvent) => {
+        console.clear();
+        console.log("Log out");
     };
 
     return(
@@ -31,17 +42,30 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
             <nav>
                 <ul className="menu">
+                    
                     <li className="menu__item">
-                        <NavLink to={BASENAME} className="menu__link">Home</NavLink>
+                        <Link to={BASENAME} className="menu__link">Home</Link>
                     </li>
 
-                    <li className="menu__item">
-                        <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
-                    </li>
+                    {
+                        !isAuthenticated &&
+                        <>
+                            <li className="menu__item">
+                                <Link to={BASENAME + "/login"} className="menu__link">Login</Link>
+                            </li>
+                            <li className="menu__item">
+                                <Link to={BASENAME + "/signup"} className="menu__link">Signup</Link>
+                            </li>
+                        </>
+                    }
 
-                    <li className="menu__item">
-                        <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
-                    </li>
+                    {
+                        isAuthenticated &&
+                        <li className="menu__item">
+                            <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
+                        </li>
+                    }
+
                 </ul>
             </nav>
 
