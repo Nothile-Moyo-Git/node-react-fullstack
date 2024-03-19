@@ -8,14 +8,15 @@
 
 import "./Login.scss";
 
-import { FC, useState, useRef, FormEvent } from "react";
-
+import { FC, useState, useRef, FormEvent, useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 import Form from "../../components/form/Form";
 import Field from "../../components/form/Field";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Button from "../../components/button/Button";
 import Title from "../../components/form/Title";
+import { redirect } from "react-router-dom";
 
 export const LoginPage : FC = () => {
 
@@ -26,6 +27,16 @@ export const LoginPage : FC = () => {
     // Set up refs so we can reference our inputs. We use refs instead of state for performance optimizations
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+
+    // Check if the user is authenticated, if they are, then redirect to the previous page
+    const appContextInstance = useContext(AppContext);
+    appContextInstance?.validateAuthentication();
+
+    // Redirect if the user is logged in
+    if (appContextInstance?.userAuthenticated === true) {
+
+        redirect("back")
+    }
 
     const submitHandler = async (event : FormEvent) => {
 
@@ -73,11 +84,16 @@ export const LoginPage : FC = () => {
 
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userId', data.userId);
-                localStorage.setItem('expiresIn', remainingTime.toISOString());                
+                localStorage.setItem('expiresIn', remainingTime.toISOString());
+                
+                // Redirect to the main page
+                redirect("/");
             }
 
         }catch(error){
 
+            console.log("There was an error loading this page");
+            console.log(error);
         }
     };
 
@@ -116,7 +132,7 @@ export const LoginPage : FC = () => {
                     />
                 </Field>
 
-                <Button>Submit</Button>
+                <Button variant="primary">Submit</Button>
 
             </Form>
 

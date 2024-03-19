@@ -8,8 +8,10 @@
  * This is the main menu which will render at the top of every page which has the menu
  */
 
-import React, { FC, ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import React, { FC, ReactNode, useContext, useEffect } from "react";
+import Button from "../button/Button";
+import { Link, redirect } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import "./Menu.scss";
 
@@ -21,9 +23,22 @@ interface ComponentProps {
 
 const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
+    // Get the auth state
+    const appContextInstance = useContext(AppContext);
+    appContextInstance?.validateAuthentication();
+
     // Toggle the menu and the icon to show or hide it
     const handleToggleMenu = () => {
         toggleMenu((previousState : boolean) => { return !previousState; });
+    };
+
+    const handleLogoutUser = () => {
+ 
+        // Log the user out of the session
+        appContextInstance?.logoutUser();
+
+        // Redirect to the login page
+        redirect("/login");
     };
 
     return(
@@ -31,17 +46,32 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
             <nav>
                 <ul className="menu">
+                    
                     <li className="menu__item">
-                        <NavLink to={BASENAME} className="menu__link">Home</NavLink>
+                        <Link to={BASENAME} className="menu__link">Home</Link>
                     </li>
+                    <li className="menu__item">
+                                <Link to={BASENAME + "/login"} className="menu__link">Login</Link>
+                            </li>
 
-                    <li className="menu__item">
-                        <NavLink to={BASENAME + "/login"} className="menu__link">Login</NavLink>
-                    </li>
+                    {
+                        !appContextInstance?.userAuthenticated &&
+                        <>
 
-                    <li className="menu__item">
-                        <NavLink to={BASENAME + "/signup"} className="menu__link">Signup</NavLink>
-                    </li>
+
+                            <li className="menu__item">
+                                <Link to={BASENAME + "/signup"} className="menu__link">Signup</Link>
+                            </li>
+                        </>
+                    }
+
+                    {
+                        appContextInstance?.userAuthenticated &&
+                        <li className="menu__item">
+                            <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
+                        </li>
+                    }
+
                 </ul>
             </nav>
 
