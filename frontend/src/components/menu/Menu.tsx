@@ -8,9 +8,9 @@
  * This is the main menu which will render at the top of every page which has the menu
  */
 
-import React, { FC, ReactNode, useContext, MouseEvent } from "react";
+import React, { FC, ReactNode, useContext, useEffect } from "react";
 import Button from "../button/Button";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import "./Menu.scss";
@@ -25,16 +25,20 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
     // Get the auth state
     const appContextInstance = useContext(AppContext);
-    const isAuthenticated = appContextInstance?.userAuthenticated;
+    appContextInstance?.validateAuthentication();
 
     // Toggle the menu and the icon to show or hide it
     const handleToggleMenu = () => {
         toggleMenu((previousState : boolean) => { return !previousState; });
     };
 
-    const handleLogoutUser = (event : MouseEvent) => {
-        console.clear();
-        console.log("Log out");
+    const handleLogoutUser = () => {
+ 
+        // Log the user out of the session
+        appContextInstance?.logoutUser();
+
+        // Redirect to the login page
+        redirect("/login");
     };
 
     return(
@@ -46,13 +50,15 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                     <li className="menu__item">
                         <Link to={BASENAME} className="menu__link">Home</Link>
                     </li>
-
-                    {
-                        !isAuthenticated &&
-                        <>
-                            <li className="menu__item">
+                    <li className="menu__item">
                                 <Link to={BASENAME + "/login"} className="menu__link">Login</Link>
                             </li>
+
+                    {
+                        !appContextInstance?.userAuthenticated &&
+                        <>
+
+
                             <li className="menu__item">
                                 <Link to={BASENAME + "/signup"} className="menu__link">Signup</Link>
                             </li>
@@ -60,7 +66,7 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                     }
 
                     {
-                        isAuthenticated &&
+                        appContextInstance?.userAuthenticated &&
                         <li className="menu__item">
                             <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
                         </li>

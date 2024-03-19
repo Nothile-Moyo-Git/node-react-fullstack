@@ -19,7 +19,7 @@ interface ContextProps {
     userId ?: string,
     expiresIn ?: string,
     userAuthenticated ?: boolean,
-    startApp : () => void,
+    validateAuthentication : () => void,
     logoutUser : () => void
 };
 
@@ -39,7 +39,7 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     const [userAuthenticated, setUserAuthenticated] = useState<boolean>(false);
 
     // Check whether the user is successfully logged in or not
-    const startApp = () => {
+    const validateAuthentication = () => {
 
         // Get local data
         const storageToken = localStorage.getItem("token");
@@ -84,7 +84,7 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     };
 
     return (
-        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, startApp, logoutUser }}>
+        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, validateAuthentication : validateAuthentication, logoutUser }}>
             {children}
         </AppContext.Provider>
     );

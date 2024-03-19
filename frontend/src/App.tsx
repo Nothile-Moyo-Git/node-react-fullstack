@@ -23,7 +23,7 @@ const App : FC = () => {
 
       try {
 
-        appContextInstance?.startApp();
+        appContextInstance?.validateAuthentication();
 
       }catch(error){
 
@@ -38,7 +38,7 @@ const App : FC = () => {
     fetchAuthentication();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  },[appContextInstance]);
 
   return (
     <div className="App">
