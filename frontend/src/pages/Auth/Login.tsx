@@ -8,7 +8,7 @@
 
 import "./Login.scss";
 
-import { FC, useState, useRef, FormEvent, useContext } from "react";
+import { FC, useState, useEffect, useRef, FormEvent, useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import Form from "../../components/form/Form";
 import Field from "../../components/form/Field";
@@ -30,13 +30,6 @@ export const LoginPage : FC = () => {
 
     // Check if the user is authenticated, if they are, then redirect to the previous page
     const appContextInstance = useContext(AppContext);
-    appContextInstance?.validateAuthentication();
-
-    // Redirect if the user is logged in
-    if (appContextInstance?.userAuthenticated === true) {
-
-        redirect("back")
-    }
 
     const submitHandler = async (event : FormEvent) => {
 
@@ -96,6 +89,11 @@ export const LoginPage : FC = () => {
             console.log(error);
         }
     };
+
+    // Check authentication when component mounts
+    useEffect(() => {
+        appContextInstance?.validateAuthentication();
+    },[appContextInstance]);
 
     return(
         <section className="login">

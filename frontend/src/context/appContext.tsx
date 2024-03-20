@@ -20,6 +20,7 @@ interface ContextProps {
     expiresIn ?: string,
     userAuthenticated ?: boolean,
     validateAuthentication : () => void,
+    checkAuthentication : () => boolean,
     logoutUser : () => void
 };
 
@@ -38,13 +39,38 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     const [expiresIn, setExpiresIn] = useState<string>("");
     const [userAuthenticated, setUserAuthenticated] = useState<boolean>(false);
 
-    // Check whether the user is successfully logged in or not
+    // Check whether the user is authenticated and return a result
+    // This avoids a bad state update whilst trying to render a component
+    const checkAuthentication = () => {
+
+        // Get local data
+        const storageToken : string | null = localStorage.getItem("token");
+        const storageUserId : string | null = localStorage.getItem("userId");
+        const storageExpiresIn : string | null = localStorage.getItem("expiresIn");
+
+        if (!storageExpiresIn || !storageToken  || !storageUserId) {
+            return false;
+        }else{
+            
+            const currentDate = new Date();
+            const expirationDate = new Date(storageExpiresIn);
+
+            // Determine if the user is authenticated or not
+            if (currentDate <= expirationDate) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+    };
+
+    // Update the state of the provider if 
     const validateAuthentication = () => {
 
         // Get local data
-        const storageToken = localStorage.getItem("token");
-        const storageUserId = localStorage.getItem("userId");
-        const storageExpiresIn = localStorage.getItem("expiresIn");
+        const storageToken : string | null = localStorage.getItem("token");
+        const storageUserId : string | null = localStorage.getItem("userId");
+        const storageExpiresIn : string | null = localStorage.getItem("expiresIn");
 
         // Set the values if we have them
         storageToken && setToken(storageToken);
@@ -84,7 +110,15 @@ const AppContextProvider = ({ children, value } : ComponentProps) => {
     };
 
     return (
-        <AppContext.Provider value={{ token, userId, expiresIn, userAuthenticated, validateAuthentication : validateAuthentication, logoutUser }}>
+        <AppContext.Provider value={{ 
+            token, 
+            userId, 
+            expiresIn, 
+            userAuthenticated, 
+            validateAuthentication,
+            checkAuthentication,
+            logoutUser 
+        }}>
             {children}
         </AppContext.Provider>
     );

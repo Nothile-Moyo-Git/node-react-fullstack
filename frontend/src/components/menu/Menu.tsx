@@ -25,7 +25,6 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
     // Get the auth state
     const appContextInstance = useContext(AppContext);
-    appContextInstance?.validateAuthentication();
 
     // Toggle the menu and the icon to show or hide it
     const handleToggleMenu = () => {
@@ -41,6 +40,11 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
         redirect("/login");
     };
 
+    // Check authentication when component mounts
+    useEffect(() => {
+        appContextInstance?.validateAuthentication();
+    },[appContextInstance]);
+
     return(
         <header>
 
@@ -50,23 +54,25 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                     <li className="menu__item">
                         <Link to={BASENAME} className="menu__link">Home</Link>
                     </li>
-                    <li className="menu__item">
-                                <Link to={BASENAME + "/login"} className="menu__link">Login</Link>
-                            </li>
+
 
                     {
                         !appContextInstance?.userAuthenticated &&
                         <>
 
+                            <li className="menu__item">
+                                <Link to={BASENAME + "/login"} className="menu__link">Login</Link>
+                            </li>
 
                             <li className="menu__item">
                                 <Link to={BASENAME + "/signup"} className="menu__link">Signup</Link>
                             </li>
+
                         </>
                     }
 
                     {
-                        appContextInstance?.userAuthenticated &&
+                        !appContextInstance?.userAuthenticated === true &&
                         <li className="menu__item">
                             <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
                         </li>
