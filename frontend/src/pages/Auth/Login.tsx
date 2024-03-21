@@ -16,9 +16,13 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Button from "../../components/button/Button";
 import Title from "../../components/form/Title";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { BASENAME } from "../../util/util";
 
 export const LoginPage : FC = () => {
+
+    // redirect using the navigate hook and not redirect
+    const navigate = useNavigate();
 
     // Setting up the states
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
@@ -80,7 +84,7 @@ export const LoginPage : FC = () => {
                 localStorage.setItem('expiresIn', remainingTime.toISOString());
                 
                 // Redirect to the main page
-                redirect("/");
+                navigate(BASENAME);
             }
 
         }catch(error){
@@ -92,8 +96,15 @@ export const LoginPage : FC = () => {
 
     // Check authentication when component mounts
     useEffect(() => {
+
         appContextInstance?.validateAuthentication();
-    },[appContextInstance]);
+
+        // If the user is authenticated, redirect this route to the previous page
+        if ( appContextInstance?.userAuthenticated === true ) {
+            navigate(-1);
+        }
+
+    },[appContextInstance, navigate]);
 
     return(
         <section className="login">
@@ -109,10 +120,11 @@ export const LoginPage : FC = () => {
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
+                        error={true}
+                        ref={emailRef}
                         name="email"
                         placeholder="Please enter your email address"
                         type="text"
-                        ref={emailRef}
                     />
                 </Field>
 
@@ -123,6 +135,7 @@ export const LoginPage : FC = () => {
                     >Password*</Label>
                     <Input
                         ariaLabelledBy="passwordLabel"
+                        error={false}
                         name="password"
                         placeholder="Please enter your password"
                         type="password"

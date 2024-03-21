@@ -10,7 +10,7 @@
 
 import React, { FC, ReactNode, useContext, useEffect } from "react";
 import Button from "../button/Button";
-import { Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import "./Menu.scss";
@@ -22,6 +22,8 @@ interface ComponentProps {
 }
 
 const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
+
+    const navigate = useNavigate();
 
     // Get the auth state
     const appContextInstance = useContext(AppContext);
@@ -37,7 +39,7 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
         appContextInstance?.logoutUser();
 
         // Redirect to the login page
-        redirect("/login");
+        navigate(`${BASENAME}/login`);
     };
 
     // Check authentication when component mounts
@@ -55,9 +57,8 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                         <Link to={BASENAME} className="menu__link">Home</Link>
                     </li>
 
-
                     {
-                        !appContextInstance?.userAuthenticated &&
+                        appContextInstance?.userAuthenticated === false &&
                         <>
 
                             <li className="menu__item">
@@ -72,7 +73,7 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                     }
 
                     {
-                        !appContextInstance?.userAuthenticated === true &&
+                        appContextInstance?.userAuthenticated === true &&
                         <li className="menu__item">
                             <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
                         </li>

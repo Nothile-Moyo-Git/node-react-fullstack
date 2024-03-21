@@ -15,12 +15,12 @@ import React, { ReactNode, forwardRef } from "react";
 interface ComponentProps {
     ariaLabelledBy : string,
     children ?: ReactNode,
+    error : boolean,
     name : string,
     placeholder : string,
     ref : React.RefObject<HTMLInputElement>,
-    type : string,
     required ?: boolean
-
+    type : string,
 };
 
 export const Input = forwardRef<HTMLInputElement, ComponentProps>(function InputComponent(props, ref) {
@@ -28,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, ComponentProps>(function Input
     return(
         <input
             aria-labelledby={props.ariaLabelledBy}
-            className="input"
+            className={`input ${props.error === true && 'input__error'}`}
             name={props.name}
             placeholder={props.placeholder}
             ref={ref}

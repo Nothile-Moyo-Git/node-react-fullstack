@@ -6,4 +6,9 @@
     font-size: 1rem;
     box-shadow: branding.$box_shadow;
     border: 0;
+
+    &__error{
+        border-color: pink;
+        background-color:pink;
+    }
 }

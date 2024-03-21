@@ -37,7 +37,6 @@ const App : FC = () => {
 
     fetchAuthentication();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[appContextInstance]);
 
   return (
