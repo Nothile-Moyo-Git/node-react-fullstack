@@ -17,6 +17,8 @@ interface ComponentProps {
     children : ReactNode,
     htmlFor : string,
     id : string,
+    error ?: boolean,
+    errorText ?: string
 };
 
 /**
@@ -25,10 +27,10 @@ interface ComponentProps {
  * 
  * @params children : ReactNode, htmlFor : string, id : string
  */
-const Label : FC<ComponentProps> = ({children, id, htmlFor}) => {
+const Label : FC<ComponentProps> = ({children, id, htmlFor, error}) => {
 
     return(
-        <label id={id} htmlFor={htmlFor} className="label">
+        <label id={id} htmlFor={htmlFor} className={`label ${error && 'label__error'}`}>
             {children}
         </label>
     );

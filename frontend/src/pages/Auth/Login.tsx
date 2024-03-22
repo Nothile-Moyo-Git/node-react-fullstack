@@ -26,7 +26,9 @@ export const LoginPage : FC = () => {
 
     // Setting up the states
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+    const [emailErrorText, setEmailErrorText] = useState<string>("");
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [passwordErrorText, setPasswordErrorText] = useState<string>("");
 
     // Set up refs so we can reference our inputs. We use refs instead of state for performance optimizations
     const emailRef = useRef<HTMLInputElement>(null);
@@ -44,13 +46,8 @@ export const LoginPage : FC = () => {
         let emailAddress = "";
         let password = "";
 
-        if (emailRef.current) {
-            emailAddress = emailRef.current.value;
-        }
-
-        if (passwordRef.current) {
-            password = passwordRef.current.value;
-        }
+        if (emailRef.current) { emailAddress = emailRef.current.value; }
+        if (passwordRef.current) { password = passwordRef.current.value; }
 
         // Perform the login request to the backend
         try {
@@ -69,9 +66,15 @@ export const LoginPage : FC = () => {
             // Get the json response from the backend
             const data = await response.json();
 
-            console.clear();
-            console.log("Response");
-            console.log(data.body);
+            console.log("Response body");
+            console.log(data);
+
+            // Set the states at the end of the request 
+            setIsEmailValid(data.emailValid);
+            setEmailErrorText(data.emailErrorText);
+            setIsPasswordValid(data.passwordValid);
+            setPasswordErrorText(data.passwordErrorText);
+            
 
             // Save our local storage results
             if (data.success === true) {
@@ -100,9 +103,7 @@ export const LoginPage : FC = () => {
         appContextInstance?.validateAuthentication();
 
         // If the user is authenticated, redirect this route to the previous page
-        if ( appContextInstance?.userAuthenticated === true ) {
-            navigate(-1);
-        }
+        appContextInstance?.userAuthenticated && navigate(-1);
 
     },[appContextInstance, navigate]);
 
@@ -117,10 +118,12 @@ export const LoginPage : FC = () => {
                     <Label
                         htmlFor="email"
                         id="emailLabel"
+                        error={!isEmailValid}
+                        errorText={emailErrorText}
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
-                        error={true}
+                        error={!isEmailValid}
                         ref={emailRef}
                         name="email"
                         placeholder="Please enter your email address"
@@ -132,10 +135,12 @@ export const LoginPage : FC = () => {
                     <Label
                         htmlFor="password"
                         id="passwordLabel"
+                        error={!isPasswordValid}
+                        errorText={passwordErrorText}
                     >Password*</Label>
                     <Input
                         ariaLabelledBy="passwordLabel"
-                        error={false}
+                        error={!isPasswordValid}
                         name="password"
                         placeholder="Please enter your password"
                         type="password"
