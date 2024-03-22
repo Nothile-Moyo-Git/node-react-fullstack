@@ -111,13 +111,14 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
 
         // Return an error if there's no user
         if (user === null) {
-            response.status(401);
+            response.status(200);
             response.json({
                userExists : false,
                success : false,
                emailValid : false,
                passwordValid : true,
-               error : "A user with this email could not be found",
+               emailErrorText : "A user with this email could not be found",
+               passwordErrorText : "",
                token : null,
                userId : null
             });
@@ -130,13 +131,14 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
             if (passwordsMatch === false) {
 
                 // Send a response to the front end
-                response.status(401);
+                response.status(200);
                 response.json({
                     userExists : true,
                     success : false,
                     emailValid : true,
+                    emailErrorText : "",
                     passwordValid : false,
-                    error : "The password is invalid",
+                    passwordErrorText : "The password is invalid",
                     token : null,
                     userId : null
                 });
@@ -159,8 +161,9 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     userExists : true,
                     success : true,
                     emailValid : true,
+                    emailErrorText : "",
                     passwordValid : true,
-                    error : null,
+                    passwordErrorText : "",
                     token : token,
                     userId : user._id.toString()
                 });

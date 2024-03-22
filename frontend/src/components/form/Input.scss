@@ -1,9 +1,16 @@
 @use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/animations" as animations;
 
 .input{
     border-radius: 4px;
     padding: 0.4rem 0.25rem;
     font-size: 1rem;
     box-shadow: branding.$box_shadow;
-    border: 0;
+    border: 1px solid white;
+    transition: animations.$standard_transition;
+
+    &__error{
+        border-color: red;
+        background-color:pink;
+    }
 }

@@ -117,6 +117,7 @@ export const SignupPage : FC = () => {
                         ref={nameRef}
                         type="text"
                         required={true}
+                        error={false}
                     />
                 </Field>
 
@@ -127,6 +128,7 @@ export const SignupPage : FC = () => {
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
+                        error={false}
                         name="emailAddress"
                         placeholder="Please enter your email"
                         ref={emailRef}
@@ -142,6 +144,7 @@ export const SignupPage : FC = () => {
                     >Password*</Label>
                     <Input
                         ariaLabelledBy="firstPassword"
+                        error={false}
                         name="firstPassword"
                         placeholder="Please enter your password"
                         ref={passwordRef}
@@ -157,6 +160,7 @@ export const SignupPage : FC = () => {
                     >Confirm Password*</Label>
                     <Input
                         ariaLabelledBy="confirmPassword"
+                        error={false}
                         name="confirmPassword"
                         placeholder="Please confirm your password"
                         ref={confirmPasswordRef}
