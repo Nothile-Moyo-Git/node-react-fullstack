@@ -5,16 +5,15 @@
 main{
     background: branding.$backdrop_color_one;
     animation: fade-in 0.2s linear;    
-    height: 100%;
-    margin-top: 55px;
-    min-height: calc(100vh - 55px);
+    height: calc(100% - 55px);
+    padding-top: 55px;
 }
 
 .menu-open{
 
     @include responsive.breakpoint(tablet){
-        margin-top: 105px;
-        min-height: calc(100vh - 105px);
+        height: calc(100% - 105px);
+        padding-top: 105px;
     }
 }
 

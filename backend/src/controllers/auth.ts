@@ -117,7 +117,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                success : false,
                emailValid : false,
                passwordValid : true,
-               emailErrorText : "A user with this email could not be found",
+               emailErrorText : "Error: A user with this email address could not be found",
                passwordErrorText : "",
                token : null,
                userId : null
@@ -138,7 +138,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     emailValid : true,
                     emailErrorText : "",
                     passwordValid : false,
-                    passwordErrorText : "The password is invalid",
+                    passwordErrorText : "Error: The password is invalid",
                     token : null,
                     userId : null
                 });
