@@ -120,7 +120,8 @@ export const LoginPage : FC = () => {
                         id="emailLabel"
                         error={!isEmailValid}
                         errorText={emailErrorText}
-                    >Email*</Label>
+                    >Email*
+                    </Label>
                     <Input
                         ariaLabelledBy="emailLabel"
                         error={!isEmailValid}

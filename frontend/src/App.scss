@@ -4,6 +4,10 @@
   font-size: 16px;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 .App {
   text-align: center;
   animation: fade-in 0.2s linear;
