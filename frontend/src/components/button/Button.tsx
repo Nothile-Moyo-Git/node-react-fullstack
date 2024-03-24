@@ -18,6 +18,16 @@ interface ComponentProps {
     onClick ?: (event : MouseEvent) => void
 };
 
+/**
+ * @name "Button" Component
+ * @description A reusable button component, please use this instead of the vanilla button element in HTML
+ * 
+ * @param children : ReactNode -> Text
+ * @param onClick : () => void -> Executes event handlers
+ * @param variant : string -> Variant of the button. Use "primary" if you're in doubt. You also have the options "secondary" and "menu".
+ * 
+ * @returns Button : FC<ComponentProps>
+ */
 const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
 
     let variantClassName = "";

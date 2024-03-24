@@ -16,7 +16,6 @@
 
 import { Response, NextFunction } from "express";
 import { AuthRequestInterface } from "../@types";
-import { validationResult } from "express-validator";
 import { validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
 import bcrypt from "bcrypt";
@@ -27,66 +26,72 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
 
     try {
 
-         // Handle error validation
-        const errors = validationResult(request);
+        // Get body of request
+        const confirmPassword = request.body.confirmPassword.toLowerCase();
+        const email = request.body.email.toLowerCase();
+        const name = request.body.name;
+        const password = request.body.password.toLowerCase();
 
-        // Output an error if the request fails
-        if (!errors.isEmpty()) {
-            
+        // Check if the inputs are valid
+        const isNameValid = validateInputLength(name, 6);
+        const isEmailValid = validateEmailAddress(email);
+        const isPasswordValid = validateInputLength(password, 6);
+        const doPasswordsMatch = password === confirmPassword;
+
+        if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
+
+            // Check if the user already exists in the database
+            const users = await User.find({ email : email });
+            const userExists = users.length > 0;
+
             console.clear();
-            console.log("Errors", errors.array());
+            console.log("Users");
+            console.log(userExists);
 
-            response.status(422);
-            response.json({ message : "Error: Some of the fields are not valid" });
-            response.end();
+            if (userExists === true) {
 
-        }else{
-
-            // Get body of request
-            const confirmPassword = request.body.confirmPassword;
-            const email = request.body.email.toLowerCase();
-            const name = request.body.name;
-            const password = request.body.password;
-
-            // Check if the inputs are valid
-            const isNameValid = validateInputLength(name, 6);
-            const isEmailValid = validateEmailAddress(email);
-            const isPasswordValid = validateInputLength(password, 6);
-            const doPasswordsMatch = password === confirmPassword;
-
-            if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
-                
-                console.clear();
-                console.log("Every input is valid");
-
-                // Check if the user already exists in the database
-                const users = await User.find({ email : email });
-                const userExists = users.length > 0;
-
-                if (userExists === true) {
-
-                    response.status(200);
-                    response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists });
-
-                }else{
-
-                    const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
-
-                    // Create a new user in the database if they don't exist already
-                    const newUser = new User({ email, name, password : encryptedPassword, status : "active" });
-
-                    await newUser.save();
-    
-                    // Return a response
-                    response.status(201);
-                    response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists });
-                }
+                response.status(200);
+                response.json({ 
+                    isNameValid, 
+                    isEmailValid, 
+                    isPasswordValid, 
+                    doPasswordsMatch, 
+                    userExists,
+                    userCreated : false
+                });
 
             }else{
 
-                response.status(200);
-                response.json({ isNameValid, isEmailValid, isPasswordValid, doPasswordsMatch, userExists : false });
+                const encryptedPassword = bcrypt.hashSync(password, bcrypt.genSaltSync());
+
+                // Create a new user in the database if they don't exist already
+                const newUser = new User({ email, name, password : encryptedPassword, status : "active" });
+
+                await newUser.save();
+
+                // Return a response
+                response.status(201);
+                response.json({ 
+                    isNameValid,
+                    isEmailValid, 
+                    isPasswordValid, 
+                    doPasswordsMatch, 
+                    userExists,
+                    userCreated : true
+                });
             }
+
+        }else{
+
+            response.status(200);
+            response.json({ 
+                isNameValid, 
+                isEmailValid, 
+                isPasswordValid, 
+                doPasswordsMatch, 
+                userExists : false,
+                userCreated : false
+            });
         }
 
     }catch(error){

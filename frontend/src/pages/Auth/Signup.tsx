@@ -25,12 +25,12 @@ export const SignupPage : FC = () => {
     const passwordRef = useRef<HTMLInputElement>(null);
     const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
-    // const [isNameValid, setIsNameValid] = useState<boolean>(true);
+    const [isNameValid, setIsNameValid] = useState<boolean>(true);
     const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-    const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
-    // const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
-    // const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
-    const [isFormValid, setIsFormValid] = useState<boolean>(true);
+    const [emailErrortext, setEmailErrorText] = useState<string>("");
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
+    const [doesUserExist, setDoesUserExist] = useState<boolean>(false);
 
     // Submit handler
     const submitHandler = async (event : FormEvent) => {
@@ -91,6 +91,24 @@ export const SignupPage : FC = () => {
             console.log("fields");
             console.log(fields);
 
+            // Set our states and trigger a re-render so we can render errors if we have them
+            setIsNameValid(data.isNameValid);
+            setIsEmailValid(data.isEmailValid);
+            setIsPasswordValid(data.isPasswordValid);
+            setIsconfirmPasswordValid(data.doPasswordsMatch);
+            setDoesUserExist(data.userExists);
+
+            if (!data.isEmailValid || !data.userExists) {
+
+                if (data.userExists === true) {
+                    setEmailErrorText("Error: User already exists with this email");
+                }else if (data.isEmailValid === false) {
+                    setEmailErrorText("Error: Email address isn't valid");
+                }else{
+                    setEmailErrorText("Error: Input is invalid");
+                }
+            }
+
         }catch(error){
 
             console.log("Request to /signup has failed");
@@ -103,21 +121,23 @@ export const SignupPage : FC = () => {
 
             <Form onSubmit={submitHandler}>
 
-                <Title>{isFormValid ? 'Signup' : 'Error: Please check the fields'}</Title>
+                <Title>Signup</Title>
 
                 <Field>
                     <Label
                         htmlFor="name"
                         id="nameLabel"
+                        error={!isNameValid}
+                        errorText="Error: Name must be at least 6 characters"
                     >Name*</Label>
                     <Input
                         ariaLabelledBy="nameLabel"
+                        error={!isNameValid}
                         name="name"
                         placeholder="Please enter your name"
                         ref={nameRef}
                         type="text"
                         required={true}
-                        error={false}
                     />
                 </Field>
 
@@ -125,10 +145,12 @@ export const SignupPage : FC = () => {
                     <Label
                         htmlFor="emailAddress" 
                         id="emailLabel"
+                        error={!isEmailValid}
+                        errorText={emailErrortext}
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
-                        error={false}
+                        error={!isEmailValid}
                         name="emailAddress"
                         placeholder="Please enter your email"
                         ref={emailRef}
@@ -169,7 +191,7 @@ export const SignupPage : FC = () => {
                     />
                 </Field>
 
-                <Button>Submit</Button>
+                <Button variant="primary">Submit</Button>
 
             </Form>
 
