@@ -38,11 +38,11 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         const isPasswordValid = validateInputLength(password, 6);
         const doPasswordsMatch = password === confirmPassword;
 
-        if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
+        // Check if the user already exists in the database
+        const users = await User.find({ email : email });
+        const userExists = users.length > 0;
 
-            // Check if the user already exists in the database
-            const users = await User.find({ email : email });
-            const userExists = users.length > 0;
+        if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
 
             console.clear();
             console.log("Users");
@@ -54,7 +54,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
                 response.json({ 
                     isNameValid, 
                     isEmailValid, 
-                    isPasswordValid, 
+                    isPasswordValid,
                     doPasswordsMatch, 
                     userExists,
                     userCreated : false
@@ -89,7 +89,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
                 isEmailValid, 
                 isPasswordValid, 
                 doPasswordsMatch, 
-                userExists : false,
+                userExists : userExists,
                 userCreated : false
             });
         }

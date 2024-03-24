@@ -30,7 +30,8 @@ export const SignupPage : FC = () => {
     const [emailErrortext, setEmailErrorText] = useState<string>("");
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
-    const [doesUserExist, setDoesUserExist] = useState<boolean>(false);
+    const [doesUserExist, setDoesUserExist] = useState<boolean>(true);
+    const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
 
     // Submit handler
     const submitHandler = async (event : FormEvent) => {
@@ -88,25 +89,26 @@ export const SignupPage : FC = () => {
 
             console.log("\n\n");
             
-            console.log("fields");
-            console.log(fields);
-
             // Set our states and trigger a re-render so we can render errors if we have them
             setIsNameValid(data.isNameValid);
             setIsEmailValid(data.isEmailValid);
             setIsPasswordValid(data.isPasswordValid);
             setIsconfirmPasswordValid(data.doPasswordsMatch);
             setDoesUserExist(data.userExists);
+            setIsFormSubmitted(true);
 
-            if (!data.isEmailValid || !data.userExists) {
-
-                if (data.userExists === true) {
-                    setEmailErrorText("Error: User already exists with this email");
-                }else if (data.isEmailValid === false) {
-                    setEmailErrorText("Error: Email address isn't valid");
-                }else{
-                    setEmailErrorText("Error: Input is invalid");
-                }
+            // Handle errors for the email address
+            if (data.userExists === true) {
+                setEmailErrorText("Error: User already exists with this email");
+            }
+            
+            if (data.isEmailValid === false) {
+                setEmailErrorText("Error: Email address isn't valid");
+            }
+            
+            if (data.userExists === false && data.isEmailValid === true) {
+                setEmailErrorText("");
+                setIsFormSubmitted(false);
             }
 
         }catch(error){
@@ -145,12 +147,12 @@ export const SignupPage : FC = () => {
                     <Label
                         htmlFor="emailAddress" 
                         id="emailLabel"
-                        error={!isEmailValid}
+                        error={ isFormSubmitted && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
                         errorText={emailErrortext}
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
-                        error={!isEmailValid}
+                        error={ isFormSubmitted && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
                         name="emailAddress"
                         placeholder="Please enter your email"
                         ref={emailRef}
