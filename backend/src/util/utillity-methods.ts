@@ -236,3 +236,23 @@ export const validateEmailAddress = (email : string) => {
     const regex = /\S+@\S+\.\S+/;
     return regex.test(email);
 };
+
+/**
+ * @name validatePassword
+ * @description Validate the password to make sure it's been 6 and 20 characters and contains at least one lowercase character and one numeric digit
+ * 
+ * @param password : string
+ * @returns passwordValid : boolean
+ */
+export const validatePassword = (password : string) => {
+
+    // Regular expression to compare our passwords to
+    let pattern = /^(?=.*\d)(?=.*[a-z]).{6,20}$/;
+
+    // Match the inputs
+    if (password.match(pattern)) {
+        return true;
+    }else{
+        return false;
+    }
+};

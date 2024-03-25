@@ -18,6 +18,7 @@ import { Response, NextFunction } from "express";
 import { AuthRequestInterface } from "../@types";
 import { validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
+import { validatePassword } from "../util/utillity-methods";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -35,7 +36,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         // Check if the inputs are valid
         const isNameValid = validateInputLength(name, 6);
         const isEmailValid = validateEmailAddress(email);
-        const isPasswordValid = validateInputLength(password, 6);
+        const isPasswordValid = validatePassword(password);
         const doPasswordsMatch = password === confirmPassword;
 
         // Check if the user already exists in the database
@@ -43,10 +44,6 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         const userExists = users.length > 0;
 
         if (isNameValid === true && isEmailValid === true && isPasswordValid === true && doPasswordsMatch === true) {
-
-            console.clear();
-            console.log("Users");
-            console.log(userExists);
 
             if (userExists === true) {
 
@@ -99,7 +96,6 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
         response.status(500).json({ message : "There was a server error" });
         next(error);
     }
-
 };
 
 // Login Controller
