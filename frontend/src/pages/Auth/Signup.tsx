@@ -31,7 +31,7 @@ export const SignupPage : FC = () => {
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
     const [doesUserExist, setDoesUserExist] = useState<boolean>(true);
-    const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+    const [validateField, setValidateField] = useState<boolean>(false);
 
     // Submit handler
     const submitHandler = async (event : FormEvent) => {
@@ -95,7 +95,7 @@ export const SignupPage : FC = () => {
             setIsPasswordValid(data.isPasswordValid);
             setIsconfirmPasswordValid(data.doPasswordsMatch);
             setDoesUserExist(data.userExists);
-            setIsFormSubmitted(true);
+            setValidateField(true);
 
             // Handle errors for the email address
             if (data.userExists === true) {
@@ -108,8 +108,10 @@ export const SignupPage : FC = () => {
             
             if (data.userExists === false && data.isEmailValid === true) {
                 setEmailErrorText("");
-                setIsFormSubmitted(false);
+                setValidateField(false);
             }
+
+            
 
         }catch(error){
 
@@ -147,12 +149,12 @@ export const SignupPage : FC = () => {
                     <Label
                         htmlFor="emailAddress" 
                         id="emailLabel"
-                        error={ isFormSubmitted && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
+                        error={ validateField && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
                         errorText={emailErrortext}
                     >Email*</Label>
                     <Input
                         ariaLabelledBy="emailLabel"
-                        error={ isFormSubmitted && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
+                        error={ validateField && ((!isEmailValid || !doesUserExist) || (isEmailValid && doesUserExist)) }
                         name="emailAddress"
                         placeholder="Please enter your email"
                         ref={emailRef}
@@ -165,10 +167,12 @@ export const SignupPage : FC = () => {
                     <Label
                         htmlFor="firstPassword"
                         id="passwordLabel"
+                        error={!isPasswordValid}
+                        errorText="Error: Password must be between 6 and 20 characters and contain numeric digits"
                     >Password*</Label>
                     <Input
                         ariaLabelledBy="firstPassword"
-                        error={false}
+                        error={!isPasswordValid}
                         name="firstPassword"
                         placeholder="Please enter your password"
                         ref={passwordRef}
@@ -181,10 +185,12 @@ export const SignupPage : FC = () => {
                     <Label
                         htmlFor="confirmPassword"
                         id="confirmPasswordLabel"
+                        error={!isConfirmPasswordValid}
+                        errorText="Error: Passwords don't match"
                     >Confirm Password*</Label>
                     <Input
                         ariaLabelledBy="confirmPassword"
-                        error={false}
+                        error={!isConfirmPasswordValid}
                         name="confirmPassword"
                         placeholder="Please confirm your password"
                         ref={confirmPasswordRef}
