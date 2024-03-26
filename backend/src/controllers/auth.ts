@@ -28,10 +28,10 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
     try {
 
         // Get body of request
-        const confirmPassword = request.body.confirmPassword.toLowerCase();
+        const confirmPassword = request.body.confirmPassword;
         const email = request.body.email.toLowerCase();
         const name = request.body.name;
-        const password = request.body.password.toLowerCase();
+        const password = request.body.password;
 
         // Check if the inputs are valid
         const isNameValid = validateInputLength(name, 6);
