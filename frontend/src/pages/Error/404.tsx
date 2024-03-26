@@ -8,17 +8,23 @@
  */
 
 import { FC } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
-
+import PageWrapper from "../../components/globals/PageWrapper";
 import "./404.scss";
 
 export const ErrorPage : FC = () => {
 
+    // Instantiate the navigate object
+    const navigate = useNavigate();
+
     return(
-        <section className="error">
-            <h1>Error: 404 Page not found</h1>
-            <p>Go to the <NavLink to={BASENAME}>home</NavLink> page</p>
-        </section>
+        <PageWrapper>
+            <section className="error">
+                <h1>Error: 404 Page not found</h1>
+                <p>Go to the <Link to={BASENAME}>home</Link> page</p>
+                <p>Go <Link onClick={() => navigate(-1)} to="">back</Link> to the previous page</p>
+            </section>
+        </PageWrapper>
     );
 };

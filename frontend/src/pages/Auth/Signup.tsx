@@ -9,6 +9,8 @@
 import "./Signup.scss";
 
 import { FC, useState, useRef, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { BASENAME } from "../../util/util";
 
 import Button from "../../components/button/Button";
 import Form from "../../components/form/Form";
@@ -18,6 +20,9 @@ import Label from "../../components/form/Label";
 import Title from "../../components/form/Title";
 
 export const SignupPage : FC = () => {
+
+    // Instantiate the navigation object
+    const navigate = useNavigate();
 
     // State values
     const nameRef = useRef<HTMLInputElement>(null);
@@ -111,7 +116,10 @@ export const SignupPage : FC = () => {
                 setValidateField(false);
             }
 
-            
+            if (!data.userExists && data.isNameValid && data.isEmailValid && data.isPasswordValid && data.doPasswordsMatch) {
+                alert("Success");
+                navigate(`${BASENAME}/login`);
+            }
 
         }catch(error){
 
