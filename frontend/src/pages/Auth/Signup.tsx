@@ -8,7 +8,8 @@
 
 import "./Signup.scss";
 
-import { FC, useState, useRef, FormEvent } from "react";
+import { FC, useState, useContext, useEffect, useRef, FormEvent } from "react";
+import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 
@@ -37,6 +38,9 @@ export const SignupPage : FC = () => {
     const [isConfirmPasswordValid, setIsconfirmPasswordValid] = useState<boolean>(true);
     const [doesUserExist, setDoesUserExist] = useState<boolean>(true);
     const [validateField, setValidateField] = useState<boolean>(false);
+
+    // Check if the user is authenticated, if they are, then redirect to the previous page
+    const appContextInstance = useContext(AppContext);
 
     // Submit handler
     const submitHandler = async (event : FormEvent) => {
@@ -82,17 +86,6 @@ export const SignupPage : FC = () => {
   
             // Get the JSON from the request
             const data = await response.json();
-
-            console.clear();
-            console.log("Request successful");
-            console.log(response);
-
-            console.log("\n\n");
-
-            console.log("Data");
-            console.log(data);
-
-            console.log("\n\n");
             
             // Set our states and trigger a re-render so we can render errors if we have them
             setIsNameValid(data.isNameValid);
@@ -127,6 +120,16 @@ export const SignupPage : FC = () => {
             console.log(error);
         }
     };
+
+    // Check authentication when component mounts
+    useEffect(() => {
+
+        appContextInstance?.validateAuthentication();
+
+        // If the user is authenticated, redirect this route to the previous page
+        appContextInstance?.userAuthenticated && navigate(-1);
+
+    },[appContextInstance, navigate]);
 
     return (
         <section className="signup">

@@ -11,6 +11,7 @@
 import { ErrorPage } from '../pages/Error/404';
 import { LoginPage } from '../pages/Auth/Login';
 import { SignupPage } from '../pages/Auth/Signup';
+import { CreatePostComponent } from '../pages/Posts/CreatePost';
 import PageWrapper from '../components/globals/PageWrapper';
 import { BASENAME } from '../util/util';
 import App from '../App';
@@ -36,6 +37,10 @@ export const nestedRouter = createBrowserRouter([
             {
                 path : BASENAME + "/signup",
                 element : <SignupPage/>
+            },
+            {
+                path : BASENAME + "/post/create",
+                element : <CreatePostComponent/>
             }
         ]
     }

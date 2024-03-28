@@ -82,12 +82,15 @@ npm run application
 ### Potential improvements
 
 > Security improvements
+
 [Api requests best practices](https://curity.io/resources/learn/api-security-best-practices/)
 
 > Optimizing queries
+
 [Optimize performance for MongoDB queries](https://medium.com/globant/mongodb-mongoose-query-optimizations-63cfc6def9d9)
 
 > Link for SOLID is here, it's about figuring out superior ways to use our Models, properties and methods with the appropriate naming conventions.
+
 [Solid Principles](https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/)
 
 -----
