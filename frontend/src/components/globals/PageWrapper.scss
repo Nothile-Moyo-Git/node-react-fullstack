@@ -2,6 +2,8 @@
 @use "../../scss/partials/responsive" as responsive;
 @use "../../scss/partials/animations" as animations;
 
+@use "../../scss/partials/scrollbars";
+
 main{
     background: branding.$backdrop_color_one;
     animation: fade-in 0.2s linear;    
