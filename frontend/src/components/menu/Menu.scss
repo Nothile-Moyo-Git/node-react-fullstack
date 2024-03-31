@@ -97,6 +97,7 @@ nav{
         @include mixins.state(){
             background-color: branding.$brand_color_three__alt_1;
             color : rgba(0, 0, 0, 0.9);
+            border-bottom: 0;
         }
     }
 

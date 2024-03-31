@@ -8,10 +8,17 @@
  * Only logged in users will be able to create posts in the backend
  */
 
-import { FC, useContext, useEffect, useRef } from "react";
+import { FC, FormEvent, useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import Form from "../../components/form/Form";
+import Title from "../../components/form/Title";
+import Label from "../../components/form/Label";
+import Input from "../../components/form/Input";
+import Field from "../../components/form/Field";
+import Button from "../../components/button/Button";
 
+import "./CreatePost.scss";
 
 export const CreatePostComponent : FC = () => {
 
@@ -25,25 +32,82 @@ export const CreatePostComponent : FC = () => {
     const titleRef = useRef<HTMLInputElement>(null);
     const imageUrlRef = useRef<HTMLInputElement>(null);
     const content = useRef<HTMLInputElement>(null);
+
+    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
   
     // Check authentication when component mounts
     useEffect(() => {
 
         appContextInstance?.validateAuthentication();
 
-        console.clear();
-        console.log("App context instance");
-        console.log(appContextInstance?.userAuthenticated);
-
         // If the user is authenticated, redirect this route to the previous page
         !appContextInstance?.userAuthenticated && navigate(-1);
 
     },[appContextInstance, navigate]); 
 
+    // Handle the form submission for creating a new post
+    const submitHandler = (event : FormEvent) => {
+
+        event.preventDefault();
+
+        console.clear();
+        console.log("Form submitted");
+    };
+
+    // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
+    const fileUploadHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+
+        console.log("\n\n");
+        console.log("File upload");
+    };
+
     return (
-        <>
-            <h1>Create Post</h1>
-        </>
+        <section className="createPost">
+
+                <Form onSubmit={submitHandler}>
+
+                    <Title>Create Post</Title>
+
+                    <Field>
+                        <Label
+                            htmlFor="title"
+                            id="titleLabel"
+                            errorText="Error: Title must be longer than 3 characters"
+                        >Title*</Label>
+                        <Input
+                            ariaLabelledBy="titleLabel "
+                            error={!isPasswordValid}
+                            name="title"
+                            placeholder="Please enter your title"
+                            ref={titleRef}
+                            type="text"
+                        />
+                    </Field>
+
+                    <Field>
+                        <Label
+                            htmlFor="imageUrl"
+                            id="imageUrlLabel"
+                            errorText="Error: File type is invalid"
+                        >Title*</Label>
+                        <Input
+                            ariaLabelledBy="imageUrlLabel"
+                            error={!isImageUploadValid}
+                            name="image"
+                            onChange={fileUploadHandler}
+                            placeholder="Please enter your title"
+                            ref={imageUrlRef}
+                            type="file"
+                        />
+                    </Field>
+
+                    <Button variant="primary">Submit</Button>
+
+                </Form>
+
+        </section>
     );
 };
 

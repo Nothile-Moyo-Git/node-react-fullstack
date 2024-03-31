@@ -66,9 +66,6 @@ export const LoginPage : FC = () => {
             // Get the json response from the backend
             const data = await response.json();
 
-            console.log("Response body");
-            console.log(data);
-
             // Set the states at the end of the request 
             setIsEmailValid(data.emailValid);
             setEmailErrorText(data.emailErrorText);

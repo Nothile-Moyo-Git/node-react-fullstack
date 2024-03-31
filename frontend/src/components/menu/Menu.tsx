@@ -74,9 +74,15 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
 
                     {
                         appContextInstance?.userAuthenticated === true &&
-                        <li className="menu__item">
-                            <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
-                        </li>
+                        <>
+                            <li className="menu__item">
+                                <Link to={BASENAME + "/post/create"} className="menu__link">Create Post</Link>
+                            </li>
+                            
+                            <li className="menu__item">
+                                <Button variant="menu" onClick={handleLogoutUser}>Logout</Button>
+                            </li>
+                        </>
                     }
 
                 </ul>
