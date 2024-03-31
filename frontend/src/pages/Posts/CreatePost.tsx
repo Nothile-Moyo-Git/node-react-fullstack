@@ -8,7 +8,7 @@
  * Only logged in users will be able to create posts in the backend
  */
 
-import { FC, FormEvent, useContext, useEffect, useState, useRef } from "react";
+import { FC, FormEvent, useContext, useEffect, useState, useRef, ChangeEvent } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/form/Form";
@@ -31,10 +31,12 @@ export const CreatePostComponent : FC = () => {
     // States and refs for our objects
     const titleRef = useRef<HTMLInputElement>(null);
     const imageUrlRef = useRef<HTMLInputElement>(null);
-    const content = useRef<HTMLInputElement>(null);
+    const contentRef = useRef<HTMLInputElement>(null);
 
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
+    const [isContentValid, setIsContentValid] = useState<boolean>(true);
+    const [uploadFile, setUploadFile] = useState<File>();
   
     // Check authentication when component mounts
     useEffect(() => {
@@ -52,16 +54,40 @@ export const CreatePostComponent : FC = () => {
         event.preventDefault();
 
         console.clear();
+        console.log("\n\n");
         console.log("Form submitted");
+        console.log("\n");
+
+        const userId = appContextInstance?.userId;
+        console.log("userId");
+        console.log(userId);
+
+        console.log("\n");
+        console.log("File test");
+        console.log(uploadFile);
+
+        // Set form inputs for the api request to the bakend
+        const fields = new FormData();
+
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
     const fileUploadHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
 
-        console.log("\n\n");
-        console.log("File upload");
-    };
+        // Set the file so that it's ready for upload
+        if (event.target.files) {
+            const file = event.target.files[0];
+
+            // Raise and error and empty the input, otherwise, set the state to sent to the backend
+            // Note: This is for UX purposes, file uploads are also verified in the backend
+            if (file.size > 1000000) {
+                alert("Please upload a file smaller than 5MB");
+                event.target.value = "";
+            }else{
+                setUploadFile(file);
+            }
+        }
+    }
 
     return (
         <section className="createPost">
@@ -82,6 +108,7 @@ export const CreatePostComponent : FC = () => {
                             name="title"
                             placeholder="Please enter your title"
                             ref={titleRef}
+                            required={true}
                             type="text"
                         />
                     </Field>
@@ -91,7 +118,7 @@ export const CreatePostComponent : FC = () => {
                             htmlFor="imageUrl"
                             id="imageUrlLabel"
                             errorText="Error: File type is invalid"
-                        >Title*</Label>
+                        >Image*</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"
                             error={!isImageUploadValid}
@@ -99,7 +126,25 @@ export const CreatePostComponent : FC = () => {
                             onChange={fileUploadHandler}
                             placeholder="Please enter your title"
                             ref={imageUrlRef}
+                            required={true}
                             type="file"
+                        />
+                    </Field>
+
+                    <Field>
+                        <Label
+                            htmlFor="content"
+                            id="contentLabel"
+                            errorText="Error: Content must be longer than 6 characters"
+                        >Content*</Label>
+                        <Input
+                            ariaLabelledBy="contentLabel"
+                            error={!isContentValid}
+                            name="content"
+                            placeholder="Please enter your content"
+                            ref={contentRef}
+                            required={true}
+                            type="text"
                         />
                     </Field>
 
