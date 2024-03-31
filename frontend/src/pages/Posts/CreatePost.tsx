@@ -16,6 +16,7 @@ import Title from "../../components/form/Title";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
+import Button from "../../components/button/Button";
 
 import "./CreatePost.scss";
 
@@ -33,6 +34,7 @@ export const CreatePostComponent : FC = () => {
     const content = useRef<HTMLInputElement>(null);
 
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
   
     // Check authentication when component mounts
     useEffect(() => {
@@ -48,6 +50,17 @@ export const CreatePostComponent : FC = () => {
     const submitHandler = (event : FormEvent) => {
 
         event.preventDefault();
+
+        console.clear();
+        console.log("Form submitted");
+    };
+
+    // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
+    const fileUploadHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+
+        console.log("\n\n");
+        console.log("File upload");
     };
 
     return (
@@ -81,13 +94,16 @@ export const CreatePostComponent : FC = () => {
                         >Title*</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"
-                            error={!isPasswordValid}
+                            error={!isImageUploadValid}
                             name="image"
+                            onChange={fileUploadHandler}
                             placeholder="Please enter your title"
-                            ref={titleRef}
+                            ref={imageUrlRef}
                             type="file"
                         />
                     </Field>
+
+                    <Button variant="primary">Submit</Button>
 
                 </Form>
 

@@ -17,6 +17,7 @@ interface ComponentProps {
     children ?: ReactNode,
     error : boolean,
     name : string,
+    onChange ?: (event : React.ChangeEvent<HTMLInputElement>) => void,
     placeholder : string,
     ref : React.RefObject<HTMLInputElement>,
     required ?: boolean
@@ -30,6 +31,7 @@ export const Input = forwardRef<HTMLInputElement, ComponentProps>(function Input
             aria-labelledby={props.ariaLabelledBy}
             className={`input ${props.error === true && 'input__error'}`}
             name={props.name}
+            onChange={(event : React.ChangeEvent<HTMLInputElement>) => { props.onChange && props.onChange(event) }}
             placeholder={props.placeholder}
             ref={ref}
             type={props.type}
