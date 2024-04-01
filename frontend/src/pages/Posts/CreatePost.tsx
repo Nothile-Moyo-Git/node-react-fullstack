@@ -66,8 +66,32 @@ export const CreatePostComponent : FC = () => {
         console.log("File test");
         console.log(uploadFile);
 
+        let title = "";
+        let imageUrl = "";
+        let content = "";
+
+        // Extract inputs
+        if (titleRef.current) { title = titleRef.current.value; }
+
+        if (imageUrlRef.current) { imageUrl = imageUrlRef.current.value; }
+
+        if (contentRef.current) { content = contentRef.current.value; }
+
+        console.log("\n\n");
+        console.log("title");
+        console.log(title);
+        console.log("\n");
+
+        console.log("image");
+        console.log(imageUrlRef);
+        console.log("\n");
+
+        console.log("content");
+        console.log(contentRef);
+
         // Set form inputs for the api request to the bakend
         const fields = new FormData();
+        fields.append("title", title);
 
     };
 
