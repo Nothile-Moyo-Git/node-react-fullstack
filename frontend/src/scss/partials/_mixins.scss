@@ -6,6 +6,10 @@
     &:hover, &:active{ @content; }
 }
 
+@mixin visible(){
+    &:focus-visible{ @content; }
+}
+
 /* 
     Background gradient effect
     This hover effect creates an efficient and smooth gradient animation
