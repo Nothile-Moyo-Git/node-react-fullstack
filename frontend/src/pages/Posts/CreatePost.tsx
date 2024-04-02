@@ -8,7 +8,7 @@
  * Only logged in users will be able to create posts in the backend
  */
 
-import { FC, FormEvent, useContext, useEffect, useState, useRef, ChangeEvent } from "react";
+import { FC, FormEvent, useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import Form from "../../components/form/Form";
@@ -17,6 +17,7 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
+import { generateBase64FromImage } from "../../util/file";
 
 import "./CreatePost.scss";
 
@@ -37,6 +38,7 @@ export const CreatePostComponent : FC = () => {
     const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
+
   
     // Check authentication when component mounts
     useEffect(() => {
@@ -49,7 +51,7 @@ export const CreatePostComponent : FC = () => {
     },[appContextInstance, navigate]); 
 
     // Handle the form submission for creating a new post
-    const submitHandler = (event : FormEvent) => {
+    const submitHandler = async (event : FormEvent) => {
 
         event.preventDefault();
 
@@ -59,40 +61,40 @@ export const CreatePostComponent : FC = () => {
         console.log("\n");
 
         const userId = appContextInstance?.userId;
-        console.log("userId");
-        console.log(userId);
-
-        console.log("\n");
-        console.log("File test");
-        console.log(uploadFile);
 
         let title = "";
-        let imageUrl = "";
         let content = "";
+        let base64Image = null;
+
+        // Base64 encode our image
+        if (uploadFile) { base64Image = await generateBase64FromImage(uploadFile); }
 
         // Extract inputs
         if (titleRef.current) { title = titleRef.current.value; }
-
-        if (imageUrlRef.current) { imageUrl = imageUrlRef.current.value; }
-
         if (contentRef.current) { content = contentRef.current.value; }
-
-        console.log("\n\n");
-        console.log("title");
-        console.log(title);
-        console.log("\n");
-
-        console.log("image");
-        console.log(imageUrlRef);
-        console.log("\n");
-
-        console.log("content");
-        console.log(contentRef);
 
         // Set form inputs for the api request to the bakend
         const fields = new FormData();
-        fields.append("title", title);
+        fields.append('title', title);
+        uploadFile &&  fields.append("image", uploadFile);
+        fields.append('content', content);
+        userId && fields.append('userId', userId);
 
+        // Perform the API request to the backend
+        const response = await fetch('http://localhost:4000/create-post', {
+            method : "POST",
+            body : fields
+        });
+
+        console.log("Response");
+        console.log(response);
+
+        console.log("\n");
+
+        const data = await response.json();
+
+        console.log("data");
+        console.log(data);
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend

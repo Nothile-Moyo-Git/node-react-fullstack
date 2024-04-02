@@ -11,9 +11,13 @@
     transition: animations.$standard_transition;
     color : rgba(0, 0, 0, 0.9);
 
+    @include mixins.visible(){
+        outline: 1px solid branding.$brand_color_six;
+    }
+
     &[type='file']{
         color: white;
-        padding: 0.4rem 0;
+        padding: 0;
         border: 0px solid transparent;
         box-shadow: none;
 
