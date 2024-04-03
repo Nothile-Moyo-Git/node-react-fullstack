@@ -38,8 +38,9 @@ export const CreatePostComponent : FC = () => {
     const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
+    const [imagePreview, setImagePreview] = useState<unknown | null>(null);
+    const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
 
-  
     // Check authentication when component mounts
     useEffect(() => {
 
@@ -64,10 +65,6 @@ export const CreatePostComponent : FC = () => {
 
         let title = "";
         let content = "";
-        let base64Image = null;
-
-        // Base64 encode our image
-        if (uploadFile) { base64Image = await generateBase64FromImage(uploadFile); }
 
         // Extract inputs
         if (titleRef.current) { title = titleRef.current.value; }
@@ -80,6 +77,7 @@ export const CreatePostComponent : FC = () => {
         fields.append('content', content);
         userId && fields.append('userId', userId);
 
+        /*
         // Perform the API request to the backend
         const response = await fetch('http://localhost:4000/create-post', {
             method : "POST",
@@ -94,11 +92,11 @@ export const CreatePostComponent : FC = () => {
         const data = await response.json();
 
         console.log("data");
-        console.log(data);
+        console.log(data); */
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
-    const fileUploadHandler = (event : React.ChangeEvent<HTMLInputElement>) => {
+    const fileUploadHandler = async (event : React.ChangeEvent<HTMLInputElement>) => {
 
         // Set the file so that it's ready for upload
         if (event.target.files) {
@@ -106,11 +104,14 @@ export const CreatePostComponent : FC = () => {
 
             // Raise and error and empty the input, otherwise, set the state to sent to the backend
             // Note: This is for UX purposes, file uploads are also verified in the backend
-            if (file.size > 1000000) {
+            if (file.size > 5000000) {
                 alert("Please upload a file smaller than 5MB");
                 event.target.value = "";
             }else{
                 setUploadFile(file);
+                const base64Image = await generateBase64FromImage(file);
+                setImagePreview(base64Image);
+                setShowImagePreview(true);
             }
         }
     }
@@ -156,6 +157,13 @@ export const CreatePostComponent : FC = () => {
                             type="file"
                         />
                     </Field>
+
+                    {   
+                        showImagePreview &&
+                        <Field>
+                            <div>Image Preview</div>
+                        </Field>
+                    }
 
                     <Field>
                         <Label
