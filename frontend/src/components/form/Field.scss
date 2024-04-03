@@ -1,6 +1,9 @@
+@use "../../scss/partials/animations" as animations;
+
 .field{
     display: flex;
     flex-direction: column;
     grid-row-gap: 0.15rem;
     width: 100%;
+    animation: fade-in 0.2s linear;
 }

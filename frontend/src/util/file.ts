@@ -14,8 +14,9 @@
  * 
  * @param imageFile : File
  * 
- * @returns promise : Promise (A result of the query conversion to base64)
+ * @returns promise : Promise<unknown> (A result of the query conversion to base64)
  */
+
 export const generateBase64FromImage = (imageFile : File) => {
   
   // Initiate our file reader
