@@ -17,6 +17,7 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
+import ImagePreview from "../../components/form/ImagePreview";
 import { generateBase64FromImage } from "../../util/file";
 
 import "./CreatePost.scss";
@@ -161,7 +162,11 @@ export const CreatePostComponent : FC = () => {
                     {   
                         showImagePreview &&
                         <Field>
-                            <div>Image Preview</div>
+                            <ImagePreview
+                                encodedImage={imagePreview}
+                                backgroundSize="contain"
+                                backgroundPosition="center"
+                            />
                         </Field>
                     }
 

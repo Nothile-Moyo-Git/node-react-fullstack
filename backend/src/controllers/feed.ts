@@ -73,12 +73,14 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     }
 
     // If there is no image
+    /*
     if (!request.file) {
 
         const error : ErrorInterface = new Error('No Image Provided');
         error.statusCode = 422;
         throw error;
     } 
+    */
 
     // Extract feed values from the request
     const imageUrl = request.file.path;
@@ -96,7 +98,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     // Save this to the database
     try {
 
-        await post.save();
+        // await post.save();
         const user = await User.findById(new ObjectId(request.body.userId));
 
         // Check if we have a user
@@ -106,7 +108,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
             user.posts?.push(post);
 
             // Update the user
-            await user.save();
+            // await user.save();
 
             // Response
             response.status(201).json({
