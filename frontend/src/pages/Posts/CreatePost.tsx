@@ -17,6 +17,7 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
+import TextArea from "../../components/form/TextArea";
 import ImagePreview from "../../components/form/ImagePreview";
 import { generateBase64FromImage } from "../../util/file";
 
@@ -33,7 +34,7 @@ export const CreatePostComponent : FC = () => {
     // States and refs for our objects
     const titleRef = useRef<HTMLInputElement>(null);
     const imageUrlRef = useRef<HTMLInputElement>(null);
-    const contentRef = useRef<HTMLInputElement>(null);
+    const contentRef = useRef<HTMLTextAreaElement>(null);
 
     const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
     const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
@@ -77,6 +78,8 @@ export const CreatePostComponent : FC = () => {
         uploadFile &&  fields.append("image", uploadFile);
         fields.append('content', content);
         userId && fields.append('userId', userId);
+
+        console.log("");
 
         /*
         // Perform the API request to the backend
@@ -176,14 +179,14 @@ export const CreatePostComponent : FC = () => {
                             id="contentLabel"
                             errorText="Error: Content must be longer than 6 characters"
                         >Content*</Label>
-                        <Input
+                        <TextArea
                             ariaLabelledBy="contentLabel"
                             error={!isContentValid}
                             name="content"
                             placeholder="Please enter your content"
+                            startingRows={3}
                             ref={contentRef}
                             required={true}
-                            type="text"
                         />
                     </Field>
 
