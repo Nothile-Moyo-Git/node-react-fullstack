@@ -63,9 +63,6 @@ const fileStorage = multer.diskStorage({
         // Check if our folder path already exists
         const folderExists = fs.existsSync(folderPath);
 
-        console.log("File options");
-        console.log(request.body);
-
         // Create our folder path if it doesn't exist
         if (folderExists === false) {
             fs.mkdirSync(folderPath, {recursive : true});

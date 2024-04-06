@@ -86,6 +86,24 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     const imageUrl = request.file.path;
     const title = request.body.title;
     const content = request.body.content;
+
+    // Validate inputs based on file type or length
+    const isImageUrlValid : boolean = imageUrl.length > 0;
+    const isTitleValid : boolean = title.length >= 6;
+    const isContentValid : boolean = content.length >= 6;
+    const isFileValid : boolean = !request.file;
+    // const isFileTypeValid : boolean
+
+    console.clear();
+    console.log("Uploaded values");
+
+    console.log("\n\n");
+    console.log("Image url valid");
+    console.log(isImageUrlValid);
+
+    console.log("\n\n");
+    console.log("File data");
+    console.log(request.file);
     
     // Create the new post and save it
     const post = new Post({

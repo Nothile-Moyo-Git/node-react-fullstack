@@ -24,6 +24,7 @@ main{
     @include responsive.breakpoint(tablet){
         min-height: 100vh;
         margin-top: 0px;
+        padding-top: 0px; 
         nav{
             display: none;
         }

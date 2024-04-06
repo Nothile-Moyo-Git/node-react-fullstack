@@ -17,7 +17,7 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
-import TextArea from "../../components/form/TextArea";
+ import TextArea from "../../components/form/TextArea";
 import ImagePreview from "../../components/form/ImagePreview";
 import { generateBase64FromImage } from "../../util/file";
 
@@ -48,7 +48,7 @@ export const CreatePostComponent : FC = () => {
 
         appContextInstance?.validateAuthentication();
 
-        // If the user is authenticated, redirect this route to the previous page
+        // If the user isn't authenticated, redirect this route to the previous page
         !appContextInstance?.userAuthenticated && navigate(-1);
 
     },[appContextInstance, navigate]); 
@@ -79,9 +79,11 @@ export const CreatePostComponent : FC = () => {
         fields.append('content', content);
         userId && fields.append('userId', userId);
 
-        console.log("");
+        console.log("Title : " + title);
+        console.log("Content : " + content);
+        console.log("\n\n");
 
-        /*
+        
         // Perform the API request to the backend
         const response = await fetch('http://localhost:4000/create-post', {
             method : "POST",
@@ -91,12 +93,12 @@ export const CreatePostComponent : FC = () => {
         console.log("Response");
         console.log(response);
 
-        console.log("\n");
+        console.log("\n\n");
 
         const data = await response.json();
 
         console.log("data");
-        console.log(data); */
+        console.log(data); 
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
@@ -167,8 +169,8 @@ export const CreatePostComponent : FC = () => {
                         <Field>
                             <ImagePreview
                                 encodedImage={imagePreview}
-                                backgroundSize="contain"
-                                backgroundPosition="center"
+                                imageSize="contain"
+                                imagePosition="left"
                             />
                         </Field>
                     }

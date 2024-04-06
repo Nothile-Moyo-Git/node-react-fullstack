@@ -15,19 +15,19 @@ import "./ImagePreview.scss";
 
 interface ComponentProps {
     encodedImage : unknown | null,
-    backgroundSize ?: string,
-    backgroundPosition ?: string
+    imageSize ?: string,
+    imagePosition ?: string
 };
 
-const ImagePreview : FC<ComponentProps> = ({ encodedImage, backgroundSize, backgroundPosition }) => {
+const ImagePreview : FC<ComponentProps> = ({ encodedImage, imageSize, imagePosition }) => {
 
     return(
         <div
             className="imagePreview"
             style={{
                 backgroundImage : `url('${encodedImage}')`,
-                backgroundSize : backgroundSize ? backgroundSize : 'cover',
-                backgroundPosition : backgroundPosition ? backgroundPosition : 'center'
+                backgroundSize : imageSize ? imageSize : 'cover',
+                backgroundPosition : imagePosition ? imagePosition : 'center'
             }}
         />
     );
