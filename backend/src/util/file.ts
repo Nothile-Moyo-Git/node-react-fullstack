@@ -16,7 +16,7 @@ import fs from "fs";
  * @param filePath : string
  * @returns void
  */
-const deleteFile = (filePath : string) => {
+export const deleteFile = (filePath : string) => {
 
     let fileExists : boolean;
 
@@ -34,4 +34,14 @@ const deleteFile = (filePath : string) => {
     });
 };
 
-export { deleteFile };
+/**
+ * checkFileType method
+ * Returns the mimetype of the uploaded file for debugging purposes
+ * 
+ * @param file : File
+ * @return fileType : string
+ */
+export const checkFileType = (file : File) => {
+
+    return file.type;
+};
