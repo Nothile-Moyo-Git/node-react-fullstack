@@ -93,7 +93,6 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     const isContentValid : boolean = content.length >= 6;
     const isFileValid : boolean = !request.file;
     // const isFileTypeValid : boolean
-
     console.clear();
     console.log("Uploaded values");
 

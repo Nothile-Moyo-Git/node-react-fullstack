@@ -88,8 +88,8 @@ export interface AuthRequestInterface extends Request {
 }
 
 export interface FeedRequestInterface extends Request {
-    file: any;
-    filename : string
+    file: Express.Multer.File,
+    filename : string,
     userId : ObjectId
 }
 

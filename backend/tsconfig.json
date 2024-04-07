@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "types" : [
-      "node"
+      "node", "multer"
     ],
     "noResolve": false,
     "target": "ES6",                          
