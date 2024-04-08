@@ -26,6 +26,7 @@ import { FeedRequestInterface, ErrorInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
+import { checkFileType } from "../util/file";
 
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
@@ -91,8 +92,10 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     const isImageUrlValid : boolean = imageUrl.length > 0;
     const isTitleValid : boolean = title.length >= 6;
     const isContentValid : boolean = content.length >= 6;
-    const isFileValid : boolean = !request.file;
-    // const isFileTypeValid : boolean
+    const isFileValid : boolean = request.file ? true : false;
+    const fileMimeType = checkFileType(request.file);
+    const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
+
     console.clear();
     console.log("Uploaded values");
 
@@ -129,18 +132,26 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
             // Response
             response.status(201).json({
+                creator : { _id : user._id, name : user.name },
+                isImageValid : isImageUrlValid,
+                isTitleValid : isTitleValid,
+                isContentValid : isContentValid,
+                isFileValid : isFileValid,
+                isFileTypeValid : isFileTypeValid,
                 message : 'Post created successfully!',
+                mimeType : fileMimeType,
                 post : post,
-                creator : { _id : user._id, name : user.name }
+                success : true
             });
 
         } else {
 
             // Response
             response.status(421).json({
+                creator : null,
                 message : 'No user was found',
                 post : null,
-                creator : null
+
             });
         }
     } catch (error) { next(error); }
