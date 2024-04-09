@@ -23,6 +23,22 @@ import { generateBase64FromImage } from "../../util/file";
 
 import "./CreatePost.scss";
 
+interface Creator {
+    _id : string,
+    name : string
+}
+interface CreatePostResponse {
+    creator : Creator | null,
+    isContentValid : boolean,
+    isFileValid : boolean,
+    isFileTypeValid : boolean,
+    isImageValid : boolean,
+    isTitleValid : boolean,
+    message : string,
+    mimeType : string | null,
+    success : boolean,
+}
+
 export const CreatePostComponent : FC = () => {
 
     // Check if the user is authenticated, if they are, then redirect to the previous page
@@ -36,9 +52,10 @@ export const CreatePostComponent : FC = () => {
     const imageUrlRef = useRef<HTMLInputElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
-    const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+    const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
     const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
+    const [isFormValid, setIsFormValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
     const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
@@ -95,7 +112,10 @@ export const CreatePostComponent : FC = () => {
 
         console.log("\n\n");
 
-        const data = await response.json();
+        const data : CreatePostResponse = await response.json();
+
+        // Set & handle validation on the front end
+        setIsFormValid(data.success);
 
         console.log("data");
         console.log(data); 
@@ -137,7 +157,7 @@ export const CreatePostComponent : FC = () => {
                         >Title*</Label>
                         <Input
                             ariaLabelledBy="titleLabel "
-                            error={!isPasswordValid}
+                            error={!isTitleValid}
                             name="title"
                             placeholder="Please enter your title"
                             ref={titleRef}
