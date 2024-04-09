@@ -20,13 +20,14 @@ import "./Form.scss";
 
 interface ComponentProps {
     children: ReactNode,
+    isFormValid ?: boolean,
     onSubmit: (event: FormEvent) => void
 }
 
-const Form : FC<ComponentProps> = ({children, onSubmit}) => {
+const Form : FC<ComponentProps> = ({children, isFormValid, onSubmit}) => {
 
     return(
-        <form className="form" onSubmit={onSubmit}>
+        <form className={`form ${isFormValid === false && 'form__error'}`} onSubmit={onSubmit}>
             {children}
         </form>
     );

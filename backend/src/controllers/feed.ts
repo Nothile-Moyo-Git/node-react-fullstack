@@ -74,87 +74,101 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     }
 
     // If there is no image
-    /*
     if (!request.file) {
 
-        const error : ErrorInterface = new Error('No Image Provided');
-        error.statusCode = 422;
-        throw error;
-    } 
-    */
+        // Response
+        response.status(201).json({
+            creator : null,
+            isImageValid : true,
+            isTitleValid : true,
+            isContentValid : true,
+            isFileValid : false,
+            isFileTypeValid : true,
+            message : 'Error: No Image Provided',
+            mimeType : null,
+            success : false
+        });
 
-    // Extract feed values from the request
-    const imageUrl = request.file.path;
-    const title = request.body.title;
-    const content = request.body.content;
+    } else {
 
-    // Validate inputs based on file type or length
-    const isImageUrlValid : boolean = imageUrl.length > 0;
-    const isTitleValid : boolean = title.length >= 6;
-    const isContentValid : boolean = content.length >= 6;
-    const isFileValid : boolean = request.file ? true : false;
-    const fileMimeType = checkFileType(request.file);
-    const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
+        // Extract feed values from the request
+        const imageUrl = request.file.path;
+        const title = request.body.title;
+        const content = request.body.content;
 
-    console.clear();
-    console.log("Uploaded values");
+        // Validate inputs based on file type or length
+        const isImageUrlValid : boolean = imageUrl.length > 0;
+        const isTitleValid : boolean = title.length >= 6;
+        const isContentValid : boolean = content.length >= 6 && content.length <= 200;
+        const isFileValid : boolean = request.file ? true : false;
+        const fileMimeType = checkFileType(request.file);
+        const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
 
-    console.log("\n\n");
-    console.log("Image url valid");
-    console.log(isImageUrlValid);
+        console.clear();
+        console.log("Uploaded values");
 
-    console.log("\n\n");
-    console.log("File data");
-    console.log(request.file);
-    
-    // Create the new post and save it
-    const post = new Post({
-        title : title,
-        content : content,
-        imageUrl : imageUrl,
-        creator : new ObjectId(request.body.userId)
-    });
-    
-    // Save this to the database
-    try {
+        console.log("\n\n");
+        console.log("Image url valid");
+        console.log(isImageUrlValid);
 
-        // await post.save();
-        const user = await User.findById(new ObjectId(request.body.userId));
+        console.log("\n\n");
+        console.log("File data");
+        console.log(request.file);
+        
+        // Create the new post and save it
+        const post = new Post({
+            title : title,
+            content : content,
+            imageUrl : imageUrl,
+            creator : new ObjectId(request.body.userId)
+        });
+        
+        // Save this to the database
+        try {
 
-        // Check if we have a user
-        if (user) {
+            // await post.save();
+            const user = await User.findById(new ObjectId(request.body.userId));
 
-            // Add reference details of the post to the user
-            user.posts?.push(post);
+            // Check if we have a user
+            if (user) {
 
-            // Update the user
-            // await user.save();
+                // Add reference details of the post to the user
+                user.posts?.push(post);
 
-            // Response
-            response.status(201).json({
-                creator : { _id : user._id, name : user.name },
-                isImageValid : isImageUrlValid,
-                isTitleValid : isTitleValid,
-                isContentValid : isContentValid,
-                isFileValid : isFileValid,
-                isFileTypeValid : isFileTypeValid,
-                message : 'Post created successfully!',
-                mimeType : fileMimeType,
-                post : post,
-                success : true
-            });
+                // Update the user
+                // await user.save();
 
-        } else {
+                // Response
+                response.status(201).json({
+                    creator : { _id : user._id.toString(), name : user.name },
+                    isContentValid : isContentValid,
+                    isImageValid : isImageUrlValid,
+                    isTitleValid : isTitleValid,
+                    isFileValid : isFileValid,
+                    isFileTypeValid : isFileTypeValid,
+                    message : 'Post created successfully!',
+                    mimeType : fileMimeType,
+                    success : true
+                });
 
-            // Response
-            response.status(421).json({
-                creator : null,
-                message : 'No user was found',
-                post : null,
+            } else {
 
-            });
-        }
-    } catch (error) { next(error); }
+                // Response
+                response.status(421).json({
+                    creator : null,
+                    isImageValid : isImageUrlValid,
+                    isTitleValid : isTitleValid,
+                    isContentValid : isContentValid,
+                    isFileValid : isFileValid,
+                    isFileTypeValid : isFileTypeValid,
+                    message : 'Error 421: No user was found',
+                    mimeType : null,
+                    success : false
+                });
+            }
+        } catch (error) { next(error); }
+    }
+
 };
 
 export const GetPostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {

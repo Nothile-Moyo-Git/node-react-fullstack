@@ -41,7 +41,6 @@ export const deleteFile = (filePath : string) => {
  * @param file : File
  * @return fileType : string
  */
-export const checkFileType = (file : Express.Multer.File) => {
-
-    return file.mimetype;
+export const checkFileType = (file : Express.Multer.File) => { 
+    return file.mimetype; 
 };
