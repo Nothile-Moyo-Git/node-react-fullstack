@@ -39,5 +39,18 @@
     &__error{
         border-color: red;
         background-color:pink;
+
+        &[type='file']{
+            color: pink;
+            background-color: transparent;
+
+            &::file-selector-button{
+                background: pink;
+                
+                @include mixins.state(){
+                    background: pink;
+                }
+            }
+        }
     }
 }

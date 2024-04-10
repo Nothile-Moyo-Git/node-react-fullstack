@@ -12,13 +12,14 @@ import "./Title.scss";
 import { FC, ReactNode } from "react";
 
 interface ComponentProps {
+    isFormValid ?: boolean,
     children : ReactNode
 };
 
-const Title : FC<ComponentProps> = ({children}) => {
+const Title : FC<ComponentProps> = ({ isFormValid, children }) => {
 
     return(
-        <h2 className="title">{children}</h2>
+        <h2 className={`title ${isFormValid === false && 'title__error' }`}>{children}</h2>
     );
 };
 
