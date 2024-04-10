@@ -73,6 +73,9 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         throw error;
     }
 
+    // Validate inputs before checking for the file for accurate feedback
+    
+
     // If there is no image
     if (!request.file) {
 
@@ -98,8 +101,8 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
         // Validate inputs based on file type or length
         const isImageUrlValid : boolean = imageUrl.length > 0;
-        const isTitleValid : boolean = title.length >= 6;
-        const isContentValid : boolean = content.length >= 6 && content.length <= 200;
+        const isTitleValid : boolean = title.length >= 3;
+        const isContentValid : boolean = content.length >= 6 && content.length <= 400;
         const isFileValid : boolean = request.file ? true : false;
         const fileMimeType = checkFileType(request.file);
         const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );

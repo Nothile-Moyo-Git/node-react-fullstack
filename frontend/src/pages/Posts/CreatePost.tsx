@@ -53,9 +53,10 @@ export const CreatePostComponent : FC = () => {
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
     const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
-    const [isImageUploadValid, setIsImageUploadValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [isFormValid, setIsFormValid] = useState<boolean>(true);
+    const [isFileValid, setIsFileValid] = useState<boolean>(true);
+    const [isFileTypeValid, setIsFileTypeValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
     const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
@@ -116,6 +117,10 @@ export const CreatePostComponent : FC = () => {
 
         // Set & handle validation on the front end
         setIsFormValid(data.success);
+        setIsFileValid(data.isFileValid);
+        setIsTitleValid(data.isTitleValid);
+        setIsContentValid(data.isContentValid);
+        setIsFileTypeValid(data.isFileTypeValid);
 
         console.log("data");
         console.log(data); 
@@ -147,7 +152,7 @@ export const CreatePostComponent : FC = () => {
 
                 <Form onSubmit={submitHandler}>
 
-                    <Title>Create Post</Title>
+                    <Title isFormValid={isFormValid}>{isFormValid ? 'Create Post' : 'Error: Please fix the errors below'}</Title>
 
                     <Field>
                         <Label
@@ -170,14 +175,14 @@ export const CreatePostComponent : FC = () => {
                         <Label
                             htmlFor="imageUrl"
                             id="imageUrlLabel"
-                            errorText="Error: File type is invalid"
+                            error={!isFileValid}
+                            errorText={isFileTypeValid === false ? 'Error: Please upload a JPG/JPEG/PNG image' : 'Error: Please upload a file (max size 5MB)'}
                         >Image*</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"
-                            error={!isImageUploadValid}
+                            error={!isFileValid}
                             name="image"
                             onChange={fileUploadHandler}
-                            placeholder="Please enter your title"
                             ref={imageUrlRef}
                             required={true}
                             type="file"
@@ -199,7 +204,7 @@ export const CreatePostComponent : FC = () => {
                         <Label
                             htmlFor="content"
                             id="contentLabel"
-                            errorText="Error: Content must be longer than 6 characters"
+                            errorText="Error: Content must be longer than 6 characters and less than 400 characters"
                         >Content*</Label>
                         <TextArea
                             ariaLabelledBy="contentLabel"
