@@ -26,7 +26,7 @@ import { FeedRequestInterface, ErrorInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
-import { checkFileType } from "../util/file";
+import { deleteFile, checkFileType } from "../util/file";
 
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
@@ -73,9 +73,6 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         throw error;
     }
 
-    // Validate inputs before checking for the file for accurate feedback
-    
-
     // If there is no image
     if (!request.file) {
 
@@ -103,9 +100,14 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         const isImageUrlValid : boolean = imageUrl.length > 0;
         const isTitleValid : boolean = title.length >= 3;
         const isContentValid : boolean = content.length >= 6 && content.length <= 400;
-        const isFileValid : boolean = request.file ? true : false;
+        const isFileValid : boolean = (request.file && request.file.size < 5000000) ? true : false;
         const fileMimeType = checkFileType(request.file);
         const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
+
+        // If any of our conditions are invalid, delete the file we just uploaded
+        if ( !isImageUrlValid || !isTitleValid || !isContentValid ) {
+            deleteFile(imageUrl);
+        } 
 
         console.clear();
         console.log("Uploaded values");
@@ -117,6 +119,10 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         console.log("\n\n");
         console.log("File data");
         console.log(request.file);
+
+        console.log("\n\n");
+        console.log("File size");
+        console.log(request.file.size);
         
         // Create the new post and save it
         const post = new Post({

@@ -176,7 +176,7 @@ export const CreatePostComponent : FC = () => {
                             htmlFor="imageUrl"
                             id="imageUrlLabel"
                             error={!isFileValid}
-                            errorText={isFileTypeValid === false ? 'Error: Please upload a JPG/JPEG/PNG image' : 'Error: Please upload a file (max size 5MB)'}
+                            errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
                         >Image*</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"

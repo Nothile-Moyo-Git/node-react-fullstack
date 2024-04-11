@@ -10,8 +10,13 @@
 import fs from "fs";
 
 /**
- * deleteFile method
- * Deletes a file with a required filepath
+ * @name deleteFile
+ * 
+ * @description Delete a file using a relative filepath from the request.
+ * You can find the filepath by checking for "request.file.path" when handling an endpoint
+ * This is assuming that you're using "multer" to upload files.
+ * 
+ * You can find the download for "multer" here : https://www.npmjs.com/package/multer
  * 
  * @param filePath : string
  * @returns void
@@ -35,8 +40,9 @@ export const deleteFile = (filePath : string) => {
 };
 
 /**
- * checkFileType method
- * Returns the mimetype of the uploaded file for debugging purposes
+ * @name checkFileType
+ * 
+ * @description Returns the mimetype of the uploaded file for debugging purposes
  * 
  * @param file : File
  * @return fileType : string
