@@ -40,6 +40,10 @@
         border-color: red;
         background-color:pink;
 
+        @include mixins.visible(){
+            outline-color: red;
+        }
+
         &[type='file']{
             color: pink;
             background-color: transparent;

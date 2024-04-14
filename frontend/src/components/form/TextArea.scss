@@ -11,4 +11,12 @@
     @include mixins.visible(){
         outline: 1px solid branding.$brand_color_six;
     }
+
+    &__error{
+        background-color: pink;
+
+        @include mixins.visible(){
+            outline-color: red;
+        }
+    }
 }

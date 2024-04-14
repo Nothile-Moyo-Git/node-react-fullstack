@@ -9,7 +9,8 @@
  */
 
 import { Outlet } from "react-router-dom";
-import { FC, useState, ReactNode } from "react";
+import { FC, useState, ReactNode, useEffect, useContext } from "react";
+import { AppContext } from "../../context/AppContext"; 
 import Menu from "../menu/Menu";
 import "./PageWrapper.scss";
 
@@ -20,6 +21,29 @@ interface ComponentProps {
 const PageWrapper : FC<ComponentProps> = ({children}) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
+
+    // Get the method from the backend to query
+    const appContextInstance = useContext(AppContext);
+
+    // Query the backend to see if we're logged in
+    useEffect(() => {
+
+        const fetchAuthentication = async () => {
+
+            try {
+
+                appContextInstance?.validateAuthentication();
+                
+            }catch(error){
+
+                console.log("Request failed");
+                console.log(error);
+            }
+        };
+
+        fetchAuthentication();
+
+    },[appContextInstance]);
 
     return (
         <main className={isMenuOpen ? 'menu-open' : 'menu-closed'}>
