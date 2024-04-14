@@ -19,6 +19,7 @@ import App from '../App';
 import { 
     createBrowserRouter,
 } from 'react-router-dom';
+import { ViewPosts } from '../pages/Posts/ViewPosts';
 
 export const nestedRouter = createBrowserRouter([
     {
@@ -37,6 +38,10 @@ export const nestedRouter = createBrowserRouter([
             {
                 path : BASENAME + "/signup",
                 element : <SignupPage/>
+            },
+            {
+                path : BASENAME + "/posts/:id?",
+                element : <ViewPosts/>
             },
             {
                 path : BASENAME + "/post/create",

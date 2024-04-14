@@ -26,7 +26,7 @@ import { FeedRequestInterface, ErrorInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
-import { checkFileType } from "../util/file";
+import { deleteFile, checkFileType } from "../util/file";
 
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
@@ -73,8 +73,12 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         throw error;
     }
 
-    // Validate inputs before checking for the file for accurate feedback
-    
+    // Get our initial values and validate them so that even if we don't have an image, we can evaluate the other inputs
+    const title = request.body.title;
+    const content = request.body.content;
+
+    const isTitleValid : boolean = title.length >= 3;
+    const isContentValid : boolean = content.length >= 6 && content.length <= 400;
 
     // If there is no image
     if (!request.file) {
@@ -83,8 +87,8 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         response.status(201).json({
             creator : null,
             isImageValid : true,
-            isTitleValid : true,
-            isContentValid : true,
+            isTitleValid : isTitleValid,
+            isContentValid : isContentValid,
             isFileValid : false,
             isFileTypeValid : true,
             message : 'Error: No Image Provided',
@@ -96,28 +100,16 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
         // Extract feed values from the request
         const imageUrl = request.file.path;
-        const title = request.body.title;
-        const content = request.body.content;
 
         // Validate inputs based on file type or length
         const isImageUrlValid : boolean = imageUrl.length > 0;
-        const isTitleValid : boolean = title.length >= 3;
-        const isContentValid : boolean = content.length >= 6 && content.length <= 400;
-        const isFileValid : boolean = request.file ? true : false;
+        const isFileValid : boolean = (request.file && request.file.size < 5000000) ? true : false;
         const fileMimeType = checkFileType(request.file);
         const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
 
-        console.clear();
-        console.log("Uploaded values");
+        // If any of our conditions are invalid, delete the file we just uploaded
+        if ( !isImageUrlValid || !isTitleValid || !isContentValid ) {   deleteFile(imageUrl);   } 
 
-        console.log("\n\n");
-        console.log("Image url valid");
-        console.log(isImageUrlValid);
-
-        console.log("\n\n");
-        console.log("File data");
-        console.log(request.file);
-        
         // Create the new post and save it
         const post = new Post({
             title : title,
@@ -129,7 +121,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         // Save this to the database
         try {
 
-            // await post.save();
+            await post.save();
             const user = await User.findById(new ObjectId(request.body.userId));
 
             // Check if we have a user
@@ -139,7 +131,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
                 user.posts?.push(post);
 
                 // Update the user
-                // await user.save();
+                await user.save();
 
                 // Response
                 response.status(201).json({

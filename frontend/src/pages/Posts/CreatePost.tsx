@@ -11,6 +11,7 @@
 import { FC, FormEvent, useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
+import { BASENAME } from "../../util/util";
 import Form from "../../components/form/Form";
 import Title from "../../components/form/Title";
 import Label from "../../components/form/Label";
@@ -56,7 +57,6 @@ export const CreatePostComponent : FC = () => {
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [isFormValid, setIsFormValid] = useState<boolean>(true);
     const [isFileValid, setIsFileValid] = useState<boolean>(true);
-    const [isFileTypeValid, setIsFileTypeValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
     const [showImagePreview, setShowImagePreview] = useState<boolean>(false);
@@ -76,11 +76,6 @@ export const CreatePostComponent : FC = () => {
 
         event.preventDefault();
 
-        console.clear();
-        console.log("\n\n");
-        console.log("Form submitted");
-        console.log("\n");
-
         const userId = appContextInstance?.userId;
 
         let title = "";
@@ -96,11 +91,6 @@ export const CreatePostComponent : FC = () => {
         uploadFile &&  fields.append("image", uploadFile);
         fields.append('content', content);
         userId && fields.append('userId', userId);
-
-        console.log("Title : " + title);
-        console.log("Content : " + content);
-        console.log("\n\n");
-
         
         // Perform the API request to the backend
         const response = await fetch('http://localhost:4000/create-post', {
@@ -108,6 +98,8 @@ export const CreatePostComponent : FC = () => {
             body : fields
         });
 
+        console.clear();
+        console.log("\n\n");
         console.log("Response");
         console.log(response);
 
@@ -120,10 +112,12 @@ export const CreatePostComponent : FC = () => {
         setIsFileValid(data.isFileValid);
         setIsTitleValid(data.isTitleValid);
         setIsContentValid(data.isContentValid);
-        setIsFileTypeValid(data.isFileTypeValid);
 
         console.log("data");
         console.log(data); 
+
+        alert("Post successfully submitted");
+        navigate(`${BASENAME}/posts`);
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
@@ -156,9 +150,10 @@ export const CreatePostComponent : FC = () => {
 
                     <Field>
                         <Label
+                            error={!isTitleValid}
+                            errorText="Error: Title must be longer than 3 characters"
                             htmlFor="title"
                             id="titleLabel"
-                            errorText="Error: Title must be longer than 3 characters"
                         >Title*</Label>
                         <Input
                             ariaLabelledBy="titleLabel "
@@ -176,7 +171,7 @@ export const CreatePostComponent : FC = () => {
                             htmlFor="imageUrl"
                             id="imageUrlLabel"
                             error={!isFileValid}
-                            errorText={isFileTypeValid === false ? 'Error: Please upload a JPG/JPEG/PNG image' : 'Error: Please upload a file (max size 5MB)'}
+                            errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
                         >Image*</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"
@@ -202,6 +197,7 @@ export const CreatePostComponent : FC = () => {
 
                     <Field>
                         <Label
+                            error={!isContentValid}
                             htmlFor="content"
                             id="contentLabel"
                             errorText="Error: Content must be longer than 6 characters and less than 400 characters"
