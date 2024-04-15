@@ -6,7 +6,10 @@
 
 ### This application is designed as an exercise in being able to build a full stack application using React + Node.js + TypeScript.
 
-**After having spent a long time working with various TypeScript technologies, I designed to put it all together. The front end is written in React + SCSS(BEM) TypeScript + Node.js. The backend is written in Node.js + TypeScript + Express + MongoDB + Mongoose.**
+**After having spent a long time working with various TypeScript technologies, I designed to put it all together.** 
+
+- **NOTE: front end is written in React + SCSS(BEM) TypeScript + Node.js.**
+- **NOTE: The backend is written in Node.js + TypeScript + Express + MongoDB + Mongoose.**
 
 *I wanted to create an application when I could apply the MVC architecture to a de-coupled web application. The front end, backend and database are all handled using REST queries with CORS for security. Sessions are stored locally on the front end and queried once the app is running. The database used for this application is non-relational and an ODM which is done through Mongoose.*
 
@@ -53,10 +56,19 @@ npm audit fix
 npm run deploy
 ```
 
+-----
+### Running The App
+
+You'll need to install all the packages from the front and backend.
+To do, run ```npm run install``` from the root, and the _"frontend"_ and _"backend"_ folders.
+
 > Start local server (this starts both the front and backend concurrently)
 ```
 npm run application
 ```
+Once that's done, the server should start running the server for you. You can view the local development of the app on _[localhost:3000/typescript/fullstack](http://localhost:3000/typescript-fullstack)_
+
+**NOTE:** The backend uses the port "4000" as a proxy for the frontend. There, perform backend queries to _"localhost:4000"_ and not _"localhost:3000"_ when performing requests
 
 -----
 
@@ -64,34 +76,43 @@ npm run application
 
 **Note: Please read the "README.md" file found in "frontend/README.md" for in depth information on the front end**
 
+-----
+
 ### Backend 
 
 **Note: Please read the "README.md" file found in "backend/README.md" for in depth information on the front end**
+
+-----
+### DevOps
+
+The app currently has not been deployed.
+The "env" file can be found by request by sending an email to [this](mailto:nothile1@gmail.com) email address._
 
 -----
 
 ### Development process
 
 - Duplicate the development branch by creating a feature or bugfix branch [Click here to see how to create your branch](https://www.gitkraken.com/learn/git/git-flow)
+
 - Complete your work **Note: Please lint and test your code**
+
 - Create your pull request by going [here](https://github.com/Nothile-Moyo-Git/express-routing-demo/compare) and comparing your branch to *"develop"*
+
 - I will receive an email that a PR has been raised. Once this is the case, I will review the code and merge it into develop if I approve it.
 
 -----
 
 ### Potential improvements
 
-> Security improvements
 
-[Api requests best practices](https://curity.io/resources/learn/api-security-best-practices/)
+- Security improvements
+> [Api requests best practices](https://curity.io/resources/learn/api-security-best-practices/)
 
-> Optimizing queries
+- Optimizing queries
+> [Optimize performance for MongoDB queries](https://medium.com/globant/mongodb-mongoose-query-optimizations-63cfc6def9d9)
 
-[Optimize performance for MongoDB queries](https://medium.com/globant/mongodb-mongoose-query-optimizations-63cfc6def9d9)
-
-> Link for SOLID is here, it's about figuring out superior ways to use our Models, properties and methods with the appropriate naming conventions.
-
-[Solid Principles](https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/)
+-Link for SOLID is here, it's about figuring out superior ways to use our Models, properties and methods with the appropriate naming conventions.
+> [Solid Principles](https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english/)
 
 -----
 
