@@ -9,7 +9,10 @@
  * ?@param /:page - Defines the page we're currently on
  */
 
-import { ReactNode, FC } from "react";
+
+import "./ViewPosts.scss";
+import { Post } from "../../@types/indes";
+import { ReactNode, FC, useState, useEffect } from "react";
 
 interface ComponentProps {
     children ?: ReactNode
@@ -17,9 +20,20 @@ interface ComponentProps {
 
 export const ViewPosts : FC<ComponentProps> = () => {
 
+    const [Posts, setPosts] = useState<Post[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        
+        console.clear();
+        console.log("Posts query");
+        setPosts([]);
+
+    },[]);
+
     return(
-        <>
+        <section className="viewPosts">
             <h1>Posts</h1>
-        </>
+        </section>
     );
 };

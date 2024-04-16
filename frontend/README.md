@@ -7,6 +7,27 @@ This is the front end documentation for the application. You can find more in de
 
 -----
 
+### Tech Stack
+The current technology stack for the front end is:
+
+- React. React is used for the front end due to its increased interactivity with the end user, good performance and a strong ecosystem to support it. React also presents all the advantages of function based components.
+> [React](https://react.dev/learn/typescript)
+**NOTE:** You can install react by using the following script: ```npm install @types/react @types/react-dom```
+
+- Typescript. We use TypeScript as a transpiler because TypeScript allows us to write less buggy, more readable code. It significantly reduces runtime errors by flagging them up during development.
+> [TypeScript](https://www.typescriptlang.org/)
+
+- SCSS. Described further below.
+> [SCSS](https://sass-lang.com/)
+
+- React Router. We use this in order to handle our routes in the front end. We also use this to render our views.
+> [React Router](https://reactrouter.com/en/main)
+
+- Socket IO. This is used for any dynamic web chats in the near future.
+> [Socket IO](https://socket.io/)
+
+-----
+
 ### Request handling
 The backend uses [multer](https://www.npmjs.com/package/multer) to parse requests. 
 
@@ -28,3 +49,5 @@ The element refers to an element within the block. You'll notice that these elem
 The modifier refers to a style which is applied when you want a different styling "state". This could be an error mode for example, or a success mode which turns inputs green.
 
 You visit the BEM website [here](https://getbem.com/) to find out more.
+
+The _"scss"_ folder contains partials which can be referenced in any other stylesheet.
