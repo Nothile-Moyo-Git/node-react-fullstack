@@ -64,21 +64,7 @@ nav{
     }
 
     @include responsive.breakpoint(tablet){
-        height: 105px;
-    }
-
-    &__logged-in{
-
-        @include responsive.breakpoint(tablet){
-            height: 233px;
-        }
-    }
-
-    &__logged-out{
-
-        @include responsive.breakpoint(tablet){
-            height: 100px;
-        }
+        height: 137px;
     }
 
     @include responsive.breakpoint(tablet){
