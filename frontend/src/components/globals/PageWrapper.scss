@@ -14,8 +14,23 @@ main{
 .menu-open{
 
     @include responsive.breakpoint(tablet){
-        height: calc(100% - 105px);
-        padding-top: 105px;
+        &__logged-in{
+            height: calc(100% - 137px);
+            padding-top: 137px;
+
+            ul{
+                height: 137px;
+            }
+        }
+
+        &__logged-out{
+            height: calc(100% - 105px);
+            padding-top: 105px;
+
+            ul{
+                height: 105px;
+            }
+        }
     }
 }
 

@@ -53,7 +53,7 @@ export const ViewPosts : FC<ComponentProps> = () => {
 
     return(
         <section className="viewPosts">
-            <h1>Posts</h1>
+            <h1 className="viewPosts__title">Posts</h1>
         </section>
     );
 };

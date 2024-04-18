@@ -21,6 +21,7 @@ interface ComponentProps {
 const PageWrapper : FC<ComponentProps> = ({children}) => {
 
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(true);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
     // Get the method from the backend to query
     const appContextInstance = useContext(AppContext);
@@ -33,6 +34,7 @@ const PageWrapper : FC<ComponentProps> = ({children}) => {
             try {
 
                 appContextInstance?.validateAuthentication();
+                setIsLoggedIn(appContextInstance?.token !== "");
                 
             }catch(error){
 
@@ -45,8 +47,36 @@ const PageWrapper : FC<ComponentProps> = ({children}) => {
 
     },[appContextInstance]);
 
+    // Set our menuInfo object, we don't need state here as we don't need this to trigger a re-render
+    const menuInfo = { isMenuOpen : isMenuOpen, isLoggedIn : isLoggedIn };
+    let menuStyle = 'menu-closed menu-closed__logged-out';
+
+    // Set the menu info so we can account for whether the menu is open, closed and also login states
+    switch(true) {
+
+        case menuInfo.isMenuOpen && menuInfo.isLoggedIn :
+            menuStyle = 'menu-open menu-open__logged-in';
+            break;
+        
+        case menuInfo.isMenuOpen && !menuInfo.isLoggedIn : 
+            menuStyle = 'menu-open menu-open__logged-out';
+            break;
+
+        case !menuInfo.isMenuOpen && menuInfo.isLoggedIn :
+            menuStyle = 'menu-closed menu-closed__logged-in';
+            break;
+        
+        case !menuInfo.isMenuOpen && !menuInfo.isLoggedIn :
+            menuStyle = 'menu-closed menu-closed__logged-out';
+            break;
+        
+        default : 
+            menuStyle = 'menu-closed menu-closed__logged-out';
+            break;
+    }
+
     return (
-        <main className={isMenuOpen ? 'menu-open' : 'menu-closed'}>
+        <main className={menuStyle}>
             <Menu 
                 isMenuOpen={isMenuOpen}
                 toggleMenu={setIsMenuOpen}
