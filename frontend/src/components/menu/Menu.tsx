@@ -76,7 +76,7 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
                         appContextInstance?.userAuthenticated === true &&
                         <>
                             <li className="menu__item">
-                                <Link to={BASENAME + "/posts/1"} className="menu__link">Posts</Link>
+                                <Link to={BASENAME + "/posts"} className="menu__link">Posts</Link>
                             </li>
 
                             <li className="menu__item">

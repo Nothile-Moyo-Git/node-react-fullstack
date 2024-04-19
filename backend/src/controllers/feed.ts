@@ -47,10 +47,11 @@ export const GetPostsController = async (request : FeedRequestInterface, respons
         // Respond to the frontend
         response.status(200);
         
-        // 
+        // Send the request to the frontend
         response.json({
             message : "Fetched posts successfully",
             posts : posts,
+            success : true,
             totalItems : totalNumberOfItems
         });
 
