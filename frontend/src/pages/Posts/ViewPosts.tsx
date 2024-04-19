@@ -27,22 +27,36 @@ export const ViewPosts : FC<ComponentProps> = () => {
     const appContextInstance = useContext(AppContext);
     const navigate = useNavigate();
 
-    const [Posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [pageNumber, setPageNumber] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
         const response = await fetch('http://localhost:4000/posts');
+        return response;
     };
 
     useEffect(() => {
         
         appContextInstance?.validateAuthentication();
-        console.log("App Context Instance");
+
+        // Method defined here to allow async calls in a useEffect hook
+        const fetchPosts = async () => {
+
+            const result = await getPosts();
+
+            const data = await result.json();
+
+            const success = data.success ? data.success : false;
+
+            if (success === true) {
+                setPosts(data.posts);
+            }
+        };
         
         if (appContextInstance?.token !== '') {
-            
-            
+            fetchPosts();
         }
 
         // If the user isn't authenticated, redirect this route to the previous page
@@ -51,9 +65,28 @@ export const ViewPosts : FC<ComponentProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appContextInstance]);
 
+    console.clear();
+    console.log("Posts");
+    console.log(posts);
+
     return(
         <section className="viewPosts">
             <h1 className="viewPosts__title">Posts</h1>
+
+            <ul>
+                {
+                    posts.map((post : Post) => {
+                        return (
+                            <li>
+                                <article>
+                                    <h2>{post.title}</h2>
+                                    <p>{post.content}</p>
+                                </article>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
         </section>
     );
 };
