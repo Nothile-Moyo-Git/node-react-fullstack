@@ -48,6 +48,8 @@ export interface UserMethodsInterface {
 }
 
 export interface PostsInterface {
+    fileLastUpdated : string,
+    fileName : string,
     _id : ObjectId,
     title : string,
     imageUrl : string,

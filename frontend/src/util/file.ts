@@ -36,3 +36,15 @@ export const generateBase64FromImage = (imageFile : File) => {
 
   return promise;
 };
+
+/**
+ * @name findImagePathFromPostData
+ * 
+ * @params filename : string, uploadPath : string
+ * 
+ * @description This method finds the upload folder and the appropriate month and year
+ */
+export const findImagePathFromPostData = (filename : string, uploadPath : string) => {
+
+  return "hello world";
+};
