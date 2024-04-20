@@ -117,9 +117,11 @@ export const CreatePostComponent : FC = () => {
         console.log("data");
         console.log(data); 
 
-        alert("Post successfully submitted");
-        // redirect(`${BASENAME}/posts`);
-        navigate(`${BASENAME}/posts`, { replace : true });
+
+        if (data.success === true) {
+            alert("Post successfully submitted");
+            navigate(`${BASENAME}/posts`, { replace : true });
+        }
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
