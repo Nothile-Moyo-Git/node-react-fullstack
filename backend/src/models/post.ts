@@ -19,6 +19,8 @@ type PostModel = Model<PostsInterface, {}, PostsMethodsInterface>
 
 // Define our schema for the Posts collection in the backend using Mongoose
 const postSchema = new mongoose.Schema<PostsInterface>({
+    fileLastUpdated : { type : String, required : true },
+    fileName : { type : String, required : true },
     title : { type : String, required : true },
     imageUrl : { type : String, required : true },
     content : { type : String, required : true },

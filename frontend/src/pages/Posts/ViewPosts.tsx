@@ -11,8 +11,9 @@
 
 
 import "./ViewPosts.scss";
-import { Post } from "../../@types/indes";
+import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
+import { ArticleCard } from "../../components/card/ArticleCard";
 import { ReactNode, FC, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
@@ -65,10 +66,6 @@ export const ViewPosts : FC<ComponentProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appContextInstance]);
 
-    console.clear();
-    console.log("Posts");
-    console.log(posts);
-
     return(
         <section className="viewPosts">
             <h1 className="viewPosts__title">Posts</h1>
@@ -78,10 +75,7 @@ export const ViewPosts : FC<ComponentProps> = () => {
                     posts.map((post : Post) => {
                         return (
                             <li>
-                                <article>
-                                    <h2>{post.title}</h2>
-                                    <p>{post.content}</p>
-                                </article>
+                                <ArticleCard  post={post}/>
                             </li>
                         )
                     })

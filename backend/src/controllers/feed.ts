@@ -26,20 +26,20 @@ import { FeedRequestInterface, ErrorInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
-import { deleteFile, checkFileType } from "../util/file";
+import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file";
 
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
     // Get the current page based on the url
     const currentPage = request.query.page || 1;
-    const perPage = 2;
+    const perPage = 1000;
 
     try{
 
         // Count the number of items and total posts
         const totalNumberOfItems = await Post.find().countDocuments();
 
-        // Fetch the posts from the backend
+        // Fetch the posts from the backend, pagination is applied here
         const posts = await Post.find()
         .skip((Number(currentPage) - 1) * perPage)
         .limit(perPage);
@@ -113,6 +113,8 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
         // Create the new post and save it
         const post = new Post({
+            fileName : request.file.filename,
+            fileLastUpdated : getCurrentMonthAndYear(),
             title : title,
             content : content,
             imageUrl : imageUrl,

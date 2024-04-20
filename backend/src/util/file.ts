@@ -50,3 +50,23 @@ export const deleteFile = (filePath : string) => {
 export const checkFileType = (file : Express.Multer.File) => { 
     return file.mimetype; 
 };
+
+/**
+ * @name getCurrentMonthAndYear
+ * 
+ * @description : This method gets the current month and year in a YYYY-MM format
+ */
+export const getCurrentMonthAndYear = () => {
+
+    const date = new Date();
+
+    // Get current month and year and concatenate them in a string
+    const currentMonth = date.getMonth() + 1;
+    const currentYear = date.getFullYear();
+
+    // Format the month to work appropriately
+    let stringMonth = currentMonth.toString();
+    if (currentMonth < 10) { stringMonth = '0' + currentMonth.toString(); };
+
+    return `${currentYear}/${stringMonth}`;
+};

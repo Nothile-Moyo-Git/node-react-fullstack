@@ -18,9 +18,10 @@ import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
- import TextArea from "../../components/form/TextArea";
+import TextArea from "../../components/form/TextArea";
 import ImagePreview from "../../components/form/ImagePreview";
 import { generateBase64FromImage } from "../../util/file";
+import { redirect } from "react-router-dom"; 
 
 import "./CreatePost.scss";
 
@@ -117,7 +118,8 @@ export const CreatePostComponent : FC = () => {
         console.log(data); 
 
         alert("Post successfully submitted");
-        navigate(`${BASENAME}/posts`);
+        // redirect(`${BASENAME}/posts`);
+        navigate(`${BASENAME}/posts`, { replace : true });
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
