@@ -111,13 +111,6 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         // If any of our conditions are invalid, delete the file we just uploaded
         if ( !isImageUrlValid || !isTitleValid || !isContentValid ) {   deleteFile(imageUrl);   } 
 
-        console.clear();
-        console.log("\n\n");
-        console.log("Inputs valid");
-        console.log("Is title valid?");
-        console.log(isTitleValid);
-        console.log("\n\n");
-
         // Create the new post and save it
         const post = new Post({
             fileName : request.file.filename,

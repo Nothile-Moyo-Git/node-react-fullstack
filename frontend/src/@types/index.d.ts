@@ -31,6 +31,7 @@ declare module "*.jpeg"{
 }
 
 export interface Post{
+    _id : string,
     content : string,
     fileName : string,
     imageUrl : string,

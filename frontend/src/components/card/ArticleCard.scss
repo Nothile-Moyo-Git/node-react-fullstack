@@ -1,0 +1,32 @@
+@use "../../scss/partials/responsive" as responsive;
+@use "../../scss/partials/animations" as animations;
+@use "../../scss/partials/branding" as branding;
+
+.article{
+    display: flex;
+    flex-direction: row;
+    grid-column-gap: 1rem;
+    animation: fade-in 0.2s linear;
+
+    @include responsive.breakpoint(mobile){
+        flex-direction: column;
+    }
+
+    &__image{
+        width: 100%;
+        object-fit: cover;
+        transition: animations.$standard_transition;
+
+        @include responsive.breakpoint(mobile){
+            max-width: 478px;
+        }
+
+        @include responsive.breakpoint-min(mobile){
+            max-width: 150px; 
+        }
+
+        @include responsive.breakpoint-min(desktop){
+            max-width: 250px;
+        }
+    }
+}

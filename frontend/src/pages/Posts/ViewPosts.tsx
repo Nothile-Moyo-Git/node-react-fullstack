@@ -14,15 +14,12 @@ import "./ViewPosts.scss";
 import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
 import { ArticleCard } from "../../components/card/ArticleCard";
-import { ReactNode, FC, useState, useEffect, useContext } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 
-interface ComponentProps {
-    children ?: ReactNode
-}
 
-export const ViewPosts : FC<ComponentProps> = () => {
+export const ViewPosts : FC = () => {
 
     // Instantiate values
     const appContextInstance = useContext(AppContext);
@@ -49,6 +46,10 @@ export const ViewPosts : FC<ComponentProps> = () => {
 
             const data = await result.json();
 
+            console.clear();
+            console.log("Data of object");
+            console.log(data);
+
             const success = data.success ? data.success : false;
 
             if (success === true) {
@@ -70,12 +71,12 @@ export const ViewPosts : FC<ComponentProps> = () => {
         <section className="viewPosts">
             <h1 className="viewPosts__title">Posts</h1>
 
-            <ul>
+            <ul className="viewPosts__posts-list">
                 {
                     posts.map((post : Post) => {
                         return (
-                            <li>
-                                <ArticleCard  post={post}/>
+                            <li key={post._id}>
+                                <ArticleCard post={post}/>
                             </li>
                         )
                     })

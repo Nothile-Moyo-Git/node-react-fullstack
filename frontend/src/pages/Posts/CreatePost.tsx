@@ -99,13 +99,6 @@ export const CreatePostComponent : FC = () => {
             body : fields
         });
 
-        console.clear();
-        console.log("\n\n");
-        console.log("Response");
-        console.log(response);
-
-        console.log("\n\n");
-
         const data : CreatePostResponse = await response.json();
 
         // Set & handle validation on the front end
@@ -113,10 +106,6 @@ export const CreatePostComponent : FC = () => {
         setIsFileValid(data.isFileValid);
         setIsTitleValid(data.isTitleValid);
         setIsContentValid(data.isContentValid);
-
-        console.log("data");
-        console.log(data); 
-
 
         if (data.success === true) {
             alert("Post successfully submitted");

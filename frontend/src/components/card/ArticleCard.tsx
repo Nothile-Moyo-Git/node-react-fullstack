@@ -7,6 +7,7 @@
  * Wraps an article in a card component in order to be rendered in a list
  */
 
+import "./ArticleCard.scss"; 
 import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
 
@@ -31,12 +32,13 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
     }
 
     return(
-        <article>
+        <article className="article">
             <img
                 src={image}
                 alt={post?.title}
+                className="article__image"
             />
-            <div>
+            <div className="article__content">
                 <h2>{post?.title}</h2>
                 <p>{post?.content}</p>
             </div>
