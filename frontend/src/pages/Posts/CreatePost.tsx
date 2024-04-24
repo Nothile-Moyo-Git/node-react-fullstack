@@ -21,7 +21,6 @@ import Button from "../../components/button/Button";
 import TextArea from "../../components/form/TextArea";
 import ImagePreview from "../../components/form/ImagePreview";
 import { generateBase64FromImage } from "../../util/file";
-import { redirect } from "react-router-dom"; 
 
 import "./CreatePost.scss";
 

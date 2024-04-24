@@ -31,8 +31,8 @@ import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file"
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
     // Get the current page based on the url
-    const currentPage = request.query.page || 1;
-    const perPage = 1000;
+    const currentPage = request.params.page || 1;
+    const perPage = 3;
 
     try{
 

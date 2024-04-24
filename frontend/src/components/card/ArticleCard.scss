@@ -1,15 +1,37 @@
 @use "../../scss/partials/responsive" as responsive;
 @use "../../scss/partials/animations" as animations;
 @use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/mixins" as mixins;
 
 .article{
     display: flex;
     flex-direction: row;
     grid-column-gap: 1rem;
+    border-radius: 4px;
     animation: fade-in 0.2s linear;
+    box-shadow: branding.$card_box_shadow;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+
+    h2{
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    p{
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    @include mixins.backgroundGradientEffect(){
+        background: branding.$gradient_color_three;
+    }
 
     @include responsive.breakpoint(mobile){
         flex-direction: column;
+    }
+
+    &__content{
+        padding-right: 1rem;
     }
 
     &__image{
