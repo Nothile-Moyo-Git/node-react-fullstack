@@ -26,12 +26,13 @@ export const ViewPosts : FC = () => {
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState<Post[]>([]);
-    const [pageNumber, setPageNumber] = useState<number>(1);
+    const [page, setPage] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
-        const response = await fetch('http://localhost:4000/posts');
+        const response = await fetch(`http://localhost:4000/posts/${page}`);
         return response;
     };
 
