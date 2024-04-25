@@ -10,6 +10,8 @@
 import "./ArticleCard.scss"; 
 import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
+import { Link } from "react-router-dom";
+import { BASENAME } from "../../util/util";
 
 interface ComponentProps {
    children ?: ReactNode,
@@ -33,15 +35,19 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
 
     return(
         <article className="article">
+
             <img
                 src={image}
                 alt={post?.title}
                 className="article__image"
             />
+
             <div className="article__content">
                 <h2>{post?.title}</h2>
                 <p>{post?.content}</p>
+                <Link to={`${BASENAME}/post/${post?._id}`}>Read more...</Link>
             </div>
+
         </article>
     );
 };

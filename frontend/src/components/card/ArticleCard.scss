@@ -14,12 +14,18 @@
     z-index: 2;
     overflow: hidden;
 
-    h2{
+    h2,p,a{
         color: rgba(0, 0, 0, 0.9);
+        margin: 0;
     }
 
-    p{
-        color: rgba(0, 0, 0, 0.9);
+    a{
+        color: branding.$brand_color_seven;
+        width: max-content;
+
+        @include mixins.state(){
+            border-color: branding.$brand_color_seven;
+        }
     }
 
     @include mixins.backgroundGradientEffect(){
@@ -31,7 +37,11 @@
     }
 
     &__content{
-        padding-right: 1rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        grid-row-gap: 0.25rem;
+        justify-content: space-between;
     }
 
     &__image{
@@ -41,6 +51,7 @@
 
         @include responsive.breakpoint(mobile){
             max-width: 478px;
+            max-height: 200px;
         }
 
         @include responsive.breakpoint-min(mobile){

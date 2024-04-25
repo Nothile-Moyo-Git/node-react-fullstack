@@ -54,7 +54,7 @@ nav{
     height: 55px;
     box-shadow: 0px 0px 15px 0px branding.$brand_color_six;
     align-items: center;
-    z-index: 2;
+    z-index: 3;
     overflow: hidden;
     transition: animations.$standard_transition;
     animation: fade-in 0.15s linear;
@@ -126,7 +126,7 @@ nav{
 }
 
 .toggle-menu-button{
-    position: absolute;
+    position: fixed;
     z-index: 3;
     animation: fade-in 0.2s linear;
     cursor: pointer;
