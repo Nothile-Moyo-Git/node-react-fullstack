@@ -1,0 +1,22 @@
+@use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/animations" as animations;
+
+.paginator{
+
+    &__button{
+
+        background-color: transparent;
+        padding: 0.2rem 0.5rem;
+        border: 1px solid branding.$brand_color_six;
+        color: branding.$brand_color_six;
+        transition: animations.$standard_transition;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &--current{
+            color: rgba(0, 0, 0, 0.9);
+            background-color: branding.$brand_color_six;
+            cursor: no-drop;
+        }
+    }
+}
