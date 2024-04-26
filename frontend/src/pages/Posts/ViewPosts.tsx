@@ -17,7 +17,7 @@ import { ArticleCard } from "../../components/card/ArticleCard";
 import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
-
+import { Paginator } from "../../components/pagination/Paginator";
 
 export const ViewPosts : FC = () => {
 
@@ -45,10 +45,6 @@ export const ViewPosts : FC = () => {
             const result = await getPosts();
 
             const data = await result.json();
-
-            console.clear();
-            console.log("Data of object");
-            console.log(data);
 
             const success = data.success ? data.success : false;
 
@@ -82,6 +78,13 @@ export const ViewPosts : FC = () => {
                     })
                 }
             </ul>
+
+            <Paginator
+                currentPage={5}
+                numberOfPages={10}
+                setPage={setPage}
+            />
+
         </section>
     );
 };
