@@ -44,6 +44,8 @@ export const GetPostsController = async (request : FeedRequestInterface, respons
         .skip((Number(currentPage) - 1) * perPage)
         .limit(perPage);
 
+        const totalNumberOfPages = Math.ceil(totalNumberOfItems / perPage);
+
         // Respond to the frontend
         response.status(200);
         
@@ -52,7 +54,7 @@ export const GetPostsController = async (request : FeedRequestInterface, respons
             message : "Fetched posts successfully",
             posts : posts,
             success : true,
-            totalItems : totalNumberOfItems
+            numberOfPages : totalNumberOfPages
         });
 
     }catch(error : unknown){

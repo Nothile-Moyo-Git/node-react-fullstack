@@ -7,8 +7,10 @@
  * Manages pagination (typically) for a list on a page
  */
 
+import { Link } from "react-router-dom";
 import "./Paginator.scss";
 import { FC, useState, useEffect } from "react";
+import { BASENAME } from "../../util/util";
 
 interface ComponentProps {
     numberOfPages : number
@@ -38,9 +40,40 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
 
     },[currentPage, numberOfPages]);
 
+    console.log("Previous pages");
+    console.log(previousPages);
+    console.log("\n\n");
+
+    console.log("Upcoming pages");
+    console.log(upcomingPages);
+    console.log("\n\n");
+
     return (
         <div className="paginator">
+            {
+                previousPages.length > 0 &&
+                previousPages.map((pageNumber : number  ) => 
+                    <Link 
+                        to={`${BASENAME}/posts/${pageNumber}`}
+                        className="paginator__button"
+                    >
+                        {pageNumber}      
+                    </Link>
+                )
+            }
             <button className="paginator__button paginator__button--current">{currentPage}</button>
+
+            {
+                upcomingPages.length > 0 &&
+                upcomingPages.map((pageNumber : number) => 
+                    <Link
+                        to={`${BASENAME}/posts/${pageNumber}`}
+                        className="paginator__button"
+                    >
+                        {pageNumber} 
+                    </Link>
+                )
+            }
         </div>
     );
 };

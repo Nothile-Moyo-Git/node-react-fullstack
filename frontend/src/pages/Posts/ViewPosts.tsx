@@ -28,6 +28,7 @@ export const ViewPosts : FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [numberOfPages, setNumberOfPages] = useState<number>(1);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -50,6 +51,7 @@ export const ViewPosts : FC = () => {
 
             if (success === true) {
                 setPosts(data.posts);
+                setNumberOfPages(data.numberOfPages);
             }
         };
         
@@ -62,6 +64,11 @@ export const ViewPosts : FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appContextInstance]);
+
+    console.clear();
+    console.log("Number of pages");
+    console.log(numberOfPages);
+    console.log("\n\n");
 
     return(
         <section className="viewPosts">
