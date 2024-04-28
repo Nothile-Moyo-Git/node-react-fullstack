@@ -40,27 +40,43 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
 
     },[currentPage, numberOfPages]);
 
-    console.log("Previous pages");
-    console.log(previousPages);
-    console.log("\n\n");
+    const updatePage = (page : number) => {
+        console.log("Page updated");
+        console.log("\n\n");
+        console.log(page);
+        setPage(page);
+    };
 
-    console.log("Upcoming pages");
-    console.log(upcomingPages);
-    console.log("\n\n");
+
+
 
     return (
         <div className="paginator">
             {
+                previousPages[0] > 1 &&
+                <div className="paginator__min-max-wrapper">
+                    <Link
+                        to={`${BASENAME}/posts/1`}
+                        className="paginator__button"
+                        onClick={() => { updatePage(1) }}
+                    >1</Link>
+                    <p className="paginator__min-max-text">...</p>
+                </div>
+            }
+
+            {
                 previousPages.length > 0 &&
-                previousPages.map((pageNumber : number  ) => 
+                previousPages.map((pageNumber : number) => 
                     <Link 
                         to={`${BASENAME}/posts/${pageNumber}`}
                         className="paginator__button"
+                        onClick={() => { updatePage(pageNumber) }}
                     >
                         {pageNumber}      
                     </Link>
                 )
             }
+
             <button className="paginator__button paginator__button--current">{currentPage}</button>
 
             {
@@ -69,11 +85,25 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                     <Link
                         to={`${BASENAME}/posts/${pageNumber}`}
                         className="paginator__button"
+                        onClick={() => { updatePage(pageNumber) }}
                     >
                         {pageNumber} 
                     </Link>
                 )
             }
+
+            {
+                upcomingPages[1] < numberOfPages &&
+                <div className="paginator__min-max-wrapper">
+                    <p className="paginator__min-max-text">...</p>
+                    <Link
+                        to={`${BASENAME}/posts/${numberOfPages}`}
+                        className="paginator__button"
+                        onClick={() => { updatePage(numberOfPages) }}
+                    >{numberOfPages}</Link>
+                </div>
+            }
+
         </div>
     );
 };
