@@ -6,7 +6,6 @@
 .article{
     display: flex;
     flex-direction: row;
-    grid-column-gap: 1rem;
     border-radius: 4px;
     animation: fade-in 0.2s linear;
     box-shadow: branding.$card_box_shadow;

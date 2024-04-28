@@ -28,6 +28,7 @@ export const ViewPosts : FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [numberOfPages, setNumberOfPages] = useState<number>(1);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -50,6 +51,7 @@ export const ViewPosts : FC = () => {
 
             if (success === true) {
                 setPosts(data.posts);
+                setNumberOfPages(data.numberOfPages);
             }
         };
         
@@ -61,7 +63,7 @@ export const ViewPosts : FC = () => {
         !appContextInstance?.userAuthenticated && navigate(`/${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appContextInstance]);
+    },[appContextInstance, posts]);
 
     return(
         <section className="viewPosts">
@@ -80,8 +82,8 @@ export const ViewPosts : FC = () => {
             </ul>
 
             <Paginator
-                currentPage={5}
-                numberOfPages={10}
+                currentPage={page}
+                numberOfPages={numberOfPages}
                 setPage={setPage}
             />
 

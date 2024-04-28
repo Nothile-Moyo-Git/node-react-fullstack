@@ -1,22 +1,60 @@
 @use "../../scss/partials/branding" as branding;
 @use "../../scss/partials/animations" as animations;
+@use "../../scss/partials/responsive" as responsive;
+@use "../../scss/partials/mixins" as mixins;
 
 .paginator{
+
+    display: flex;
 
     &__button{
 
         background-color: transparent;
-        padding: 0.2rem 0.5rem;
+        padding: 0.15rem 0.6rem 0.25rem 0.6rem;
         border: 1px solid branding.$brand_color_six;
         color: branding.$brand_color_six;
         transition: animations.$standard_transition;
         border-radius: 3px;
         cursor: pointer;
+        margin: auto 0.4rem;
+        position: relative;
+        z-index: 2;
+
+        @include mixins.state(){
+            color : rgba(0, 0, 0, 0.9);
+            overflow: hidden;
+            background: branding.$brand_color_six;
+            box-shadow: branding.$box_shadow_blue;
+        }
 
         &--current{
             color: rgba(0, 0, 0, 0.9);
-            background-color: branding.$brand_color_six;
             cursor: no-drop;
+            padding-top: 0.35rem;
+            padding-bottom: 0.25rem;
+            margin: auto 1rem;
+            overflow: hidden;
+
+            @include mixins.state(){
+                box-shadow: none;
+            }
+
+            @include mixins.backgroundGradientEffect(){
+                background: branding.$gradient_color_six;
+            }
         }
+    }
+
+    &__min-max-wrapper{
+        display: flex;
+        animation: fade-in 0.2s linear;
+
+        @include responsive.breakpoint(mobile){
+            display: none;
+        }
+    }
+
+    &__min-max-text{
+        color: branding.$brand_color_six;
     }
 }
