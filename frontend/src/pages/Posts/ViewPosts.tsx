@@ -63,7 +63,7 @@ export const ViewPosts : FC = () => {
         !appContextInstance?.userAuthenticated && navigate(`/${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appContextInstance, posts]);
+    },[appContextInstance]);
 
     return(
         <section className="viewPosts">
@@ -82,8 +82,8 @@ export const ViewPosts : FC = () => {
             </ul>
 
             <Paginator
-                currentPage={page}
-                numberOfPages={numberOfPages}
+                currentPage={3}
+                numberOfPages={5}
                 setPage={setPage}
             />
 
