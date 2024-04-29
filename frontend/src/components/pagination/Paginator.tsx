@@ -9,9 +9,9 @@
 
 import { Link } from "react-router-dom";
 import "./Paginator.scss";
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, FormEvent, useRef } from "react";
 import { BASENAME } from "../../util/util";
-
+import { Select } from "../form/Select";
 interface ComponentProps {
     numberOfPages : number
     currentPage : number,
@@ -22,6 +22,8 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
 
     const [previousPages, setPreviousPages] = useState<number[]>([]);
     const [upcomingPages, setUpcomingPages] = useState<number[]>([]);
+
+    const pageRef = useRef<HTMLSelectElement>(null);
 
     useEffect(() => {
 
@@ -37,22 +39,28 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
         currentPage + 2 <= numberOfPages && tempUpcomingPages.push(currentPage + 2);
         setUpcomingPages(tempUpcomingPages);
 
+        console.log("State called");
 
     },[currentPage, numberOfPages]);
 
+    // Update the page if we click on a number
     const updatePage = (page : number) => {
-        console.log("Page updated");
-        console.log("\n\n");
-        console.log(page);
         setPage(page);
     };
 
+    // Create an array of pages that we can pass to the select component
+    const pagesArray : number[] = [];
+    for (let i = 1; i <= numberOfPages; i++){ pagesArray.push(i); }
 
+    // Handle the logic if we pick a page from the drop down
+    const customPageSelected = async (event : FormEvent) => {
 
+    }
 
     return (
         <div className="paginator">
             {
+                // Note: Hidden on mobile due to space contraints
                 previousPages[0] > 1 &&
                 <div className="paginator__min-max-wrapper">
                     <Link
@@ -77,7 +85,13 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                 )
             }
 
-            <button className="paginator__button paginator__button--current">{currentPage}</button>
+            <form className="paginator__selector-wrapper">
+                <Select
+                    ref={pageRef}
+                    pages={pagesArray}
+                />
+                <button className="paginator__button paginator__button--current">Go</button>
+            </form>
 
             {
                 upcomingPages.length > 0 &&
@@ -93,6 +107,7 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
             }
 
             {
+                // Note: Hidden on mobile due to space contraints
                 upcomingPages[1] < numberOfPages &&
                 <div className="paginator__min-max-wrapper">
                     <p className="paginator__min-max-text">...</p>
