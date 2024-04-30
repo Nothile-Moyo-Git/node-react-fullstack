@@ -9,18 +9,74 @@
  * @param pages ?: number[] -> An array of numbers starting from 1 which are iterated through for options
  */
 
-import { forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 
 interface ComponentProps {
+    id : string,
+    currentValue : number | string,
+    labelledBy ?: string,
+    name : string,
     pages ?: number[] | undefined,
+    variant : string,
     options ?: string[],
-    ref : React.RefObject<HTMLSelectElement>
+    ref : React.RefObject<HTMLSelectElement>,
+    required ?: boolean
 }
 
+/**
+ * @component Select
+ * @description The Select component, used to render drop-downs of different types
+ * 
+ * @param id : string
+ * @param currentValue ?: number | string
+ * @param labelledBy ?: string
+ * @param name : string
+ * @param pages ?: number[] | undefined
+ * @param variant : string
+ * @param options ?: string[]
+ * @param ref : React.RefObject<HTMLSelectElement>
+ * @param required ?: boolean
+ */
 export const Select = forwardRef<HTMLSelectElement, ComponentProps>(function SelectComponent(props, ref) {
 
+    const [classNames, setClassNames] = useState<string>("");
+    const [value, setValue] = useState<number | string>(props.currentValue);
+    
+    // Set the classnames for styling when the component renders
+    useEffect(() => {
+
+        switch(props.variant){
+
+            case "pagination":
+                setClassNames("select select--pagination");
+                break;
+
+            default:
+                setClassNames("select");
+                break;
+        }
+    
+    },[props.variant]);
+
+    // Update the value on change so that we can reference the new value in our ref
+    const updateValue = (event : React.FormEvent<HTMLSelectElement>) => {
+
+        // You have to use currentTarget.value here even though you won't see them
+        // Note: currentTarget returns null on console checks but exists
+        setValue(event.currentTarget.value)
+    };
+
     return(
-        <select>
+        <select
+            aria-labelledby={props?.labelledBy}
+            className={classNames}
+            id={props.id}
+            name={props.name}
+            onChange={updateValue}
+            ref={ref}
+            required={props.required}
+            value={value}
+        >
             { 
                 props.pages && props.pages.length > 0 && props.options === undefined && props.pages.map((page : number) => {
                     return (<option value={page}></option>);
