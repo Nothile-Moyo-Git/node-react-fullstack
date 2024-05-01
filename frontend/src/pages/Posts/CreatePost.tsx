@@ -67,7 +67,7 @@ export const CreatePostComponent : FC = () => {
         appContextInstance?.validateAuthentication();
 
         // If the user isn't authenticated, redirect this route to the previous page
-        !appContextInstance?.userAuthenticated && navigate(-1);
+        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
 
     },[appContextInstance, navigate]); 
 

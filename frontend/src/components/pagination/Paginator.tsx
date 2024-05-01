@@ -39,8 +39,6 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
         currentPage + 2 <= numberOfPages && tempUpcomingPages.push(currentPage + 2);
         setUpcomingPages(tempUpcomingPages);
 
-        console.log("State called");
-
     },[currentPage, numberOfPages]);
 
     // Update the page if we click on a number
@@ -54,7 +52,10 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
 
     // Handle the logic if we pick a page from the drop down
     const customPageSelected = async (event : FormEvent) => {
+        event.preventDefault();
+        console.clear();
 
+        console.log(pageRef);
     }
 
     return (
@@ -85,10 +86,14 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                 )
             }
 
-            <form className="paginator__selector-wrapper">
+            <form className="paginator__selector-wrapper" onSubmit={customPageSelected}>
                 <Select
+                    currentValue={currentPage}
+                    id="pagination-select-component"
+                    name="pagination-dropdown"
                     ref={pageRef}
                     pages={pagesArray}
+                    variant="pagination"
                 />
                 <button className="paginator__button paginator__button--current">Go</button>
             </form>
