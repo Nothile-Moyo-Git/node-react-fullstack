@@ -37,33 +37,42 @@ export const ViewPosts : FC = () => {
     };
 
     useEffect(() => {
-        
+
         appContextInstance?.validateAuthentication();
-
-        // Method defined here to allow async calls in a useEffect hook
-        const fetchPosts = async () => {
-
-            const result = await getPosts();
-
-            const data = await result.json();
-
-            const success = data.success ? data.success : false;
-
-            if (success === true) {
-                setPosts(data.posts);
-                setNumberOfPages(data.numberOfPages);
-            }
-        };
         
-        if (appContextInstance?.token !== '') {
-            fetchPosts();
+        try{
+
+            if (appContextInstance?.userAuthenticated === true) {
+
+                // Method defined here to allow async calls in a useEffect hook
+                const fetchPosts = async () => {
+
+                    const result = await getPosts();
+
+                    const data = await result.json();
+
+                    const success = data.success ? data.success : false;
+
+                    if (success === true) {
+                        setPosts(data.posts);
+                        setNumberOfPages(data.numberOfPages);
+                    }
+                };
+                
+                if (appContextInstance?.token !== '') {
+                    fetchPosts();
+                }
+            }
+
+        }catch(error){
+            console.error(error);
         }
 
         // If the user isn't authenticated, redirect this route to the previous page
-        !appContextInstance?.userAuthenticated && navigate(`/${BASENAME}/login`);
+        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appContextInstance]);
+    },[appContextInstance?.userAuthenticated]);
 
     return(
         <section className="viewPosts">

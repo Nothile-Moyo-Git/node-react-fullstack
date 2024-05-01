@@ -39,8 +39,6 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
         currentPage + 2 <= numberOfPages && tempUpcomingPages.push(currentPage + 2);
         setUpcomingPages(tempUpcomingPages);
 
-        console.log("State called");
-
     },[currentPage, numberOfPages]);
 
     // Update the page if we click on a number

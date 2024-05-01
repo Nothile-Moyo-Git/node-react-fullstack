@@ -10,6 +10,7 @@
  */
 
 import React, { useState, useEffect, forwardRef } from "react";
+import "./Select.scss";
 
 interface ComponentProps {
     id : string,
@@ -79,7 +80,7 @@ export const Select = forwardRef<HTMLSelectElement, ComponentProps>(function Sel
         >
             { 
                 props.pages && props.pages.length > 0 && props.options === undefined && props.pages.map((page : number) => {
-                    return (<option value={page}></option>);
+                    return (<option className="option" value={page}>{page}</option>);
                 })
             }
         </select>
