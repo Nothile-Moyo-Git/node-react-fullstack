@@ -86,7 +86,7 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                 )
             }
 
-            <form className="paginator__selector-wrapper" onSubmit={customPageSelected}>
+            <form className="paginator__select-wrapper" onSubmit={customPageSelected}>
                 <Select
                     currentValue={currentPage}
                     id="pagination-select-component"

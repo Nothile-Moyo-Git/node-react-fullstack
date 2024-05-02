@@ -11,7 +11,6 @@
 
 import React, { useState, useEffect, forwardRef } from "react";
 import "./Select.scss";
-
 interface ComponentProps {
     id : string,
     currentValue : number | string,

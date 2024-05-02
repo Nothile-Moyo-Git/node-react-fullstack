@@ -91,8 +91,8 @@ export const ViewPosts : FC = () => {
             </ul>
 
             <Paginator
-                currentPage={3}
-                numberOfPages={5}
+                currentPage={5}
+                numberOfPages={10}
                 setPage={setPage}
             />
 
