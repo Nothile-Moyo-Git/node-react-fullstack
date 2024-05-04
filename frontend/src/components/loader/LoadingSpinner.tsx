@@ -14,7 +14,7 @@ const LoadingSpinner = () => {
     return(
         <div className="loadingWrapper">
             <span className="loadingSpinner"></span>
-            <p>Loading, please wait...</p>
+            <p className="loadingText">Loading, please wait...</p>
         </div>
     );
 };

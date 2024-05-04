@@ -17,6 +17,7 @@ import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
+import LoadingSpinner from "../../components/loader/LoadingSpinner";
 
 export const ViewPosts : FC = () => {
 
@@ -33,15 +34,26 @@ export const ViewPosts : FC = () => {
     const [page, setPage] = useState<number>(initialPage);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [numberOfPages, setNumberOfPages] = useState<number>(1);
+    const [showErrorText, setShowErrorText] = useState<boolean>(false);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
         const response = await fetch(`http://localhost:4000/posts/${page}`);
+
+        // Show the error if the request failed
+        if (response.status === 200) {
+            setShowErrorText(false);
+        }else{
+            setShowErrorText(true);
+        }
+
         return response;
     };
 
     useEffect(() => {
 
+        // Toggle the loading spinner util the request ends
+        setIsLoading(true);
         appContextInstance?.validateAuthentication();
         
         try{
@@ -65,6 +77,7 @@ export const ViewPosts : FC = () => {
                 
                 if (appContextInstance?.token !== '') {
                     fetchPosts();
+                    setIsLoading(false);
                 }
             }
 
@@ -82,23 +95,41 @@ export const ViewPosts : FC = () => {
         <section className="viewPosts">
             <h1 className="viewPosts__title">Posts</h1>
 
-            <ul className="viewPosts__posts-list">
-                {
-                    posts.map((post : Post) => {
-                        return (
-                            <li key={post._id}>
-                                <ArticleCard post={post}/>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+            {
+                isLoading && <LoadingSpinner/>
+            }
+ 
+            {
+                !isLoading && !showErrorText && posts.length > 0 &&  
+                <>
+                    <ul className="viewPosts__posts-list">
+                        {
+                            posts.map((post : Post) => {
+                                return (
+                                    <li key={post._id}>
+                                        <ArticleCard post={post}/>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
 
-            <Paginator
-                currentPage={page}
-                numberOfPages={numberOfPages}
-                setPage={setPage}
-            />
+                    <Paginator
+                        currentPage={page}
+                        numberOfPages={numberOfPages}
+                        setPage={setPage}
+                    />
+                </>
+            }
+
+            {
+                !isLoading && showErrorText &&
+                <>
+                    <h1>There has been an error with your request. Please reload the page</h1>
+                    <p>If the request continues to fail, you can contact me <a href="mailto:nothile1@gmail.com">here</a></p>
+                </>
+            }
+
 
         </section>
     );

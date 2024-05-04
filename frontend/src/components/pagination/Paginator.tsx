@@ -80,6 +80,7 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                         to={`${BASENAME}/posts/${pageNumber}`}
                         className="paginator__button"
                         onClick={() => { updatePage(pageNumber) }}
+                        key={`prev-page-${pageNumber}`}
                     >
                         {pageNumber}      
                     </Link>
@@ -110,6 +111,7 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                         to={`${BASENAME}/posts/${pageNumber}`}
                         className="paginator__button"
                         onClick={() => { updatePage(pageNumber) }}
+                        key={`upcoming-page-${pageNumber}`}
                     >
                         {pageNumber} 
                     </Link>
