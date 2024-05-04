@@ -43,8 +43,8 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
             />
 
             <div className="article__content">
-                <h2>{post?.title}</h2>
-                <p>{post?.content}</p>
+                <h2 className="article__title">{post?.title}</h2>
+                <p className="article__description">{post?.content}</p>
                 <Link to={`${BASENAME}/post/${post?._id}`}>Read more...</Link>
             </div>
 
