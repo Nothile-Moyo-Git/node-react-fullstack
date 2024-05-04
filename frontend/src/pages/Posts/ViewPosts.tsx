@@ -9,24 +9,28 @@
  * ?@param /:page - Defines the page we're currently on
  */
 
-
 import "./ViewPosts.scss";
 import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
 import { ArticleCard } from "../../components/card/ArticleCard";
 import { FC, useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
 
 export const ViewPosts : FC = () => {
+
+    // Get params to set the initial page so we get the correct post on initial render
+    // If there is no optional parameter, we'll grab the first page of posts as a failsafe
+    const params = useParams();
+    const initialPage = params.page ? Number(params.page) : 1;
 
     // Instantiate values
     const appContextInstance = useContext(AppContext);
     const navigate = useNavigate();
 
     const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState<number>(initialPage);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [numberOfPages, setNumberOfPages] = useState<number>(1);
 
@@ -72,7 +76,7 @@ export const ViewPosts : FC = () => {
         appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appContextInstance?.userAuthenticated]);
+    },[appContextInstance?.userAuthenticated, page]);
 
     return(
         <section className="viewPosts">
@@ -91,8 +95,8 @@ export const ViewPosts : FC = () => {
             </ul>
 
             <Paginator
-                currentPage={3}
-                numberOfPages={5}
+                currentPage={page}
+                numberOfPages={numberOfPages}
                 setPage={setPage}
             />
 

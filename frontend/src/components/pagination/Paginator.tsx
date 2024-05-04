@@ -53,9 +53,9 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
     // Handle the logic if we pick a page from the drop down
     const customPageSelected = async (event : FormEvent) => {
         event.preventDefault();
-        console.clear();
 
-        console.log(pageRef);
+        // Update the page prop and trigger a re-render of the parent element
+        pageRef.current && setPage( Number(pageRef.current.value) );
     }
 
     return (
@@ -86,17 +86,22 @@ export const Paginator : FC<ComponentProps> = ({ numberOfPages, currentPage = 1,
                 )
             }
 
-            <form className="paginator__selector-wrapper" onSubmit={customPageSelected}>
-                <Select
-                    currentValue={currentPage}
-                    id="pagination-select-component"
-                    name="pagination-dropdown"
-                    ref={pageRef}
-                    pages={pagesArray}
-                    variant="pagination"
-                />
-                <button className="paginator__button paginator__button--current">Go</button>
-            </form>
+
+            {   
+                numberOfPages > 7 ?
+                    <form className="paginator__select-wrapper" onSubmit={customPageSelected}>
+                        <Select
+                            currentValue={currentPage}
+                            id="pagination-select-component"
+                            name="pagination-dropdown"
+                            ref={pageRef}
+                            pages={pagesArray}
+                            variant="pagination"
+                        />
+                        <button className="paginator__button paginator__button--current-select">Go</button>
+                    </form> :
+                    <button disabled className="paginator__button paginator__button--current-normal">{currentPage}</button>
+            }
 
             {
                 upcomingPages.length > 0 &&

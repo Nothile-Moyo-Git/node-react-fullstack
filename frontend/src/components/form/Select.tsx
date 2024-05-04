@@ -11,7 +11,6 @@
 
 import React, { useState, useEffect, forwardRef } from "react";
 import "./Select.scss";
-
 interface ComponentProps {
     id : string,
     currentValue : number | string,
@@ -66,6 +65,15 @@ export const Select = forwardRef<HTMLSelectElement, ComponentProps>(function Sel
         // Note: currentTarget returns null on console checks but exists
         setValue(event.currentTarget.value)
     };
+
+    // Update the page in the Select component if the page updates in props
+    // Note: We use props.currentValue instead of value since we don't want to trigger infinite loops
+    useEffect(() => {
+
+        setValue(props.currentValue);
+    },[props.currentValue]);
+
+
 
     return(
         <select
