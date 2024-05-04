@@ -66,6 +66,15 @@ export const Select = forwardRef<HTMLSelectElement, ComponentProps>(function Sel
         setValue(event.currentTarget.value)
     };
 
+    // Update the page in the Select component if the page updates in props
+    // Note: We use props.currentValue instead of value since we don't want to trigger infinite loops
+    useEffect(() => {
+
+        setValue(props.currentValue);
+    },[props.currentValue]);
+
+
+
     return(
         <select
             aria-labelledby={props?.labelledBy}

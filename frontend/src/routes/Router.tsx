@@ -40,7 +40,7 @@ export const nestedRouter = createBrowserRouter([
                 element : <SignupPage/>
             },
             {
-                path : BASENAME + "/posts/:id?",
+                path : BASENAME + "/posts/:page?",
                 element : <ViewPosts/>
             },
             {
