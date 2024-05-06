@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
+import ErrorModal from "../../components/error/ErrorModal";
 
 export const ViewPosts : FC = () => {
 
@@ -124,10 +125,7 @@ export const ViewPosts : FC = () => {
 
             {
                 !isLoading && showErrorText &&
-                <>
-                    <h1>There has been an error with your request. Please reload the page</h1>
-                    <p>If the request continues to fail, you can contact me <a href="mailto:nothile1@gmail.com">here</a></p>
-                </>
+                <ErrorModal/>
             }
 
 

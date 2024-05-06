@@ -20,7 +20,6 @@
     If you want to delay this animation, pass it to the parent using an inline style
     This can be great if you're rendering a list of cards and want to delay each animation
 */
-
 @mixin backgroundGradientEffect(){
     &:after{
         content: "";
