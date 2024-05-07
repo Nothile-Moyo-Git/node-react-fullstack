@@ -19,12 +19,27 @@
     background: transparent;
     filter: contrast(90%);
     display: flex;
+    cursor: pointer;
 
     &__primary{
         @include mixins.state(){
             cursor: pointer;
             filter: contrast(150%);
             box-shadow: branding.$box_shadow_blue;
+        }
+    }
+
+    &__delete{
+        background: branding.$brand_color_seven;
+        border-color: branding.$brand_color_seven;
+        color: white;
+        box-shadow: branding.$button-shadow;
+        margin: 0;
+
+        @include mixins.state(){
+            filter: constrast(90%);
+            background: branding.$brand_color_seven__alt_3;
+            border-color: branding.$brand_color_seven__alt_3;
         }
     }
 

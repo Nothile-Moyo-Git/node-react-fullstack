@@ -34,7 +34,7 @@ const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
 
     // Implement styling for the variant
     switch(variant){
-
+        
         case "primary":
             variantClassName = "button__primary";
             break;
@@ -49,6 +49,10 @@ const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
 
         case "error":
             variantClassName = "button__error";
+            break;
+
+        case "delete":
+            variantClassName = "button__delete";
             break;
         
         default:

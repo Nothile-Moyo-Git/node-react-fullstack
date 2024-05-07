@@ -12,6 +12,7 @@ import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
 import { Link } from "react-router-dom";
 import { BASENAME } from "../../util/util";
+import Button from "../button/Button";
 
 interface ComponentProps {
    children ?: ReactNode,
@@ -45,7 +46,15 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
             <div className="article__content">
                 <h2 className="article__title">{post?.title}</h2>
                 <p className="article__description">{post?.content}</p>
-                <Link to={`${BASENAME}/post/${post?._id}`}>Read more...</Link>
+                <div className="article__buttons">
+                    <Link 
+                        to={`${BASENAME}/post/${post?._id}`}
+                        className="article__link"
+                    >Read more</Link>
+                    <Button 
+                        variant="delete"
+                    >Delete</Button>
+                </div>
             </div>
 
         </article>
