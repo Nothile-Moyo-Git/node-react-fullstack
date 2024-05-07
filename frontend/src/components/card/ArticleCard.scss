@@ -15,17 +15,28 @@
     max-width: 800px;
     width: 100%;
 
-    h2,p,a{
+    h2,p{
         color: rgba(0, 0, 0, 0.9);
         margin: 0;
     }
 
-    a{
-        color: branding.$brand_color_seven;
+    &__buttons{
+        display: flex;
+        grid-gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    &__link{
+        background: branding.$brand_color_five__alt_1;
+        color: white;
         width: max-content;
+        padding : 0.35rem 1rem 0.4rem 1rem;
+        border: none;
+        border-radius: 4px;
+        box-shadow: branding.$box-shadow;
 
         @include mixins.state(){
-            border-color: branding.$brand_color_seven;
+            background: branding.$brand_color_five__alt_4;
         }
     }
 
