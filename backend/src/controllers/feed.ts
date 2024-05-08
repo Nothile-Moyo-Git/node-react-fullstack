@@ -177,10 +177,10 @@ export const GetPostController = async (request : FeedRequestInterface, response
     // Get the postId from the url passed through
     const postId = new ObjectId(request.params.postId);
 
-    // Get the post
-    const post = await Post.findById(postId);
-
     try {
+
+        // Get the post
+        const post = await Post.findById(postId);
 
         if (!post) {
 
@@ -195,8 +195,7 @@ export const GetPostController = async (request : FeedRequestInterface, response
 
     } catch (error : any) {
 
-        error.statusCode = 500;
-        next(error);
+        response.status(500).json({ message: 'Post failed', post : null });
     }
 };
 
