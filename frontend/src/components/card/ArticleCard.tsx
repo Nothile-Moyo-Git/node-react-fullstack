@@ -25,12 +25,15 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
 
     try{
 
-        // Fetch the image, if it fails, reload the component
-        image = require(`../../uploads/2024/04/${post?.fileName}`);
+        // Only fetch the file if we have a filename
+        if (post?.fileName) {
+
+            // Fetch the image, if it fails, reload the component
+            image = require(`../../uploads/2024/04/${post?.fileName}`);
+        }
 
     }catch(error){
         
-        image = "";
         console.log(error);
     }
 
