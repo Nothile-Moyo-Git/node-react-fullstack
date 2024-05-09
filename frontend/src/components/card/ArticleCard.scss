@@ -73,21 +73,19 @@
     &__image{
         width: 100%;
         object-fit: cover;
+        max-height: 225px;
         transition: animations.$standard_transition;
 
         @include responsive.breakpoint(mobile){
             max-width: 478px;
-            max-height: 200px;
         }
 
         @include responsive.breakpoint-min(mobile){
             max-width: 150px;
-            max-height: 200px;
         }
 
         @include responsive.breakpoint-min(desktop){
             width: 250px;
-            max-height: 225px;
         }
     }
 }

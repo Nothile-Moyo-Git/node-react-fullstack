@@ -11,7 +11,7 @@ import "./ArticleCard.scss";
 import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
 import { Link } from "react-router-dom";
-import { BASENAME } from "../../util/util";
+import { BASENAME, generateUploadDate } from "../../util/util";
 import Button from "../button/Button";
 
 interface ComponentProps {
@@ -29,13 +29,16 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
         if (post?.fileName) {
 
             // Fetch the image, if it fails, reload the component
-            image = require(`../../uploads/2024/04/${post?.fileName}`);
+            image = require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`);
         }
 
     }catch(error){
         
         console.log(error);
     }
+
+    // Get an upload date so we can show when the post was uploaded
+    const uploadDate = generateUploadDate(post?.createdAt ? post?.createdAt : '');
 
     return(
         <article className="article">
@@ -49,6 +52,7 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
             <div className="article__content">
                 <h2 className="article__title">{post?.title}</h2>
                 <p className="article__description">{post?.content}</p>
+                <p>{ `Uploaded: ${uploadDate}` }</p>
                 <div className="article__buttons">
                     <Link 
                         to={`${BASENAME}/post/${post?._id}`}
