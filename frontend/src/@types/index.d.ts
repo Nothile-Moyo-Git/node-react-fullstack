@@ -34,6 +34,7 @@ export interface Post{
     _id : string,
     content : string,
     fileName : string,
+    fileLastUpdated : string,
     imageUrl : string,
     title : string,
     creator : string,

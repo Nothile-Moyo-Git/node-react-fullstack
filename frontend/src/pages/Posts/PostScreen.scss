@@ -8,4 +8,9 @@
     max-width: 800px;
     padding: 1rem;
     margin: auto;
+
+    &__image{
+        object-fit: contain;
+        height: 400px;
+    }
 }

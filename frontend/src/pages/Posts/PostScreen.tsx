@@ -15,8 +15,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import "./PostScreen.scss";
 import { Post } from "../../@types";
-import { BASENAME } from "../../util/util";
-import { getCurrentMonthAndYear } from "../../util/file";
+import { BASENAME, generateUploadDate } from "../../util/util";
+import Button from "../../components/button/Button";
 
 const PostScreen : FC = () => {
 
@@ -37,7 +37,7 @@ const PostScreen : FC = () => {
 
         if (postData?.fileName){
             // Fetch the image, if it fails, reload the component
-            image = require(`../../uploads/2024/04/${postData?.fileName}`);
+            image = require(`../../uploads/${postData.fileLastUpdated}/${postData?.fileName}`);
         }
 
     }catch(error){
@@ -80,10 +80,6 @@ const PostScreen : FC = () => {
                     const statusCode = result.status;
 
                     if (statusCode === 200) {
-                        console.log("Data post");
-                        console.log(data.post);
-                        console.log("image");
-                        console.log(image);
                         setPostData(data.post);
                     }
                 };
@@ -104,12 +100,20 @@ const PostScreen : FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appContextInstance, postId]);
 
+    // Get an upload date so we can show when the post was uploaded
+    const uploadDate = generateUploadDate(postData?.createdAt ? postData?.createdAt : '');
+
     return(
         <section className="post">
-            <h1>{postData?.title}</h1>
+            <h1 className="post__title">{postData?.title}</h1>
+            <Button variant="primary">Go back</Button>
+            <p className="post__date">{`Uploaded: ${uploadDate}`}</p>
             <img
                 src={image}
+                alt={postData?.title}
+                className="post__image"
             />
+            <p>{postData?.content}</p>
         </section>
     );
 };
