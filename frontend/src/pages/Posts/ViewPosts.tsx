@@ -101,7 +101,7 @@ export const ViewPosts : FC = () => {
             }
  
             {
-                !isLoading && !showErrorText && posts.length > 0 &&  
+                !isLoading && !showErrorText && posts.length > 0 &&
                 <>
                     <ul className="viewPosts__posts-list">
                         {
@@ -124,10 +124,8 @@ export const ViewPosts : FC = () => {
             }
 
             {
-                !isLoading && showErrorText &&
-                <ErrorModal/>
+                !isLoading && showErrorText && <ErrorModal/>
             }
-
 
         </section>
     );
