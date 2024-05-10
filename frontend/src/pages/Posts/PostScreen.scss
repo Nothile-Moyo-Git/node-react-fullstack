@@ -1,4 +1,5 @@
 @use "../../scss/partials/animations" as animations;
+@use "../../scss/partials/responsive" as responsive;
 
 .post{
     animation: fade-in 0.2s linear;
@@ -9,8 +10,18 @@
     padding: 1rem;
     margin: auto;
 
+    &__title{
+        margin-bottom: 0.5rem;
+    }
+
     &__image{
         object-fit: contain;
         height: 400px;
+
+        @include responsive.breakpoint(mobile){
+            width: 100%;
+            object-fit: cover;
+            max-height: 300px;
+        }
     }
 }

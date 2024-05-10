@@ -15,7 +15,7 @@ import { FC, MouseEvent, ReactNode } from "react";
 interface ComponentProps {
     children : ReactNode,
     variant ?: string,
-    onClick ?: (event : MouseEvent) => void
+    onClick ?: (event : React.MouseEvent<HTMLElement>) => void
 };
 
 /**
@@ -53,6 +53,10 @@ const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
 
         case "delete":
             variantClassName = "button__delete";
+            break;
+
+        case "back":
+            variantClassName = "button__back";
             break;
         
         default:

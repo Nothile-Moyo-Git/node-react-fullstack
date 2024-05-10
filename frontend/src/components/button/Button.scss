@@ -43,6 +43,29 @@
         }
     }
 
+    &__back{
+        z-index: 2;
+        overflow: hidden;
+        margin-left: 0;
+        border: 0;
+        color: rgba(0,0,0,0.9);
+        grid-gap: 0.5rem;
+
+        svg{
+            width: 1rem;
+            height: 1rem;
+            fill: rgba(0,0,0,0.9);
+        }
+
+        @include mixins.state(){
+            filter: contrast(150%);
+        }
+
+        @include mixins.backgroundGradientEffect(){
+            background: branding.$gradient_color_six;
+        }
+    }
+
     &__menu{
         color: rgba(0, 0, 0, 0.9);
         border: 0;

@@ -52,15 +52,6 @@ export const generateUploadDate = (date : string) => {
 
     const uploadDate = `${YYYY}/${MM}/${DD} ${HH}:${II}`;
 
-
-    console.clear();
-    console.log("Date value");
-    console.log(date);
-    console.log("\n\n");
-
-    console.log("Date object");
-    console.log(uploadDate);
-
     return uploadDate;
 };
 

@@ -11,12 +11,15 @@
  */
 
 import { FC, useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import "./PostScreen.scss";
 import { Post } from "../../@types";
 import { BASENAME, generateUploadDate } from "../../util/util";
+import { MdKeyboardBackspace } from "react-icons/md";
 import Button from "../../components/button/Button";
+import LoadingSpinner from "../../components/loader/LoadingSpinner";
+import ErrorModal from "../../components/error/ErrorModal";
 
 const PostScreen : FC = () => {
 
@@ -30,6 +33,7 @@ const PostScreen : FC = () => {
     // Instantiate values
     const appContextInstance = useContext(AppContext);
     const navigate = useNavigate();
+    const location = useLocation();
 
     let image = "";
 
@@ -103,17 +107,41 @@ const PostScreen : FC = () => {
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(postData?.createdAt ? postData?.createdAt : '');
 
+    // Back handler
+    const backToPreviousPage = () => {
+
+        // If we were on the domain, then go back to the previous page
+        if (location.key !== 'default') { navigate(-1); }
+    };
+
     return(
         <section className="post">
-            <h1 className="post__title">{postData?.title}</h1>
-            <Button variant="primary">Go back</Button>
-            <p className="post__date">{`Uploaded: ${uploadDate}`}</p>
-            <img
-                src={image}
-                alt={postData?.title}
-                className="post__image"
-            />
-            <p>{postData?.content}</p>
+            {
+                isQuerying && <LoadingSpinner/>
+            }
+
+            {
+                !isQuerying && !showErrorModal &&
+                <>
+                    <h1 className="post__title">{postData?.title}</h1>
+                    {
+                        location.key !== 'default' &&
+                        <Button variant="back" onClick={backToPreviousPage}><MdKeyboardBackspace/>Go back</Button>
+                    }
+                    <p className="post__date">{`Uploaded: ${uploadDate}`}</p>
+                    <img
+                        src={image}
+                        alt={postData?.title}
+                        className="post__image"
+                    />
+                    <p>{postData?.content}</p>
+                </>
+            }
+
+            {
+                !isQuerying && showErrorModal && <ErrorModal/>
+            }
+
         </section>
     );
 };
