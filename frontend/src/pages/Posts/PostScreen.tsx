@@ -19,7 +19,7 @@ import { BASENAME, generateUploadDate } from "../../util/util";
 import { MdKeyboardBackspace } from "react-icons/md";
 import Button from "../../components/button/Button";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
-import ErrorModal from "../../components/error/ErrorModal";
+import ErrorModal from "../../components/modals/ErrorModal";
 
 const PostScreen : FC = () => {
 
