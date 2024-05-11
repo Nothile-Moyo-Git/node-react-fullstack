@@ -3,11 +3,11 @@
  * 
  * Author : Nothile Moyo
  * 
- * ArticleCard component
+ * PostCard component
  * Wraps an article in a card component in order to be rendered in a list
  */
 
-import "./ArticleCard.scss"; 
+import "./PostCard.scss"; 
 import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
 import { Link } from "react-router-dom";
@@ -16,10 +16,11 @@ import Button from "../button/Button";
 
 interface ComponentProps {
    children ?: ReactNode,
-   post ?: Post
+   post ?: Post,
+   toggleConfirmationModal ?: (event : React.MouseEvent<HTMLElement>) => void
 }
 
-export const ArticleCard : FC<ComponentProps> = ({ post }) => {
+export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal }) => {
 
     let image = "";
 
@@ -60,6 +61,7 @@ export const ArticleCard : FC<ComponentProps> = ({ post }) => {
                     >Read more</Link>
                     <Button 
                         variant="delete"
+                        onClick={toggleConfirmationModal}
                     >Delete</Button>
                 </div>
             </div>

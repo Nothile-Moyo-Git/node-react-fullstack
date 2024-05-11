@@ -12,13 +12,14 @@
 import "./ViewPosts.scss";
 import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
-import { ArticleCard } from "../../components/card/ArticleCard";
+import { PostCard } from "../../components/card/PostCard";
 import { FC, useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
-import ErrorModal from "../../components/error/ErrorModal";
+import ErrorModal from "../../components/modals/ErrorModal";
+import ConfirmationModal from "../../components/modals/ConfirmationModal";
 
 export const ViewPosts : FC = () => {
 
@@ -36,6 +37,7 @@ export const ViewPosts : FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [numberOfPages, setNumberOfPages] = useState<number>(1);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -49,6 +51,21 @@ export const ViewPosts : FC = () => {
         }
 
         return response;
+    };
+
+    // Show the confirmation modal when attempting to delete a modal
+    const toggleShowConfirmationModal = () => {
+        
+        console.clear();
+        console.log("Confirmation modal");
+        setShowConfirmationModal((previousState) => !previousState);
+    };
+
+    // Handle the deletion of a post
+    const deletePost = () => {
+
+        console.clear();
+        console.log("Delete button clicked");
     };
 
     useEffect(() => {
@@ -99,6 +116,13 @@ export const ViewPosts : FC = () => {
             {
                 isLoading && <LoadingSpinner/>
             }
+
+            {
+                showConfirmationModal && <ConfirmationModal 
+                    toggleConfirmationModal={toggleShowConfirmationModal} 
+                    performAction={deletePost}
+                />
+            }
  
             {
                 !isLoading && !showErrorText && posts.length > 0 &&
@@ -108,7 +132,10 @@ export const ViewPosts : FC = () => {
                             posts.map((post : Post) => {
                                 return (
                                     <li key={post._id}>
-                                        <ArticleCard post={post}/>
+                                        <PostCard 
+                                            post={post}
+                                            toggleConfirmationModal={toggleShowConfirmationModal}
+                                        />
                                     </li>
                                 )
                             })
