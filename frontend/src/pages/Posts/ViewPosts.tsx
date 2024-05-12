@@ -38,6 +38,7 @@ export const ViewPosts : FC = () => {
     const [numberOfPages, setNumberOfPages] = useState<number>(1);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
+    const [deleteId, setDeleteId] = useState<string>("");
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -54,18 +55,44 @@ export const ViewPosts : FC = () => {
     };
 
     // Show the confirmation modal when attempting to delete a modal
-    const toggleShowConfirmationModal = () => {
+    const toggleShowConfirmationModal = (id : string) => {
         
         console.clear();
         console.log("Confirmation modal");
+        
+        setDeleteId(id);
         setShowConfirmationModal((previousState) => !previousState);
     };
 
     // Handle the deletion of a post
-    const deletePost = () => {
+    const deletePost = async () => {
 
         console.clear();
         console.log("Delete button clicked");
+
+        console.log("Delete id");
+        console.log(deleteId);
+
+        // create out fields to help authorize the request
+        const fields = new FormData();
+        fields.append('userId', page.toString());
+
+        try{
+
+            // Perform the api request to delete the post
+            const response = await fetch(`http://localhost:4000/delete-post`,{
+                method : "POST",
+                body : fields
+            });
+
+            console.log("\n\n");
+            console.log("Response");
+            console.log(response);
+
+        }catch(error){
+            console.clear();
+            console.log(error);
+        }
     };
 
     useEffect(() => {
@@ -121,6 +148,7 @@ export const ViewPosts : FC = () => {
                 showConfirmationModal && <ConfirmationModal 
                     toggleConfirmationModal={toggleShowConfirmationModal} 
                     performAction={deletePost}
+                    id={deleteId}
                 />
             }
  

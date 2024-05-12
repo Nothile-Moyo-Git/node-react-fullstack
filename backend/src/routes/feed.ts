@@ -23,7 +23,7 @@ feedRoutes.get('/test', testEndpoint);
 feedRoutes.get('/post/:postId', GetPostController);
 feedRoutes.get('/posts/:page?', GetPostsController);
 feedRoutes.post('/create-post', PostCreatePostController);
-feedRoutes.post('/delete-post/:postId', PostDeletePostController);
+feedRoutes.post('/delete-post', PostDeletePostController);
 feedRoutes.post('/update-post/:postId', PostUpdatePostController);
 
 export default feedRoutes;

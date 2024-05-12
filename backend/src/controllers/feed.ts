@@ -276,38 +276,27 @@ export const PostUpdatePostController = async (request : FeedRequestInterface, r
 export const PostDeletePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
     // Get the postId
-    const postId = request.params.postId;
 
     try {
 
         // Get the post data
-        const post = await Post.findById(postId);
+        // const post = await Post.findById(postId);
 
         // If there's no post, return an error
-        if (!post) {
-
-            // Get the post data
-            const error : ErrorInterface = new Error('Could not find post');
-            error.statusCode = 404;
-            throw error;
-        }
-
-        // If the user isn't authorized, respond with an error
-        if (post.creator.toString() !== request.userId.toString()) {
-
-            const error : ErrorInterface = new Error('Not authorized!');
-            error.statusCode = 403;
-            throw error;
-        }
+        //if (!post) {
 
         // Check logged in User
-        clearImage(post.imageUrl);
-        await Post.findByIdAndDelete(postId);
+        // clearImage(post.imageUrl);
+        // await Post.findByIdAndDelete(postId);
 
         // Remove the reference for the post from MongoDB
-        const user = await User.findById(request.userId);
+        // const user = await User.findById(request.userId);
         // user?.posts?.splice
-        await user?.save();
+        // await user?.save();
+
+        response.status(200);
+        response.json({ success : true });
+        //}
 
     } catch (error) {
 
