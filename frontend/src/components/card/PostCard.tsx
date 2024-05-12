@@ -16,8 +16,8 @@ import Button from "../button/Button";
 
 interface ComponentProps {
    children ?: ReactNode,
-   post ?: Post,
-   toggleConfirmationModal ?: (event : React.MouseEvent<HTMLElement>) => void
+   post : Post,
+   toggleConfirmationModal : (id : string) => void
 }
 
 export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal }) => {
@@ -61,7 +61,7 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
                     >Read more</Link>
                     <Button 
                         variant="delete"
-                        onClick={toggleConfirmationModal}
+                        onClick={() => toggleConfirmationModal(post._id)}
                     >Delete</Button>
                 </div>
             </div>
