@@ -67,15 +67,10 @@ export const ViewPosts : FC = () => {
     // Handle the deletion of a post
     const deletePost = async () => {
 
-        console.clear();
-        console.log("Delete button clicked");
-
-        console.log("Delete id");
-        console.log(deleteId);
-
         // create out fields to help authorize the request
         const fields = new FormData();
-        fields.append('userId', page.toString());
+        fields.append('postId', deleteId);
+        fields.append('userId', appContextInstance?.userId ? appContextInstance?.userId : '');
 
         try{
 

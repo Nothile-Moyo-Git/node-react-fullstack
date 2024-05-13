@@ -22,7 +22,7 @@ import fs from "fs";
 import path from "path";
 import Post from "../models/post";
 import User from "../models/user";
-import { FeedRequestInterface, ErrorInterface } from "../@types";
+import { FeedRequestInterface, ErrorInterface, PostsInterface } from "../@types";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
@@ -276,27 +276,38 @@ export const PostUpdatePostController = async (request : FeedRequestInterface, r
 export const PostDeletePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
     // Get the postId
+    const postId = request.body.postId;
+    const userId = request.body.userId;
+
+    console.clear();
 
     try {
 
         // Get the post data
-        // const post = await Post.findById(postId);
+        const post = await Post.findById(postId);
 
         // If there's no post, return an error
-        //if (!post) {
+        if (post) {
 
-        // Check logged in User
-        // clearImage(post.imageUrl);
-        // await Post.findByIdAndDelete(postId);
+            // Check logged in User
+            deleteFile(post.imageUrl);
 
-        // Remove the reference for the post from MongoDB
-        // const user = await User.findById(request.userId);
-        // user?.posts?.splice
-        // await user?.save();
+            await Post.findByIdAndDelete(postId);
 
-        response.status(200);
-        response.json({ success : true });
-        //}
+            // Remove the reference for the post from MongoDB
+            const user = await User.findById(userId);
+
+            const filteredPosts = user.posts.filter((post : PostsInterface) => post._id.toString() !== postId );
+
+            // Update the posts with the new one to reflect the deleted post
+            user.posts = filteredPosts;
+
+            await user.save();
+
+            response.status(200);
+            
+            response.json({ success : true });
+        }
 
     } catch (error) {
 
