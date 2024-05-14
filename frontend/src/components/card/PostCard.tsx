@@ -7,7 +7,8 @@
  * Wraps an article in a card component in order to be rendered in a list
  */
 
-import "./PostCard.scss"; 
+import "./PostCard.scss";
+import "../button/Button.scss";
 import { Post } from '../../@types';
 import { FC, ReactNode } from 'react';
 import { Link } from "react-router-dom";
@@ -57,8 +58,12 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
                 <div className="article__buttons">
                     <Link 
                         to={`${BASENAME}/post/${post?._id}`}
-                        className="article__link"
+                        className="link__read-more"
                     >Read more</Link>
+                    <Link
+                        to={`${BASENAME}/edit-post/${post?._id}`}
+                        className="link__edit"
+                    >Edit</Link>
                     <Button 
                         variant="delete"
                         onClick={() => toggleConfirmationModal(post._id)}

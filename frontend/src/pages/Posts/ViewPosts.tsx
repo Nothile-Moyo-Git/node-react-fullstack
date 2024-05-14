@@ -54,12 +54,23 @@ export const ViewPosts : FC = () => {
         return response;
     };
 
+    // Method defined here to allow async calls in a useEffect hook
+    const fetchPosts = async () => {
+
+        const result = await getPosts();
+
+        const data = await result.json();
+
+        const success = data.success ? data.success : false;
+
+        if (success === true) {
+            setPosts(data.posts);
+            setNumberOfPages(data.numberOfPages);
+        }
+    };
+
     // Show the confirmation modal when attempting to delete a modal
-    const toggleShowConfirmationModal = (id : string) => {
-        
-        console.clear();
-        console.log("Confirmation modal");
-        
+    const toggleShowConfirmationModal = (id : string) => {        
         setDeleteId(id);
         setShowConfirmationModal((previousState) => !previousState);
     };
@@ -75,14 +86,13 @@ export const ViewPosts : FC = () => {
         try{
 
             // Perform the api request to delete the post
-            const response = await fetch(`http://localhost:4000/delete-post`,{
+             await fetch(`http://localhost:4000/delete-post`,{
                 method : "POST",
                 body : fields
             });
 
-            console.log("\n\n");
-            console.log("Response");
-            console.log(response);
+            fetchPosts();
+            setShowConfirmationModal(false);
 
         }catch(error){
             console.clear();
@@ -99,21 +109,6 @@ export const ViewPosts : FC = () => {
         try{
 
             if (appContextInstance?.userAuthenticated === true) {
-
-                // Method defined here to allow async calls in a useEffect hook
-                const fetchPosts = async () => {
-
-                    const result = await getPosts();
-
-                    const data = await result.json();
-
-                    const success = data.success ? data.success : false;
-
-                    if (success === true) {
-                        setPosts(data.posts);
-                        setNumberOfPages(data.numberOfPages);
-                    }
-                };
                 
                 if (appContextInstance?.token !== '') {
                     fetchPosts();
