@@ -15,12 +15,10 @@ import { CreatePostComponent } from '../pages/Posts/CreatePost';
 import PageWrapper from '../components/globals/PageWrapper';
 import { BASENAME } from '../util/util';
 import App from '../App';
-
-import { 
-    createBrowserRouter,
-} from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { ViewPosts } from '../pages/Posts/ViewPosts';
 import PostScreen from '../pages/Posts/PostScreen';
+import { EditPost } from '../pages/Posts/EditPost';
 
 export const nestedRouter = createBrowserRouter([
     {
@@ -47,6 +45,10 @@ export const nestedRouter = createBrowserRouter([
             {
                 path: BASENAME + "/post/:postId?",
                 element : <PostScreen/>
+            },
+            {
+                path: BASENAME + "/edit-post/:postId?",
+                element : <EditPost/>
             },
             {
                 path : BASENAME + "/post/create",
