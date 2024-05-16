@@ -16,6 +16,7 @@ import { Post } from "../../@types";
 import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
+import ErrorModal from "../../components/modals/ErrorModal";
 
 /**
  * @Name EditPost
@@ -37,19 +38,38 @@ export const EditPost : FC = () => {
     // State for the page
     const [postData, setPostData] = useState<Post>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [showErrorText, setShowErrorText] = useState<boolean>(false);
 
     console.clear();
     console.log("PostId", postId);
     console.log(postId);
 
-    const getPostData = () => {
+    const getPostData = async () => {
 
+        const response = await fetch(`http://localhost:4000/post/${postId}`);
+
+        // Show the error modal if the request fails
+        if (response.status === 200) {
+            setShowErrorText(false);
+        }else{
+            setShowErrorText(true);
+        }
+
+        return response;
     };
 
     // This method runs the get method and then formats the results
-    const handlePostDataQuery = () => {
+    const handlePostDataQuery = async () => {
 
+        const result = await getPostData();
 
+        const data = await result.json();
+
+        const success = data.success ? data.success : false;
+
+        if (success === true) {
+            setPostData(data.post);
+        }
     };
 
     useEffect(() => {
@@ -63,7 +83,7 @@ export const EditPost : FC = () => {
             if (appContextInstance?.userAuthenticated === true) {
                 
                 if (appContextInstance?.token !== '') {
-    
+                    handlePostDataQuery();
                 }
             }
 
@@ -79,10 +99,16 @@ export const EditPost : FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[postId, appContextInstance]);
 
+    console.log("Post data");
+    console.log(postData);
+
     return(
         <section className="editPost">
             {
                 isLoading && <LoadingSpinner/>
+            }
+            {
+                !isLoading && showErrorText && <ErrorModal/>
             }
             Edit Post
         </section>

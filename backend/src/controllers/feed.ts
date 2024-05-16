@@ -174,10 +174,10 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
 export const GetPostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
-    // Get the postId from the url passed through
-    const postId = new ObjectId(request.params.postId);
-
     try {
+
+        // Get the postId from the url passed through
+        const postId = new ObjectId(request.params.postId);
 
         // Get the post
         const post = await Post.findById(postId);
@@ -191,11 +191,11 @@ export const GetPostController = async (request : FeedRequestInterface, response
         }
 
         // Send a response if the request is successful
-        response.status(200).json({ message: 'Post fetched.', post: post });
+        response.status(200).json({ message: 'Post fetched.', post: post, success : true });
 
     } catch (error : any) {
 
-        response.status(500).json({ message: 'Post failed', post : null });
+        response.status(500).json({ message: 'Post failed', post : null, success : false });
     }
 };
 
@@ -304,9 +304,7 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
 
             await user.save();
 
-            response.status(200);
-            
-            response.json({ success : true });
+            response.status(200).json({ success : true });
         }
 
     } catch (error) {
