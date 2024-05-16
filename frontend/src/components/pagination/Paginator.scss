@@ -11,8 +11,8 @@
 
         background-color: transparent;
         padding: 0.15rem 0.6rem 0.25rem 0.6rem;
-        border: 1px solid branding.$brand_color_six;
-        color: branding.$brand_color_six;
+        border: 1px solid branding.$brand_color_three;
+        color: branding.$brand_color_three;
         transition: animations.$standard_transition;
         border-radius: 3px;
         cursor: pointer;
@@ -24,9 +24,10 @@
         &:hover{
             color : rgba(0, 0, 0, 0.9);
             box-shadow: branding.$box_shadow_blue;
+            border-bottom-color: branding.$brand_color_three;
 
             @include mixins.backgroundGradientEffect(){
-                background: branding.$gradient_color_six;
+                background: branding.$gradient_color_three;
             }
         }
 
@@ -36,14 +37,14 @@
             margin: 0;
             border-top-left-radius: 0px;
             border-bottom-left-radius: 0px;
-            color: branding.$brand_color_six;
+            color: branding.$brand_color_three;
 
             &::hover{
                 box-shadow: none;
                 box-shadow: branding.$box_shadow_blue;
 
                 @include mixins.backgroundGradientEffect(){
-                    background: branding.$gradient_color_six;
+                    background: branding.$gradient_color_three;
                 }
             }
         }
@@ -54,7 +55,7 @@
             color: rgba(0,0,0,0.9);
 
             @include mixins.backgroundGradientEffect(){
-                background: branding.$gradient_color_six;
+                background: branding.$gradient_color_three;
             }
 
             &:hover{

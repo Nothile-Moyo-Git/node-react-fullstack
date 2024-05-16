@@ -1,0 +1,5 @@
+@use "../../scss/partials/animations" as animations;
+
+.editPost{
+    animation: fade-in 0.2s linear;
+}

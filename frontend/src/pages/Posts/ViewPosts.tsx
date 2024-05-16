@@ -86,13 +86,17 @@ export const ViewPosts : FC = () => {
         try{
 
             // Perform the api request to delete the post
-             await fetch(`http://localhost:4000/delete-post`,{
+            const response = await fetch(`http://localhost:4000/delete-post`,{
                 method : "POST",
                 body : fields
             });
 
             fetchPosts();
             setShowConfirmationModal(false);
+
+            if (response.status === 200) {
+                alert(`Post ${deleteId} has successfully been deleted`);
+            }
 
         }catch(error){
             console.clear();
@@ -112,9 +116,10 @@ export const ViewPosts : FC = () => {
                 
                 if (appContextInstance?.token !== '') {
                     fetchPosts();
-                    setIsLoading(false);
                 }
             }
+            
+            setIsLoading(false);
 
         }catch(error){
             console.error(error);
