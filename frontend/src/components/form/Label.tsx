@@ -25,7 +25,11 @@ interface ComponentProps {
  * @method Label
  * @description Label component. Use this component instead of a label when building forms
  * 
- * @params children : ReactNode, htmlFor : string, id : string
+ * @param children : ReactNode
+ * @param id : string
+ * @param htmlFor : string
+ * @param error : boolean
+ * @param errorText ?: string
  */
 const Label : FC<ComponentProps> = ({children, id, htmlFor, error, errorText}) => {
 
