@@ -24,6 +24,15 @@ interface ComponentProps {
     onSubmit: (event: FormEvent) => void
 }
 
+/**
+ * @name Form
+ * 
+ * @description Form component, serves as a wrapper for forms with the styling and error handling
+ * 
+ * @param children : ReactNode
+ * @param isFormValid ?: boolean
+ * @param onSubmit : (event: FormEvent) => void
+ */
 const Form : FC<ComponentProps> = ({children, isFormValid, onSubmit}) => {
 
     return(

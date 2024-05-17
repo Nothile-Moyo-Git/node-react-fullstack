@@ -16,20 +16,39 @@ interface ComponentProps {
     ariaLabelledBy : string,
     children ?: ReactNode,
     error : boolean,
+    initialValue ?: string,
     name : string,
     onChange ?: (event : React.ChangeEvent<HTMLInputElement>) => void,
     placeholder ?: string,
     ref : React.RefObject<HTMLInputElement>,
-    required ?: boolean
+    required ?: boolean,
     type : string,
 };
 
-export const Input = forwardRef<HTMLInputElement, ComponentProps>(function InputComponent(props, ref) {
+/**
+ * @Name Input
+ * 
+ * @Description Reusable Input component accounting for different input types
+ * 
+ * @param aria-labelledBy : string
+ * @param children ?: ReactNode
+ * @param defaultValue : string
+ * @param error : boolean
+ * @param initialValue ?: string
+ * @param name : string
+ * @param onChange ?: (event : React.ChangeEvent<HTMLInputElement>) => void
+ * @param placeholder ?: string
+ * @param ref : React.RefObject<HTMLInputElement>
+ * @param required ?: boolean
+ * @param type : string
+ */
+const Input = forwardRef<HTMLInputElement, ComponentProps>(function InputComponent(props, ref) {
 
     return(
         <input
             aria-labelledby={props.ariaLabelledBy}
             className={`input ${props.error === true && 'input__error'}`}
+            defaultValue={props.initialValue}
             name={props.name}
             onChange={(event : React.ChangeEvent<HTMLInputElement>) => { props.onChange && props.onChange(event) }}
             placeholder={props.placeholder}

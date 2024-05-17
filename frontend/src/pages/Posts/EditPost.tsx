@@ -9,7 +9,7 @@
  * This is a view screen which will take the postId in order to find the data required
  */
 
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./EditPost.scss";
 import { Post } from "../../@types";
@@ -17,6 +17,12 @@ import { AppContext } from "../../context/AppContext";
 import { BASENAME } from "../../util/util";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
 import ErrorModal from "../../components/modals/ErrorModal";
+import Form from "../../components/form/Form";
+import Title from "../../components/form/Title";
+import Field from "../../components/form/Field";
+import Label from "../../components/form/Label";
+import Input from "../../components/form/Input";
+import Button from "../../components/button/Button";
 
 /**
  * @Name EditPost
@@ -39,10 +45,17 @@ export const EditPost : FC = () => {
     const [postData, setPostData] = useState<Post>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
+    const [isFormValid, setIsFormValid] = useState<boolean>(true);
+    const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
+    const [isContentValid, setIsContentValid] = useState<boolean>(true);
+    const [isFileValid, setIsFileValid] = useState<boolean>(true);
+    const [uploadFile, setUploadFile] = useState<File>();
+    const [imagePreview, setImagePreview] = useState<unknown | null>(null);
 
-    console.clear();
-    console.log("PostId", postId);
-    console.log(postId);
+    // States and refs for our objects
+    const titleRef = useRef<HTMLInputElement>(null);
+    const imageUrlRef = useRef<HTMLInputElement>(null);
+    const contentRef = useRef<HTMLTextAreaElement>(null);
 
     const getPostData = async () => {
 
@@ -99,8 +112,16 @@ export const EditPost : FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[postId, appContextInstance]);
 
-    console.log("Post data");
-    console.log(postData);
+    // Update the post data, and return an error if required
+    const submitHandler = async (event : FormEvent) => {
+
+        event.preventDefault();
+
+        console.clear();
+        console.log("Ref");
+        console.log(titleRef.current?.value);
+
+    };
 
     return(
         <section className="editPost">
@@ -110,7 +131,37 @@ export const EditPost : FC = () => {
             {
                 !isLoading && showErrorText && <ErrorModal/>
             }
-            Edit Post
+            {
+                !isLoading && !showErrorText &&
+                <Form onSubmit={submitHandler}>
+
+                    <Title 
+                        isFormValid={isFormValid}
+                    >{isFormValid ? `Edit Post : ${postData?.title}` : 'Error: Please fix the errors below'}</Title>
+
+                    <Field>
+                        <Label
+                            id="titleLabel"
+                            htmlFor="title"
+                            error={!isTitleValid}
+                            errorText="Error: Title must be longer than 3 characters"
+                        >Title*</Label>
+                        <Input
+                            ariaLabelledBy="titleLabel"
+                            error={!isTitleValid}
+                            initialValue={postData?.title}
+                            name="title"
+                            placeholder="Enter your title here"
+                            ref={titleRef}
+                            required={true}
+                            type="string"
+                        />
+                    </Field>
+
+                    <Button variant="primary">Submit</Button>
+
+                </Form>
+            }
         </section>
     );
 };
