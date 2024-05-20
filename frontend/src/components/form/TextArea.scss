@@ -19,4 +19,22 @@
             outline-color: red;
         }
     }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        border-top-right-radius: 3px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background: branding.$brand_color_six;
+    }
+
+    /* Corner */
+    &::-webkit-scrollbar-corner{
+        background: transparent;
+        border-bottom-right-radius: 3px;
+        border: none;
+    }
 }

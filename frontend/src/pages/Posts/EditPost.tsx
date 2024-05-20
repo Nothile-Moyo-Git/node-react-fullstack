@@ -66,10 +66,6 @@ export const EditPost : FC = () => {
 
         const response = await fetch(`http://localhost:4000/post/${postId}`);
 
-        console.clear();
-        console.log("response");
-        console.log(response);
-
         // Show the error modal if the request fails
         if (response.status === 200) {
             setShowErrorText(false);
@@ -171,6 +167,41 @@ export const EditPost : FC = () => {
         console.clear();
         console.log("Ref");
         console.log(titleRef.current?.value);
+
+        
+        const userId = appContextInstance?.userId;
+
+        let title = "";
+        let content = "";
+
+        // Extract inputs
+        if (titleRef.current) { title = titleRef.current.value; }
+        if (contentRef.current) { content = contentRef.current.value; }
+
+        // Set form inputs for the api request to the bakend
+        const fields = new FormData();
+        fields.append('title', title);
+        uploadFile && fields.append("image", uploadFile);
+        fields.append('content', content);
+        userId && fields.append('userId', userId);
+
+        // Perform the API request to the backend
+        const response = await fetch(`http://localhost:4000/update-post/${postId}`, {
+            method : "PUT",
+            body : fields
+        });
+
+        const data = await response.json();
+
+        console.log("\n\n");
+        console.log("Response");
+        console.log(response);
+
+        console.log("\n\n");
+        console.log("data");
+        console.log(data);
+
+
 
     };
 

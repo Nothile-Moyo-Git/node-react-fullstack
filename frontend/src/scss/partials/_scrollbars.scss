@@ -4,7 +4,6 @@
 /* width */
 ::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
 }
   
 /* Track */
@@ -20,5 +19,6 @@
 
 /* Corner */
 ::-webkit-scrollbar-corner{
-    background: branding.$backdrop_color_one;
+    background: branding.$brand_color_six;
+    border: 1px solid branding.$brand_color_six;
 }
