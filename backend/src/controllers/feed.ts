@@ -87,9 +87,9 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
     if (!request.file) {
 
         // Response
-        response.status(201).json({
+        response.status(400).json({
             creator : null,
-            isImageValid : true,
+            isImageValid : false,
             isTitleValid : isTitleValid,
             isContentValid : isContentValid,
             isFileValid : false,
@@ -199,76 +199,111 @@ export const GetPostController = async (request : FeedRequestInterface, response
     }
 };
 
-export const PostUpdatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+export const PutUpdatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
     // Grabving the postId
     const postId = new ObjectId(request.params.postId);
-    const errors = validationResult(request);
+    const imageUrl = request.file.path;
 
-    // If the inputs are incorrect, send a response
-    if (!errors.isEmpty()) {
-
-        const error : ErrorInterface = new Error('Validation failed, entered data is incorrect');
-        error.statusCode = 422;
-        throw error;
-    }
-
-    // Get form inputs from the frontend
+    // Get our initial values and validate them so that even if we don't have an image, we can evaluate the other inputs
     const title = request.body.title;
     const content = request.body.content;
-    let imageUrl = request.body.image;
 
-    // Get the image URL
-    if (request.file) { 
-        imageUrl = request.file.path; 
-    }
+    // Validate out inputs
+    const isTitleValid : boolean = title.length >= 3;
+    const isContentValid : boolean = content.length >= 6 && content.length <= 400;
 
     // If there is no image
-    if (!imageUrl) {
+    if (!request.file) {
 
-        const error : ErrorInterface = new Error('No file picked.');
-        error.statusCode = 422;
-        throw error;
-    }
+        // Response
+        response.status(400).json({
+            creator : null,
+            isImageValid : true,
+            isTitleValid : isTitleValid,
+            isContentValid : isContentValid,
+            isFileValid : false,
+            isFileTypeValid : true,
+            message : 'Error: No Image Provided',
+            mimeType : null,
+            success : false
+        });
+    } 
+
+    // Validate the image, and proceed to delete it if it isn't valid
+    const isImageUrlValid : boolean = imageUrl.length > 0;
+    const isFileValid : boolean = (request.file && request.file.size < 5000000) ? true : false;
+    const fileMimeType = checkFileType(request.file);
+    const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
+
+    // If any of our conditions are invalid, delete the file we just uploaded
+    if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { 
+        deleteFile(imageUrl);  
+    } 
 
     // Update post data
     try {
 
         // Get the post data
         const post = await Post.findById(postId);
+        const user = await User.findById(new ObjectId(request.body.userId));
 
-        // Error message if there is no post data
-        if (!post) {
-            
-            // Respond to the error
-            const error : ErrorInterface = new Error('Could not find post.');
-            error.statusCode = 404;
-            throw error;
+        let isPostCreator : boolean = true;
+
+        console.clear();
+        console.log("Post");
+        console.log(post);
+
+        if (post) {
+
+            // Validate the creator since only they should be able to edit their posts
+            // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
+            user.posts.map((userPost : ObjectId | PostsInterface) => {
+                if (userPost.toString() === postId.toString()){
+                    isPostCreator = true;
+                }
+            });
         }
 
-        // Error message if we didn't attach the current user to the request
-        if (post.creator.toString() !== request.userId.toString()) {
+        if (isPostCreator === true && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
 
-            // Return a 403 response with an error
-            const error : ErrorInterface = new Error('Not authorized!');
-            error.statusCode = 403;
-            throw error;
+            // Since our new image is valid, delete the old one and keep the uploaded one
+            deleteFile(post.imageUrl);
+
+            // Update post details
+            post.title = title;
+            post.imageUrl = imageUrl;
+            post.fileName = request.file.filename;
+            post.content = content;
+
+            console.clear();
+            console.log("Updated post");
+            console.log(post);
+
+            // Update our post
+            const result = await post.save();
+
+            // Send a response to the front end in JSON format which we can extract using the data property
+            response.status(200).json({
+                success : true,
+                imageUrl : imageUrl
+            });
+
+        }else{
+
+            response.status(400).json({
+                success : false,
+                imageUrl : imageUrl
+            });
         }
-
-        // If there's a new image, delete the old one
-        if (imageUrl !== post.imageUrl) {
-            clearImage(post.imageUrl);
-        }
-
-        // Update post details
-        post.title = title;
-        post.imageUrl = imageUrl;
-        post.content = content;
-        const result = await post.save();
-        response.status(200).json({ message : 'Post updated!', post : result });
 
     } catch (error) {
-        next(error);
+        console.log(error);
+        
+        response.status(400).json({
+            success : false,
+            imageUrl : imageUrl
+        });
     }
 };
 

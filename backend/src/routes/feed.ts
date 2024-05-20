@@ -12,7 +12,7 @@ import {
     GetPostController, 
     PostCreatePostController,
     PostDeletePostController,
-    PostUpdatePostController
+    PutUpdatePostController
 } from "../controllers/feed";
 
 
@@ -24,6 +24,6 @@ feedRoutes.get('/post/:postId', GetPostController);
 feedRoutes.get('/posts/:page?', GetPostsController);
 feedRoutes.post('/create-post', PostCreatePostController);
 feedRoutes.post('/delete-post', PostDeletePostController);
-feedRoutes.post('/update-post/:postId', PostUpdatePostController);
+feedRoutes.put('/update-post/:postId?', PutUpdatePostController);
 
 export default feedRoutes;
