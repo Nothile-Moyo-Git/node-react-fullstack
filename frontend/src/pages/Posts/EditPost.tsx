@@ -23,6 +23,9 @@ import Field from "../../components/form/Field";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Button from "../../components/button/Button";
+import { generateBase64FromImage } from "../../util/file";
+import ImagePreview from "../../components/form/ImagePreview";
+import TextArea from "../../components/form/TextArea";
 
 /**
  * @Name EditPost
@@ -51,6 +54,8 @@ export const EditPost : FC = () => {
     const [isFileValid, setIsFileValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
+    const [showImagePreview, setShowImagePreview] = useState<boolean>();
+    const [previousImageUrl, setPreviousImageUrl] = useState<string>();
 
     // States and refs for our objects
     const titleRef = useRef<HTMLInputElement>(null);
@@ -61,6 +66,10 @@ export const EditPost : FC = () => {
 
         const response = await fetch(`http://localhost:4000/post/${postId}`);
 
+        console.clear();
+        console.log("response");
+        console.log(response);
+
         // Show the error modal if the request fails
         if (response.status === 200) {
             setShowErrorText(false);
@@ -69,6 +78,26 @@ export const EditPost : FC = () => {
         }
 
         return response;
+    };
+
+    // Set the preview of the file when the api request concludes so we can view it on the page immediately
+    const formatPreviousPostImage = (post : Post) => {
+
+        try{
+
+            // Only fetch the file if we have a filename
+            if (post?.fileName) {
+    
+                // Fetch the image, if it fails, reload the component
+                let image = "";
+                image = require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`);
+                setPreviousImageUrl(image);
+            }
+    
+        }catch(error){
+            
+            console.log(error);
+        }
     };
 
     // This method runs the get method and then formats the results
@@ -82,8 +111,30 @@ export const EditPost : FC = () => {
 
         if (success === true) {
             setPostData(data.post);
+            formatPreviousPostImage(data.post);
         }
     };
+
+    // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
+    const fileUploadHandler = async (event : React.ChangeEvent<HTMLInputElement>) => {
+
+        // Set the file so that it's ready for upload
+        if (event.target.files) {
+            const file = event.target.files[0];
+
+            // Raise and error and empty the input, otherwise, set the state to sent to the backend
+            // Note: This is for UX purposes, file uploads are also verified in the backend
+            if (file.size > 5000000) {
+                alert("Please upload a file smaller than 5MB");
+                event.target.value = "";
+            }else{
+                setUploadFile(file);
+                const base64Image = await generateBase64FromImage(file);
+                setImagePreview(base64Image);
+                setShowImagePreview(true);
+            }
+        }
+    }
 
     useEffect(() => {
 
@@ -155,6 +206,62 @@ export const EditPost : FC = () => {
                             ref={titleRef}
                             required={true}
                             type="string"
+                        />
+                    </Field>
+
+                    <Field>
+                        <Label
+                            id="imageUrlLabel"
+                            htmlFor="imageUrl"
+                            error={!isFileValid}
+                            errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
+                        >Image*</Label>
+                        <Input
+                            ariaLabelledBy="imageUrlLabel"
+                            error={!isFileValid}
+                            name="image"
+                            onChange={fileUploadHandler}
+                            ref={imageUrlRef}
+                            required={true}
+                            type="file"
+                        />
+                    </Field>
+
+                    {   
+                        (showImagePreview || previousImageUrl) &&
+                        <Field>
+                            {(!showImagePreview && previousImageUrl) &&
+                                <Label
+                                    id="imageUrlLabel"
+                                    htmlFor="imageUrl"
+                                    error={!isFileValid}
+                                    errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
+                                >{`Previous image: ${postData?.fileName}`}</Label>
+                            } 
+                            <ImagePreview
+                                encodedImage={showImagePreview ? imagePreview : previousImageUrl}
+                                imageSize="contain"
+                                imagePosition="left"
+                            />
+                        </Field>
+                    }
+
+                    <Field>
+                        <Label
+                            error={!isContentValid}
+                            htmlFor="content"
+                            id="contentLabel"
+                            errorText="Error: Content must be longer than 6 characters and less than 400 characters"
+                        >Content*</Label>
+                        <TextArea
+                            ariaLabelledBy="contentLabel"
+                            initialValue={postData?.content}
+                            error={!isContentValid}
+                            name="content"
+                            placeholder="Please enter your content"
+                            startingRows={3}
+                            ref={contentRef}
+                            required={true}
                         />
                     </Field>
 
