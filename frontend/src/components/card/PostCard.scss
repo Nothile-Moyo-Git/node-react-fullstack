@@ -30,7 +30,7 @@
         background: branding.$gradient_color_three;
     }
 
-    @include responsive.breakpoint(tablet){
+    @include responsive.breakpoint(mobile){
         flex-direction: column;
     }
 

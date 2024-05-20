@@ -14,6 +14,7 @@ import React, { forwardRef } from "react";
 interface ComponentProps {
     ariaLabelledBy : string,
     children ?: React.ReactNode,
+    initialValue ?: string,
     error : boolean,
     name : string,
     placeholder : string,
@@ -22,12 +23,27 @@ interface ComponentProps {
     startingRows ?: number
 };
 
+/**
+ * @name TextArea
+ * 
+ * @description A textarea component which uses a ref and a defaultValue property in order to render it
+ * 
+ * @param ariaLabelledBy : string
+ * @param children ?: ReactNode
+ * @param error : boolean
+ * @param name : string
+ * @param placeholder : string
+ * @param ref : React.RefObject<HTMLTextAreaElement>
+ * @param required : boolean
+ * @param startingRows ?: number
+ */
 const TextArea = forwardRef<HTMLTextAreaElement, ComponentProps>(function TextAreaComponent(props, ref) {
 
     return (
         <textarea
             aria-labelledby={props.ariaLabelledBy}
             className={`textarea ${props.error === true && 'textarea__error'}`}
+            defaultValue={props.initialValue}
             name={props.name}
             placeholder={props.placeholder}
             ref={ref}
