@@ -77,7 +77,8 @@ export const EditPost : FC = () => {
     };
 
     // Set the preview of the file when the api request concludes so we can view it on the page immediately
-    const formatPreviousPostImage = (post : Post) => {
+    const 
+    formatPreviousPostImage = (post : Post) => {
 
         try{
 
@@ -164,11 +165,6 @@ export const EditPost : FC = () => {
 
         event.preventDefault();
 
-        console.clear();
-        console.log("Ref");
-        console.log(titleRef.current?.value);
-
-        
         const userId = appContextInstance?.userId;
 
         let title = "";
@@ -193,6 +189,8 @@ export const EditPost : FC = () => {
 
         const data = await response.json();
 
+        console.clear();
+
         console.log("\n\n");
         console.log("Response");
         console.log(response);
@@ -201,8 +199,17 @@ export const EditPost : FC = () => {
         console.log("data");
         console.log(data);
 
+        setIsFormValid(data.success);
+        setIsFileValid(data.isFileValid);
+        setIsTitleValid(data.isTitleValid);
+        setIsContentValid(data.isContentValid);
 
-
+        if (data.success === true) {
+            
+            // Reload the page if we were successful so we can query the updated results
+            alert(`Success, Post ${postId} updated`);
+            window.location.reload();
+        }
     };
 
     return(
@@ -246,14 +253,14 @@ export const EditPost : FC = () => {
                             htmlFor="imageUrl"
                             error={!isFileValid}
                             errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
-                        >Image*</Label>
+                        >Image</Label>
                         <Input
                             ariaLabelledBy="imageUrlLabel"
                             error={!isFileValid}
                             name="image"
                             onChange={fileUploadHandler}
                             ref={imageUrlRef}
-                            required={true}
+                            required={false}
                             type="file"
                         />
                     </Field>

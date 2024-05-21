@@ -203,7 +203,6 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
 
     // Grabving the postId
     const postId = new ObjectId(request.params.postId);
-    const imageUrl = request.file.path;
 
     // Get our initial values and validate them so that even if we don't have an image, we can evaluate the other inputs
     const title = request.body.title;
@@ -213,32 +212,34 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
     const isTitleValid : boolean = title.length >= 3;
     const isContentValid : boolean = content.length >= 6 && content.length <= 400;
 
+    // File validation variables
+    let wasImageUploaded = false;
+    let imageUrl = "";
+    let isFileValid = true;
+    let fileMimeType = "";
+    let isFileTypeValid = true;
+
     // If there is no image
     if (!request.file) {
 
-        // Response
-        response.status(400).json({
-            creator : null,
-            isImageValid : true,
-            isTitleValid : isTitleValid,
-            isContentValid : isContentValid,
-            isFileValid : false,
-            isFileTypeValid : true,
-            message : 'Error: No Image Provided',
-            mimeType : null,
-            success : false
-        });
-    } 
+        wasImageUploaded = false;
+
+    }else{
+
+        // If we uploaded a new file
+        fileMimeType = checkFileType(request.file);
+        imageUrl = request.file.path;
+        isFileValid = (request.file && request.file.size < 5000000) ? true : false;
+        isFileTypeValid = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
+        wasImageUploaded = true;
+    }
 
     // Validate the image, and proceed to delete it if it isn't valid
     const isImageUrlValid : boolean = imageUrl.length > 0;
-    const isFileValid : boolean = (request.file && request.file.size < 5000000) ? true : false;
-    const fileMimeType = checkFileType(request.file);
-    const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
 
     // If any of our conditions are invalid, delete the file we just uploaded
     if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { 
-        deleteFile(imageUrl);  
+        wasImageUploaded === true && deleteFile(imageUrl);  
     } 
 
     // Update post data
@@ -249,10 +250,6 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
         const user = await User.findById(new ObjectId(request.body.userId));
 
         let isPostCreator : boolean = true;
-
-        console.clear();
-        console.log("Post");
-        console.log(post);
 
         if (post) {
 
@@ -265,35 +262,49 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
             });
         }
 
-        if (isPostCreator === true && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
+        if (isPostCreator === true && isTitleValid === true && isContentValid === true) {
 
             // Since our new image is valid, delete the old one and keep the uploaded one
-            deleteFile(post.imageUrl);
+            wasImageUploaded && deleteFile(post.imageUrl);
 
             // Update post details
             post.title = title;
-            post.imageUrl = imageUrl;
-            post.fileName = request.file.filename;
+            isImageUrlValid && (post.imageUrl = imageUrl);
+            request.file && (post.fileName = request.file.filename);
             post.content = content;
 
-            console.clear();
-            console.log("Updated post");
-            console.log(post);
-
             // Update our post
-            const result = await post.save();
+            await post.save();
 
             // Send a response to the front end in JSON format which we can extract using the data property
             response.status(200).json({
-                success : true,
-                imageUrl : imageUrl
+                creator : user,
+                imageUrl : imageUrl,
+                isContentValid : isContentValid,
+                isFileValid : isFileValid,
+                isFileTypeValid : isFileTypeValid,
+                isImageUrlValid : isImageUrlValid,
+                isTitleValid : isTitleValid,
+                message : "Post edited successfully",
+                mimeType : fileMimeType,
+                post : post,
+                success : true
             });
 
         }else{
 
             response.status(400).json({
-                success : false,
-                imageUrl : imageUrl
+                creator : user,
+                imageUrl : imageUrl,
+                isContentValid : isContentValid,
+                isFileValid : isFileValid,
+                isFileTypeValid : isFileTypeValid,
+                isImageUrlValid : isImageUrlValid,
+                isTitleValid : isTitleValid,
+                message : "Post edited unsuccessfully",
+                mimeType : fileMimeType,
+                post : null,
+                success : false
             });
         }
 
@@ -301,8 +312,8 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
         console.log(error);
         
         response.status(400).json({
-            success : false,
-            imageUrl : imageUrl
+            message : "Server error",
+            success : false
         });
     }
 };
