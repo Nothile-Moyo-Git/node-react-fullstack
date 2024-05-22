@@ -229,7 +229,7 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
         // If we uploaded a new file
         fileMimeType = checkFileType(request.file);
         imageUrl = request.file.path;
-        isFileValid = (request.file && request.file.size < 5000000) ? true : false;
+        isFileValid = (request.file && request.file.size < 5250000) ? true : false;
         isFileTypeValid = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
         wasImageUploaded = true;
     }
@@ -238,7 +238,7 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
     const isImageUrlValid : boolean = imageUrl.length > 0;
 
     // If any of our conditions are invalid, delete the file we just uploaded
-    if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { 
+    if ( !isImageUrlValid || !isTitleValid || !isContentValid || !isFileValid ) { 
         wasImageUploaded === true && deleteFile(imageUrl);  
     } 
 
@@ -262,7 +262,7 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
             });
         }
 
-        if (isPostCreator === true && isTitleValid === true && isContentValid === true) {
+        if (isPostCreator === true && isTitleValid === true && isContentValid === true && isFileValid === true) {
 
             // Since our new image is valid, delete the old one and keep the uploaded one
             wasImageUploaded && deleteFile(post.imageUrl);
@@ -281,9 +281,9 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
                 creator : user,
                 imageUrl : imageUrl,
                 isContentValid : isContentValid,
-                isFileValid : isFileValid,
                 isFileTypeValid : isFileTypeValid,
                 isImageUrlValid : isImageUrlValid,
+                isFileValid : isFileValid,
                 isTitleValid : isTitleValid,
                 message : "Post edited successfully",
                 mimeType : fileMimeType,
@@ -297,9 +297,9 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
                 creator : user,
                 imageUrl : imageUrl,
                 isContentValid : isContentValid,
-                isFileValid : isFileValid,
                 isFileTypeValid : isFileTypeValid,
                 isImageUrlValid : isImageUrlValid,
+                isFileValid : isFileValid,
                 isTitleValid : isTitleValid,
                 message : "Post edited unsuccessfully",
                 mimeType : fileMimeType,
