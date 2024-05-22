@@ -121,14 +121,16 @@ export const EditPost : FC = () => {
 
             // Raise and error and empty the input, otherwise, set the state to sent to the backend
             // Note: This is for UX purposes, file uploads are also verified in the backend
-            if (file.size > 5000000) {
-                alert("Please upload a file smaller than 5MB");
+            if (file.size > 5250000 || file.type === "video/webm") {
+                alert("Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)");
                 event.target.value = "";
+                setIsFileValid(false);
             }else{
                 setUploadFile(file);
                 const base64Image = await generateBase64FromImage(file);
                 setImagePreview(base64Image);
                 setShowImagePreview(true);
+                setIsFileValid(true);
             }
         }
     }
@@ -181,34 +183,39 @@ export const EditPost : FC = () => {
         fields.append('content', content);
         userId && fields.append('userId', userId);
 
-        // Perform the API request to the backend
-        const response = await fetch(`http://localhost:4000/update-post/${postId}`, {
-            method : "PUT",
-            body : fields
-        });
+        try{
 
-        const data = await response.json();
+            // Perform the API request to the backend
+            const response = await fetch(`http://localhost:4000/update-post/${postId}`, {
+                method : "PUT",
+                body : fields
+            });
 
-        console.clear();
+            const data = await response.json();
 
-        console.log("\n\n");
-        console.log("Response");
-        console.log(response);
+            // Apply validation on the fields so we can show errors if needed
+            setIsFormValid(data.success);
+            setIsFileValid(data.isFileValid);
+            setIsTitleValid(data.isTitleValid);
+            setIsContentValid(data.isContentValid);
 
-        console.log("\n\n");
-        console.log("data");
-        console.log(data);
+            if (data.success === true) {
+                
+                // Reload the page if we were successful so we can query the updated results
+                alert(`Success, Post ${postId} updated`);
+                window.location.reload();
+            }
 
-        setIsFormValid(data.success);
-        setIsFileValid(data.isFileValid);
-        setIsTitleValid(data.isTitleValid);
-        setIsContentValid(data.isContentValid);
+            // Remove the image preview / file if it isn't valid so the user can upload a new one
+            if (!data.isFileValid) {
+                setUploadFile(undefined);
+                setImagePreview(null);
+                setShowImagePreview(false);
+                imageUrlRef.current && (imageUrlRef.current.value = "");
+            }
 
-        if (data.success === true) {
-            
-            // Reload the page if we were successful so we can query the updated results
-            alert(`Success, Post ${postId} updated`);
-            window.location.reload();
+        }catch(error){
+            console.log(error);
         }
     };
 
@@ -272,7 +279,7 @@ export const EditPost : FC = () => {
                                 <Label
                                     id="imageUrlLabel"
                                     htmlFor="imageUrl"
-                                    error={!isFileValid}
+                                    error={false}
                                     errorText="Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)"
                                 >{`Previous image: ${postData?.fileName}`}</Label>
                             } 
