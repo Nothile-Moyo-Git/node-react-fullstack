@@ -10,10 +10,11 @@
 import "./PostCard.scss";
 import "../button/Button.scss";
 import { Post } from '../../@types';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useContext, useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { BASENAME, generateUploadDate } from "../../util/util";
 import Button from "../button/Button";
+import { AppContext } from "../../context/AppContext";
 
 interface ComponentProps {
    children ?: ReactNode,
@@ -24,6 +25,12 @@ interface ComponentProps {
 export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal }) => {
 
     let image = "";
+
+    // We use this state in order to determine whether we shoud show the edit and delete buttons or not
+    const [isPostCreator, setIsPostCreator] = useState<boolean>();
+
+    // Get the app context so we can get the userId for comparison
+    const appContextInstance = useContext(AppContext);
 
     try{
 
@@ -38,6 +45,13 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
         
         console.log(error);
     }
+
+    // Check if we're the same user here
+    useEffect(() => {
+
+        setIsPostCreator(appContextInstance?.userId === post.creator);
+
+    },[appContextInstance, post.creator]);
 
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(post?.createdAt ? post?.createdAt : '');
@@ -60,14 +74,22 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
                         to={`${BASENAME}/post/${post?._id}`}
                         className="link__read-more"
                     >Read more</Link>
-                    <Link
-                        to={`${BASENAME}/edit-post/${post?._id}`}
-                        className="link__edit"
-                    >Edit</Link>
-                    <Button 
-                        variant="delete"
-                        onClick={() => toggleConfirmationModal(post._id)}
-                    >Delete</Button>
+                    
+                    {
+                        isPostCreator &&                     
+                        <Link
+                            to={`${BASENAME}/edit-post/${post?._id}`}
+                            className="link__edit"
+                        >Edit</Link>
+                    }
+
+                    {
+                        isPostCreator && 
+                        <Button 
+                            variant="delete"
+                            onClick={() => toggleConfirmationModal(post._id)}
+                        >Delete</Button>
+                    }
                 </div>
             </div>
 
