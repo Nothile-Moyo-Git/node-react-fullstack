@@ -52,6 +52,7 @@ export const EditPost : FC = () => {
     const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [isFileValid, setIsFileValid] = useState<boolean>(true);
+    const [isPostCreator, setIsPostCreatorValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
     const [showImagePreview, setShowImagePreview] = useState<boolean>();
@@ -198,6 +199,7 @@ export const EditPost : FC = () => {
             setIsFileValid(data.isFileValid);
             setIsTitleValid(data.isTitleValid);
             setIsContentValid(data.isContentValid);
+            setIsPostCreatorValid(data.isPostCreator);
 
             if (data.success === true) {
                 
@@ -233,14 +235,17 @@ export const EditPost : FC = () => {
 
                     <Title 
                         isFormValid={isFormValid}
-                    >{isFormValid ? `Edit Post : ${postData?.title}` : 'Error: Please fix the errors below'}</Title>
+                    >{isFormValid ? 
+                        `Edit Post : ${postData?.title}` 
+                        : 'Error: Please fix the errors below'
+                    }</Title>
 
                     <Field>
                         <Label
                             id="titleLabel"
                             htmlFor="title"
                             error={!isTitleValid}
-                            errorText="Error: Title must be longer than 3 characters"
+                            errorText={"Error: Title must be longer than 3 characters"}
                         >Title*</Label>
                         <Input
                             ariaLabelledBy="titleLabel"

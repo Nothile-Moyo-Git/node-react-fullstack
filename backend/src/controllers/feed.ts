@@ -253,16 +253,20 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
 
         if (post) {
 
+            // Set the value to false and then only set it to true if it matches a single time
+            isPostCreator = false;
+
             // Validate the creator since only they should be able to edit their posts
             // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
-            user.posts.map((userPost : ObjectId | PostsInterface) => {
-                if (userPost.toString() === postId.toString()){
+            user.posts.map((userPostId : PostsInterface) => {
+                if (userPostId.toString() === postId.toString()){
                     isPostCreator = true;
                 }
             });
         }
 
-        if (isPostCreator === true && isTitleValid === true && isContentValid === true && isFileValid === true) {
+
+        if (post && isPostCreator === true && isTitleValid === true && isContentValid === true && isFileValid === true) {
 
             // Since our new image is valid, delete the old one and keep the uploaded one
             wasImageUploaded && deleteFile(post.imageUrl);
@@ -284,6 +288,7 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
                 isFileTypeValid : isFileTypeValid,
                 isImageUrlValid : isImageUrlValid,
                 isFileValid : isFileValid,
+                isPostCreator : isPostCreator,
                 isTitleValid : isTitleValid,
                 message : "Post edited successfully",
                 mimeType : fileMimeType,
@@ -300,6 +305,7 @@ export const PutUpdatePostController = async (request : FeedRequestInterface, re
                 isFileTypeValid : isFileTypeValid,
                 isImageUrlValid : isImageUrlValid,
                 isFileValid : isFileValid,
+                isPostCreator : isPostCreator,
                 isTitleValid : isTitleValid,
                 message : "Post edited unsuccessfully",
                 mimeType : fileMimeType,

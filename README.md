@@ -86,7 +86,7 @@ Once that's done, the server should start running the server for you. You can vi
 ### DevOps
 
 The app currently has not been deployed.
-The "env" file can be found by request by sending an email to [this](mailto:nothile1@gmail.com) email address._
+The "env" file can be found by request by sending an email to [this](mailto:nothile1@gmail.com) email address.
 
 -----
 
