@@ -1,6 +1,7 @@
 # Nothile's full stack Application
 
 ## Front End Documentation
+
 **Welcome :)**
 
 This is the front end documentation for the application. You can find more in depth information about the front end here. Please view the rest of the README below on information on the tech stack, and working with the codebase.
@@ -51,3 +52,71 @@ The modifier refers to a style which is applied when you want a different stylin
 You visit the BEM website [here](https://getbem.com/) to find out more.
 
 The _"scss"_ folder contains partials which can be referenced in any other stylesheet.
+
+### State management
+I use Context in this application due to the reduced complexity of it, if however, this was to be a more scalable app, then Redux, RTK with caching would be my choice.
+
+There is the AppContext which can be found in _"./frontend/src/context/AppContext.tsx"_
+
+The AppContext has a method which will validate whether the user has been authenticated or not, this should be used in pages where authentication is required.
+
+If the user isn't authenticated, then you will be redirected to the login page.
+
+> You can read more about useContext [here](https://react.dev/reference/react/useContext)
+
+**Note: You should use the "useEffect" hook in order to handle this validation**
+
+### Validation
+Cors is activated in the backend so we can request our node backend.
+
+We also have a "userId" that we pass through that we retrieve from local storage and send through our requests
+
+This will be queried against the backend and if the request is authenticated, it will be approved.
+
+**Note: Please don't share your userId with anyone, sessions will expire after 2 weeks**
+
+### Routing
+The routing for the frontend is handled using _**react-router**_. The Browser router is used for this instead of hash routing as that presents issues when dealing with parameters.
+
+Since the backend uses express, the routing for the frontend is purely for components.
+
+The current "react-router" version is v6.23.1
+
+> You can read more about react-router [here](https://reactrouter.com/en/main)
+
+### Uploads
+All files are uploaded to the _"./frontend/uploads"_.
+
+The files are arranged by year/month and then the file. They are formatted.
+
+You can find methods to help format files from _"./frontend/util/file.ts"_. This code is shared with the backend.
+
+Images are rendered by requesting them using a try catch block in order to query them. **This is because the server will crash if the image request fails outside of a try catch**.
+
+If the image exists, it is converted and rendered on the page. All image previews in create or edit post are formatted in a 64 bit encode.
+
+### Testing
+Functional tests for this app are done using Jest and MSW. These tests will perform mock requests, and also handle functionality such as form and button submissions.
+
+You can find these tests with the extension ".tsx".
+
+- Jest
+> [Learn about Jest](https://jestjs.io/)
+
+- MSW
+> [Learn about MSW](https://mswjs.io/)
+
+### Linting
+TBI
+
+### Deployments 
+TBI
+
+### Overall throughts
+I think that the front end is pretty well built. There ended up being significantly more code than expected for a CRUD app but since there are Enterprise features the complexity was raised.
+
+I enjoyed it :)
+
+The styling itself looks great, I'm very happy with it.
+
+Building custom components & implementing patterns was very fun.
