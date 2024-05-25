@@ -8,13 +8,38 @@ import { AppContext } from './context/AppContext';
 import LoadingSpinner from './components/loader/LoadingSpinner';
 import logo from './logo.svg';
 import './App.scss';
+import { User } from './@types';
 
 const App : FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User>();
 
   // Get the method from the backend to query
   const appContextInstance = useContext(AppContext);
+
+  // Get user details if the user is authenticated from the backend
+  const getUserDetails = async (userId : string) => {
+
+    // We assign Formdata here so we can use this with cors in the backend
+    const fields = new FormData();
+    fields.append("userId", userId);
+
+    const result = await fetch(`http://localhost:4000/user/${userId}`, {
+      method : "POST",
+      body : fields
+    });
+
+    const data = await result.json();
+
+    console.clear();
+    console.log("Result");
+    console.log(result);
+    console.log("\n");
+
+    console.log("Data");
+    console.log(data);
+  };
 
   // Query the backend to see if we're logged in
   useEffect(() => {
@@ -24,6 +49,7 @@ const App : FC = () => {
       try {
 
         appContextInstance?.validateAuthentication();
+        (appContextInstance?.userAuthenticated === true && appContextInstance.userId) && getUserDetails(appContextInstance.userId);
 
       }catch(error){
 
@@ -62,6 +88,8 @@ const App : FC = () => {
           >
             Learn React
           </a>
+
+          <p>{`Is user authenticated : ${appContextInstance?.userAuthenticated}`}</p>
         </header>
       }
 

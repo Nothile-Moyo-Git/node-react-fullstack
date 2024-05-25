@@ -21,6 +21,7 @@ import User from "../models/user";
 import { validatePassword } from "../util/utillity-methods";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 
 // Signup controller
 export const PostSignupController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
@@ -232,5 +233,32 @@ export const PostUpdateUserStatusController = async (request : AuthRequestInterf
 
         response.status(400).json({ message : error});
         next(error);
+    }
+};
+
+/**
+ * @name GetUserDetailsController
+ * 
+ * @description Get the details of the current user
+ * 
+ * @param request : AuthRequestInterface, response : Response, next : NextFunction
+ */
+export const PostGetUserDetailsController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+    // Check if the user exists with the id
+    const userId = request.body?.userId;
+
+    try{
+        
+        // Try to fetch the user using the userId
+        const user = await User.findById(new ObjectId(userId));
+
+        if (user) {
+            response.status(200).json({user});
+        }
+
+    }catch(error){
+
+        response.status(400).json({ user : null });
     }
 };

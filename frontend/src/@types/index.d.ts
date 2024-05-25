@@ -30,7 +30,7 @@ declare module "*.jpeg"{
     export default content;  
 }
 
-export interface Post{
+export interface Post {
     _id : string,
     content : string,
     fileName : string,
@@ -40,4 +40,13 @@ export interface Post{
     creator : string,
     createdAt ?: string,
     updatedAt ?: string
+}
+
+export interface User {
+    _id : string,
+    name : string,
+    email : string,
+    password : string,
+    status : string,
+    posts : string[]
 }
