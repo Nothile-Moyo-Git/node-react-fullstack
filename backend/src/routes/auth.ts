@@ -8,6 +8,7 @@
 // Import our route handlers
 import express from "express";
 import {
+    PostGetUserDetailsController,
     GetUserStatusController,
     PostLoginController,
     PostSignupController,
@@ -18,6 +19,7 @@ import {
 const authRoutes = express.Router({ strict : true });
 
 // Handle routes
+authRoutes.post("/user/:id?", PostGetUserDetailsController);
 authRoutes.get("/user/:id/status", GetUserStatusController);
 authRoutes.post("/login", PostLoginController);
 authRoutes.post("/signup", PostSignupController);

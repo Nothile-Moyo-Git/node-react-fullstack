@@ -85,7 +85,8 @@ export interface AuthRequestInterface extends Request {
         name : string,
         password : string,
         confirmPassword : string,
-        status : string
+        status : string,
+        userId ?: string
     }
 }
 
