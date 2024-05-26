@@ -16,7 +16,7 @@
 
 import { Response, NextFunction } from "express";
 import { AuthRequestInterface } from "../@types";
-import { validateEmailAddress, validateInputLength } from "../util/utillity-methods";
+import { createReadableDate, validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
 import { validatePassword } from "../util/utillity-methods";
 import bcrypt from "bcrypt";
@@ -154,7 +154,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                         userId : user._id.toString()
                     },
                     "Adeptus",
-                    { expiresIn: '14d' }
+                    { expiresIn: 60 * 60 * 336 }
                 );
 
                 // Send our response to the front end
@@ -246,7 +246,28 @@ export const PostUpdateUserStatusController = async (request : AuthRequestInterf
 export const PostGetUserDetailsController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
     // Check if the user exists with the id
-    const userId = request.body?.userId;
+    const userId = request.body.userId;
+    const token = request.body.token;
+
+    // Values to be set once
+    let jwtEmail = "";
+    let jwtName = "";
+    let jwtCreationDate = "";
+    let jwtExpiryDate = "";
+
+    // Verify the tokens
+    jwt.verify(token, "Adeptus", (error, decoded) => {
+
+        const expiryDate = new Date(decoded['exp']);
+        const initialDate = new Date(decoded['iat']);
+
+        // Set the values
+        jwtExpiryDate = createReadableDate(expiryDate);
+        jwtCreationDate = createReadableDate(initialDate);
+    });
+
+    console.log(jwtExpiryDate);
+    console.log(jwtCreationDate);
 
     try{
         
