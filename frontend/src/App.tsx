@@ -6,7 +6,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import LoadingSpinner from './components/loader/LoadingSpinner';
-import logo from './logo.svg';
 import './App.scss';
 import { User } from './@types';
 
@@ -24,6 +23,7 @@ const App : FC = () => {
     // We assign Formdata here so we can use this with cors in the backend
     const fields = new FormData();
     fields.append("userId", userId);
+    fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
 
     const result = await fetch(`http://localhost:4000/user/${userId}`, {
       method : "POST",
@@ -32,13 +32,8 @@ const App : FC = () => {
 
     const data = await result.json();
 
-    console.clear();
-    console.log("Result");
-    console.log(result);
-    console.log("\n");
-
-    console.log("Data");
-    console.log(data);
+    // Set the user details so 
+    setUser(data.user);
   };
 
   // Query the backend to see if we're logged in
@@ -66,7 +61,7 @@ const App : FC = () => {
   },[appContextInstance]);
 
   return (
-    <div className="App">
+    <div className="app">
 
       {
         isLoading && 
@@ -74,23 +69,12 @@ const App : FC = () => {
       }
 
       {
-        !isLoading &&
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-
-          <p>{`Is user authenticated : ${appContextInstance?.userAuthenticated}`}</p>
-        </header>
+        !isLoading && appContextInstance?.userAuthenticated &&
+        <div className="app__content">
+          <h1 className="app__title">{`Welcome ${user?.name}`}</h1>
+          <p className="app__text">{`Current status : ${user?.status}`}</p>
+          <p className="app__text">{`Email address : ${user?.email}`}</p>
+        </div>
       }
 
     </div>
