@@ -17,27 +17,27 @@ const App : FC = () => {
   // Get the method from the backend to query
   const appContextInstance = useContext(AppContext);
 
-  // Get user details if the user is authenticated from the backend
-  const getUserDetails = async (userId : string) => {
-
-    // We assign Formdata here so we can use this with cors in the backend
-    const fields = new FormData();
-    fields.append("userId", userId);
-    fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
-
-    const result = await fetch(`http://localhost:4000/user/${userId}`, {
-      method : "POST",
-      body : fields
-    });
-
-    const data = await result.json();
-
-    // Set the user details so 
-    setUser(data.user);
-  };
-
   // Query the backend to see if we're logged in
   useEffect(() => {
+
+    // Get user details if the user is authenticated from the backend
+    const getUserDetails = async (userId : string) => {
+
+      // We assign Formdata here so we can use this with cors in the backend
+      const fields = new FormData();
+      fields.append("userId", userId);
+      fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
+
+      const result = await fetch(`http://localhost:4000/user/${userId}`, {
+        method : "POST",
+        body : fields
+      });
+
+      const data = await result.json();
+
+      // Set the user details so 
+      setUser(data.user);
+    };
 
     const fetchAuthentication = async () => {
 
@@ -69,7 +69,7 @@ const App : FC = () => {
       }
 
       {
-        !isLoading && appContextInstance?.userAuthenticated &&
+        !isLoading && appContextInstance?.userAuthenticated && user &&
         <div className="app__content">
           <h1 className="app__title">{`Welcome ${user?.name}`}</h1>
           <p className="app__text">{`Current status : ${user?.status}`}</p>
