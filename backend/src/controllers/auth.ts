@@ -151,6 +151,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                 const token = jwt.sign(
                     {
                         email : user.email,
+                        name : user.name,
                         userId : user._id.toString()
                     },
                     "Adeptus",
@@ -258,19 +259,29 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
     // Verify the tokens
     jwt.verify(token, "Adeptus", (error, decoded) => {
 
-        const expiryDate = new Date(decoded['exp']);
-        const initialDate = new Date(decoded['iat']);
+        // Get the issued and expiry dates of our token
+        // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+        const expiryDate = new Date(decoded['exp'] * 1000);
+        const issuedAtDate = new Date(decoded['iat'] * 1000);
 
         // Set the values
         jwtExpiryDate = createReadableDate(expiryDate);
-        jwtCreationDate = createReadableDate(initialDate);
+        jwtCreationDate = createReadableDate(issuedAtDate);
+
     });
 
-    console.log(jwtExpiryDate);
+    /*
+    console.log("Creation date");
     console.log(jwtCreationDate);
+    console.log("\n");
+    
+    console.log("Expiry date");
+    console.log(jwtExpiryDate);
+    console.log("\n"); 
+    */
 
     try{
-        
+
         // Try to fetch the user using the userId
         const user = await User.findById(new ObjectId(userId));
 
