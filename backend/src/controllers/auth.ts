@@ -21,6 +21,7 @@ import User from "../models/user";
 import { validatePassword } from "../util/utillity-methods";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Session from "../models/session";
 import { ObjectId } from "mongodb";
 
 // Signup controller
@@ -155,8 +156,40 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                         userId : user._id.toString()
                     },
                     "Adeptus",
-                    { expiresIn: 60 * 60 * 336 }
+                    { expiresIn: "14d" }
                 );
+
+                // Values to be set once
+                let jwtCreationDate = "";
+                let jwtExpiryDate = "";
+
+                // Decode the token for the expiry date
+                // Verify the tokens
+                jwt.verify(token, "Adeptus", (error, decoded) => {
+
+                    // Get the issued and expiry dates of our token
+                    // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                    const expiryDate = new Date(decoded['exp'] * 1000);
+                    const issuedAtDate = new Date(decoded['iat'] * 1000);
+
+                    // Set the values
+                    jwtExpiryDate = createReadableDate(expiryDate);
+                    jwtCreationDate = createReadableDate(issuedAtDate);
+
+                });
+
+                // Get the session or create it if it doesn't exist
+                const session = new Session({
+                    expires : jwtExpiryDate,
+                    token : token,
+                    creator : new ObjectId(user._id)
+                });
+
+                // Save the session
+                const newSession = await session.save();
+
+                console.log("New session");
+                console.log(newSession);
 
                 // Send our response to the front end
                 response.status(200);
@@ -264,6 +297,9 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
         const expiryDate = new Date(decoded['exp'] * 1000);
         const issuedAtDate = new Date(decoded['iat'] * 1000);
 
+        console.clear();
+        console.log(decoded);
+
         // Set the values
         jwtExpiryDate = createReadableDate(expiryDate);
         jwtCreationDate = createReadableDate(issuedAtDate);
@@ -278,7 +314,7 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
     console.log("Expiry date");
     console.log(jwtExpiryDate);
     console.log("\n"); 
-    */
+    */    
 
     try{
 
