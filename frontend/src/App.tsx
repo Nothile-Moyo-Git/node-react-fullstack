@@ -13,6 +13,8 @@ const App : FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User>();
+  const [sessionExpiryDate, setSessionExpiryDate] = useState<string>();
+  const [sessionCreationDate, setSessionCreationDate] = useState<string>();
 
   // Get the method from the backend to query
   const appContextInstance = useContext(AppContext);
@@ -37,6 +39,9 @@ const App : FC = () => {
 
       // Set the user details so 
       setUser(data.user);
+      setSessionExpiryDate(data.sessionExpires);
+      setSessionCreationDate(data.sessionCreated);
+
     };
 
     const fetchAuthentication = async () => {
@@ -74,6 +79,8 @@ const App : FC = () => {
           <h1 className="app__title">{`Welcome ${user?.name}`}</h1>
           <p className="app__text">{`Current status : ${user?.status}`}</p>
           <p className="app__text">{`Email address : ${user?.email}`}</p>
+          <p className="app__text">{`Session created : ${sessionCreationDate}`}</p>
+          <p className="app__text">{`Session expires : ${sessionExpiryDate}`}</p>
         </div>
       }
 

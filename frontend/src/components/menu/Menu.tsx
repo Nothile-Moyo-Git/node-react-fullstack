@@ -34,6 +34,12 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
     };
 
     const handleLogoutUser = () => {
+
+        // Set the fields for the api request
+        const fields = new FormData();
+        fields.append('email', appContextInstance?.userId ? appContextInstance.userId : "");
+
+        
  
         // Log the user out of the session
         appContextInstance?.logoutUser();

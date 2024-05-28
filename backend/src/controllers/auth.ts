@@ -160,7 +160,6 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                 );
 
                 // Values to be set once
-                let jwtCreationDate = "";
                 let jwtExpiryDate = "";
 
                 // Decode the token for the expiry date
@@ -170,26 +169,35 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     // Get the issued and expiry dates of our token
                     // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
                     const expiryDate = new Date(decoded['exp'] * 1000);
-                    const issuedAtDate = new Date(decoded['iat'] * 1000);
 
                     // Set the values
                     jwtExpiryDate = createReadableDate(expiryDate);
-                    jwtCreationDate = createReadableDate(issuedAtDate);
 
                 });
 
-                // Get the session or create it if it doesn't exist
-                const session = new Session({
-                    expires : jwtExpiryDate,
-                    token : token,
+                // Check if we already have a session, if we do, then update it
+                let previousSession = await Session.findOne({
                     creator : new ObjectId(user._id)
                 });
 
-                // Save the session
-                const newSession = await session.save();
+                if (previousSession) {
 
-                console.log("New session");
-                console.log(newSession);
+                    // If we have a previous Session, we update it
+                    previousSession.expires = jwtExpiryDate;
+                    previousSession.token = token;
+                    await previousSession.save();
+                } else {
+
+                    // Create the session if it doesn't exist
+                    const session = new Session({
+                        expires : jwtExpiryDate,
+                        token : token,
+                        creator : new ObjectId(user._id)
+                    }); 
+
+                    // Save the session
+                    await session.save();
+                }
 
                 // Send our response to the front end
                 response.status(200);
@@ -284,8 +292,6 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
     const token = request.body.token;
 
     // Values to be set once
-    let jwtEmail = "";
-    let jwtName = "";
     let jwtCreationDate = "";
     let jwtExpiryDate = "";
 
@@ -306,23 +312,17 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
 
     });
 
-    /*
-    console.log("Creation date");
-    console.log(jwtCreationDate);
-    console.log("\n");
-    
-    console.log("Expiry date");
-    console.log(jwtExpiryDate);
-    console.log("\n"); 
-    */    
-
     try{
 
         // Try to fetch the user using the userId
         const user = await User.findById(new ObjectId(userId));
 
         if (user) {
-            response.status(200).json({user});
+            response.status(200).json({
+                user,
+                sessionExpires : jwtExpiryDate,
+                sessionCreated : jwtCreationDate
+            });
         }
 
     }catch(error){
@@ -330,3 +330,20 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
         response.status(400).json({ user : null });
     }
 };
+
+/**
+ * @name PostDeleteSessionController
+ * 
+ * @description A controller which deletes our session if our user logs out or the session has expired
+ * 
+ * @param userId : string
+ */
+export const PostDeleteSessionController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+    // userId
+    const userId = request.body.userId;
+
+    // Delete the session if it exists
+    await Session.findOneAndDelete({ creator : userId });
+};
+
