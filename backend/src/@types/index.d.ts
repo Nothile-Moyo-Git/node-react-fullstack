@@ -65,6 +65,16 @@ export interface PostsMethodsInterface {
     addPosts : () => void
 }
 
+export interface SessionsInterface {
+    expires : string,
+    token : string,
+    creator : {
+        type : ObjectId,
+        ref : string,
+        required : true
+    }
+}
+
 export interface RequestInterface extends Request {
     filename : string,
     body : {
