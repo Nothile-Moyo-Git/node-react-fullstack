@@ -68,6 +68,7 @@ export interface PostsMethodsInterface {
 export interface SessionsInterface {
     expires : string,
     token : string,
+    expireAt : Date,
     creator : {
         type : ObjectId,
         ref : string,
