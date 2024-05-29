@@ -343,7 +343,23 @@ export const PostDeleteSessionController = async (request : AuthRequestInterface
     // userId
     const userId = request.body.userId;
 
-    // Delete the session if it exists
-    await Session.findOneAndDelete({ creator : userId });
+    try{
+
+        // Delete the session if it exists
+        await Session.findOneAndDelete({ creator : userId });
+
+        // Send the response 
+        response.status(200).json({
+            success : true,
+            message : "Request successful"
+        });
+
+    }catch(error){
+
+        response.status(202).json({
+            success : false,
+            message : "Error: No userId was provided for this request"
+        });
+    }
 };
 

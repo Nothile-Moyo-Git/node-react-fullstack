@@ -33,15 +33,22 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
         toggleMenu((previousState : boolean) => { return !previousState; });
     };
 
-    const handleLogoutUser = () => {
+    const handleLogoutUser = async () => {
 
-        // Set the fields for the api request
+        // Set the userId here so we can delete the session on the server side too
         const fields = new FormData();
-        fields.append('email', appContextInstance?.userId ? appContextInstance.userId : "");
+        fields.append("userId", appContextInstance?.userId ? appContextInstance.userId : "");
 
-        
- 
-        // Log the user out of the session
+        // Log the user out of the session locally and on the server
+        const result = await fetch(`http://localhost:4000/delete-session/${appContextInstance?.userId}`, {
+            method : "POST",
+            body : fields
+        });
+
+        console.clear();
+        console.log("Result");
+        console.log(result);
+
         appContextInstance?.logoutUser();
 
         // Redirect to the login page

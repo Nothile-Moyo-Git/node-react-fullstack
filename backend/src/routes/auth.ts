@@ -12,18 +12,19 @@ import {
     GetUserStatusController,
     PostLoginController,
     PostSignupController,
-    PostUpdateUserStatusController
+    PostUpdateUserStatusController,
+    PostDeleteSessionController
 } from "../controllers/auth";
 
 // Define our router object
 const authRoutes = express.Router({ strict : true });
 
 // Handle routes
+authRoutes.post("/delete-session/:userId?", PostDeleteSessionController);
 authRoutes.post("/user/:id?", PostGetUserDetailsController);
 authRoutes.get("/user/:id/status", GetUserStatusController);
 authRoutes.post("/login", PostLoginController);
 authRoutes.post("/signup", PostSignupController);
 authRoutes.post("/user/:id/update", PostUpdateUserStatusController);
-
 
 export default authRoutes;

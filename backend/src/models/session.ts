@@ -20,9 +20,10 @@ type SessionModel = Model<SessionsInterface, {}, {}>
 // Define our schema for the sessions collection in the backend using Mongoose
 const sessionSchema = new mongoose.Schema<SessionsInterface>({
 
-    expires : { type : String, required : true },
+    expires : { type : String, expires : "2m", required : true },
     token : { type : String, required : true },
     creator : { type : mongoose.Schema.Types.ObjectId, required : true, ref : 'User' },
+    expireAt : { type : Date, expires : "2w", default : Date.now() + 604800000 }
 },{
     timestamps : true
 });
