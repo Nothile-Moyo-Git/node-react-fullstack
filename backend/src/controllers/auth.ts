@@ -221,60 +221,86 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
     }
 };
 
-// Get the user status
+/**
+ * @name GetUserStatusController
+ * 
+ * @description Gets the current user of the status bsed on the userId passed through the parameter
+ * 
+ * @param request : AuthRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ * 
+ * @returns success : boolean, status : string
+ */
 export const GetUserStatusController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-    try {
+    try{
 
-        // Find the user based on the ID passed through
-        const user = await User.findById(request.userId);
+        // Get the userId from the request url
+        const userId = request.params.id;
 
-        // Output an error if we don't find a user
-        if (!user) {
+        // If we don't have a user, then return no status and say that the request failed
+        if (userId !== undefined) {
 
-            const error = new Error('User not found');
-            throw error;
+            // Find the user based on the ID passed through
+            const user = await User.findById(userId);
+
+            // Get the status
+            const status = user.status ? user.status : null;
+
+            response.status(200).json({ success : true, status : status });
         }else{
-
-            // Send the json response back to the front end
-            response.status(200).json({ userStatus : user.status });
+            response.status(206).json({ success : false, status : null });
         }
 
-    } catch (error) {
+    }catch(error){
 
-        response.status(500).json({ message : "There was a server error" });
-        next(error);
+        response.status(400).json({ success : false, status : null });
     }
 };
 
+/**
+ * 
+ * @name PostUpdateUserStatusController
+ * 
+ * @description Update the status of the user in the backend
+ * 
+ * @param request : AuthRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
 export const PostUpdateUserStatusController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
-
-    // Create a new status
-    const newStatus = request.body.status;
 
     // Update the user status to something new in a try catch block
     try {
 
+        // Create a new status
+        const newStatus = request.body.status;
+        const userId = request.params.id;
+
         // Get the current user based on the ID from the frontend
-        const currentUser = await User.findById(request.userId);
+        const currentUser = await User.findById(userId);
 
-        // Handle previous error
-        if (currentUser === null || currentUser === undefined) {
-            const error = new Error('User not found');
-            response.status(404).json({ message : 'User not found'});
-            throw error;
-        }else{
+        // If we have a user, then update the status otherwise return a 206 response
+        if (currentUser) {
 
-            // Set the new user status if our user is valid
+            // Save the updated field on the user
             currentUser.status = newStatus;
             await currentUser.save();
-            response.status(200).json({ message : "User successfully updated" });
+
+            // Send the response back to the frontend
+            response.status(200).json({ success : true, message : "Status updated successfully" });
+        }else{
+
+            response.status(206).json({ success : false, message : "Error : User could not be found" })
         }
 
+        console.log("Current user");
+        console.log(currentUser);
     } catch (error) {
 
-        response.status(400).json({ message : error});
-        next(error);
+        response.status(400).json({ success : false, message : error });
+
     }
 };
 
@@ -302,9 +328,6 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
         // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
         const expiryDate = new Date(decoded['exp'] * 1000);
         const issuedAtDate = new Date(decoded['iat'] * 1000);
-
-        console.clear();
-        console.log(decoded);
 
         // Set the values
         jwtExpiryDate = createReadableDate(expiryDate);

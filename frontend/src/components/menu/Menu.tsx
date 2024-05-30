@@ -40,14 +40,10 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
         fields.append("userId", appContextInstance?.userId ? appContextInstance.userId : "");
 
         // Log the user out of the session locally and on the server
-        const result = await fetch(`http://localhost:4000/delete-session/${appContextInstance?.userId}`, {
+        await fetch(`http://localhost:4000/delete-session/${appContextInstance?.userId}`, {
             method : "POST",
             body : fields
         });
-
-        console.clear();
-        console.log("Result");
-        console.log(result);
 
         appContextInstance?.logoutUser();
 
