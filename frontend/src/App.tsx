@@ -19,6 +19,7 @@ const App : FC = () => {
   // Get the method from the backend to query
   const appContextInstance = useContext(AppContext);
 
+
   // Query the backend to see if we're logged in
   useEffect(() => {
 
