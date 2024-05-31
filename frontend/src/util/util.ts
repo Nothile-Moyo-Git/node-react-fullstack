@@ -55,5 +55,27 @@ export const generateUploadDate = (date : string) => {
     return uploadDate;
 };
 
+/**
+ * @name checkSessionValidation
+ * 
+ * @description Performs an api request to the backend to check if the session is also on the backend
+ * It's also supposed to create the session if it doesn't exist
+ * 
+ * @param userId : string
+ * 
+ * @returns sessionValid : boolean
+ */
+export const checkSessionValidation = async (userId : string) => {
+
+    // Send a request to the backend to check the session 
+    /*
+    const result = await fetch(`http://localhost:4000/user/${userId}`, {
+        method : "POST",
+        body : fields
+    }); 
+    */
+
+};
+
 
 export const BASENAME = '/typescript-fullstack';

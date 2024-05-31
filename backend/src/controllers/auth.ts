@@ -386,3 +386,26 @@ export const PostDeleteSessionController = async (request : AuthRequestInterface
     }
 };
 
+/**
+ * @name PostCheckAndCreateSessionController
+ * 
+ * @description A controller which checks the session we have in the backend and creates it if it does
+ * 
+ * @param request : AuthRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostCheckAndCreateSessionController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+
+    try {
+
+
+        response.status(200).json({ success : true });
+    }catch(error){
+
+        
+        response.status(200).json({ success : true });
+    }
+};
+
