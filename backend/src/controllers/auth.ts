@@ -313,29 +313,30 @@ export const PostUpdateUserStatusController = async (request : AuthRequestInterf
  */
 export const PostGetUserDetailsController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-    // Check if the user exists with the id
-    const userId = request.body.userId;
-    const token = request.body.token;
-
-    // Values to be set once
-    let jwtCreationDate = "";
-    let jwtExpiryDate = "";
-
-    // Verify the tokens
-    jwt.verify(token, "Adeptus", (error, decoded) => {
-
-        // Get the issued and expiry dates of our token
-        // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
-        const expiryDate = new Date(decoded['exp'] * 1000);
-        const issuedAtDate = new Date(decoded['iat'] * 1000);
-
-        // Set the values
-        jwtExpiryDate = createReadableDate(expiryDate);
-        jwtCreationDate = createReadableDate(issuedAtDate);
-
-    });
-
     try{
+
+        
+        // Check if the user exists with the id
+        const userId = request.body.userId;
+        const token = request.body.token;
+
+        // Values to be set once
+        let jwtCreationDate = "";
+        let jwtExpiryDate = "";
+
+        // Verify the tokens
+        jwt.verify(token, "Adeptus", (error, decoded) => {
+
+            // Get the issued and expiry dates of our token
+            // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+            const expiryDate = new Date(decoded['exp'] * 1000);
+            const issuedAtDate = new Date(decoded['iat'] * 1000);
+
+            // Set the values
+            jwtExpiryDate = createReadableDate(expiryDate);
+            jwtCreationDate = createReadableDate(issuedAtDate);
+
+        });
 
         // Try to fetch the user using the userId
         const user = await User.findById(new ObjectId(userId));
@@ -397,9 +398,45 @@ export const PostDeleteSessionController = async (request : AuthRequestInterface
  */
 export const PostCheckAndCreateSessionController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-
     try {
 
+        // Get the userId from the parameters
+        const userId = request.params.userId;
+        const token = request.body.token;
+
+        // Check if the session exists and if it doesn't, then create it
+        const previousSession = await Session.findOne({ creator : new ObjectId(userId) });
+
+        if (!previousSession) {
+
+            // Values to be set once
+            let jwtExpiryDate = "";
+
+            // Decode the token for the expiry date
+            // Verify the tokens
+            jwt.verify(token, "Adeptus", (error, decoded) => {
+
+                // Get the issued and expiry dates of our token
+                // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                const expiryDate = new Date(decoded['exp'] * 1000);
+
+                // Set the values
+                jwtExpiryDate = createReadableDate(expiryDate);
+
+            });
+
+            console.clear();
+            console.log("New session");
+
+            // Create the new session object to be saved in the backend
+            const newSession = new Session({
+                expires : jwtExpiryDate,
+                token : token,
+                creator : new ObjectId(userId)
+            });
+
+            await newSession.save();
+        }
 
         response.status(200).json({ success : true });
     }catch(error){
