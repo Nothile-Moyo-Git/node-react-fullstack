@@ -6,6 +6,7 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import LoadingSpinner from './components/loader/LoadingSpinner';
+import { checkSessionValidation } from './util/util';
 import './App.scss';
 import { User } from './@types';
 
@@ -51,6 +52,8 @@ const App : FC = () => {
 
         appContextInstance?.validateAuthentication();
         (appContextInstance?.userAuthenticated === true && appContextInstance.userId) && getUserDetails(appContextInstance.userId);
+        (appContextInstance?.userAuthenticated === true && appContextInstance.userId && appContextInstance.token) && 
+          checkSessionValidation(appContextInstance.userId, appContextInstance.token);
 
       }catch(error){
 

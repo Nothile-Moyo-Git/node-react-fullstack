@@ -13,7 +13,8 @@ import {
     PostLoginController,
     PostSignupController,
     PostUpdateUserStatusController,
-    PostDeleteSessionController
+    PostDeleteSessionController,
+    PostCheckAndCreateSessionController
 } from "../controllers/auth";
 
 // Define our router object
@@ -26,5 +27,6 @@ authRoutes.get("/user/:id/status", GetUserStatusController);
 authRoutes.post("/login", PostLoginController);
 authRoutes.post("/signup", PostSignupController);
 authRoutes.post("/user/:id/update", PostUpdateUserStatusController);
+authRoutes.post("/check-create-session/:userId?", PostCheckAndCreateSessionController);
 
 export default authRoutes;

@@ -191,6 +191,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     // Create the session if it doesn't exist
                     const session = new Session({
                         expires : jwtExpiryDate,
+                        expireAt : new Date(jwtExpiryDate),
                         token : token,
                         creator : new ObjectId(user._id)
                     }); 
@@ -313,29 +314,30 @@ export const PostUpdateUserStatusController = async (request : AuthRequestInterf
  */
 export const PostGetUserDetailsController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
 
-    // Check if the user exists with the id
-    const userId = request.body.userId;
-    const token = request.body.token;
-
-    // Values to be set once
-    let jwtCreationDate = "";
-    let jwtExpiryDate = "";
-
-    // Verify the tokens
-    jwt.verify(token, "Adeptus", (error, decoded) => {
-
-        // Get the issued and expiry dates of our token
-        // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
-        const expiryDate = new Date(decoded['exp'] * 1000);
-        const issuedAtDate = new Date(decoded['iat'] * 1000);
-
-        // Set the values
-        jwtExpiryDate = createReadableDate(expiryDate);
-        jwtCreationDate = createReadableDate(issuedAtDate);
-
-    });
-
     try{
+
+        
+        // Check if the user exists with the id
+        const userId = request.body.userId;
+        const token = request.body.token;
+
+        // Values to be set once
+        let jwtCreationDate = "";
+        let jwtExpiryDate = "";
+
+        // Verify the tokens
+        jwt.verify(token, "Adeptus", (error, decoded) => {
+
+            // Get the issued and expiry dates of our token
+            // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+            const expiryDate = new Date(decoded['exp'] * 1000);
+            const issuedAtDate = new Date(decoded['iat'] * 1000);
+
+            // Set the values
+            jwtExpiryDate = createReadableDate(expiryDate);
+            jwtCreationDate = createReadableDate(issuedAtDate);
+
+        });
 
         // Try to fetch the user using the userId
         const user = await User.findById(new ObjectId(userId));
@@ -383,6 +385,63 @@ export const PostDeleteSessionController = async (request : AuthRequestInterface
             success : false,
             message : "Error: No userId was provided for this request"
         });
+    }
+};
+
+/**
+ * @name PostCheckAndCreateSessionController
+ * 
+ * @description A controller which checks the session we have in the backend and creates it if it does
+ * 
+ * @param request : AuthRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostCheckAndCreateSessionController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
+
+    try {
+
+        // Get the userId from the parameters
+        const userId = request.params.userId;
+        const token = request.body.token;
+
+        // Check if the session exists and if it doesn't, then create it
+        const previousSession = await Session.findOne({ creator : new ObjectId(userId) });
+
+        if (!previousSession) {
+
+            // Values to be set once
+            let jwtExpiryDate = "";
+
+            // Decode the token for the expiry date
+            // Verify the tokens
+            jwt.verify(token, "Adeptus", (error, decoded) => {
+
+                // Get the issued and expiry dates of our token
+                // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                const expiryDate = new Date(decoded['exp'] * 1000);
+
+                // Set the values
+                jwtExpiryDate = createReadableDate(expiryDate);
+
+            });
+
+            // Create the new session object to be saved in the backend
+            const newSession = new Session({
+                expires : jwtExpiryDate,
+                expireAt : new Date(jwtExpiryDate),
+                token : token,
+                creator : new ObjectId(userId)
+            });
+
+            await newSession.save();
+        }
+
+        response.status(200).json({ success : true });
+    }catch(error){
+
+        
+        response.status(200).json({ success : true });
     }
 };
 
