@@ -191,6 +191,7 @@ export const PostLoginController = async (request : AuthRequestInterface, respon
                     // Create the session if it doesn't exist
                     const session = new Session({
                         expires : jwtExpiryDate,
+                        expireAt : new Date(jwtExpiryDate),
                         token : token,
                         creator : new ObjectId(user._id)
                     }); 
@@ -425,12 +426,10 @@ export const PostCheckAndCreateSessionController = async (request : AuthRequestI
 
             });
 
-            console.clear();
-            console.log("New session");
-
             // Create the new session object to be saved in the backend
             const newSession = new Session({
                 expires : jwtExpiryDate,
+                expireAt : new Date(jwtExpiryDate),
                 token : token,
                 creator : new ObjectId(userId)
             });
