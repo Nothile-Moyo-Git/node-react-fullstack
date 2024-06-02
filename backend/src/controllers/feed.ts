@@ -172,7 +172,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
 
 };
 
-export const GetPostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+export const GetPostController = async (request : FeedRequestInterface, response : Response) => {
 
     try {
 
@@ -184,19 +184,59 @@ export const GetPostController = async (request : FeedRequestInterface, response
 
         if (!post) {
 
-            // Error handling if a post wasn't found
-            const error : ErrorInterface = new Error('Error: Could not find post.');
-            error.statusCode = 404;
-            throw error;
-        }
+            // Send a failed response if there's no post found
+            response.status(400).json({ message: 'Fetch failed', post : null, success : false });
 
-        // Send a response if the request is successful
-        response.status(200).json({ message: 'Post fetched.', post: post, success : true });
+        }else{
+
+            // Send a response if the request is successful
+            response.status(200).json({ message: 'Post fetched.', post: post, success : true });
+        }
 
     } catch (error : any) {
 
         response.status(500).json({ message: 'Post failed', post : null, success : false });
     }
+};
+
+/**
+ * @name PostAndValidatePostController
+ * 
+ * @description Get the post and check if it matches the userId sent with the creator of the post
+ * 
+ * @param request : FeedRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostAndValidatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+
+    try {
+
+        // Get the postId from the url passed through
+        const postId = new ObjectId(request.params.postId);
+
+        // Get the userId from the post to check if they match
+        const userId = request.body.userId;
+
+        // Get the post
+        const post = await Post.findById(postId);
+
+        if (!post) {
+
+            // Send a failed response if there's no post found
+            response.status(400).json({ message: 'Fetch failed', post : null, success : false });
+
+        }else{
+
+            // Send a response if the request is successful
+            response.status(200).json({ message: 'Post fetched.', post: post, success : true });
+        }
+
+    } catch (error : any) {
+
+        response.status(500).json({ message: 'Post failed', post : null, success : false });
+    }
+
 };
 
 export const PutUpdatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {

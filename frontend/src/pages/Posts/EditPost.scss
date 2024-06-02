@@ -2,4 +2,7 @@
 
 .editPost{
     animation: fade-in 0.2s linear;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
 }

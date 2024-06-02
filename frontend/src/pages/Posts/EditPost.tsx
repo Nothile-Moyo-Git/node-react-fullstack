@@ -10,7 +10,7 @@
  */
 
 import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./EditPost.scss";
 import { Post } from "../../@types";
 import { AppContext } from "../../context/AppContext";
@@ -26,6 +26,7 @@ import Button from "../../components/button/Button";
 import { generateBase64FromImage } from "../../util/file";
 import ImagePreview from "../../components/form/ImagePreview";
 import TextArea from "../../components/form/TextArea";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 /**
  * @Name EditPost
@@ -43,6 +44,7 @@ export const EditPost : FC = () => {
     const navigate = useNavigate();
     const postId = params.postId;
     const appContextInstance = useContext(AppContext);
+    const location = useLocation();
 
     // State for the page
     const [postData, setPostData] = useState<Post>();
@@ -52,7 +54,7 @@ export const EditPost : FC = () => {
     const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
     const [isContentValid, setIsContentValid] = useState<boolean>(true);
     const [isFileValid, setIsFileValid] = useState<boolean>(true);
-    const [isPostCreator, setIsPostCreatorValid] = useState<boolean>(true);
+    const [isPostCreatorValid, setIsPostCreatorValid] = useState<boolean>(true);
     const [uploadFile, setUploadFile] = useState<File>();
     const [imagePreview, setImagePreview] = useState<unknown | null>(null);
     const [showImagePreview, setShowImagePreview] = useState<boolean>();
@@ -78,8 +80,7 @@ export const EditPost : FC = () => {
     };
 
     // Set the preview of the file when the api request concludes so we can view it on the page immediately
-    const 
-    formatPreviousPostImage = (post : Post) => {
+    const formatPreviousPostImage = (post : Post) => {
 
         try{
 
@@ -111,6 +112,13 @@ export const EditPost : FC = () => {
             setPostData(data.post);
             formatPreviousPostImage(data.post);
         }
+    };
+
+    // Back handler
+    const backToPreviousPage = () => {
+
+        // If we were on the domain, then go back to the previous page
+        if (location.key !== 'default') { navigate(-1); }
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
@@ -232,13 +240,17 @@ export const EditPost : FC = () => {
             {
                 !isLoading && !showErrorText &&
                 <Form onSubmit={submitHandler}>
-
                     <Title 
                         isFormValid={isFormValid}
                     >{isFormValid ? 
                         `Edit Post : ${postData?.title}` 
                         : 'Error: Please fix the errors below'
                     }</Title>
+
+                    {
+                        location.key !== 'default' &&
+                        <Button variant="back" onClick={backToPreviousPage}><MdKeyboardBackspace/>Go back</Button>
+                    }
 
                     <Field>
                         <Label
