@@ -218,23 +218,26 @@ export const PostAndValidatePostController = async (request : FeedRequestInterfa
         // Get the userId from the post to check if they match
         const userId = request.body.userId;
 
+        // Check if the user exists
+        const user = await User.findById({ _id : new Object(userId)});
+
         // Get the post
         const post = await Post.findById(postId);
 
-        if (!post) {
+        if (!post || user._id.toString() !== userId) {
 
             // Send a failed response if there's no post found
-            response.status(400).json({ message: 'Fetch failed', post : null, success : false });
+            response.status(400).json({ message: 'Fetch failed', post : null, success : false, isUserValidated : false });
 
         }else{
 
             // Send a response if the request is successful
-            response.status(200).json({ message: 'Post fetched.', post: post, success : true });
+            response.status(200).json({ message: 'Post fetched.', post: post, success : true, isUserValidated : true });
         }
 
     } catch (error : any) {
 
-        response.status(500).json({ message: 'Post failed', post : null, success : false });
+        response.status(500).json({ message: 'Post failed', post : null, success : false, isUserValidated : false });
     }
 
 };

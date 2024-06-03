@@ -65,14 +65,24 @@ export const EditPost : FC = () => {
     const imageUrlRef = useRef<HTMLInputElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
-    const getPostData = async () => {
+    const getPostData = async (userId : string) => {
 
-        const response = await fetch(`http://localhost:4000/post/${postId}`);
+        // Create the fields
+        const fields = new FormData();
+        fields.append("userId", userId);
+
+        // Requst and validate the post
+        const response = await fetch(`http://localhost:4000/post-and-validate/${postId}`,{
+            method : "POST",
+            body : fields
+        });
 
         // Show the error modal if the request fails
         if (response.status === 200) {
             setShowErrorText(false);
-        }else{
+        }
+        
+        if (response.status === 500) {
             setShowErrorText(true);
         }
 
@@ -100,11 +110,15 @@ export const EditPost : FC = () => {
     };
 
     // This method runs the get method and then formats the results
-    const handlePostDataQuery = async () => {
+    const handlePostDataQuery = async (userId : string) => {
 
-        const result = await getPostData();
+        const result = await getPostData(userId);
 
         const data = await result.json();
+
+        if (data.isUserValidated === false) {
+            navigate(`${BASENAME}/posts`);
+        }
 
         const success = data.success ? data.success : false;
 
@@ -155,7 +169,7 @@ export const EditPost : FC = () => {
             if (appContextInstance?.userAuthenticated === true) {
                 
                 if (appContextInstance?.token !== '') {
-                    handlePostDataQuery();
+                    handlePostDataQuery(appContextInstance?.userId ? appContextInstance.userId : "");
                 }
             }
 
@@ -169,7 +183,7 @@ export const EditPost : FC = () => {
         appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[postId, appContextInstance]);
+    },[postId, appContextInstance, isPostCreatorValid]);
 
     // Update the post data, and return an error if required
     const submitHandler = async (event : FormEvent) => {
