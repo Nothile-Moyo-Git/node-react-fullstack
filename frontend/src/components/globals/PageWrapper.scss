@@ -49,3 +49,14 @@ main{
         }
     }
 }
+
+.footer{
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+
+    &__image{
+        width: 100px;
+        height: 100px;
+    }
+}

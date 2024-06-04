@@ -19,6 +19,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { ViewPosts } from '../pages/Posts/ViewPosts';
 import PostScreen from '../pages/Posts/PostScreen';
 import { EditPost } from '../pages/Posts/EditPost';
+import LiveChat from '../pages/Sockets/LiveChat';
 
 export const nestedRouter = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ export const nestedRouter = createBrowserRouter([
             {
                 path : BASENAME,
                 element : <App/>
+            },
+            {
+                path : BASENAME + "/chat",
+                element : <LiveChat/>
             },
             {
                 path : BASENAME + "/login",

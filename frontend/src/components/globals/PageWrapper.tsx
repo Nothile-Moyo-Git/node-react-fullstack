@@ -8,11 +8,13 @@
  * 
  */
 
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { FC, useState, ReactNode, useEffect, useContext } from "react";
 import { AppContext } from "../../context/AppContext"; 
 import Menu from "../menu/Menu";
 import "./PageWrapper.scss";
+import chatIcon from "../icons/chat-icon.svg";
+import { BASENAME } from "../../util/util";
 
 interface ComponentProps {
     children ?: ReactNode
@@ -83,6 +85,15 @@ const PageWrapper : FC<ComponentProps> = ({children}) => {
             />
             {children}
             <Outlet />
+
+            <Link
+                to={`${BASENAME}/chat`}
+                className="footer"
+            ><img
+                src={chatIcon}
+                alt="Open chat room icon"
+                className="footer__image"
+            /></Link>
         </main>
     );
 };
