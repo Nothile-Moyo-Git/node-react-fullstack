@@ -26,6 +26,7 @@ import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
+import { Server } from "socket.io";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -152,10 +153,30 @@ const startServer = async () => {
     await createMongooseConnection(() => {
 
         // Listen to the port
-        app.listen(port, () => {
+        const server = app.listen(port, () => {
             console.log(`[Server]: Server is running on http://localhost:${port}`);
         });
 
+        // Create our connection to socket.io
+        const socketIO = new Server(server,{
+            cors : {
+                origin: "http://localhost:3000"
+            }
+        });
+
+        // Execute the code once the connection has been established
+        socketIO.on('connection', (socket) => {
+
+            console.log("\n");
+            console.log("A user connected");
+            // console.log(socket);
+
+            socket.on('disconnect', () => {
+
+                console.log("\n");
+                console.log("A user disconnected");
+            });
+        });
     });
 };
 

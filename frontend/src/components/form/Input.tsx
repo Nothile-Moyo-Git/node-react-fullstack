@@ -13,7 +13,7 @@ import "./Input.scss";
 import React, { ReactNode, forwardRef } from "react";
 
 interface ComponentProps {
-    ariaLabelledBy : string,
+    ariaLabelledBy ?: string,
     children ?: ReactNode,
     error : boolean,
     initialValue ?: string,
@@ -34,7 +34,7 @@ interface ComponentProps {
  * @param children ?: ReactNode
  * @param defaultValue : string
  * @param error : boolean
- * @param initialValue ?: string
+ * @param initialV  alue ?: string
  * @param name : string
  * @param onChange ?: (event : React.ChangeEvent<HTMLInputElement>) => void
  * @param placeholder ?: string

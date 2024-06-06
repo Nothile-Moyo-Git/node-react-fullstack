@@ -19,9 +19,10 @@ import "./Form.scss";
  */
 
 interface ComponentProps {
-    children: ReactNode,
+    size ?: string,
+    children : ReactNode,
     isFormValid ?: boolean,
-    onSubmit: (event: FormEvent) => void
+    onSubmit : (event: FormEvent) => void
 }
 
 /**
@@ -33,7 +34,10 @@ interface ComponentProps {
  * @param isFormValid ?: boolean
  * @param onSubmit : (event: FormEvent) => void
  */
-const Form : FC<ComponentProps> = ({children, isFormValid, onSubmit}) => {
+const Form : FC<ComponentProps> = ({size, children, isFormValid, onSubmit}) => {
+
+    console.log("size");
+    console.log(size);
 
     return(
         <form className={`form ${isFormValid === false && 'form__error'}`} onSubmit={onSubmit}>
