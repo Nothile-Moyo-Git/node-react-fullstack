@@ -165,13 +165,18 @@ const startServer = async () => {
         });
 
         // Execute the code once the connection has been established
-        socketIO.on('connection',  (socket) => {
+        socketIO.on('connection', (socket) => {
 
+            console.log("\n");
             console.log("A user connected");
+            // console.log(socket);
 
-            console.log("\n\n");
+            socket.on('disconnect', () => {
+
+                console.log("\n");
+                console.log("A user disconnected");
+            });
         });
-
     });
 };
 
