@@ -12,13 +12,17 @@ import "./Field.scss";
 import { FC, ReactNode } from "react";
 
 interface ComponentProps {
-    children : ReactNode
+    children : ReactNode,
+    position ?: string
 }
 
-const Field : FC<ComponentProps> = ({children}) => {
+const Field : FC<ComponentProps> = ({children, position}) => {
+
+    // Set the classname for the fields for differnet types of forms
+    const fieldClassNames = position === "bottom" ? "field__bottom" : "";
 
     return(
-        <div className="field">
+        <div className={`field ${fieldClassNames}`}>
             {children}
         </div>
     );

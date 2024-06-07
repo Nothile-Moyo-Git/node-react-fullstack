@@ -22,6 +22,7 @@ interface ComponentProps {
     placeholder ?: string,
     ref : React.RefObject<HTMLInputElement>,
     required ?: boolean,
+    square ?: boolean,
     type : string,
 };
 
@@ -40,14 +41,18 @@ interface ComponentProps {
  * @param placeholder ?: string
  * @param ref : React.RefObject<HTMLInputElement>
  * @param required ?: boolean
+ * @param square ?: boolean
  * @param type : string
  */
 const Input = forwardRef<HTMLInputElement, ComponentProps>(function InputComponent(props, ref) {
 
+    // Set the classNames for the input
+    const inputClassNames = props.square ? "input__square" : "";
+
     return(
         <input
             aria-labelledby={props.ariaLabelledBy}
-            className={`input ${props.error === true && 'input__error'}`}
+            className={`input ${inputClassNames} ${props.error === true && 'input__error'}`}
             defaultValue={props.initialValue}
             name={props.name}
             onChange={(event : React.ChangeEvent<HTMLInputElement>) => { props.onChange && props.onChange(event) }}

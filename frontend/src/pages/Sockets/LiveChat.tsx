@@ -10,7 +10,7 @@
 
 import "./LiveChat.scss";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { FC, FormEvent, useEffect, useRef } from "react";
+import { FC, FormEvent, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Title from "../../components/form/Title";
 import Form from "../../components/form/Form";
@@ -21,6 +21,7 @@ const LiveChat : FC = () => {
 
     let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
     const inputRef = useRef<HTMLInputElement>(null);
+    const [chatMessages, setChatMessages] = useState<string[]>([]); 
 
     useEffect(() => {
 
@@ -38,6 +39,20 @@ const LiveChat : FC = () => {
     // Submit handler, this allows messages to be sent between clients
     const onSubmit = async (event : FormEvent) => {
 
+        // Stop the page from reloading
+        event.preventDefault();
+
+        // If we have an input, send a message to the socket
+        if (inputRef.current) {
+            const chatMessage = inputRef.current.value;
+
+            console.clear();
+            console.log("chat message");
+            console.log(chatMessage);
+
+            // Send the message to the websocket
+            socket && socket.emit('chat message', { message : chatMessage });
+        } 
     };
 
     return(
@@ -46,11 +61,13 @@ const LiveChat : FC = () => {
                 
                 <Title>Live Chat</Title>
 
-                <Field>
+                <Field position="bottom">
                     <Input
                         name="chatMessage"
                         error={false}
+                        placeholder="Please enter a message into the chat"
                         ref={inputRef}
+                        square={true}
                         type="text"
                     />
                 </Field>
