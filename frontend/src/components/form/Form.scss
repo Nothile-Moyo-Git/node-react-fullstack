@@ -8,4 +8,9 @@
     grid-row-gap: 1rem;
     z-index: 1;
     position: relative;
+
+    &__full{
+        max-width: 100%;
+        width: 100%;
+    }
 }

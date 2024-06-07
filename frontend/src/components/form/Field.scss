@@ -6,4 +6,9 @@
     grid-row-gap: 0.15rem;
     width: 100%;
     animation: fade-in 0.2s linear;
+
+    &__bottom{
+        position: fixed;
+        bottom: 0;
+    }
 }

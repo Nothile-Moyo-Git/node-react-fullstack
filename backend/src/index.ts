@@ -171,10 +171,24 @@ const startServer = async () => {
             console.log("A user connected");
             // console.log(socket);
 
-            socket.on('disconnect', () => {
+            socket.on('disconnect', (reason) => {
 
                 console.log("\n");
                 console.log("A user disconnected");
+            });
+
+            socket.on('error', (error) => {
+
+                console.log("\n");
+                console.log("An error occured");
+                console.log(error);
+            });
+
+            socket.on('chat message', (messageObject) => {
+
+                console.log("\n");
+                console.log("Message object");
+                console.log(messageObject);
             });
         });
     });
