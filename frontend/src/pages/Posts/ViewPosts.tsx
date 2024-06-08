@@ -40,6 +40,14 @@ export const ViewPosts : FC = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string>("");
 
+    // Add a post to the list from the websocket
+    const addPostToArray = (post : Post) => {
+
+        setPosts((prevPosts) => {
+            return { ...prevPosts, post };
+        });
+    };
+
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
         const response = await fetch(`http://localhost:4000/posts/${page}`);
