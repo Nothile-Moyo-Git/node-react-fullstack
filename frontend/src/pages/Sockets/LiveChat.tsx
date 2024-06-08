@@ -17,23 +17,38 @@ import Form from "../../components/form/Form";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 
+interface chatMessage {
+    message : string,
+    date : string
+}
+
 const LiveChat : FC = () => {
 
     let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
     const inputRef = useRef<HTMLInputElement>(null);
-    const [chatMessages, setChatMessages] = useState<string[]>([]); 
-
-    useEffect(() => {
-
-        console.log("Component rendered");
-
-        // Connect to the websocket if the socket doesn't exist already
-        // console.log("Socket");
-        // console.log(socket);
-    });
+    const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
 
     if (!socket) {
         socket = io("http://localhost:4000");
+    }
+
+    if (socket) {
+        socket.on('chat message', (messageObject) => {
+
+            setChatMessages((prevState) => {
+
+                const newArray = prevState;
+                newArray.push(messageObject);
+
+                console.log("\n\n");
+                console.log("new array");
+                console.log(newArray);
+
+                return newArray;
+                //return [ ...prevState, messageObject ];
+            });
+
+        });
     }
 
     // Submit handler, this allows messages to be sent between clients
@@ -46,14 +61,15 @@ const LiveChat : FC = () => {
         if (inputRef.current) {
             const chatMessage = inputRef.current.value;
 
-            console.clear();
-            console.log("chat message");
-            console.log(chatMessage);
-
             // Send the message to the websocket
-            socket && socket.emit('chat message', { message : chatMessage });
+            socket && socket.emit('chat message', chatMessage);
         } 
     };
+
+    console.log("\n");
+    console.log("Chat messages");
+    console.log(chatMessages.length);
+    console.log(chatMessages);
 
     return(
         <section className="liveChat">
@@ -73,6 +89,10 @@ const LiveChat : FC = () => {
                 </Field>
 
             </Form>
+
+            {chatMessages.map((message) => {
+                return <p>{message.message}</p>
+            })}
         </section>
     );
 };

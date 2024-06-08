@@ -25,7 +25,7 @@ import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
-import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
+import { getFolderPathFromDate, getFileNamePrefixWithDate, createReadableDate } from "./util/utillity-methods";
 import { Server } from "socket.io";
 
 // Module augmentation for the request
@@ -184,11 +184,19 @@ const startServer = async () => {
                 console.log(error);
             });
 
-            socket.on('chat message', (messageObject) => {
+            // If we receive a chat message, send it back to the other user so it can be read
+            socket.on('chat message', (message) => {
 
-                console.log("\n");
-                console.log("Message object");
-                console.log(messageObject);
+                const sendDate = createReadableDate(new Date);
+
+                // Create a json object of the object and the date to send to the front end
+                const messageObject = { 
+                    date : sendDate,
+                    message : message
+                }
+
+                // Emit the message back to the frontend
+                socketIO.emit('chat message', messageObject);
             });
         });
     });
