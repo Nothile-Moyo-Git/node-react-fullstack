@@ -16,6 +16,7 @@ import Title from "../../components/form/Title";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
+import Button from "../../components/button/Button";
 
 interface chatMessage {
     message : string,
@@ -24,32 +25,34 @@ interface chatMessage {
 
 const LiveChat : FC = () => {
 
-    let socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = null;
     const inputRef = useRef<HTMLInputElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
+    const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
-    if (!socket) {
-        socket = io("http://localhost:4000");
-    }
+    useEffect(() => {
 
-    if (socket) {
-        socket.on('chat message', (messageObject) => {
+        const client = io("http://localhost:4000");
 
-            setChatMessages((prevState) => {
+        // Add a message to the chat
+        client.on("message sent", (message) => {
 
-                const newArray = prevState;
-                newArray.push(messageObject);
-
-                console.log("\n\n");
-                console.log("new array");
-                console.log(newArray);
-
-                return newArray;
-                //return [ ...prevState, messageObject ];
+            setChatMessages((previousMessages) => {
+                return [...previousMessages, message];
             });
-
         });
-    }
+
+        // Set this to a ref so we can keep the value between re-renders
+        if (!socketClientRef.current) {
+            socketClientRef.current = client;
+        }
+
+        return () => {
+
+            // Remove unncessary event handlers
+            client.removeAllListeners();
+        }
+
+    },[]);
 
     // Submit handler, this allows messages to be sent between clients
     const onSubmit = async (event : FormEvent) => {
@@ -62,14 +65,9 @@ const LiveChat : FC = () => {
             const chatMessage = inputRef.current.value;
 
             // Send the message to the websocket
-            socket && socket.emit('chat message', chatMessage);
+            socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
         } 
     };
-
-    console.log("\n");
-    console.log("Chat messages");
-    console.log(chatMessages.length);
-    console.log(chatMessages);
 
     return(
         <section className="liveChat">
@@ -86,12 +84,18 @@ const LiveChat : FC = () => {
                         square={true}
                         type="text"
                     />
+                    <Button variant="square">Send</Button>
                 </Field>
 
             </Form>
 
             {chatMessages.map((message) => {
-                return <p>{message.message}</p>
+                return (
+                    <div>
+                        <span>{`Sent : ${message.date}`}</span>
+                        <p>{message.message}</p>
+                    </div>
+                );
             })}
         </section>
     );

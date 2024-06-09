@@ -58,6 +58,10 @@ const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
         case "back":
             variantClassName = "button__back";
             break;
+
+        case "square":
+            variantClassName = "button__square";
+            break;
         
         default:
             variantClassName = "";
