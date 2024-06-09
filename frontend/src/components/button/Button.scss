@@ -27,6 +27,25 @@
         }
     }
 
+    &__square{
+        border: 0;
+        border-radius: 0px;
+        z-index: 3;
+        overflow: hidden;
+        transition: animations.$standard_transition;
+        padding : 0.7rem 1rem 0.4rem 1rem;
+        color: rgba(0,0,0,0.9);
+
+        @include mixins.state(){
+            filter: contrast(150%);
+        }
+
+        @include mixins.backgroundGradientEffect(){
+            background: branding.$gradient_color_six;   
+        }
+
+    }
+
     &__delete{
         background: branding.$brand_color_seven;
         border-color: branding.$brand_color_seven;

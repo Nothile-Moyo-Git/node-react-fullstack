@@ -196,7 +196,7 @@ const startServer = async () => {
                 }
 
                 // Emit the message back to the frontend
-                socketIO.emit('chat message', messageObject);
+                socketIO.emit('message sent', messageObject);
             });
         });
     });
