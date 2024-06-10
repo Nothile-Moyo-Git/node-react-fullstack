@@ -10,13 +10,17 @@
 
 import "./LiveChat.scss";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Title from "../../components/form/Title";
 import Form from "../../components/form/Form";
 import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
+import { AppContext } from "../../context/AppContext";
+import { User } from "../../@types";
+import { useNavigate } from "react-router-dom";
+import { BASENAME } from "../../util/util";
 
 interface chatMessage {
     message : string,
@@ -25,8 +29,11 @@ interface chatMessage {
 
 const LiveChat : FC = () => {
 
+    const navigate = useNavigate();
+    const appContextInstance = useContext(AppContext);
     const inputRef = useRef<HTMLInputElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
+    const [userDetails, setUserDetails] = useState<User>();
     const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
     useEffect(() => {
@@ -53,6 +60,47 @@ const LiveChat : FC = () => {
         }
 
     },[]);
+
+    // Get user details if the user is authenticated from the backend
+    const getUserDetails = async (userId : string) => {
+
+        // We assign Formdata here so we can use this with cors in the backend
+        const fields = new FormData();
+        fields.append("userId", userId);
+        fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
+    
+        const result = await fetch(`http://localhost:4000/user/${userId}`, {
+            method : "POST",
+            body : fields
+        });
+    
+        const data = await result.json();
+    
+        // Set the user details so 
+        setUserDetails(data.user);
+    };
+
+    // Get the user details from the backend for the chat
+    useEffect(() => {
+
+
+        appContextInstance?.validateAuthentication();
+
+        try{
+
+            // Get the user information so we can share it in the post
+            appContextInstance?.userId && getUserDetails(appContextInstance.userId);
+
+        }catch(error){
+
+            console.error(error);
+        }
+
+        // If the user isn't authenticated, redirect this route to the previous page
+        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[appContextInstance]);
 
     // Submit handler, this allows messages to be sent between clients
     const onSubmit = async (event : FormEvent) => {
@@ -91,8 +139,13 @@ const LiveChat : FC = () => {
 
             {chatMessages.map((message) => {
                 return (
-                    <div>
-                        <span>{`Sent : ${message.date}`}</span>
+                    <div className="liveChat__message">
+
+                        <p className="liveChat__description">
+                            <span>{userDetails?.name}</span>
+                            <span className="liveChat__date">{` ${message.date}`}</span>
+                        </p>
+
                         <p>{message.message}</p>
                     </div>
                 );
