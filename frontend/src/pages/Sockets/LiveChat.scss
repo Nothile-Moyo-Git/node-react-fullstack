@@ -1,3 +1,5 @@
+@use "../../scss/partials/branding" as branding;
+
 .liveChat {
 
     &__title{
@@ -6,5 +8,10 @@
 
     &__message{
         
+    }
+
+    &__date{
+        font-size: 0.7rem;
+        color: branding.$brand_color_six;
     }
 }

@@ -8,11 +8,15 @@
     font-size: 1rem;
     box-shadow: branding.$box_shadow;
     border: 0px solid white;
-    transition: animations.$standard_transition;
+    border-right: 1px solid branding.$brand_color_six;
+    transition : animations.$standard_transition;
+    outline-offset: -1px;
+    outline: 1px solid white;
     color : rgba(0, 0, 0, 0.9);
 
     @include mixins.visible(){
         outline: 1px solid branding.$brand_color_six;
+        border: 0px;
     }
 
     &[type='file']{
@@ -62,5 +66,6 @@
         border-radius: 0px;
         height: 30px;
         width: 100%;
+        transition : none;
     }
 }
