@@ -7,9 +7,11 @@
     padding: 0.1rem 0.25rem;
     max-width: calc(100% - 0.5rem);
     color : rgba(0, 0, 0, 0.9);
+    border-right: 1px solid branding.$brand_color_six;
+    outline-offset : -2px;
 
     @include mixins.visible(){
-        outline: 1px solid branding.$brand_color_six;
+        outline: 2px solid branding.$brand_color_six;
     }
 
     &__error{
@@ -20,14 +22,12 @@
         }
     }
 
-    /* Track */
-    &::-webkit-scrollbar-track {
-        border-top-right-radius: 3px;
+    &__square {
+        border-radius: 0px;
     }
 
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        border-radius: 3px;
         background: branding.$brand_color_six;
     }
 

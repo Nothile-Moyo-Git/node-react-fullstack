@@ -7,11 +7,19 @@
     }
 
     &__message{
-        
+        padding: 1rem;
     }
 
     &__date{
-        font-size: 0.7rem;
+        font-size: 0.8rem;
         color: branding.$brand_color_six;
+    }
+
+    &__description{
+        margin: 0;
+    }
+
+    &__content{
+        margin: 0;
     }
 }
