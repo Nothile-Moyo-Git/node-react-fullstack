@@ -14,13 +14,13 @@ import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Title from "../../components/form/Title";
 import Form from "../../components/form/Form";
-import Input from "../../components/form/Input";
 import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
 import { AppContext } from "../../context/AppContext";
 import { User } from "../../@types";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
+import TextArea from "../../components/form/TextArea";
 
 interface chatMessage {
     message : string,
@@ -31,7 +31,7 @@ const LiveChat : FC = () => {
 
     const navigate = useNavigate();
     const appContextInstance = useContext(AppContext);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const contentRef = useRef<HTMLTextAreaElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
     const [userDetails, setUserDetails] = useState<User>();
     const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
@@ -109,12 +109,15 @@ const LiveChat : FC = () => {
         event.preventDefault();
 
         // If we have an input, send a message to the socket
-        if (inputRef.current) {
-            const chatMessage = inputRef.current.value;
+        if (contentRef.current) {
+            const chatMessage = contentRef.current.value;
 
             // Send the message to the websocket
             socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
-        } 
+
+            // Reset our input after we've posted a new message to the chat
+            contentRef.current.value = "";
+        }
     };
 
     return(
@@ -124,13 +127,15 @@ const LiveChat : FC = () => {
                 <Title>Live Chat</Title>
 
                 <Field position="bottom">
-                    <Input
-                        name="chatMessage"
+                    <TextArea
+                        ariaLabelledBy="contentLabel"
                         error={false}
-                        placeholder="Please enter a message into the chat"
-                        ref={inputRef}
+                        name="content"
+                        placeholder="Please post your message in the chat"
                         square={true}
-                        type="text"
+                        startingRows={3}
+                        ref={contentRef}
+                        required={true}
                     />
                     <Button variant="square">Send</Button>
                 </Field>
@@ -146,7 +151,7 @@ const LiveChat : FC = () => {
                             <span className="liveChat__date">{` ${message.date}`}</span>
                         </p>
 
-                        <p>{message.message}</p>
+                        <p className="liveChat__content">{message.message}</p>
                     </div>
                 );
             })}

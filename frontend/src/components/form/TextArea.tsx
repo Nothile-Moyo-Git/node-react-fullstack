@@ -20,6 +20,7 @@ interface ComponentProps {
     placeholder : string,
     ref : React.RefObject<HTMLTextAreaElement>
     required : boolean,
+    square ?: boolean,
     startingRows ?: number
 };
 
@@ -35,14 +36,18 @@ interface ComponentProps {
  * @param placeholder : string
  * @param ref : React.RefObject<HTMLTextAreaElement>
  * @param required : boolean
+ * @param square : boolean
  * @param startingRows ?: number
  */
 const TextArea = forwardRef<HTMLTextAreaElement, ComponentProps>(function TextAreaComponent(props, ref) {
 
+    // Set the classnames for the textarea
+    const textAreaClassNames = props.square ? "textarea__square" : "";
+
     return (
         <textarea
             aria-labelledby={props.ariaLabelledBy}
-            className={`textarea ${props.error === true && 'textarea__error'}`}
+            className={`textarea ${textAreaClassNames} ${props.error === true && 'textarea__error'}`}
             defaultValue={props.initialValue}
             name={props.name}
             placeholder={props.placeholder}
