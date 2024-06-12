@@ -120,6 +120,8 @@ const LiveChat : FC = () => {
         }
     };
 
+    
+
     return(
         <section className="liveChat">
             <Form size="full" onSubmit={onSubmit}>
