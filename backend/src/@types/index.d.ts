@@ -1,6 +1,5 @@
 // Importing dependencies or generics or interfaces we're going to extend
 import { ObjectId } from 'mongodb';
-import { Session, SessionData } from "express-session";
 import { Request } from 'express';
 
 // Declare our modules to allow us to use files
@@ -47,6 +46,16 @@ export interface UserMethodsInterface {
     generateHash : (password : string) => string
 }
 
+export interface ChatMessage {
+    message : string,
+    dateSent : string,
+}
+
+export interface ChatInterface {
+    messages : ChatMessage[]
+    userIds : ObjectId[]
+}
+
 export interface PostsInterface {
     fileLastUpdated : string,
     fileName : string,
@@ -82,6 +91,13 @@ export interface RequestInterface extends Request {
         email : string,
         password : string,
         confirmPassword : string
+    }
+}
+
+export interface ChatRequestInterface extends Request {
+    body : {
+        userIds : string[]
+        message : ChatMessage
     }
 }
 
