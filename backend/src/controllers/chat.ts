@@ -23,5 +23,6 @@ import { ChatRequestInterface } from "../@types";
  */
 export const PostSendMessageController = (request : ChatRequestInterface, response : Response, next : NextFunction) => {
 
-    response.status(200).json({ success : true });
+
+    response.status(200).json({ success : true, requestSuccess : true });
 };

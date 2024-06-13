@@ -117,6 +117,29 @@ const LiveChat : FC = () => {
 
             // Reset our input after we've posted a new message to the chat
             contentRef.current.value = "";
+
+            // Send a request to the backend to create a new chat
+            
+            // We assign Formdata here so we can use this with cors in the backend
+            const userId = appContextInstance?.userId ? appContextInstance.userId : "";
+            const receipientId = "6656382efb54b1949e66bae2";
+
+            // 
+            const fields = new FormData();
+            fields.append("userId", userId);
+            fields.append("recipientId", receipientId);
+            fields.append("messages", JSON.stringify(chatMessages));
+
+            const result = await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
+                method : "POST",
+                body : fields
+            });
+        
+            const data = await result.json();
+
+            console.clear();
+            console.log("data");
+            console.log(data);
         }
     };
 

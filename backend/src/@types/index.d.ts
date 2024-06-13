@@ -96,8 +96,9 @@ export interface RequestInterface extends Request {
 
 export interface ChatRequestInterface extends Request {
     body : {
-        userIds : string[]
-        message : ChatMessage
+        userId : string,
+        recipientId : string,
+        messages : string
     }
 }
 
