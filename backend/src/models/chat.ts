@@ -14,13 +14,13 @@
  */
 
 import mongoose, { Model } from "mongoose";
-import { ChatInterface, ChatMessage } from "../@types";
+import { ChatInterface } from "../@types";
 
 // Setting our types to be used in Mongoose
 type ChatModel = Model<ChatInterface, {}, {}>
 
 // Define our schema for the Posts collection in the backend using Mongoose
-const postSchema = new mongoose.Schema<ChatInterface>({
+const chatSchema = new mongoose.Schema<ChatInterface>({
     userIds : { type : [mongoose.Schema.Types.ObjectId], required : true },
     messages : { type : [{message : String, dateSent : String}] }
 },{
@@ -28,6 +28,6 @@ const postSchema = new mongoose.Schema<ChatInterface>({
 });
 
 // Create our model for exporting
-const Post = mongoose.model<ChatInterface, ChatModel>("Post", postSchema);
+const Chat = mongoose.model<ChatInterface, ChatModel>("Chat", chatSchema);
 
-export default Post;
+export default Chat;

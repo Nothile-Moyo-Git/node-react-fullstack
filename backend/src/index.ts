@@ -16,6 +16,7 @@ import fs from "fs";
 import path from "path";
 import feedRoutes from "./routes/feed";
 import errorRoutes from "./routes/feed";
+import chatRoutes from "./routes/chat";
 import { RequestInterface } from "./@types";
 import session from "express-session";
 import express, { Request, Response, NextFunction } from "express";
@@ -142,6 +143,7 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 // Implement Route handlers here
 app.use( feedRoutes );
 app.use( authRoutes );
+app.use( chatRoutes );
 
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
