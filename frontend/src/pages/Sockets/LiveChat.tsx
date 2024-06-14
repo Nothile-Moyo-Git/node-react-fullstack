@@ -122,12 +122,12 @@ const LiveChat : FC = () => {
             
             // We assign Formdata here so we can use this with cors in the backend
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
-            const receipientId = "6656382efb54b1949e66bae2";
+            const recipientId = "6656382efb54b1949e66bae2";
 
             // 
             const fields = new FormData();
             fields.append("userId", userId);
-            fields.append("recipientId", receipientId);
+            fields.append("recipientId", recipientId);
             fields.append("messages", JSON.stringify(chatMessages));
 
             const result = await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
