@@ -10,8 +10,9 @@
  */
 
 import { Response, NextFunction } from "express";
-import { ChatRequestInterface } from "../@types";
+import { ChatMessage, ChatRequestInterface } from "../@types";
 import Chat from "../models/chat";
+import { createReadableDate } from "../util/utillity-methods";
 
 /**
  * @name PostSendMessageController
@@ -24,25 +25,59 @@ import Chat from "../models/chat";
  */
 export const PostSendMessageController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
 
-    // Get the number of documents
-    const numberOfChats = await Chat.countDocuments();
+    try{
 
-    // This is for this app only, check if we have a chat already set in the backend
-    console.log("Number of chats");
-    console.log(numberOfChats);
+        // Get the number of documents
+        // We also need to create a date for the message and create / append the messages array
+        const numberOfChats = await Chat.countDocuments();
 
-    if (numberOfChats === 0) {
+        // Create a new message
+        const currentDate : string = createReadableDate(new Date());
+        const newMessage : ChatMessage = {
+            message : request.body.newMessage,
+            dateSent : currentDate
+        };
 
-        const chat = new Chat();
-        
+        // Id values
+        const userId = request.body.userId;
+        const recipientId = request.body.recipientId;
+
+        // This is for this app only, check if we have a chat already set in the backend
+        console.log("Number of chats");
+        console.log(numberOfChats);
+
+        if (numberOfChats === 0) {
+
+            // Create an array of messages with only the new message since the object doesn't exist
+            const initialMessages = [{newMessage}];
+            const userIds = [userId, recipientId];
+
+            // Create new chat instance
+            const chat = new Chat({
+                userIds : userIds,
+                messages : initialMessages
+            });
+
+            // Save it to the backend
+            await chat.save();
+
+        }else{
+
+            const messages = JSON.parse(request.body.messages);
+            
+            const messagesPreview = [...messages, newMessage];
+            
+        }
+
+    }catch(error){
+
+
     }
 
-    console.log("\n\n");
-    console.log("Request body");
-    console.log(request.body);
 
-    console.log("messages");
-    console.log(JSON.parse(request.body.messages));
+
+
+
 
     response.status(200).json({ success : true, requestSuccess : true });
 };
