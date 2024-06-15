@@ -115,9 +115,6 @@ const LiveChat : FC = () => {
             // Send the message to the websocket
             socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
 
-            // Reset our input after we've posted a new message to the chat
-            contentRef.current.value = "";
-
             // Send a request to the backend to create a new chat
             
             // We assign Formdata here so we can use this with cors in the backend
@@ -129,15 +126,26 @@ const LiveChat : FC = () => {
             fields.append("userId", userId);
             fields.append("recipientId", recipientId);
             fields.append("messages", JSON.stringify(chatMessages));
+            fields.append("newMessage", contentRef.current.value);
+
+            console.clear();
+            console.log("userId", userId);
+            console.log("recipientId", recipientId);
+
+            console.log("\n\n");
+            console.log("messages");
+            console.log(JSON.stringify(chatMessages));
 
             const result = await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
                 method : "POST",
                 body : fields
             });
+
+            // Reset our input after we've posted a new message to the chat and backend
+            contentRef.current.value = "";
         
             const data = await result.json();
 
-            console.clear();
             console.log("data");
             console.log(data);
         }

@@ -41,8 +41,14 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
     console.log("Request body");
     console.log(request.body);
 
+    console.log("\n\n");
     console.log("messages");
     console.log(JSON.parse(request.body.messages));
+
+    console.log("\n\n");
+    console.log("message");
+    console.log(request.body.newMessage);
+
 
     response.status(200).json({ success : true, requestSuccess : true });
 };
