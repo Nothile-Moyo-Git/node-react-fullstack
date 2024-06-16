@@ -10,7 +10,7 @@
  */
 
 import { Response, NextFunction } from "express";
-import { ChatMessage, ChatRequestInterface } from "../@types";
+import { ChatInterface, ChatMessage, ChatRequestInterface } from "../@types";
 import Chat from "../models/chat";
 import { createReadableDate } from "../util/utillity-methods";
 
@@ -42,14 +42,11 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
         const userId = request.body.userId;
         const recipientId = request.body.recipientId;
 
-        // This is for this app only, check if we have a chat already set in the backend
-        console.log("Number of chats");
-        console.log(numberOfChats);
-
         if (numberOfChats === 0) {
 
             // Create an array of messages with only the new message since the object doesn't exist
-            const initialMessages = [{newMessage}];
+            const initialMessages = [{...newMessage}];
+
             const userIds = [userId, recipientId];
 
             // Create new chat instance
@@ -63,21 +60,71 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
 
         }else{
 
-            const messages = JSON.parse(request.body.messages);
-            
-            const messagesPreview = [...messages, newMessage];
-            
+            // Get the chat if we already have one
+            const chatInstance = await Chat.find().limit(1);
+
+            // Get the messages from the backend
+            const messages = chatInstance[0].messages;
+
+            // Add the new message to the array of previous messages
+            const updatedMessages = [...messages, {...newMessage}];
+
+            // Update the old messages with the new messages and push them up
+            chatInstance[0].messages = updatedMessages;
+            await chatInstance[0].save();      
+        }
+
+        response.status(200).json({ success : true, error : null });
+
+    }catch(error){
+
+        // Output the error to the backend
+        console.log(error);
+        response.status(500).json({ success : false, error : error })
+    }
+};
+
+/**
+ * 
+ * @name PostCurrentChatController 
+ * 
+ * @description Get the current chat messages sent between two clients
+ * 
+ * @param request : ChatRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostCurrentPostsController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
+
+    try {
+
+        // Get the number of items you have in your chat
+        const numberOfChats = await Chat.countDocuments();
+
+        // If a chat already exists
+        if (numberOfChats === 0) {
+
+            // Return an empty array
+            response.status(200).json({ success : true, messages : [], error : null });
+
+        }else{
+
+            // Get the messages from the chat
+            const messages = await Chat.find();
+
+            console.clear();
+            console.log("messages");
+            console.log(messages);
+
+
+
+            response.status(200).json({ success : true, messages : messages[0], error : null });
         }
 
     }catch(error){
 
-
+        // Output the error to the backend
+        console.log(error);
+        response.status(500).json({ success : false, error : error });
     }
-
-
-
-
-
-
-    response.status(200).json({ success : true, requestSuccess : true });
 };
