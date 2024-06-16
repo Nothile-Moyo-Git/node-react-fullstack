@@ -83,3 +83,48 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
         response.status(500).json({ success : false, error : error })
     }
 };
+
+/**
+ * 
+ * @name PostCurrentChatController 
+ * 
+ * @description Get the current chat messages sent between two clients
+ * 
+ * @param request : ChatRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostCurrentPostsController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
+
+    try {
+
+        // Get the number of items you have in your chat
+        const numberOfChats = await Chat.countDocuments();
+
+        // If a chat already exists
+        if (numberOfChats === 0) {
+
+            // Return an empty array
+            response.status(200).json({ success : true, messages : [], error : null });
+
+        }else{
+
+            // Get the messages from the chat
+            const messages = await Chat.find();
+
+            console.clear();
+            console.log("messages");
+            console.log(messages);
+
+
+
+            response.status(200).json({ success : true, messages : messages[0], error : null });
+        }
+
+    }catch(error){
+
+        // Output the error to the backend
+        console.log(error);
+        response.status(500).json({ success : false, error : error });
+    }
+};

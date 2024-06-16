@@ -34,6 +34,7 @@ const LiveChat : FC = () => {
     const contentRef = useRef<HTMLTextAreaElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
     const [userDetails, setUserDetails] = useState<User>();
+    const [userValidated, setUserValidated] = useState<boolean>();
     const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
     useEffect(() => {
@@ -80,6 +81,31 @@ const LiveChat : FC = () => {
         setUserDetails(data.user);
     };
 
+    // Get the chat messages async since we can't do it in our useEffect hook
+    const getChatMessages = async (userId : string, recipientId : string) => {
+
+        // Set the user and recipientId so we can query these from the backend
+        const fields = new FormData();
+        fields.append("userId", userId);
+        fields.append("recipientId", recipientId);
+
+        // Query chat messages
+        const result = await fetch(`http://localhost:4000/chat/get-messages`, {
+            method : "POST",
+            body : fields
+        });
+
+        const data = await result.json();
+
+        console.clear();
+        console.log("Result");
+        console.log(result);
+        
+        console.log("\n\n");
+        console.log("Data");
+        console.log(data);
+    };
+
     // Get the user details from the backend for the chat
     useEffect(() => {
 
@@ -90,6 +116,12 @@ const LiveChat : FC = () => {
 
             // Get the user information so we can share it in the post
             appContextInstance?.userId && getUserDetails(appContextInstance.userId);
+
+            // Get the Id's
+            const userId = appContextInstance?.userId ? appContextInstance.userId : "";
+            const recipientId = "6656382efb54b1949e66bae2";
+
+            getChatMessages(userId, recipientId);
 
         }catch(error){
 
@@ -121,37 +153,22 @@ const LiveChat : FC = () => {
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
             const recipientId = "6656382efb54b1949e66bae2";
 
-            // 
+            // Set the fields on the form
             const fields = new FormData();
             fields.append("userId", userId);
             fields.append("recipientId", recipientId);
             fields.append("messages", JSON.stringify(chatMessages));
             fields.append("newMessage", contentRef.current.value);
 
-            console.clear();
-            console.log("userId", userId);
-            console.log("recipientId", recipientId);
-
-            console.log("\n\n");
-            console.log("messages");
-            console.log(JSON.stringify(chatMessages));
-
-            const result = await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
+            await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
                 method : "POST",
                 body : fields
             });
 
             // Reset our input after we've posted a new message to the chat and backend
             contentRef.current.value = "";
-        
-            const data = await result.json();
-
-            console.log("data");
-            console.log(data);
         }
     };
-
-    
 
     return(
         <section className="liveChat">
