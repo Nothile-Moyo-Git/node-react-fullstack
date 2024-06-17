@@ -49,6 +49,7 @@ export interface UserMethodsInterface {
 export interface ChatMessage {
     message : string,
     dateSent : string,
+    senderId : string
 }
 
 export interface ChatInterface {

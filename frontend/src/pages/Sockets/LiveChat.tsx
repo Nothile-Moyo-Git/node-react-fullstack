@@ -24,7 +24,8 @@ import TextArea from "../../components/form/TextArea";
 
 interface chatMessage {
     message : string,
-    date : string
+    dateSent : string,
+    senderId : string,
 }
 
 const LiveChat : FC = () => {
@@ -34,7 +35,7 @@ const LiveChat : FC = () => {
     const contentRef = useRef<HTMLTextAreaElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
     const [userDetails, setUserDetails] = useState<User>();
-    const [userValidated, setUserValidated] = useState<boolean>();
+    const [userId, setUserId] = useState<string>();
     const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
     useEffect(() => {
@@ -97,18 +98,16 @@ const LiveChat : FC = () => {
 
         const data = await result.json();
 
-        console.clear();
-        console.log("Result");
-        console.log(result);
-        
-        console.log("\n\n");
-        console.log("Data");
-        console.log(data);
+        // Set the messages from the backend if we have them
+        if (data.messages.length !== 0) {
+
+            // Here we set it to the messages object in messages since we have properties like userId etc...
+            setChatMessages(data.messages.messages);
+        }
     };
 
     // Get the user details from the backend for the chat
     useEffect(() => {
-
 
         appContextInstance?.validateAuthentication();
 
@@ -119,6 +118,9 @@ const LiveChat : FC = () => {
 
             // Get the Id's
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
+
+            setUserId(userId);
+
             const recipientId = "6656382efb54b1949e66bae2";
 
             getChatMessages(userId, recipientId);
@@ -146,8 +148,6 @@ const LiveChat : FC = () => {
 
             // Send the message to the websocket
             socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
-
-            // Send a request to the backend to create a new chat
             
             // We assign Formdata here so we can use this with cors in the backend
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
@@ -198,10 +198,11 @@ const LiveChat : FC = () => {
 
                         <p className="liveChat__description">
                             <span>{userDetails?.name}</span>
-                            <span className="liveChat__date">{` ${message.date}`}</span>
+                            <span className="liveChat__date">{` ${message.dateSent}`}</span>
                         </p>
 
                         <p className="liveChat__content">{message.message}</p>
+                        
                     </div>
                 );
             })}
