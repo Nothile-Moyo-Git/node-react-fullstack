@@ -33,13 +33,15 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
 
         // Create a new message
         const currentDate : string = createReadableDate(new Date());
+        const userId = request.body.userId;
+
         const newMessage : ChatMessage = {
             message : request.body.newMessage,
-            dateSent : currentDate
+            dateSent : currentDate,
+            senderId : userId
         };
 
         // Id values
-        const userId = request.body.userId;
         const recipientId = request.body.recipientId;
 
         if (numberOfChats === 0) {
@@ -94,7 +96,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
  * @param response : Response
  * @param next : NextFunction
  */
-export const PostCurrentPostsController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
+export const PostCurrentChatController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
 
     try {
 
