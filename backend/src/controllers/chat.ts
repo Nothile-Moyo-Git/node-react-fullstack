@@ -114,12 +114,7 @@ export const PostCurrentChatController = async (request : ChatRequestInterface, 
             // Get the messages from the chat
             const messages = await Chat.find();
 
-            console.clear();
-            console.log("messages");
-            console.log(messages);
-
-
-
+            // Send a response to the front end
             response.status(200).json({ success : true, messages : messages[0], error : null });
         }
 
