@@ -192,14 +192,17 @@ const LiveChat : FC = () => {
 
             </Form>
 
-            {chatMessages.map((message) => {
+            {chatMessages.map((message : chatMessage, index : number) => {
                 return (
-                    <div className="liveChat__message">
+                    <div className={`liveChat__message`}>
+                        { 
+                            (index === 0 || (index > 0 && (chatMessages[index].senderId !== chatMessages[index-1].senderId))) &&
+                            <p className={`liveChat__description`}>
+                                <span>{userDetails?.name}{index}</span>
+                                <span className="liveChat__date">{` ${message.dateSent}`}</span>
+                            </p>
+                        }
 
-                        <p className="liveChat__description">
-                            <span>{userDetails?.name}</span>
-                            <span className="liveChat__date">{` ${message.dateSent}`}</span>
-                        </p>
 
                         <p className="liveChat__content">{message.message}</p>
                         
