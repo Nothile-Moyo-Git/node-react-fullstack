@@ -22,7 +22,12 @@ type ChatModel = Model<ChatInterface, {}, {}>
 // Define our schema for the Posts collection in the backend using Mongoose
 const chatSchema = new mongoose.Schema<ChatInterface>({
     userIds : { type : [mongoose.Schema.Types.ObjectId], required : true },
-    messages : { type : [{message : String, dateSent : String, senderId : String}] }
+    messages : { type : [{
+        message : String, 
+        dateSent : String, 
+        senderId : String,
+        sender : String
+    }] }
 },{
     timestamps : true
 });

@@ -34,11 +34,13 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
         // Create a new message
         const currentDate : string = createReadableDate(new Date());
         const userId = request.body.userId;
+        const sender = request.body.sender;
 
         const newMessage : ChatMessage = {
             message : request.body.newMessage,
             dateSent : currentDate,
-            senderId : userId
+            senderId : userId,
+            sender : sender
         };
 
         // Id values
@@ -73,6 +75,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
 
             // Update the old messages with the new messages and push them up
             chatInstance[0].messages = updatedMessages;
+            
             await chatInstance[0].save();      
         }
 

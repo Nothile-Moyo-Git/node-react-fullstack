@@ -48,6 +48,13 @@ const LiveChat : FC = () => {
             setChatMessages((previousMessages) => {
                 return [...previousMessages, message];
             });
+
+            console.clear();
+            console.log("Messages");
+            console.log(message);
+            console.log("Previous messages");
+            console.log(chatMessages);
+
         });
 
         // Set this to a ref so we can keep the value between re-renders
@@ -156,6 +163,7 @@ const LiveChat : FC = () => {
             // Set the fields on the form
             const fields = new FormData();
             fields.append("userId", userId);
+            fields.append("sender", userDetails ? userDetails.name : '');
             fields.append("recipientId", recipientId);
             fields.append("messages", JSON.stringify(chatMessages));
             fields.append("newMessage", contentRef.current.value);
@@ -194,7 +202,7 @@ const LiveChat : FC = () => {
 
             {chatMessages.map((message : chatMessage, index : number) => {
                 return (
-                    <div className={`liveChat__message`}>
+                    <div className={`liveChat__message`} key={`message-${index}`}>
                         { 
                             (index === 0 || (index > 0 && (chatMessages[index].senderId !== chatMessages[index-1].senderId))) &&
                             <p className={`liveChat__description`}>

@@ -26,13 +26,13 @@
     }
 
     &__icon{
-        padding: 0.1rem 0.35rem;
+        padding: 0.1rem 0.45rem 0.2rem;
         border-radius: 50%;
-        border: 1px solid branding.$brand_color_six;
+        border: 2px solid branding.$brand_color_six;
         margin-right: 0.5rem;
     }
 
     &__content{
-        margin: 0 0 0 2.2rem;
+        margin: 0 0 0 2.4rem;
     }
 }
