@@ -49,7 +49,8 @@ export interface UserMethodsInterface {
 export interface ChatMessage {
     message : string,
     dateSent : string,
-    senderId : string
+    senderId : string,
+    sender : string
 }
 
 export interface ChatInterface {
@@ -91,7 +92,7 @@ export interface RequestInterface extends Request {
     body : {
         email : string,
         password : string,
-        confirmPassword : string
+        confirmPassword : string,
     }
 }
 
@@ -100,7 +101,8 @@ export interface ChatRequestInterface extends Request {
         userId : string,
         recipientId : string,
         messages : string,
-        newMessage : string
+        newMessage : string,
+        sender : string
     }
 }
 

@@ -193,7 +193,7 @@ const startServer = async () => {
 
                 // Create a json object of the object and the date to send to the front end
                 const messageObject = { 
-                    date : sendDate,
+                    dateSent : sendDate,
                     message : message
                 }
 
