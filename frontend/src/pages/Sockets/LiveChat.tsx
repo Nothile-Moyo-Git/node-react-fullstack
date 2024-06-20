@@ -26,6 +26,7 @@ interface chatMessage {
     message : string,
     dateSent : string,
     senderId : string,
+    sender : string
 }
 
 const LiveChat : FC = () => {
@@ -151,10 +152,14 @@ const LiveChat : FC = () => {
 
         // If we have an input, send a message to the socket
         if (contentRef.current) {
+
+            // Add the message and sender to a JSON object so that we can we return the sender
             const chatMessage = contentRef.current.value;
+            const sender = userDetails ? userDetails.name : '';
+            const json = JSON.stringify({ message : chatMessage, sender });
 
             // Send the message to the websocket
-            socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
+            socketClientRef.current && socketClientRef.current.emit('chat message', json);
             
             // We assign Formdata here so we can use this with cors in the backend
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
@@ -206,8 +211,8 @@ const LiveChat : FC = () => {
                         { 
                             (index === 0 || (index > 0 && (chatMessages[index].senderId !== chatMessages[index-1].senderId))) &&
                             <p className={`liveChat__description`}>
-                                <span className="liveChat__icon">{userDetails?.name[0]}</span>
-                                <span>{userDetails?.name}</span>
+                                <span className="liveChat__icon">{message.sender[0]}</span>
+                                <span>{message.sender}</span>
                                 <span className="liveChat__date">{` ${message.dateSent}`}</span>
                             </p>
                         }

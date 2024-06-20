@@ -191,10 +191,14 @@ const startServer = async () => {
 
                 const sendDate = createReadableDate(new Date);
 
+                // Parse the JSON we send here so we can have the user
+                const messageDetails = JSON.parse(message);
+
                 // Create a json object of the object and the date to send to the front end
                 const messageObject = { 
                     dateSent : sendDate,
-                    message : message
+                    message : messageDetails.message,
+                    sender : messageDetails.sender
                 }
 
                 // Emit the message back to the frontend
