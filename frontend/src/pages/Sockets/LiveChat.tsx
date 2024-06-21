@@ -26,6 +26,7 @@ interface chatMessage {
     message : string,
     dateSent : string,
     senderId : string,
+    sender : string
 }
 
 const LiveChat : FC = () => {
@@ -49,12 +50,6 @@ const LiveChat : FC = () => {
                 return [...previousMessages, message];
             });
 
-            console.clear();
-            console.log("Messages");
-            console.log(message);
-            console.log("Previous messages");
-            console.log(chatMessages);
-
         });
 
         // Set this to a ref so we can keep the value between re-renders
@@ -69,6 +64,9 @@ const LiveChat : FC = () => {
         }
 
     },[]);
+
+    console.log("Chat messages")
+    console.log(chatMessages);
 
     // Get user details if the user is authenticated from the backend
     const getUserDetails = async (userId : string) => {
@@ -151,18 +149,26 @@ const LiveChat : FC = () => {
 
         // If we have an input, send a message to the socket
         if (contentRef.current) {
-            const chatMessage = contentRef.current.value;
 
-            // Send the message to the websocket
-            socketClientRef.current && socketClientRef.current.emit('chat message', chatMessage);
-            
             // We assign Formdata here so we can use this with cors in the backend
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
             const recipientId = "6656382efb54b1949e66bae2";
 
+            // Add the message and sender to a JSON object so that we can we return the sender
+            const chatMessage = contentRef.current.value;
+            const sender = userDetails ? userDetails.name : '';
+            const json = JSON.stringify({ 
+                message : chatMessage, 
+                sender : sender,
+                senderId : userId
+            });
+
+            // Send the message to the websocket
+            socketClientRef.current && socketClientRef.current.emit('chat message', json);
+
             // Set the fields on the form
             const fields = new FormData();
-            fields.append("userId", userId);
+            fields.append("senderId", userId);
             fields.append("sender", userDetails ? userDetails.name : '');
             fields.append("recipientId", recipientId);
             fields.append("messages", JSON.stringify(chatMessages));
@@ -206,8 +212,9 @@ const LiveChat : FC = () => {
                         { 
                             (index === 0 || (index > 0 && (chatMessages[index].senderId !== chatMessages[index-1].senderId))) &&
                             <p className={`liveChat__description`}>
-                                <span className="liveChat__icon">{userDetails?.name[0]}</span>
-                                <span>{userDetails?.name}</span>
+                                <span className="liveChat__icon">{message.sender[0]}</span>
+                                <span>{message.sender}</span>
+                                <span>{}</span>
                                 <span className="liveChat__date">{` ${message.dateSent}`}</span>
                             </p>
                         }
