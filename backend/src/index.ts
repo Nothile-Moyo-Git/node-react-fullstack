@@ -171,7 +171,6 @@ const startServer = async () => {
 
             console.log("\n");
             console.log("A user connected");
-            // console.log(socket);
 
             socket.on('disconnect', (reason) => {
 
@@ -196,9 +195,10 @@ const startServer = async () => {
 
                 // Create a json object of the object and the date to send to the front end
                 const messageObject = { 
-                    dateSent : sendDate,
                     message : messageDetails.message,
-                    sender : messageDetails.sender
+                    dateSent : sendDate,
+                    sender : messageDetails.sender,
+                    senderId : messageDetails.senderId
                 }
 
                 // Emit the message back to the frontend

@@ -10,7 +10,7 @@
  */
 
 import { Response, NextFunction } from "express";
-import { ChatInterface, ChatMessage, ChatRequestInterface } from "../@types";
+import { ChatMessage, ChatRequestInterface } from "../@types";
 import Chat from "../models/chat";
 import { createReadableDate } from "../util/utillity-methods";
 
@@ -33,13 +33,13 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
 
         // Create a new message
         const currentDate : string = createReadableDate(new Date());
-        const userId = request.body.userId;
+        const senderId = request.body.senderId;
         const sender = request.body.sender;
 
         const newMessage : ChatMessage = {
             message : request.body.newMessage,
             dateSent : currentDate,
-            senderId : userId,
+            senderId : senderId,
             sender : sender
         };
 
@@ -51,7 +51,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             // Create an array of messages with only the new message since the object doesn't exist
             const initialMessages = [{...newMessage}];
 
-            const userIds = [userId, recipientId];
+            const userIds = [senderId, recipientId];
 
             // Create new chat instance
             const chat = new Chat({
@@ -60,7 +60,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             });
 
             // Save it to the backend
-            // await chat.save();
+            await chat.save();
 
         }else{
 
@@ -76,7 +76,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             // Update the old messages with the new messages and push them up
             chatInstance[0].messages = updatedMessages;
             
-            // await chatInstance[0].save();      
+            await chatInstance[0].save();      
         }
 
         response.status(200).json({ success : true, error : null });
