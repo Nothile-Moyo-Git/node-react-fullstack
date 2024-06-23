@@ -21,6 +21,7 @@ import { User } from "../../@types";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import TextArea from "../../components/form/TextArea";
+import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
 
 interface chatMessage {
     message : string,
@@ -206,6 +207,8 @@ const LiveChat : FC = () => {
 
             </Form>
 
+            <ExpiryWrapper lengthInSeconds={5}/>
+
             {chatMessages.map((message : chatMessage, index : number) => {
                 return (
                     <div className={`liveChat__message`} key={`message-${index}`}>
@@ -214,7 +217,6 @@ const LiveChat : FC = () => {
                             <p className={`liveChat__description`}>
                                 <span className="liveChat__icon">{message.sender[0]}</span>
                                 <span>{message.sender}</span>
-                                <span>{}</span>
                                 <span className="liveChat__date">{` ${message.dateSent}`}</span>
                             </p>
                         }
