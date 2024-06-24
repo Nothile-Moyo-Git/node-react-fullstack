@@ -1,0 +1,8 @@
+@use "../../scss/partials/branding" as branding;
+
+.toast{
+
+    &--info{
+        border-bottom: 2px solid branding.$brand_color_six;
+    }
+}
