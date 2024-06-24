@@ -7,17 +7,22 @@
  * Description : A component which expires after a certain number of seconds such as a modal or toast component 
  */
 
-import { FC, useEffect, useState } from "react";
+import { FC, ReactElement, useEffect, useState } from "react";
 
 interface ComponentProps {
     lengthInSeconds : number,
-    renderableComponent ?: any
+    children : ReactElement,
 }
 
-const ExpiryWrapper : FC<ComponentProps> = ({
-    lengthInSeconds,
-    renderableComponent
-}) => {
+/**
+ * @name ExpiryWrapper
+ * 
+ * @description Sets a timer for a component before it disappears
+ * 
+ * @param lengthInSeconds : number
+ * @param children : ReactElement
+ */
+const ExpiryWrapper : FC<ComponentProps> = ({ lengthInSeconds, children }) => {
 
     // Decide whether we should render the component or not
     const [shouldRender, setShouldRender] = useState<boolean>(true);
@@ -27,7 +32,7 @@ const ExpiryWrapper : FC<ComponentProps> = ({
     useEffect(() => {
 
         // Set the timeout so we can hide our component
-        const timeoutId = setTimeout(() => {
+        setTimeout(() => {
 
             setShouldRender(false);
 
@@ -36,11 +41,9 @@ const ExpiryWrapper : FC<ComponentProps> = ({
     },[]);
 
     // Determine which component we're going to render
-    const componentToRender = shouldRender ? <>Expiry wrapper</> : null;
+    const componentToRender = shouldRender ? children : null;
 
-    return(
-        <>Expiry Wrapper</>
-    );
+    return(componentToRender);
 };
 
 export default ExpiryWrapper;

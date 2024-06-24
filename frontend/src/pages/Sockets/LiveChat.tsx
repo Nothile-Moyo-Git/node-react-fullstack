@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import TextArea from "../../components/form/TextArea";
 import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
+import ToastModal from "../../components/modals/ToastModal";
 
 interface chatMessage {
     message : string,
@@ -207,7 +208,7 @@ const LiveChat : FC = () => {
 
             </Form>
 
-            <ExpiryWrapper lengthInSeconds={5}/>
+            <ToastModal variant="success"/>
 
             {chatMessages.map((message : chatMessage, index : number) => {
                 return (
