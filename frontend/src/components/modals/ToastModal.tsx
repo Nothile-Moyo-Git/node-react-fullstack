@@ -10,15 +10,18 @@
 import { FC, useState, useEffect } from "react";
 
 interface ComponentProps {
-    variant ?: string
+    variant : string,
+    customMessage ?: string
 };
 
 const ToastModal : FC<ComponentProps> = ({
-    variant = "info"
+    variant = "info",
+    customMessage
 }) => {
 
     // Variables to set state
-    const [toastStyles, setToastStyles] = useState<string>();
+    const [toastStyles, setToastStyles] = useState<string>(``);
+    const [defaultToastMessage, setDefaultToastMessage] = useState<string>(``);
 
     // We set the styling and icons based on the variant
     useEffect(() => {
@@ -27,21 +30,29 @@ const ToastModal : FC<ComponentProps> = ({
 
             case "success" :
                 setToastStyles("toast--success");
+                setDefaultToastMessage(`Your request has been successful`);
                 break;
 
             case "info" : 
                 setToastStyles("toast--info");
+                setDefaultToastMessage(`Your request has been processed`);
                 break;
             
             default :
                 setToastStyles("toast--info");
+                setDefaultToastMessage(`Your request has been processed`);
+                break;
         }
 
     },[]);
 
     return(
         <div className={`toast ${toastStyles}`}>
-            Toast
+            {
+                customMessage ?
+                customMessage :
+                defaultToastMessage
+            }
         </div>
     );
 };
