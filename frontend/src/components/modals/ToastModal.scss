@@ -1,4 +1,6 @@
 @use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/mixins" as mixins;
+@use "../../scss/partials/animations" as animations;
 
 .toast{
     
@@ -6,14 +8,29 @@
     bottom: 5rem;
     right: 1rem;
     z-index: 3;
-    padding: 1rem 1.25rem;
+    padding: 1rem;
+    overflow: hidden;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    animation: fade-in animations.$standard_animation;
+
 
     &--info{
         border-bottom: 2px solid branding.$brand_color_six;
+
+        @include mixins.backgroundGradientEffect(){
+            background: branding.$gradient_color_three;
+        }
+
+        path{
+            color: red;
+        }
     }
 
     &--success{
         color: branding.$brand_color_five__alt_6;
         background: branding.$brand_color_five__alt_3;
     }
+
 }

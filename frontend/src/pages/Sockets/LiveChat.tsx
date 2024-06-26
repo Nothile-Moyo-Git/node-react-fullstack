@@ -209,7 +209,7 @@ const LiveChat : FC = () => {
             </Form>
 
             <ToastModal 
-                variant="success"
+                variant="post added"
             />
 
             {chatMessages.map((message : chatMessage, index : number) => {

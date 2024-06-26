@@ -7,14 +7,14 @@
  * Description : A simple toast notification modal
  */
 
-import { FC, useState, useEffect, ReactNode } from "react";
+import { FC, useState, useEffect, ReactElement } from "react";
 import { SiTicktick } from "react-icons/si";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { FaCircleExclamation } from "react-icons/fa6";
 import "./ToastModal.scss";
-import { IconType } from "react-icons";
 
 interface ComponentProps {
-    variant : string,
+    variant ?: string,
     customMessage ?: string
 };
 
@@ -25,8 +25,8 @@ const ToastModal : FC<ComponentProps> = ({
 
     // Variables to set state
     const [toastStyles, setToastStyles] = useState<string>(``);
-    const [defaultToastMessage, setDefaultToastMessage] = useState<string>(``);
-    const [ToastIcon, setToastIcon] = useState<IconType | ReactNode>(IoMdInformationCircleOutline);
+    const [defaultToastMessage, setDefaultToastMessage] = useState<string>(`Your request has been processed`);
+    const [icon, setIcon] = useState<ReactElement>(<IoMdInformationCircleOutline/>);
 
     // We set the styling and icons based on the variant
     useEffect(() => {
@@ -36,26 +36,39 @@ const ToastModal : FC<ComponentProps> = ({
             case "success" :
                 setToastStyles("toast--success");
                 setDefaultToastMessage(`Your request has been successful`);
-                setToastIcon(SiTicktick);
+                setIcon(<SiTicktick/>);
+                break;
+
+            case "post added" :
+                setToastStyles("toast--info");
+                setDefaultToastMessage(`New post has been added`);
+                setIcon(<IoMdInformationCircleOutline/>);
                 break;
 
             case "info" : 
                 setToastStyles("toast--info");
                 setDefaultToastMessage(`Your request has been processed`);
+                setIcon(<IoMdInformationCircleOutline/>);
+                break;
+
+            case "error" : 
+                setToastStyles("toast--error");
+                setDefaultToastMessage(`There has been an error with your request`);
+                setIcon(<FaCircleExclamation/>);
                 break;
             
             default :
                 setToastStyles("toast--info");
                 setDefaultToastMessage(`Your request has been processed`);
+                setIcon(<IoMdInformationCircleOutline/>);
                 break;
+
         }
-    },[]);
+    },[variant]);
 
     return(
         <div className={`toast ${toastStyles}`}>
-            <div>
-                {<ToastIcon/>}
-            </div>
+            {icon}
             {
                 customMessage ?
                 customMessage :
