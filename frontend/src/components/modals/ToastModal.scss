@@ -1,8 +1,19 @@
 @use "../../scss/partials/branding" as branding;
 
 .toast{
+    
+    position: absolute;
+    bottom: 5rem;
+    right: 1rem;
+    z-index: 3;
+    padding: 1rem 1.25rem;
 
     &--info{
         border-bottom: 2px solid branding.$brand_color_six;
+    }
+
+    &--success{
+        color: branding.$brand_color_five__alt_6;
+        background: branding.$brand_color_five__alt_3;
     }
 }

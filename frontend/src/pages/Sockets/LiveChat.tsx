@@ -209,8 +209,7 @@ const LiveChat : FC = () => {
             </Form>
 
             <ToastModal 
-                variant="success" 
-                customMessage="gg wp no re"
+                variant="success"
             />
 
             {chatMessages.map((message : chatMessage, index : number) => {
