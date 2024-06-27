@@ -25,6 +25,7 @@ const ToastModal : FC<ComponentProps> = ({
 
     // Variables to set state
     const [toastStyles, setToastStyles] = useState<string>(``);
+    const [toastBarStyles, setToastBarStyles] = useState<string>(``);
     const [defaultToastMessage, setDefaultToastMessage] = useState<string>(`Your request has been processed`);
     const [icon, setIcon] = useState<ReactElement>(<IoMdInformationCircleOutline/>);
 
@@ -68,12 +69,15 @@ const ToastModal : FC<ComponentProps> = ({
 
     return(
         <div className={`toast ${toastStyles}`}>
-            {icon}
-            {
-                customMessage ?
-                customMessage :
-                defaultToastMessage
-            }
+            <div className="toast__modal">
+                {icon}
+                {
+                    customMessage ?
+                    customMessage :
+                    defaultToastMessage
+                }
+            </div>
+            <span className="toast__bar"/>
         </div>
     );
 };
