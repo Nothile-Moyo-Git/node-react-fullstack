@@ -10,7 +10,9 @@
 import { FC, useState, useEffect, ReactElement } from "react";
 import { SiTicktick } from "react-icons/si";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { FaCircleExclamation } from "react-icons/fa6";
+import { IoWarningOutline } from "react-icons/io5";
+import { IoIosWarning } from "react-icons/io";
+import { MdError } from "react-icons/md";
 import "./ToastModal.scss";
 
 interface ComponentProps {
@@ -25,7 +27,6 @@ const ToastModal : FC<ComponentProps> = ({
 
     // Variables to set state
     const [toastStyles, setToastStyles] = useState<string>(``);
-    const [toastBarStyles, setToastBarStyles] = useState<string>(``);
     const [defaultToastMessage, setDefaultToastMessage] = useState<string>(`Your request has been processed`);
     const [icon, setIcon] = useState<ReactElement>(<IoMdInformationCircleOutline/>);
 
@@ -55,7 +56,13 @@ const ToastModal : FC<ComponentProps> = ({
             case "error" : 
                 setToastStyles("toast--error");
                 setDefaultToastMessage(`There has been an error with your request`);
-                setIcon(<FaCircleExclamation/>);
+                setIcon(<MdError/>);
+                break;
+
+            case "warning" : 
+                setToastStyles("toast--warning");
+                setDefaultToastMessage(`Your request was successful, but should be doublechecked.`);
+                setIcon(<IoIosWarning/>);
                 break;
             
             default :

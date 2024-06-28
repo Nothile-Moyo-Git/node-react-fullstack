@@ -12,11 +12,32 @@
     animation: fade-in animations.$standard_animation;
     font-size: 1.1rem;
     padding: 0;
+
+    svg{
+        height: 1.3rem;
+        width: 1.3rem;
+    }
+
+    path{ 
+        color: white; 
+    }
+
+    span{
+        display: block;
+        background: white;
+        position: relative;
+        height: 0rem;
+        width: 100%;
+        bottom: 0;
+        right: 100%;
+        animation: slide-out 5s linear;
+    }
     
     &__modal{
         gap: 0.5rem;
         padding: 1rem;
         display: flex;
+        align-items: center;
         justify-content: space-between;
     }
 
@@ -29,29 +50,18 @@
         @include mixins.backgroundGradientEffect(){
             background: branding.$gradient_color_three;
         }
-
-        svg{
-            height: 1.3rem;
-            width: 1.3rem;
-        }
-
-        path{ color: white; }
-
-        span{
-            display: block;
-            background: white;
-            position: relative;
-            height: 0rem;
-            width: 100%;
-            bottom: 0;
-            right: 100%;
-            animation: slide-out 5s linear;
-        }
     }
 
     &--success{
-        color: branding.$brand_color_five__alt_6;
-        background: branding.$brand_color_five__alt_3;
+        background: branding.$brand_color_five__alt_1;
+    }
+
+    &--error{
+        background: branding.$brand_color_seven;
+    }
+
+    &--warning{
+        background: branding.$brand_color_four;
     }
 
 }
