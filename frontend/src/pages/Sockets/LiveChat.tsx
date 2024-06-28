@@ -24,6 +24,7 @@ import TextArea from "../../components/form/TextArea";
 import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
 import ToastModal from "../../components/modals/ToastModal";
 
+
 interface chatMessage {
     message : string,
     dateSent : string,
@@ -208,9 +209,14 @@ const LiveChat : FC = () => {
 
             </Form>
 
+            <ExpiryWrapper lengthInSeconds={5}>
+                <p>Expires</p>
+            </ExpiryWrapper>
+
             <ToastModal 
-                variant="post added"
+                variant="warning"
             />
+
 
             {chatMessages.map((message : chatMessage, index : number) => {
                 return (
