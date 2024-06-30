@@ -214,7 +214,7 @@ const LiveChat : FC = () => {
             </ExpiryWrapper>
 
             <ToastModal 
-                variant="warning"
+                variant="success"
             />
 
 

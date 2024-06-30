@@ -28,6 +28,7 @@ import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate, createReadableDate } from "./util/utillity-methods";
 import { Server } from "socket.io";
+import ClassSocketIO from "./socket";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -166,11 +167,14 @@ const startServer = async () => {
             }
         });
 
+        const classInstance = new ClassSocketIO(server,{
+            cors : {
+                origin: "http://localhost:3000"
+            }
+        });
+
         // Execute the code once the connection has been established
         socketIO.on('connection', (socket) => {
-
-            console.log("\n");
-            console.log("A user connected");
 
             socket.on('disconnect', (reason) => {
 
