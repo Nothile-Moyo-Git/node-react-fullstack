@@ -7,11 +7,13 @@
  * description : Our socket connection in a file which can be shared amongst multiple files
  */
 
-import { Server, IncomingMessage, ServerResponse, RequestListener } from "http";
-import { ServerOptions, Server as Socket } from "socket.io";
+import { IncomingMessage, Server as HTTPServer, ServerResponse } from "http";
+import { Server as Socket } from "socket.io";
 
 interface SocketOptionsProps {
-
+    cors ?: {
+        origin : string
+    }
 }
 
 /**
@@ -27,20 +29,27 @@ interface SocketOptionsProps {
 class ClassSocketIO {
 
     // Define our properties here
-    protected server: Server<typeof IncomingMessage, typeof ServerResponse>;
-    protected options;
+    protected server : HTTPServer<typeof IncomingMessage, typeof ServerResponse>;
+    protected options : SocketOptionsProps;
 
     // Constructor to start the server
     public constructor(
-        server: Server<typeof IncomingMessage, typeof ServerResponse>, 
-        options
+        server : HTTPServer<typeof IncomingMessage, typeof ServerResponse>, 
+        options : SocketOptionsProps,
     ){
         this.server = server;
         this.options = options;
 
         if (this.server) {
             // Create our connection to socket.io
-            // const socketIO = new Server(this.server, this.options);
+            const socketIO = new Socket(
+                this.server, 
+                this.options
+            );
+
+            console.log("\n");
+            console.log("options");
+            console.log(this.options);
         }
     }
 
