@@ -166,12 +166,17 @@ const startServer = async () => {
                 origin: "http://localhost:3000"
             }
         });
-
-        const classInstance = new ClassSocketIO(server,{
+        
+        // Get the socketInstance and instantiate it
+        const socketInstance = new ClassSocketIO(server,{
             cors : {
                 origin: "http://localhost:3000"
             }
         });
+
+        // Get the iostream
+        const io = socketInstance.getIO();
+
 
         // Execute the code once the connection has been established
         socketIO.on('connection', (socket) => {
