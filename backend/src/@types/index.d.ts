@@ -132,3 +132,21 @@ export interface FeedRequestInterface extends Request {
 export interface ErrorInterface extends Error {
     statusCode ?: number
 }
+
+interface ServerToClientEvents {
+    noArg : () => void,
+    basicEmi : (a : number, b : string, c : Buffer) => void,
+    withAck : (d : string, callback : (e : number) => void) => void,
+}
+
+interface ClientToServerEvents {
+    hello: () => void
+}
+
+interface InterServerEvents {
+    ping : () => void
+}
+
+interface SocketData {
+    data : string
+}
