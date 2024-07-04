@@ -160,12 +160,14 @@ const startServer = async () => {
             console.log(`[Server]: Server is running on http://localhost:${port}`);
         });
 
+        /*
         // Create our connection to socket.io
         const socketIO = new Server(server,{
             cors : {
                 origin: "http://localhost:3000"
             }
         });
+        */
         
         // Get the socketInstance and instantiate it
         const socketInstance = new ClassSocketIO(server,{
@@ -174,10 +176,10 @@ const startServer = async () => {
             }
         });
 
-        // Get the iostream
-        const io = socketInstance.getIO();
+        // Handle our socket
+        socketInstance.handleEvents();
 
-
+        /*
         // Execute the code once the connection has been established
         socketIO.on('connection', (socket) => {
 
@@ -213,7 +215,7 @@ const startServer = async () => {
                 // Emit the message back to the frontend
                 socketIO.emit('message sent', messageObject);
             });
-        });
+        }); */
     });
 };
 
