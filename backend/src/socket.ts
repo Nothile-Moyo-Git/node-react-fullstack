@@ -32,11 +32,11 @@ class ClassSocketIO {
 
     // Constructor to start the server
     public constructor(
-        server : HTTPServer<typeof IncomingMessage, typeof ServerResponse>, 
-        options : SocketOptionsProps
+        server ?: HTTPServer<typeof IncomingMessage, typeof ServerResponse>, 
+        options ?: SocketOptionsProps
     ){
-        this.server = server;
-        this.options = options;
+        if (server) { this.server = server; }
+        if (options) { this.options = options; }
     }
 
     // Create the socket and return it
@@ -68,7 +68,7 @@ class ClassSocketIO {
         }
     }
 
-    public handleEvents() {
+    public handleChat() {
 
         // Handle our socket events\
         try{
