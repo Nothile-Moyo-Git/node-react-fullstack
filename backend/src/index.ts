@@ -149,6 +149,8 @@ app.use( chatRoutes );
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
 
+let io : ClassSocketIO = new ClassSocketIO();
+
 // Spin up the local server on the port to 
 const startServer = async () => {
 
@@ -159,65 +161,18 @@ const startServer = async () => {
         const server = app.listen(port, () => {
             console.log(`[Server]: Server is running on http://localhost:${port}`);
         });
-
-        /*
-        // Create our connection to socket.io
-        const socketIO = new Server(server,{
-            cors : {
-                origin: "http://localhost:3000"
-            }
-        });
-        */
         
         // Get the socketInstance and instantiate it
-        const socketInstance = new ClassSocketIO(server,{
+        io = new ClassSocketIO(server,{
             cors : {
                 origin: "http://localhost:3000"
             }
         });
-
-        // Handle our socket
-        socketInstance.handleEvents();
-
-        /*
-        // Execute the code once the connection has been established
-        socketIO.on('connection', (socket) => {
-
-            socket.on('disconnect', (reason) => {
-
-                console.log("\n");
-                console.log("A user disconnected");
-            });
-
-            socket.on('error', (error) => {
-
-                console.log("\n");
-                console.log("An error occured");
-                console.log(error);
-            });
-
-            // If we receive a chat message, send it back to the other user so it can be read
-            socket.on('chat message', (message) => {
-
-                const sendDate = createReadableDate(new Date);
-
-                // Parse the JSON we send here so we can have the user
-                const messageDetails = JSON.parse(message);
-
-                // Create a json object of the object and the date to send to the front end
-                const messageObject = { 
-                    message : messageDetails.message,
-                    dateSent : sendDate,
-                    sender : messageDetails.sender,
-                    senderId : messageDetails.senderId
-                }
-
-                // Emit the message back to the frontend
-                socketIO.emit('message sent', messageObject);
-            });
-        }); */
     });
 };
 
 // Start the server
 startServer();
+
+// Export the IO connection so it can be used among other files
+export { io };
