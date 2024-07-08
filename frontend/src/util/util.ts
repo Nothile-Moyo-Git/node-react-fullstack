@@ -81,16 +81,8 @@ export const checkSessionValidation = async (userId : string, token : string) =>
             body : fields
         }); 
 
-        console.clear();
-        console.log("Result");
-        console.log(result);
-        console.log("\n");
-
         // Get the data from the result
-        const data = await result.json();
-
-        console.log("Data");
-        console.log(data);
+        await result.json();
         
     }catch(error){
         

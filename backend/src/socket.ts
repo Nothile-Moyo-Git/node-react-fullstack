@@ -70,7 +70,7 @@ class ClassSocketIO {
 
     public handleChat() {
 
-        // Handle our socket events\
+        // Handle our socket events
         try{
 
             if (this.server) {
