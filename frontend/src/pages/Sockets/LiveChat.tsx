@@ -21,9 +21,7 @@ import { User } from "../../@types";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import TextArea from "../../components/form/TextArea";
-import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
 import ToastModal from "../../components/modals/ToastModal";
-
 
 interface chatMessage {
     message : string,
@@ -39,12 +37,17 @@ const LiveChat : FC = () => {
     const contentRef = useRef<HTMLTextAreaElement>(null);
     const [chatMessages, setChatMessages] = useState<chatMessage[]>([]);
     const [userDetails, setUserDetails] = useState<User>();
-    const [userId, setUserId] = useState<string>();
     const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
     useEffect(() => {
 
         const client = io("http://localhost:4000");
+
+        client.on("test", (message) => {
+
+            console.log("test endpoint called");
+            console.log(message);
+        });
 
         // Add a message to the chat
         client.on("message sent", (message) => {
@@ -67,9 +70,6 @@ const LiveChat : FC = () => {
         }
 
     },[]);
-
-    console.log("Chat messages")
-    console.log(chatMessages);
 
     // Get user details if the user is authenticated from the backend
     const getUserDetails = async (userId : string) => {
@@ -126,8 +126,6 @@ const LiveChat : FC = () => {
 
             // Get the Id's
             const userId = appContextInstance?.userId ? appContextInstance.userId : "";
-
-            setUserId(userId);
 
             const recipientId = "6656382efb54b1949e66bae2";
 
@@ -209,14 +207,9 @@ const LiveChat : FC = () => {
 
             </Form>
 
-            <ExpiryWrapper lengthInSeconds={5}>
-                <p>Expires</p>
-            </ExpiryWrapper>
-
             <ToastModal 
                 variant="success"
             />
-
 
             {chatMessages.map((message : chatMessage, index : number) => {
                 return (

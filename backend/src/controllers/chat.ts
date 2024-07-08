@@ -60,8 +60,10 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
                 messages : initialMessages
             });
 
+            io.handleChat();
+
             // Save it to the backend
-            await chat.save();
+            // await chat.save();
 
         }else{
 
@@ -76,9 +78,14 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
 
             // Update the old messages with the new messages and push them up
             chatInstance[0].messages = updatedMessages;
+
+            io.getIO().emit('test', 'test');
+
+            io.handleChat();
             
             // Save it to the backend
-            await chatInstance[0].save();
+            // await chatInstance[0].save();
+
         }
 
         response.status(200).json({ success : true, error : null });
