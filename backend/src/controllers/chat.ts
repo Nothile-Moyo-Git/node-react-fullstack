@@ -13,7 +13,6 @@ import { Response, NextFunction } from "express";
 import { ChatMessage, ChatRequestInterface } from "../@types";
 import Chat from "../models/chat";
 import { createReadableDate } from "../util/utillity-methods";
-import { io } from "../index";
 
 /**
  * @name PostSendMessageController
@@ -60,8 +59,6 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
                 messages : initialMessages
             });
 
-            io.handleChat();
-
             // Save it to the backend
             // await chat.save();
 
@@ -79,10 +76,9 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             // Update the old messages with the new messages and push them up
             chatInstance[0].messages = updatedMessages;
 
-            io.getIO().emit('test', 'test');
+            const io = require("../socket");
+            io.getIO().emit("test", "test");
 
-            io.handleChat();
-            
             // Save it to the backend
             // await chatInstance[0].save();
 

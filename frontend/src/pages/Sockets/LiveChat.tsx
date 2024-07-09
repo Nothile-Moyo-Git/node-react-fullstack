@@ -44,8 +44,8 @@ const LiveChat : FC = () => {
         const client = io("http://localhost:4000");
 
         client.on("test", (message) => {
-
-            console.log("test endpoint called");
+            console.clear();
+            console.log("Test");
             console.log(message);
         });
 

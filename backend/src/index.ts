@@ -27,8 +27,6 @@ import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate, createReadableDate } from "./util/utillity-methods";
-import { Server } from "socket.io";
-import ClassSocketIO from "./socket";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -149,8 +147,6 @@ app.use( chatRoutes );
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
 
-let io : ClassSocketIO = new ClassSocketIO();
-
 // Spin up the local server on the port to 
 const startServer = async () => {
 
@@ -161,18 +157,47 @@ const startServer = async () => {
         const server = app.listen(port, () => {
             console.log(`[Server]: Server is running on http://localhost:${port}`);
         });
+
+        // Instantiate our IO
+        const io = require('./socket').init(server);
         
-        // Get the socketInstance and instantiate it
-        io = new ClassSocketIO(server,{
-            cors : {
-                origin: "http://localhost:3000"
-            }
-        });
+        io.on('connection', (socket) => {
+
+            socket.on('disconnect', (reason) => {
+
+                console.log("\n");
+                console.log("A user disconnected");
+            });
+
+            socket.on('error', (error) => {
+
+                console.log("\n");
+                console.log("An error occured");
+                console.log(error);
+            });
+
+            // If we receive a chat message, send it back to the other user so it can be read
+            socket.on('chat message', (message) => {
+
+                const sendDate = createReadableDate(new Date);
+
+                // Parse the JSON we send here so we can have the user
+                const messageDetails = JSON.parse(message);
+
+                // Create a json object of the object and the date to send to the front end
+                const messageObject = { 
+                    message : messageDetails.message,
+                    dateSent : sendDate,
+                    sender : messageDetails.sender,
+                    senderId : messageDetails.senderId
+                }
+
+                // Emit the message back to the frontend
+                io.emit('message sent', messageObject);
+            });
+        });         
     });
 };
 
 // Start the server
 startServer();
-
-// Export the IO connection so it can be used among other files
-export { io };
