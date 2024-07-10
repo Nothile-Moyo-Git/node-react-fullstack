@@ -193,7 +193,7 @@ const startServer = async () => {
                 }
 
                 // Emit the message back to the frontend
-                io.emit('message sent', messageObject);
+                // io.emit('message sent', messageObject);
             });
         });         
     });

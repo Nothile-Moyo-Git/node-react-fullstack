@@ -77,7 +77,26 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             chatInstance[0].messages = updatedMessages;
 
             const io = require("../socket");
-            io.getIO().emit("test", "test");
+            io.getIO().on("chat message", (message) => {
+
+                console.log("chat message");
+                
+                const sendDate = createReadableDate(new Date);
+
+                // Parse the JSON we send here so we can have the user
+                const messageDetails = JSON.parse(message);
+
+                // Create a json object of the object and the date to send to the front end
+                const messageObject = { 
+                    message : messageDetails.message,
+                    dateSent : sendDate,
+                    sender : messageDetails.sender,
+                    senderId : messageDetails.senderId
+                }
+
+                // Emit the message back to the frontend
+                io.getIO().emit('test', 'test');
+            });
 
             // Save it to the backend
             // await chatInstance[0].save();
