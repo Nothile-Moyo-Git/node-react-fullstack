@@ -10,7 +10,6 @@
 import { FC, useState, useEffect, ReactElement } from "react";
 import { SiTicktick } from "react-icons/si";
 import { IoMdInformationCircleOutline } from "react-icons/io";
-import { IoWarningOutline } from "react-icons/io5";
 import { IoIosWarning } from "react-icons/io";
 import { MdError } from "react-icons/md";
 import "./ToastModal.scss";
@@ -20,6 +19,14 @@ interface ComponentProps {
     customMessage ?: string
 };
 
+/**
+ * @name ToastModal
+ * 
+ * @param variant ?: string
+ * @param customMessage ?: string
+ * 
+ * @description : A toast modal which has color variants 
+ */
 const ToastModal : FC<ComponentProps> = ({
     variant = "info",
     customMessage

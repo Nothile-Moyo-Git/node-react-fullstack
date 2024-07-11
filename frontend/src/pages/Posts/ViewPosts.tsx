@@ -20,6 +20,9 @@ import { Paginator } from "../../components/pagination/Paginator";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
 import ErrorModal from "../../components/modals/ErrorModal";
 import ConfirmationModal from "../../components/modals/ConfirmationModal";
+import { io, Socket } from "socket.io-client";
+import { render } from "@testing-library/react";
+import ToastModal from "../../components/modals/ToastModal";
 
 export const ViewPosts : FC = () => {
 
@@ -39,14 +42,8 @@ export const ViewPosts : FC = () => {
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string>("");
-
-    // Add a post to the list from the websocket
-    const addPostToArray = (post : Post) => {
-
-        setPosts((prevPosts) => {
-            return { ...prevPosts, post };
-        });
-    };
+    const [renderConfirmationModal, setRenderConfirmationModal] = useState<boolean>(false);
+    const [modalPostName, setModalPostName] = useState<string>("")
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -111,6 +108,35 @@ export const ViewPosts : FC = () => {
             console.log(error);
         }
     };
+
+    useEffect(() => {
+
+        const client = io("http://localhost:4000");
+
+        // Add a message to the chat
+        client.on("post added", (postData) => {
+
+            console.clear();
+            console.log("Post added");
+            console.log(postData);
+
+            setTimeout(() => {
+
+                setModalPostName(postData.post.title);
+                setRenderConfirmationModal(true);
+            }, 5000);
+
+            setRenderConfirmationModal(false);
+
+        });
+
+
+        return () => {
+
+            // Remove unncessary event handlers
+            client.removeAllListeners();
+        }
+    },[]);
 
     useEffect(() => {
 
@@ -179,6 +205,14 @@ export const ViewPosts : FC = () => {
                         setPage={setPage}
                     />
                 </>
+            }
+
+            {
+                renderConfirmationModal && 
+                <ToastModal 
+                    variant="success"
+                    customMessage={`Success : Post ${modalPostName} added!`}
+                />
             }
 
             {

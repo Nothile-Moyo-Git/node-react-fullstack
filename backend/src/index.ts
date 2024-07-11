@@ -159,43 +159,7 @@ const startServer = async () => {
         });
 
         // Instantiate our IO
-        const io = require('./socket').init(server);
-        
-        io.on('connection', (socket) => {
-
-            socket.on('disconnect', (reason) => {
-
-                console.log("\n");
-                console.log("A user disconnected");
-            });
-
-            socket.on('error', (error) => {
-
-                console.log("\n");
-                console.log("An error occured");
-                console.log(error);
-            });
-
-            // If we receive a chat message, send it back to the other user so it can be read
-            socket.on('chat message', (message) => {
-
-                const sendDate = createReadableDate(new Date);
-
-                // Parse the JSON we send here so we can have the user
-                const messageDetails = JSON.parse(message);
-
-                // Create a json object of the object and the date to send to the front end
-                const messageObject = { 
-                    message : messageDetails.message,
-                    dateSent : sendDate,
-                    sender : messageDetails.sender,
-                    senderId : messageDetails.senderId
-                }
-
-                // Emit the message back to the frontend
-                // io.emit('message sent', messageObject);
-            });
-        });         
+        require('./socket').init(server);         
     });
 };
 
