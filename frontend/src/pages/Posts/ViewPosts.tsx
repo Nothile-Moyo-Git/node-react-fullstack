@@ -20,9 +20,9 @@ import { Paginator } from "../../components/pagination/Paginator";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
 import ErrorModal from "../../components/modals/ErrorModal";
 import ConfirmationModal from "../../components/modals/ConfirmationModal";
-import { io, Socket } from "socket.io-client";
-import { render } from "@testing-library/react";
+import { io } from "socket.io-client";
 import ToastModal from "../../components/modals/ToastModal";
+import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
 
 export const ViewPosts : FC = () => {
 
@@ -43,7 +43,8 @@ export const ViewPosts : FC = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string>("");
     const [renderConfirmationModal, setRenderConfirmationModal] = useState<boolean>(false);
-    const [modalPostName, setModalPostName] = useState<string>("")
+    const [modalPostName, setModalPostName] = useState<string>("");
+    const [socketModal, setSocketModal] = useState(<></>);
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
@@ -116,20 +117,18 @@ export const ViewPosts : FC = () => {
         // Add a message to the chat
         client.on("post added", (postData) => {
 
-            console.clear();
-            console.log("Post added");
-            console.log(postData);
+            setModalPostName(postData.post.title);
 
-            setTimeout(() => {
+            setSocketModal(
+                <ToastModal 
+                    variant="success"
+                    customMessage={`Success : Post ${postData.post.title} added!`}
+                />
+            );
 
-                setModalPostName(postData.post.title);
-                setRenderConfirmationModal(true);
-            }, 5000);
-
-            setRenderConfirmationModal(false);
+            setTimeout(() => { setSocketModal(<></> ); }, 6500);
 
         });
-
 
         return () => {
 
@@ -208,11 +207,7 @@ export const ViewPosts : FC = () => {
             }
 
             {
-                renderConfirmationModal && 
-                <ToastModal 
-                    variant="success"
-                    customMessage={`Success : Post ${modalPostName} added!`}
-                />
+                socketModal
             }
 
             {
