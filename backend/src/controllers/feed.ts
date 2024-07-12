@@ -379,8 +379,6 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
     const postId = request.body.postId;
     const userId = request.body.userId;
 
-    console.clear();
-
     try {
 
         // Get the post data
