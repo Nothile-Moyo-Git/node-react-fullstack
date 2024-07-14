@@ -42,8 +42,6 @@ export const ViewPosts : FC = () => {
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string>("");
-    const [renderConfirmationModal, setRenderConfirmationModal] = useState<boolean>(false);
-    const [modalPostName, setModalPostName] = useState<string>("");
     const [socketModal, setSocketModal] = useState(<></>);
 
     // Get posts method, we define it here so we can call it asynchronously
@@ -117,16 +115,21 @@ export const ViewPosts : FC = () => {
         // Add a message to the chat
         client.on("post added", (postData) => {
 
-            setModalPostName(postData.post.title);
-
             setSocketModal(
-                <ToastModal 
-                    variant="success"
-                    customMessage={`Success : Post ${postData.post.title} added!`}
-                />
+                <ExpiryWrapper lengthInSeconds={5}>
+                    <ToastModal 
+                        variant="success"
+                        customMessage={`Success : Post ${postData.post.title} added!`}
+                    />
+                </ExpiryWrapper>
             );
 
-            setTimeout(() => { setSocketModal(<></> ); }, 6500);
+            setTimeout(() => { 
+                setSocketModal(<></>); 
+            }, 6500);
+
+            // 
+            fetchPosts();
 
         });
 

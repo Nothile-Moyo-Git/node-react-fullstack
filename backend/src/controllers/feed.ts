@@ -111,8 +111,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
         const isFileTypeValid : boolean = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
 
         // If any of our conditions are invalid, delete the file we just uploaded
-        // if ( !isImageUrlValid || !isTitleValid || !isContentValid ) {   deleteFile(imageUrl);   } 
-        deleteFile(imageUrl);
+        if ( !isImageUrlValid || !isTitleValid || !isContentValid ) {   deleteFile(imageUrl);   } 
 
         // Create the new post and save it
         const post = new Post({
@@ -132,13 +131,13 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
             // Check if we have a user
             if (user && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
 
-                // await post.save();
+                await post.save();
 
                 // Add reference details of the post to the user
                 user.posts?.push(post);
 
                 // Update the user
-                // await user.save();
+                await user.save();
 
                 // Send the response to the front end
                 require("../socket").getIO().emit('post added', {
