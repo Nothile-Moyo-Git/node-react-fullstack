@@ -14,7 +14,7 @@ import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
 import { PostCard } from "../../components/card/PostCard";
 import { FC, useState, useEffect, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
 import LoadingSpinner from "../../components/loader/LoadingSpinner";
@@ -120,7 +120,12 @@ export const ViewPosts : FC = () => {
                     <ToastModal 
                         variant="success"
                         customMessage={`Success : Post ${postData.post.title} added!`}
-                    />
+                    >
+                        <Link 
+                            to={`${BASENAME}/post/${postData.post._id}`}
+                            className="viewPosts__modal-link"
+                        >View Post</Link>
+                    </ToastModal>
                 </ExpiryWrapper>
             );
 
@@ -138,7 +143,7 @@ export const ViewPosts : FC = () => {
             // Remove unncessary event handlers
             client.removeAllListeners();
         }
-    },[]);
+    },[fetchPosts]);
 
     useEffect(() => {
 

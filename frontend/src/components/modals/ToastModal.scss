@@ -21,8 +21,17 @@
     path{ 
         color: white; 
     }
+    
+    &__modal{
+        gap: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
 
-    span{
+    &__bar{
         display: block;
         background: white;
         position: relative;
@@ -31,18 +40,6 @@
         bottom: 0;
         right: 100%;
         animation: slide-out 5s linear;
-    }
-    
-    &__modal{
-        gap: 0.5rem;
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    &__bar{
-        color: red;
     }
 
     &--info{
