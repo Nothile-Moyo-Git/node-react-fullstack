@@ -7,7 +7,7 @@
  * Description : A simple toast notification modal
  */
 
-import { FC, useState, useEffect, ReactElement } from "react";
+import { FC, useState, useEffect, ReactElement, ReactNode } from "react";
 import { SiTicktick } from "react-icons/si";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import { IoIosWarning } from "react-icons/io";
@@ -16,7 +16,8 @@ import "./ToastModal.scss";
 
 interface ComponentProps {
     variant ?: string,
-    customMessage ?: string
+    customMessage ?: string,
+    children ?: ReactNode
 };
 
 /**
@@ -29,7 +30,8 @@ interface ComponentProps {
  */
 const ToastModal : FC<ComponentProps> = ({
     variant = "info",
-    customMessage
+    customMessage,
+    children
 }) => {
 
     // Variables to set state
@@ -84,11 +86,16 @@ const ToastModal : FC<ComponentProps> = ({
     return(
         <div className={`toast ${toastStyles}`}>
             <div className="toast__modal">
-                {icon}
+                <span>
+                    {icon}
+                    {
+                        customMessage ?
+                        customMessage :
+                        defaultToastMessage
+                    }
+                </span>
                 {
-                    customMessage ?
-                    customMessage :
-                    defaultToastMessage
+                    children && children
                 }
             </div>
             <span className="toast__bar"/>
