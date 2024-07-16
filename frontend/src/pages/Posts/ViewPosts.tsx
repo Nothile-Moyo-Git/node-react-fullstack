@@ -13,7 +13,7 @@ import "./ViewPosts.scss";
 import { Post } from "../../@types/index";
 import { AppContext } from "../../context/AppContext";
 import { PostCard } from "../../components/card/PostCard";
-import { FC, useState, useEffect, useContext } from "react";
+import { FC, useState, useEffect, useContext, useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { BASENAME } from "../../util/util";
 import { Paginator } from "../../components/pagination/Paginator";
@@ -45,7 +45,7 @@ export const ViewPosts : FC = () => {
     const [socketModal, setSocketModal] = useState(<></>);
 
     // Get posts method, we define it here so we can call it asynchronously
-    const getPosts = async () => {
+    const getPosts = useCallback(async () => {
         const response = await fetch(`http://localhost:4000/posts/${page}`);
 
         // Show the error if the request failed
@@ -56,10 +56,10 @@ export const ViewPosts : FC = () => {
         }
 
         return response;
-    };
+    },[setShowErrorText, page]);
 
     // Method defined here to allow async calls in a useEffect hook
-    const fetchPosts = async () => {
+    const fetchPosts = useCallback(async () => {
 
         const result = await getPosts();
 
@@ -71,7 +71,7 @@ export const ViewPosts : FC = () => {
             setPosts(data.posts);
             setNumberOfPages(data.numberOfPages);
         }
-    };
+    },[getPosts]);
 
     // Show the confirmation modal when attempting to delete a modal
     const toggleShowConfirmationModal = (id : string) => {        
@@ -128,12 +128,11 @@ export const ViewPosts : FC = () => {
                     </ToastModal>
                 </ExpiryWrapper>
             );
-
+            
             setTimeout(() => { 
                 setSocketModal(<></>); 
-            }, 6500);
-
-            // 
+            }, 6500); 
+            
             fetchPosts();
 
         });
@@ -181,7 +180,8 @@ export const ViewPosts : FC = () => {
             }
 
             {
-                showConfirmationModal && <ConfirmationModal 
+                showConfirmationModal && 
+                <ConfirmationModal 
                     toggleConfirmationModal={toggleShowConfirmationModal} 
                     performAction={deletePost}
                     id={deleteId}

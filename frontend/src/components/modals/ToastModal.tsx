@@ -86,7 +86,7 @@ const ToastModal : FC<ComponentProps> = ({
     return(
         <div className={`toast ${toastStyles}`}>
             <div className="toast__modal">
-                <span>
+                <span className="toast__message">
                     {icon}
                     {
                         customMessage ?

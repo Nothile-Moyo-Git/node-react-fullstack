@@ -1,5 +1,6 @@
 @use "../../scss/partials/animations" as animations;
 @use "../../scss/partials/branding" as branding;
+@use "../../scss/partials/mixins" as mixins;
 
 .viewPosts {
     animation: fade-in 0.2s linear;
@@ -25,5 +26,10 @@
     &__modal-link{
         display: flex;
         color: branding.$brand_color_two;
+        border-bottom: 2px solid transparent;
+
+        @include mixins.state(){
+            border-color: branding.$brand_color_two;
+        }
     }
 }
