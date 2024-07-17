@@ -28,11 +28,12 @@ import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
 import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file";
 
+const perPage = 3;
+
 export const GetPostsController = async (request : FeedRequestInterface, response : Response, next : NextFunction ) => {
 
     // Get the current page based on the url
     const currentPage = request.params.page || 1;
-    const perPage = 3;
 
     try{
 
@@ -398,6 +399,18 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
 
             // Update the posts with the new one to reflect the deleted post
             user.posts = filteredPosts;
+
+            // Get the number of posts so we can determine what page we're on
+            const numberOfPosts = await Post.find().countDocuments();
+
+            // Calculate the highest page number so we can change it to that if there are no posts on our page
+            const highestPageNumber = Math.ceil(numberOfPosts / perPage);
+
+            // Send the response to the front end
+            require("../socket").getIO().emit('post deleted', { 
+                numberOfPosts,
+                highestPageNumber
+            });
 
             await user.save();
 

@@ -112,7 +112,7 @@ export const ViewPosts : FC = () => {
 
         const client = io("http://localhost:4000");
 
-        // Add a message to the chat
+        // Trigger a toastmodal render
         client.on("post added", (postData) => {
 
             setSocketModal(
@@ -137,12 +137,34 @@ export const ViewPosts : FC = () => {
 
         });
 
+        // Update the posts and update the page properly if needed
+        client.on("post deleted", (response) =>  {
+
+            console.clear();
+            console.log("Response");
+            console.log(response);
+            console.log("\n");
+
+            console.log("Page");
+            console.log(page);
+
+            // Update the page number if we won't have any posts on the page
+            if (response.highestPageNumber > page) {
+
+                setPage(response.highestPageNumber);
+            }
+
+            setNumberOfPages(response.highestPageNumber);
+
+            fetchPosts();
+        });
+
         return () => {
 
             // Remove unncessary event handlers
             client.removeAllListeners();
         }
-    },[fetchPosts]);
+    },[fetchPosts, page]);
 
     useEffect(() => {
 
@@ -205,14 +227,14 @@ export const ViewPosts : FC = () => {
                             })
                         }
                     </ul>
-
-                    <Paginator
-                        currentPage={page}
-                        numberOfPages={numberOfPages}
-                        setPage={setPage}
-                    />
                 </>
             }
+
+            <Paginator
+                currentPage={page}
+                numberOfPages={numberOfPages}
+                setPage={setPage}
+            />
 
             {
                 socketModal
