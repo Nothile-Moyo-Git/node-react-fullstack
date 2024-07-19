@@ -46,7 +46,7 @@ export const ViewPosts : FC = () => {
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = async () => {
-        const response = await fetch(`http://localhost:4000/posts/${page}`);
+        const response = await fetch(`http://localhost:4000/posts/${params.page}`);
 
         // Show the error if the request failed
         if (response.status === 200) {
@@ -76,8 +76,35 @@ export const ViewPosts : FC = () => {
     // Refresh the page after completing a function such as delete and handle edge cases
     const refreshPosts = (maxPages : number, numberOfPosts : number) => {
 
+        console.clear();
+
+        console.log("initial page");
+        console.log(initialPage);
+        console.log("\n");
+
+        console.log("Current page");
+        console.log(page);
+        console.log("\n");
+
+        console.log("Page parameters");
+        console.log(params);
+        console.log("\n");
+
+        console.log("Max pages");
+        console.log(maxPages);
+        console.log("\n");
+
+        console.log("posts");
+        console.log(posts);
+        console.log("\n");
+
+        console.log("Number of posts");
+        console.log(numberOfPosts);
+        console.log("\n");
+
+
         // Update the page number if we won't have any posts on the page
-        if (page > maxPages) {
+        if (params.page && Number(params.page) > maxPages) {
 
             console.log("Triggered");
 
@@ -156,21 +183,6 @@ export const ViewPosts : FC = () => {
 
         // Update the posts and update the page properly if needed
         client.on("post deleted", (response) =>  {
-
-            console.clear();
-            console.log("Response");
-            console.log(response);
-            console.log("\n");
-
-            console.log("Page");
-            console.log(initialPage);
-            console.log("\n");
-
-            console.log("Number of pages");
-            console.log(response.highestPageNumber);
-            console.log("\n");
-
-            console.log(initialPage > response.highestPageNumber);
 
             refreshPosts(response.highestPageNumber, response.numberOfPosts);
         });
