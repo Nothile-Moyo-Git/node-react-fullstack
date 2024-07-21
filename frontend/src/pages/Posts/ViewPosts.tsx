@@ -74,42 +74,15 @@ export const ViewPosts : FC = () => {
     };
 
     // Refresh the page after completing a function such as delete and handle edge cases
-    const refreshPosts = (maxPages : number, numberOfPosts : number) => {
+    const refreshPosts = (maxPages : number, numberOfPosts : number) => { 
 
-        console.clear();
-
-        console.log("initial page");
-        console.log(initialPage);
-        console.log("\n");
-
-        console.log("Current page");
-        console.log(page);
-        console.log("\n");
-
-        console.log("Page parameters");
-        console.log(params);
-        console.log("\n");
-
-        console.log("Max pages");
-        console.log(maxPages);
-        console.log("\n");
-
-        console.log("posts");
-        console.log(posts);
-        console.log("\n");
-
-        console.log("Number of posts");
-        console.log(numberOfPosts);
-        console.log("\n");
-
+        const urlArray = window.location.href.split("/");
+        const arraySize = urlArray.length;
+        const currentPage = parseInt(urlArray[arraySize - 1]);
 
         // Update the page number if we won't have any posts on the page
-        if (params.page && Number(params.page) > maxPages) {
-
-            console.log("Triggered");
-
-            setPage(maxPages);
-            navigate(`${BASENAME}/posts/${maxPages}`);
+        if (currentPage > maxPages) {
+            window.location.href = `${BASENAME}/posts/${maxPages}`;
         }
 
         setNumberOfPages(maxPages);
