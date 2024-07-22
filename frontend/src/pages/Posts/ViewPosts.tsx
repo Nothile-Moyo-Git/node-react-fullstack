@@ -45,7 +45,7 @@ export const ViewPosts : FC = () => {
     const [socketModal, setSocketModal] = useState(<></>);
 
     // Get posts method, we define it here so we can call it asynchronously
-    const getPosts = async () => {
+    const getPosts = useCallback( async () => {
         const response = await fetch(`http://localhost:4000/posts/${params.page}`);
 
         // Show the error if the request failed
@@ -56,10 +56,10 @@ export const ViewPosts : FC = () => {
         }
 
         return response;
-    };
+    },[params.page]);
 
     // Method defined here to allow async calls in a useEffect hook
-    const fetchPosts = async () => {
+    const fetchPosts = useCallback( async () => {
 
         const result = await getPosts();
 
@@ -71,10 +71,10 @@ export const ViewPosts : FC = () => {
             setPosts(data.posts);
             setNumberOfPages(data.numberOfPages);
         }
-    };
+    },[getPosts]);
 
     // Refresh the page after completing a function such as delete and handle edge cases
-    const refreshPosts = (maxPages : number, numberOfPosts : number) => { 
+    const refreshPosts = useCallback((maxPages : number, numberOfPosts : number) => { 
 
         const urlArray = window.location.href.split("/");
         const arraySize = urlArray.length;
@@ -88,7 +88,7 @@ export const ViewPosts : FC = () => {
         setNumberOfPages(maxPages);
 
         fetchPosts();
-    };
+    },[fetchPosts]);
 
     // Show the confirmation modal when attempting to delete a modal
     const toggleShowConfirmationModal = (id : string) => {        
@@ -148,7 +148,7 @@ export const ViewPosts : FC = () => {
             
             setTimeout(() => { 
                 setSocketModal(<></>); 
-            }, 6500); 
+            }, 5000); 
             
             fetchPosts();
 
@@ -165,7 +165,7 @@ export const ViewPosts : FC = () => {
             // Remove unncessary event handlers
             client.removeAllListeners();
         }
-    },[]);
+    },[fetchPosts, refreshPosts]);
 
     useEffect(() => {
 
