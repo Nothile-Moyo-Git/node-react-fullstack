@@ -53,6 +53,8 @@ You visit the BEM website [here](https://getbem.com/) to find out more.
 
 The _"scss"_ folder contains partials which can be referenced in any other stylesheet.
 
+------
+
 ### State management
 I use Context in this application due to the reduced complexity of it, if however, this was to be a more scalable app, then Redux, RTK with caching would be my choice.
 
@@ -66,6 +68,8 @@ If the user isn't authenticated, then you will be redirected to the login page.
 
 **Note: You should use the "useEffect" hook in order to handle this validation**
 
+------
+
 ### Validation
 Cors is activated in the backend so we can request our node backend.
 
@@ -75,6 +79,8 @@ This will be queried against the backend and if the request is authenticated, it
 
 **Note: Please don't share your userId with anyone, sessions will expire after 2 weeks**
 
+------
+
 ### Routing
 The routing for the frontend is handled using _**react-router**_. The Browser router is used for this instead of hash routing as that presents issues when dealing with parameters.
 
@@ -83,6 +89,8 @@ Since the backend uses express, the routing for the frontend is purely for compo
 The current "react-router" version is v6.23.1
 
 > You can read more about react-router [here](https://reactrouter.com/en/main)
+
+------
 
 ### Uploads
 All files are uploaded to the _"./frontend/uploads"_.
@@ -95,6 +103,8 @@ Images are rendered by requesting them using a try catch block in order to query
 
 If the image exists, it is converted and rendered on the page. All image previews in create or edit post are formatted in a 64 bit encode.
 
+------
+
 ### Testing
 Functional tests for this app are done using Jest and MSW. These tests will perform mock requests, and also handle functionality such as form and button submissions.
 
@@ -106,11 +116,34 @@ You can find these tests with the extension ".tsx".
 - MSW
 > [Learn about MSW](https://mswjs.io/)
 
+------
+
+### WebSockets
+Socket.IO is used on the frontend along with the backend. The package being used is _"socket-io.client"_
+
+The front end uses the client API for socket.IO along with React.js as the websocket solution for this project.
+
+You can find out more about how to use the client API [here](https://socket.io/docs/v4/client-api/).
+
+Subscribers are created in the front end for events which can be both emitted or broadcasted depending on the need.
+
+This also applies to the live chat.
+
+**Note: The live chat also keeps a record of messages sent using the backend and Mongoose**
+
+**Note: You cannot reference state values when using sockets with the useEffect hook, but you can set them even with previous state**
+
+------
+
 ### Linting
 TBI
 
+------
+
 ### Deployments 
 TBI
+
+------
 
 ### Overall throughts
 I think that the front end is pretty well built. There ended up being significantly more code than expected for a CRUD app but since there are Enterprise features the complexity was raised.
