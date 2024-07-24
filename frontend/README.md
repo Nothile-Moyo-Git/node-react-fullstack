@@ -12,8 +12,11 @@ This is the front end documentation for the application. You can find more in de
 The current technology stack for the front end is:
 
 - React. React is used for the front end due to its increased interactivity with the end user, good performance and a strong ecosystem to support it. React also presents all the advantages of function based components.
+
 > [React](https://react.dev/learn/typescript)
-**NOTE:** You can install react by using the following script: ```npm install @types/react @types/react-dom```
+
+**NOTE:** You can install react by using the following script: 
+```npm install @types/react @types/react-dom```
 
 - Typescript. We use TypeScript as a transpiler because TypeScript allows us to write less buggy, more readable code. It significantly reduces runtime errors by flagging them up during development.
 > [TypeScript](https://www.typescriptlang.org/)

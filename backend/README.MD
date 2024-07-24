@@ -16,3 +16,10 @@ The current tech stack for the backend is:
 
 **Expressjs**. Expressjs allows us to run a local server for development. It also is pivotal in helping to develop endpoints on the application.
 >[Expressjs](https://expressjs.com/)
+
+**TypeScript**. TypeScript is used to improve the overall quality of the code. This is done by examining the code during writetime instead of runtime, which can also protect the server or other subscribors from accidentally executing unncessary API requests.
+>[TypeScript](https://www.typescriptlang.org/)
+
+**Multer**. Multer is used to allow file uploads to be managed, but it also accounts for allowing the response body to be read when handling requests in express.
+
+>[Multer](https://www.npmjs.com/package/multer)
