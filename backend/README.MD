@@ -36,8 +36,22 @@ If you wish to start your local server, run the ```npm run start``` command to s
 
 >[Express](https://expressjs.com/)
 
-**Mongo**. Mongo is a document oriented database (which can still use SQL where required). It uses MongoDB Atlas in the browser (you can find it _[here](https://www.mongodb.com/products/platform/atlas-database)_) which can be used to manage your collections and view your data. Mongo is often used natively (mainly through constructing MongoDB instances which can be saved to the backend) or with an ODM. An ODM is an Object Document Mapper, which references an Object (in this case JavaScript) which is used to perform all queries.
+**MongoDB**. Mongo is a document oriented database (which can still use SQL where required). It uses MongoDB Atlas in the browser (you can find it _[here](https://www.mongodb.com/products/platform/atlas-database)_) which can be used to manage your collections and view your data. Mongo is often used natively (mainly through constructing MongoDB instances which can be saved to the backend) or with an ODM. An ODM is an Object Document Mapper, which references an Object (in this case JavaScript) which is used to perform all queries.
 
 A connection is required as your local or production server is running which allows MongoDB to perform operations in your database.
 
+You'll need a file which allows you to connect to the server by requesting it from me.
+
+You can send me an email by request [here](mailto:nothile1@gmail.com)
+
 >[MongoDB](https://www.mongodb.com/)
+
+**Mongoose**. Mongoose is an ODM (Object Document Mapper) specifically for MongoDB. Instead of connecting to MongoDB natively, we connect to Mongoose via our MongoDB URI which we can find from MongoDB Atlas. Mongoose requires schemas for all of our collections, and this is to enjoy both the benefits of a relational and non-relational database.
+
+>[Mongoose](https://mongoosejs.com/docs/)
+
+**SocketIO**. SocketIO is used in the backend for realtime io for features such as livechat or sending updates for user notifications. It allows for communication to the front end without the need for an api to pre-emptively be executed.
+
+>[SocketIO](https://socket.io/)
+
+
