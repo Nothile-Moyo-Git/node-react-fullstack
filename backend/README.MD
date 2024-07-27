@@ -1,6 +1,6 @@
 # Nothile's full stack Application
 
-## Front End Documentation
+## Back End Documentation
 
 **Welcome :)**
 
@@ -53,5 +53,26 @@ You can send me an email by request [here](mailto:nothile1@gmail.com)
 **SocketIO**. SocketIO is used in the backend for realtime io for features such as livechat or sending updates for user notifications. It allows for communication to the front end without the need for an api to pre-emptively be executed.
 
 >[SocketIO](https://socket.io/)
+
+-----
+
+### MVC Architecture
+
+The backend uses the MVC architecture. MVC stands for _"Model View Controller"_. 
+
+The _**Model**_ represents the structure of the backend and the handles all the logic for interacting with the database. It handles requests that it receives from Controllers. The model also handled _context_ which is data available outside of the initial scope of the view.
+
+The _**View**_ represents the UI used with the application. This can be done by either using a de-coupled web application (which has been done here), or a template. An example of this would be ejs. 
+
+The _**Controller**_ represents middleware which allows requests to be handled. Typically, this is done by routing either a view or a request to the appropriate model method. A response is given which is then returned to the front end in this application.
+
+-----
+
+### Routing
+
+You can find the routes from _"backend/src/routes"_. The routes assign api requests to the appropriate controller which is then used to handle the request. 
+
+No views are rendered with these routes as the web application is de-coupled.
+
 
 
