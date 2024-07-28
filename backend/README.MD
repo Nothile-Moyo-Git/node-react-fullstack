@@ -72,7 +72,37 @@ The _**Controller**_ represents middleware which allows requests to be handled. 
 
 You can find the routes from _"backend/src/routes"_. The routes assign api requests to the appropriate controller which is then used to handle the request. 
 
-No views are rendered with these routes as the web application is de-coupled.
+No views are rendered with these routes as the web application is de-coupled. The routes are written in express which are then handled by the server. 
+
+-----
+
+### File Storage
+
+Multer is used to handle file uploads. This works by using an event handler on the front end to turn the image into a base64 image. This is sent to the backend and decoded back into an image. In the _index.ts_ file, we set up the location of where we store the file (which is based on the date/month of upload). Files are saved with a name that is used to format them.
+
+**Note: If you change the name of an image, it won't be deleted as there won't be a reference point anymore**.
+
+-----
+
+### Websockets
+
+The socket.io implemention acts as an extension to the express server found in _"index.ts"_. You can find the socket code in _"socket.ts"_. This code uses a module export so that the socket functionality (mostly emitting and broadcasting) can be reused on individual controllers as opposed to just the main index file. 
+
+Regarding the livechat, it both uses the live server but also stores the messages in the "messages" collection found in MongoDB.
+
+-----
+
+### Cookies
+
+Cookies are used and stored in the browser for session functionality. We also use them to store user data for the user who is currently logged in. Users are logged in for 2 week periods and if their login expires then they're locked off from executing certain routes.
+
+This also stops random attempts to query the backend without the proper authentication
+
+
+
+
+
+
 
 
 

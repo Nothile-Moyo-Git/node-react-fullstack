@@ -19,14 +19,14 @@ import errorRoutes from "./routes/feed";
 import chatRoutes from "./routes/chat";
 import { RequestInterface } from "./@types";
 import session from "express-session";
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request } from "express";
 import dotenv from "dotenv";
 import { createMongooseConnection, SESSION_URI } from "./data/connection";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
-import { getFolderPathFromDate, getFileNamePrefixWithDate, createReadableDate } from "./util/utillity-methods";
+import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
