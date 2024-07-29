@@ -54,6 +54,10 @@ You can send me an email by request [here](mailto:nothile1@gmail.com)
 
 >[SocketIO](https://socket.io/)
 
+**JWT** JWT, standing for json web token, is a tool that allows encrypted tokens to be used. This is typically for authentication. A token value is also used, as well as encryption to ensure that rogue queries can't be performed by an inauthenticated user.
+
+>[JWT](https://jwt.io/)
+
 -----
 
 ### MVC Architecture
@@ -72,7 +76,9 @@ The _**Controller**_ represents middleware which allows requests to be handled. 
 
 You can find the routes from _"backend/src/routes"_. The routes assign api requests to the appropriate controller which is then used to handle the request. 
 
-No views are rendered with these routes as the web application is de-coupled. The routes are written in express which are then handled by the server. 
+No views are rendered with these routes as the web application is de-coupled. The routes are written in express which are then handled by the server.
+
+Unlike the front end, requests are handled without a basename.
 
 -----
 
@@ -96,11 +102,23 @@ Regarding the livechat, it both uses the live server but also stores the message
 
 Cookies are used and stored in the browser for session functionality. We also use them to store user data for the user who is currently logged in. Users are logged in for 2 week periods and if their login expires then they're locked off from executing certain routes.
 
-This also stops random attempts to query the backend without the proper authentication
+This also stops random attempts to query the backend without the proper authentication.
 
+In the interest of this application however, an encrypted token is sent to the backend which is using the _"sessions"_ collection. A json web token 
 
+-----
 
+### Security
 
+Regarding security for this application, many steps have been taken to ensure the security of the application.
+
+**Note: This is a dummy application so some security measures may not have been taken**.
+
+Regarding requests, cors is implemented which allows only specified domains to query the backend. So far, these are localhost domains, and the functionality for this has been ensured.
+
+For passwords in the backend, they are encrypted using _"bcrypt"_ which are stored on the server. The password is then compared to the password entered by the user after it's decrypted. We use bcrypt instead of md5 because md5 has been decrypted in many servers and is thus unsafe.
+
+Regarding controllers, queries check if the user is logged in and also return responses regarding this. This response is used by the front end to determine what should happen, which is usually a redirect onto the login page.
 
 
 
