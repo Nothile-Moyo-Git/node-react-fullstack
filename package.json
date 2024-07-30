@@ -6,5 +6,9 @@
     "frontend": "npm run start --prefix frontend",
     "backend": "npm run start --prefix backend",
     "application": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "dependencies": {
+    "graphql": "^16.9.0",
+    "graphql-http": "^1.22.1"
   }
 }
