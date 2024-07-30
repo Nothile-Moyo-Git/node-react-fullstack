@@ -89,6 +89,8 @@ The routing for the frontend is handled using _**react-router**_. The Browser ro
 
 Since the backend uses express, the routing for the frontend is purely for components.
 
+All routes use a basename. This is to make deployment of the front end work alongside other applications which may use a basename. The basename for this application is "typescript-fullstack".
+
 The current "react-router" version is v6.23.1
 
 > You can read more about react-router [here](https://reactrouter.com/en/main)

@@ -1,6 +1,6 @@
 # Nothile's full stack Application
 
-## Front End Documentation
+## Back End Documentation
 
 **Welcome :)**
 
@@ -53,5 +53,74 @@ You can send me an email by request [here](mailto:nothile1@gmail.com)
 **SocketIO**. SocketIO is used in the backend for realtime io for features such as livechat or sending updates for user notifications. It allows for communication to the front end without the need for an api to pre-emptively be executed.
 
 >[SocketIO](https://socket.io/)
+
+**JWT** JWT, standing for json web token, is a tool that allows encrypted tokens to be used. This is typically for authentication. A token value is also used, as well as encryption to ensure that rogue queries can't be performed by an inauthenticated user.
+
+>[JWT](https://jwt.io/)
+
+-----
+
+### MVC Architecture
+
+The backend uses the MVC architecture. MVC stands for _"Model View Controller"_. 
+
+The _**Model**_ represents the structure of the backend and the handles all the logic for interacting with the database. It handles requests that it receives from Controllers. The model also handled _context_ which is data available outside of the initial scope of the view.
+
+The _**View**_ represents the UI used with the application. This can be done by either using a de-coupled web application (which has been done here), or a template. An example of this would be ejs. 
+
+The _**Controller**_ represents middleware which allows requests to be handled. Typically, this is done by routing either a view or a request to the appropriate model method. A response is given which is then returned to the front end in this application.
+
+-----
+
+### Routing
+
+You can find the routes from _"backend/src/routes"_. The routes assign api requests to the appropriate controller which is then used to handle the request. 
+
+No views are rendered with these routes as the web application is de-coupled. The routes are written in express which are then handled by the server.
+
+Unlike the front end, requests are handled without a basename.
+
+-----
+
+### File Storage
+
+Multer is used to handle file uploads. This works by using an event handler on the front end to turn the image into a base64 image. This is sent to the backend and decoded back into an image. In the _index.ts_ file, we set up the location of where we store the file (which is based on the date/month of upload). Files are saved with a name that is used to format them.
+
+**Note: If you change the name of an image, it won't be deleted as there won't be a reference point anymore**.
+
+-----
+
+### Websockets
+
+The socket.io implemention acts as an extension to the express server found in _"index.ts"_. You can find the socket code in _"socket.ts"_. This code uses a module export so that the socket functionality (mostly emitting and broadcasting) can be reused on individual controllers as opposed to just the main index file. 
+
+Regarding the livechat, it both uses the live server but also stores the messages in the "messages" collection found in MongoDB.
+
+-----
+
+### Cookies
+
+Cookies are used and stored in the browser for session functionality. We also use them to store user data for the user who is currently logged in. Users are logged in for 2 week periods and if their login expires then they're locked off from executing certain routes.
+
+This also stops random attempts to query the backend without the proper authentication.
+
+In the interest of this application however, an encrypted token is sent to the backend which is using the _"sessions"_ collection. A json web token 
+
+-----
+
+### Security
+
+Regarding security for this application, many steps have been taken to ensure the security of the application.
+
+**Note: This is a dummy application so some security measures may not have been taken**.
+
+Regarding requests, cors is implemented which allows only specified domains to query the backend. So far, these are localhost domains, and the functionality for this has been ensured.
+
+For passwords in the backend, they are encrypted using _"bcrypt"_ which are stored on the server. The password is then compared to the password entered by the user after it's decrypted. We use bcrypt instead of md5 because md5 has been decrypted in many servers and is thus unsafe.
+
+Regarding controllers, queries check if the user is logged in and also return responses regarding this. This response is used by the front end to determine what should happen, which is usually a redirect onto the login page.
+
+
+
 
 

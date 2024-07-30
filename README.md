@@ -57,6 +57,7 @@ npm run deploy
 ```
 
 -----
+
 ### Running The App
 
 You'll need to install all the packages from the front and backend.
