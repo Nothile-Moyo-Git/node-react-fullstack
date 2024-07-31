@@ -27,6 +27,8 @@ import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
+import { createHandler } from "graphql-http/lib/use/express";
+import schema from "./data/graphql";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -143,6 +145,9 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
+
+// Handling graphql 
+app.all('/typescript-fullstack/graphql', createHandler({ schema }));
 
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
