@@ -147,7 +147,7 @@ app.use( authRoutes );
 app.use( chatRoutes );
 
 // Handling graphql 
-app.all('/typescript-fullstack/graphql', createHandler({ schema }));
+app.all('/graphql', createHandler({ schema }));
 
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );

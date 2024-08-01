@@ -20,6 +20,7 @@ import { ViewPosts } from '../pages/Posts/ViewPosts';
 import PostScreen from '../pages/Posts/PostScreen';
 import { EditPost } from '../pages/Posts/EditPost';
 import LiveChat from '../pages/Sockets/LiveChat';
+import GraphQLInterface from '../pages/GraphQL/GraphQLInterface';
 
 export const nestedRouter = createBrowserRouter([
     {
@@ -54,6 +55,10 @@ export const nestedRouter = createBrowserRouter([
             {
                 path: BASENAME + "/edit-post/:postId?",
                 element : <EditPost/>
+            },
+            {
+                path: BASENAME + "/graphql",
+                element : <GraphQLInterface/>
             },
             {
                 path : BASENAME + "/post/create",
