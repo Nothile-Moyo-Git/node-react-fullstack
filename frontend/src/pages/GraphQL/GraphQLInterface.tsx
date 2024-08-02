@@ -26,7 +26,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                body : JSON.stringify({ query : "{ hello }"})
+                body : JSON.stringify({ query : "{ hello }" })
             });
 
             const data = await result.json();
@@ -41,10 +41,41 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         };
 
+        const textGraphQLInterface = async () => {
+
+            const string = "Output";
+
+            const result = await fetch(`http://localhost:4000/graphql`, {
+                method : "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body : JSON.stringify({ 
+                    query : `query text($content: String){ 
+                    }`,
+                    variables: { string }
+                })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+
+
+        };
+
     return (
         <div>
 
-            <button onClick={testGraphQLInterface }>Test GraphQL interface</button>
+            <button onClick={testGraphQLInterface}>Test GraphQL interface</button>
+            <button onClick={textGraphQLInterface}>Test GraphQL interface</button>
         </div>
     );
 };
