@@ -9,6 +9,7 @@
  */
 
 import { FC } from "react";
+import Button from "../../components/button/Button";
 
 interface GraphQLInterfaceProps {
 
@@ -43,7 +44,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         const textGraphQLInterface = async () => {
 
-            const string = "Output";
+            const string = "Gauntlet Legends";
 
             const result = await fetch(`http://localhost:4000/graphql`, {
                 method : "POST",
@@ -52,7 +53,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     Accept: "application/json",
                 },
                 body : JSON.stringify({ 
-                    query : `query text($content: String){ 
+                    query : `query Text($content: String){
+                        text(text : $content)
                     }`,
                     variables: { string }
                 })
@@ -61,6 +63,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             const data = await result.json();
 
             console.clear();
+
+
             console.log("result");
             console.log(result);
             console.log("\n");
@@ -73,9 +77,14 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
     return (
         <div>
-
-            <button onClick={testGraphQLInterface}>Test GraphQL interface</button>
-            <button onClick={textGraphQLInterface}>Test GraphQL interface</button>
+            <Button 
+                variant="primary" 
+                onClick={testGraphQLInterface}
+            >Output "Hello World"</Button>
+            <Button 
+                variant="secondary"
+                onClick={textGraphQLInterface}
+            >Output "Gauntlet Legends"</Button>
         </div>
     );
 };
