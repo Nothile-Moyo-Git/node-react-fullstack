@@ -44,7 +44,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         const textGraphQLInterface = async () => {
 
-            const string = "Gauntlet Legends";
+            const stringText = "Gauntlet Legends";
 
             const result = await fetch(`http://localhost:4000/graphql`, {
                 method : "POST",
@@ -53,10 +53,10 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     Accept: "application/json",
                 },
                 body : JSON.stringify({ 
-                    query : `query Text($content: String){
-                        text(text : $content)
+                    query : `query ($content: String!){
+                        text(content : $content)
                     }`,
-                    variables: { string }
+                    variables: { content : stringText }
                 })
             });
 
