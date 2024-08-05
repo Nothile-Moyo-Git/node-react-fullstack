@@ -120,7 +120,9 @@ For passwords in the backend, they are encrypted using _"bcrypt"_ which are stor
 
 Regarding controllers, queries check if the user is logged in and also return responses regarding this. This response is used by the front end to determine what should happen, which is usually a redirect onto the login page.
 
+-----
 
+### GraphQL
 
 
 
