@@ -124,5 +124,11 @@ Regarding controllers, queries check if the user is logged in and also return re
 
 ### GraphQL
 
+GraphQL is a query language that is used to make specific requests which improves performance and simplicity when requesting data from the backend.
+
+This makes it a popular choice when building scalable platforms.
+
+
+
 
 
