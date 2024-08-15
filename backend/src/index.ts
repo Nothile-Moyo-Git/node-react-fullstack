@@ -149,7 +149,10 @@ app.use( authRoutes );
 app.use( chatRoutes );
 
 // Handling graphql 
-app.all('/graphql', createHandler({ schema }));
+app.all('/graphql', createHandler({ 
+    schema,
+    rootValue : rootResolvers
+}));
 
 // Fallback route, in case no other route gets handled
 app.use( errorRoutes );
