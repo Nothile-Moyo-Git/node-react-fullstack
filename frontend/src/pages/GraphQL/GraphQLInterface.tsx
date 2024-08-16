@@ -45,7 +45,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const textGraphQLInterface = async () => {
 
             const stringText = "Gauntlet Legends";
-
+ 
             const result = await fetch(`http://localhost:4000/graphql`, {
                 method : "POST",
                 headers: {
