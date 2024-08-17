@@ -1,6 +1,6 @@
 // Backend files
 backend/node_modules
-backend/src/data
+backend/src/data/connection.ts
 backend/.env
 
 // Frontend files

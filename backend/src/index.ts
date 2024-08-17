@@ -28,7 +28,7 @@ import flash from "connect-flash";
 import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
 import { createHandler } from "graphql-http/lib/use/express";
-import schema from "./data/graphql";
+import schemas from "./data/graphql";
 import rootResolvers from "./data/resolvers/rootResolvers";
 
 
@@ -150,7 +150,7 @@ app.use( chatRoutes );
 
 // Handling graphql 
 app.all('/graphql', createHandler({ 
-    schema,
+    schema: schemas.RootSchema,
     rootValue : rootResolvers
 }));
 
