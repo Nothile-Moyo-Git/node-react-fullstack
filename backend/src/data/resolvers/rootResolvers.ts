@@ -7,7 +7,7 @@
  */
 
 // The root object which holds the resolvers 
-const rootResolvers = {
+const RootResolvers = {
 
     hello() {
         return "Hello world!";
@@ -19,4 +19,4 @@ const rootResolvers = {
 
 };
 
-export default rootResolvers;
+export default RootResolvers;

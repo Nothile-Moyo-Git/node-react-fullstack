@@ -8,7 +8,7 @@
  */
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
-import rootResolvers from '../resolvers/rootResolvers';
+import RootResolvers from '../resolvers/RootResolvers';
 
 const RootSchema = new GraphQLSchema({
     query : new GraphQLObjectType({
@@ -16,14 +16,14 @@ const RootSchema = new GraphQLSchema({
         fields: () => ({
             hello: {
                 type : GraphQLString,
-                resolve: rootResolvers.hello
+                resolve: RootResolvers.hello
             },
             text: {
                 args: {
                     content: { type: new GraphQLNonNull(GraphQLString) }
                 },
                 type : GraphQLString,
-                resolve: rootResolvers.text,
+                resolve: RootResolvers.text,
             }
         }),
     })
