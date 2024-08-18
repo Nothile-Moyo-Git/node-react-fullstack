@@ -29,8 +29,6 @@ import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
 import { createHandler } from "graphql-http/lib/use/express";
 import schemas from "./data/graphql";
-import rootResolvers from "./data/resolvers/rootResolvers";
-
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -150,8 +148,7 @@ app.use( chatRoutes );
 
 // Handling graphql 
 app.all('/graphql', createHandler({ 
-    schema: schemas.RootSchema,
-    rootValue : rootResolvers
+    schema: schemas.RootSchema
 }));
 
 // Fallback route, in case no other route gets handled
