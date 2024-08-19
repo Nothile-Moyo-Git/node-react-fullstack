@@ -12,8 +12,10 @@
 const AuthResolvers = {
     
     hello() {
-        return "Hello world!";
+        return "Hello world Auth!";
     },
+
+
 }
 
 export default AuthResolvers;
