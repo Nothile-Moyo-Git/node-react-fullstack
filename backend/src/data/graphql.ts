@@ -8,9 +8,11 @@
  */
 
 import RootSchema from "./schemas/RootSchema";
+import AuthSchema from "./schemas/AuthSchema";
 
 const schemas = {
-    RootSchema
+    RootSchema : RootSchema,
+    AuthSchema : AuthSchema
 };
 
 export default schemas;

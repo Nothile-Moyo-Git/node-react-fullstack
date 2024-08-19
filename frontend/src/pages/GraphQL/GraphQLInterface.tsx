@@ -75,16 +75,48 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         };
 
+        // Auth GraphQLObject
+        const testAuthResolver = async (event : React.MouseEvent<HTMLElement>) => {
+
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body : JSON.stringify({ query : "{ hello }" })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+
+
+        }
+
     return (
         <div>
+            <br/>
             <Button 
                 variant="primary" 
                 onClick={testGraphQLInterface}
             >Output "Hello World"</Button>
+            <br/>
             <Button 
                 variant="secondary"
                 onClick={textGraphQLInterface}
             >Output "Gauntlet Legends"</Button>
+            <br/>
+            <Button
+                variant="primary"
+                onClick={testAuthResolver}
+            >Output "Hello World" from Auth </Button>
         </div>
     );
 };
