@@ -18,6 +18,10 @@ const AuthSchema = new GraphQLSchema({
                 type : GraphQLString,
                 resolve: AuthResolvers.hello
             },
+            testDocument: {
+                type : GraphQLString,
+                resolve: AuthResolvers.testDocument
+            }
         }),
     })
 });
