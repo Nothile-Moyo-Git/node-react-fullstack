@@ -10,6 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type" : "module",
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/connect-flash": "^0.0.40",
