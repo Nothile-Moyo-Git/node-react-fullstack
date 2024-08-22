@@ -7,8 +7,9 @@
  * Description : Handle the GraphQL requests for the Auth middleware. This contains sessions and users
  * 
  */
+
 import { MONGODB_URI } from '../connection';
-import { gql, GraphQLClient } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
 const AuthResolvers = {
@@ -18,7 +19,7 @@ const AuthResolvers = {
     },
     testDocument() {
 
-        const client = new GraphQLClient(MONGODB_URI);
+        // const client = new GraphQLClient(MONGODB_URI);
 
         return "Create a test document";
     }

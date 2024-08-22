@@ -6,14 +6,18 @@
     ],
     "noResolve": false,
     "target": "ES6",                          
-    "module": "NodeNext",
-    "moduleResolution" : "NodeNext",              
+    "module": "ES2015",
+    "moduleResolution": "Bundler",           
     "lib": ["es5","DOM"],                     
     "allowJs": true,
     "outDir": "build",                          
     "rootDir": "src",       
     "esModuleInterop": true,
     "resolveJsonModule": true
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node",
   },
   "exclude": [
     "node_modules"
