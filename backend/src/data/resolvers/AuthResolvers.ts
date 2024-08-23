@@ -9,7 +9,7 @@
  */
 
 import { MONGODB_URI } from '../connection';
-import { GraphQLClient } from 'graphql-request';
+// import { GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
 const AuthResolvers = {

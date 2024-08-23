@@ -15,7 +15,7 @@
  */
 
 import { Response, NextFunction } from "express";
-import { AuthRequestInterface } from "../@types";
+import { AuthRequestInterface } from "../@types/index.ts";
 import { createReadableDate, validateEmailAddress, validateInputLength } from "../util/utillity-methods";
 import User from "../models/user";
 import { validatePassword } from "../util/utillity-methods";
