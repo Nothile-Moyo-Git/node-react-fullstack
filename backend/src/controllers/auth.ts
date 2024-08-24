@@ -16,12 +16,12 @@
 
 import { Response, NextFunction } from "express";
 import { AuthRequestInterface } from "../@types/index.ts";
-import { createReadableDate, validateEmailAddress, validateInputLength } from "../util/utillity-methods";
-import User from "../models/user";
-import { validatePassword } from "../util/utillity-methods";
+import { createReadableDate, validateEmailAddress, validateInputLength } from "../util/utillity-methods.ts";
+import User from "../models/user.ts";
+import { validatePassword } from "../util/utillity-methods.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Session from "../models/session";
+import Session from "../models/session.ts";
 import { ObjectId } from "mongodb";
 
 // Signup controller

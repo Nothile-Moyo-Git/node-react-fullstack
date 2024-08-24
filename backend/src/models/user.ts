@@ -15,7 +15,7 @@
 // Imports
 import mongoose, { Model } from "mongoose";
 import bcrypt from "bcrypt";
-import { UserInterface , UserMethodsInterface } from "../@types";
+import { UserInterface , UserMethodsInterface } from "../@types/index.ts";
 
 // Setting the user type so we can define methods
 type UserModel = Model<UserInterface, {}, UserMethodsInterface>;

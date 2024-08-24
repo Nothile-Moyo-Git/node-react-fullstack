@@ -8,7 +8,7 @@
  * 
  */
 
-import { MONGODB_URI } from '../connection';
+import { MONGODB_URI } from '../connection.ts';
 // import { GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
