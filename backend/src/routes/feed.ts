@@ -14,7 +14,7 @@ import {
     PostDeletePostController,
     PutUpdatePostController,
     PostAndValidatePostController
-} from "../controllers/feed";
+} from "../controllers/feed.ts";
 
 
 const feedRoutes = express.Router({ strict : true });

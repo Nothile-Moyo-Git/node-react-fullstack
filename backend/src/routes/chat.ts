@@ -10,7 +10,7 @@
 
 // Import our route handlers
 import express from "express";
-import { PostCurrentChatController, PostSendMessageController } from "../controllers/chat";
+import { PostCurrentChatController, PostSendMessageController } from "../controllers/chat.ts";
 
 // Define our router object
 const chatRoutes = express.Router({ strict : true });

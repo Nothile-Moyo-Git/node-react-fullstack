@@ -10,9 +10,9 @@
  */
 
 import { Response, NextFunction } from "express";
-import { ChatMessage, ChatRequestInterface } from "../@types";
-import Chat from "../models/chat";
-import { createReadableDate } from "../util/utillity-methods";
+import { ChatMessage, ChatRequestInterface } from "../@types/index.ts";
+import Chat from "../models/chat.ts";
+import { createReadableDate } from "../util/utillity-methods.ts";
 
 /**
  * @name PostSendMessageController

@@ -20,13 +20,13 @@
 
 import fs from "fs";
 import path from "path";
-import Post from "../models/post";
-import User from "../models/user";
-import { FeedRequestInterface, ErrorInterface, PostsInterface } from "../@types";
+import Post from "../models/post.ts";
+import User from "../models/user.ts";
+import { FeedRequestInterface, ErrorInterface, PostsInterface } from "../@types/index.ts";
 import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
-import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file";
+import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file.ts";
 
 const perPage = 3;
 

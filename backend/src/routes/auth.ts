@@ -15,7 +15,7 @@ import {
     PostUpdateUserStatusController,
     PostDeleteSessionController,
     PostCheckAndCreateSessionController
-} from "../controllers/auth";
+} from "../controllers/auth.ts";
 
 // Define our router object
 const authRoutes = express.Router({ strict : true });

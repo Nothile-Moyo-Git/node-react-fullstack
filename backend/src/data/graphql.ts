@@ -7,8 +7,8 @@
  * 
  */
 
-import RootSchema from "./schemas/RootSchema";
-import AuthSchema from "./schemas/AuthSchema";
+import RootSchema from "./schemas/RootSchema.ts";
+import AuthSchema from "./schemas/AuthSchema.ts";
 
 const schemas = {
     RootSchema : RootSchema,

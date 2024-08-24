@@ -7,8 +7,8 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
-import AuthResolvers from '../resolvers/AuthResolvers';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 const AuthSchema = new GraphQLSchema({
     query : new GraphQLObjectType({

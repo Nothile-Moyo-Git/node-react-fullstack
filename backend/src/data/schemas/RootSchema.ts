@@ -8,7 +8,7 @@
  */
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
-import RootResolvers from '../resolvers/RootResolvers';
+import RootResolvers from '../resolvers/RootResolvers.ts';
 
 const RootSchema = new GraphQLSchema({
     query : new GraphQLObjectType({

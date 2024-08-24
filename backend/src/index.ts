@@ -10,25 +10,26 @@
  */
 
 // Main imports in order to run the server
-import authRoutes from "./routes/auth";
+import authRoutes from "./routes/auth.ts";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
-import feedRoutes from "./routes/feed";
-import errorRoutes from "./routes/feed";
-import chatRoutes from "./routes/chat";
-import { RequestInterface } from "./@types";
+import { fileURLToPath } from 'url';
+import feedRoutes from "./routes/feed.ts";
+import errorRoutes from "./routes/feed.ts";
+import chatRoutes from "./routes/chat.ts";
+import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
 import express, { Request } from "express";
 import dotenv from "dotenv";
-import { createMongooseConnection, SESSION_URI } from "./data/connection";
+import { createMongooseConnection, SESSION_URI } from "./data/connection.ts";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import flash from "connect-flash";
 import multer from "multer";
-import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods";
+import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods.ts";
 import { createHandler } from "graphql-http/lib/use/express";
-import schemas from "./data/graphql";
+import schemas from "./data/graphql.ts";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -40,6 +41,10 @@ declare module 'express-serve-static-core' {
         }
     }
 }
+
+// We define our __dirname and __filename here since we wouldn't be able to reference them since we're using type : module in our package.json
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Import the .env variables
 dotenv.config();
@@ -140,6 +145,11 @@ app.use(
 
 // Serve our uploaded images statically
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
+
+console.clear();
+console.log("__dirname");
+console.log(__dirname);
+console.log("\n\n");
 
 // Implement Route handlers here
 app.use( feedRoutes );
