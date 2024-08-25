@@ -13,6 +13,7 @@ import { Response, NextFunction } from "express";
 import { ChatMessage, ChatRequestInterface } from "../@types/index.ts";
 import Chat from "../models/chat.ts";
 import { createReadableDate } from "../util/utillity-methods.ts";
+import { getIO } from "../socket.ts";
 
 /**
  * @name PostSendMessageController
@@ -60,7 +61,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             });
 
             // Send the response to the front end
-            require("../socket").getIO().emit('message sent', newMessage);
+            getIO().emit('message sent', newMessage);
 
             // Save it to the backend
             await chat.save();
@@ -80,7 +81,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             chatInstance[0].messages = updatedMessages;
 
             // Send the response to the front end with a socket message
-            require("../socket").getIO().emit('message sent', newMessage);
+            getIO().emit('message sent', newMessage);
 
             // Save it to the backend
             await chatInstance[0].save();

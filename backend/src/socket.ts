@@ -12,23 +12,23 @@ import { IncomingMessage, Server as HTTPServer, ServerResponse } from "http";
 
 let io : Server;
 
-module.exports = {
-    init : (server : HTTPServer<typeof IncomingMessage, typeof ServerResponse>) => {
+export const init = (server : HTTPServer<typeof IncomingMessage, typeof ServerResponse>) => {
 
-        io = new Server(server, {             
-            cors : {
-                origin: "http://localhost:3000"
-            }
-        });
-
-        return io;
-    },
-    getIO: () => {
-        if (!io) {
-            console.error('Socket.io is not initialized!');
-        }else{
-            return io;
+    io = new Server(server, {             
+        cors : {
+            origin: "http://localhost:3000"
         }
+    });
+
+    return io;
+}
+
+export const getIO = ()  => {
+
+    if ( !io ) {
+        console.error('Socket.io is not initialized!');
+    }else{
+        return io;
     }
 };
 

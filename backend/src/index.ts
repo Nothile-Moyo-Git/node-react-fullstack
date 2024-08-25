@@ -30,6 +30,7 @@ import multer from "multer";
 import { getFolderPathFromDate, getFileNamePrefixWithDate } from "./util/utillity-methods.ts";
 import { createHandler } from "graphql-http/lib/use/express";
 import schemas from "./data/graphql.ts";
+import { init } from "./socket.ts";
 
 // Module augmentation for the request
 declare module 'express-serve-static-core' {
@@ -146,11 +147,6 @@ app.use(
 // Serve our uploaded images statically
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 
-console.clear();
-console.log("__dirname");
-console.log(__dirname);
-console.log("\n\n");
-
 // Implement Route handlers here
 app.use( feedRoutes );
 app.use( authRoutes );
@@ -182,7 +178,7 @@ const startServer = async () => {
         });
 
         // Instantiate our IO
-        require('./socket').init(server);         
+        init(server);         
     });
 };
 
