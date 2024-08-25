@@ -27,6 +27,7 @@ import { NextFunction, Response } from "express";
 import { validationResult } from "express-validator";
 import { ObjectId } from "mongodb";
 import { deleteFile, checkFileType, getCurrentMonthAndYear } from "../util/file.ts";
+import { getIO } from "../socket.ts";
 
 const perPage = 3;
 
@@ -141,7 +142,7 @@ export const PostCreatePostController = async (request : FeedRequestInterface, r
                 await user.save();
 
                 // Send the response to the front end
-                require("../socket").getIO().emit('post added', {
+                getIO().emit('post added', {
                     post : post
                 });
 
@@ -407,7 +408,7 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
             const highestPageNumber = Math.ceil(numberOfPosts / perPage);
 
             // Send the response to the front end
-            require("../socket").getIO().emit('post deleted', { 
+            getIO().emit('post deleted', { 
                 numberOfPosts,
                 highestPageNumber
             });

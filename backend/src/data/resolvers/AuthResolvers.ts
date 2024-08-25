@@ -9,7 +9,7 @@
  */
 
 import { MONGODB_URI } from '../connection.ts';
-// import { GraphQLClient } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
 const AuthResolvers = {
@@ -19,7 +19,7 @@ const AuthResolvers = {
     },
     testDocument() {
 
-        // const client = new GraphQLClient(MONGODB_URI);
+        const client = new GraphQLClient(MONGODB_URI);
 
         return "Create a test document";
     }
