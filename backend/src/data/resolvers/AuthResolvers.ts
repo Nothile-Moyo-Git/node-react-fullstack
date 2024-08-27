@@ -17,13 +17,28 @@ const AuthResolvers = {
     hello() {
         return "Hello world Auth!";
     },
-    testDocument() {
+    async getDocument() {
 
-        const client = new GraphQLClient(MONGODB_URI);
+        // Connect to our MONGODB database and perform a get request using JSON
+        const client = new GraphQLClient(MONGODB_URI,
+            {
+               method : 'GET',
+                jsonSerializer : {
+                    parse : JSON.parse,
+                    stringify : JSON.stringify
+                }
+            }
+        );
 
-        console.log("\n\n");
-        console.log("client");
-        console.log(client);
+        // Write our query we're going to perform
+        const query = gql`
+        query getMovie($title: String!) {
+          Movie(title: $title) {
+            name,
+            description,
+            year
+          }
+        }`;
 
         return "Create a test document";
     }
