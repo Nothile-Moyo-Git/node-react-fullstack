@@ -20,7 +20,7 @@ const AuthSchema = new GraphQLSchema({
             },
             testDocument: {
                 type : GraphQLString,
-                resolve: AuthResolvers.testDocument
+                resolve: AuthResolvers.getDocument
             }
         }),
     })
