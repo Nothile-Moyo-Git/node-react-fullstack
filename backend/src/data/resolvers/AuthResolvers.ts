@@ -8,7 +8,7 @@
  * 
  */
 
-import { SESSION_URI } from '../connection.ts';
+import { MONGODB_URI, SESSION_URI } from '../connection.ts';
 import { gql, GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
@@ -21,11 +21,10 @@ const AuthResolvers = {
 
         
         // Connect to our MONGODB database and perform a get request using JSON
-        const client = new GraphQLClient(SESSION_URI,
-            {
-                method : 'GET',
-            }
-        );
+        const client = new GraphQLClient(MONGODB_URI, {
+
+            errorPolicy : 'all'
+        });
 
         // Write our query we're going to perform
         const query = gql`
