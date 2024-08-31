@@ -8,7 +8,7 @@
  * 
  */
 
-import { MONGODB_URI, SESSION_URI } from '../connection.ts';
+import { API_ENDPOINT, DATA_API_KEY } from '../connection.ts';
 import { gql, GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
@@ -21,20 +21,28 @@ const AuthResolvers = {
 
         
         // Connect to our MONGODB database and perform a get request using JSON
-        const client = new GraphQLClient(MONGODB_URI, {
-
-            errorPolicy : 'all'
+        const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
+            method : 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'Access-Control-Request-Headers': '*',
+                'api-key' : DATA_API_KEY,
+            },
+            errorPolicy : 'all',
+            jsonSerializer : {
+                parse : JSON.parse,
+                stringify : JSON.stringify
+            }
         });
 
         // Write our query we're going to perform
         const query = gql`
-        query getMovie($name: String) {
-          Movie(name: $name) {
-            name,
-            description,
-            year
-          }
-        }`;
+            {
+                movie {
+                    name
+                }
+            }
+        `;
 
         // Set the variables we're going to use to query the database
         const variables = {
