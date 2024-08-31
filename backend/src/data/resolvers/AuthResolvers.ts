@@ -22,7 +22,7 @@ const AuthResolvers = {
         
         // Connect to our MONGODB database and perform a get request using JSON
         const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
-            method : 'GET',
+            method : 'POST',
             headers : {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',
@@ -37,13 +37,12 @@ const AuthResolvers = {
 
         // Write our query we're going to perform
         const query = gql`
-        query getMovie($name: String) {
-          Movie(name: $name) {
-            name,
-            description,
-            year
-          }
-        }`;
+            {
+                movie {
+                    name
+                }
+            }
+        `;
 
         // Set the variables we're going to use to query the database
         const variables = {
