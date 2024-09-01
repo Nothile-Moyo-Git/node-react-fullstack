@@ -9,7 +9,7 @@
  */
 
 import { API_ENDPOINT, DATA_API_KEY } from '../connection.ts';
-import { gql, GraphQLClient } from 'graphql-request';
+import { gql, GraphQLClient, request } from 'graphql-request';
 
 // The Auth resolver
 const AuthResolvers = {
@@ -19,7 +19,7 @@ const AuthResolvers = {
     },
     async getDocument() {
 
-        
+        /*
         // Connect to our MONGODB database and perform a get request using JSON
         const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
             method : 'POST',
@@ -28,7 +28,7 @@ const AuthResolvers = {
                 'Access-Control-Request-Headers': '*',
                 'api-key' : DATA_API_KEY,
             },
-            errorPolicy : 'all',
+            errorPolicy : 'all', 
             jsonSerializer : {
                 parse : JSON.parse,
                 stringify : JSON.stringify
@@ -47,11 +47,41 @@ const AuthResolvers = {
         // Set the variables we're going to use to query the database
         const variables = {
             name : 'Inception',
+        }; */
+
+        // Document the schema we're communicating with
+        const document = gql`
+            {
+                movie {
+                    name
+                    description
+                    year
+                }
+            }
+        `;
+
+        // Set the variables we're going to use to query the database
+        const variables = {
+            name : 'Inception',
+        };
+
+        // Set the request headers
+        const headers = {
+            'Content-Type': 'application/json',
+            'Access-Control-Request-Headers': '*',
+            'api-key' : DATA_API_KEY,
         };
 
         try{
 
-            const data = await client.request(query, variables);
+            // const data = await client.request(query, variables);
+
+            const data = await request(
+                `${API_ENDPOINT}/action/findOne`, 
+                document,
+                variables,
+                headers
+            );
 
             console.log("\n\n");
             console.log("data");
