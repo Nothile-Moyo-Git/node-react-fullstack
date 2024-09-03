@@ -105,7 +105,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                body : JSON.stringify({ query : "{ testDocument }" })
+                body : JSON.stringify({ query : "{ getDocument }" })
             });
 
             const data = await result.json();
