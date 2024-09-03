@@ -7,8 +7,18 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString,  } from 'graphql';
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
+
+// Defining the movie type so we have a reference point for the fields
+const MovieType = new GraphQLObjectType({
+    name : 'Movie',
+    fields : () => ({
+        name : { type : GraphQLString },
+        description : { type : GraphQLString },
+        year : { type : GraphQLString }
+    })
+});
 
 const AuthSchema = new GraphQLSchema({
     query : new GraphQLObjectType({
@@ -18,7 +28,7 @@ const AuthSchema = new GraphQLSchema({
                 type : GraphQLString,
                 resolve: AuthResolvers.hello
             },
-            testDocument: {
+            getDocument: {
                 type : GraphQLString,
                 resolve: AuthResolvers.getDocument
             }

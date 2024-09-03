@@ -9,7 +9,7 @@
  */
 
 import { API_ENDPOINT, DATA_API_KEY } from '../connection.ts';
-import { gql, GraphQLClient, request } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 
 // The Auth resolver
 const AuthResolvers = {
@@ -25,7 +25,6 @@ const AuthResolvers = {
             method : 'POST',
             headers : {
                 'Content-Type': 'application/json',
-                'Access-Control-Request-Headers': '*',
                 'api-key' : DATA_API_KEY,
             },
             errorPolicy : 'all', 
