@@ -7,7 +7,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString,  } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
@@ -20,20 +20,27 @@ const MovieType = new GraphQLObjectType({
     })
 });
 
+// Defining the auth queries
+const AuthQuery = new GraphQLObjectType({
+    name : 'AuthQuery',
+    fields : {
+        hello : {
+            type : GraphQLString,
+            resolve: AuthResolvers.hello
+        },
+        getDocument : {
+            type : GraphQLString,
+            resolve: AuthResolvers.getDocument
+        },
+        movies : {
+            type : new GraphQLList(MovieType),
+            resolve: AuthResolvers.getMovies
+        }
+    }
+});
+
 const AuthSchema = new GraphQLSchema({
-    query : new GraphQLObjectType({
-        name : 'Auth',
-        fields: () => ({
-            hello: {
-                type : GraphQLString,
-                resolve: AuthResolvers.hello
-            },
-            getDocument: {
-                type : GraphQLString,
-                resolve: AuthResolvers.getDocument
-            }
-        }),
-    })
+    query : AuthQuery
 });
 
 export default AuthSchema;
