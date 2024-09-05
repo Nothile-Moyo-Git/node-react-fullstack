@@ -56,14 +56,45 @@ const AuthResolvers = {
             name : 'Inception',
         };
 
+        const updatedVariables = {
+            collection: "movies",  // The collection name
+            database: "react-node-typescript",  // Your database name
+            dataSource: "backend",  // Your data source/cluster name
+            filter: {}
+        }
+
         try{
 
-            const data = await client.request(query);
+            /* const data = await client.request(query, updatedVariables);
 
             console.log("\n\n");
             console.log("data");
             console.log(data);
-            console.log("\n\n"); 
+            console.log("\n\n"); */
+
+            const response = await fetch(`${API_ENDPOINT}/action/findOne`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'api-key': DATA_API_KEY,
+                },
+                body: JSON.stringify({
+                    collection: "movies",  // The collection name
+                    database: "backend",  // Your database name
+                    dataSource: "backend",  // Your data source/cluster name
+                    filter : { name: "Inception" },
+                    projection: { _id: 0, 
+                        name: 1, genre: 1 }
+                }),
+            }).then();
+            
+            const result = await response.json();
+            
+            if (!response.ok) {
+                console.error("Server returned an error:", result);
+            } else {
+                console.log("Document found:", result);
+            }
 
 
         }catch(error){
@@ -82,3 +113,5 @@ const AuthResolvers = {
 }
 
 export default AuthResolvers;
+
+
