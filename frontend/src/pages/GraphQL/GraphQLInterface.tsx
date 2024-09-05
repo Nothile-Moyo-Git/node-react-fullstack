@@ -119,6 +119,30 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             console.log(data);
         };
 
+        // Get all movies test query
+        const testGetMoviesResolver = async () => {
+
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body : JSON.stringify({ query : "{ movies }" })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+
+        };
+
     return (
         <div>
             <br/>
@@ -135,12 +159,17 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             <Button
                 variant="primary"
                 onClick={testAuthResolver}
-            >Output "Hello World" from Auth </Button>
+            >Output "Hello World" from Auth</Button>
             <br/>
             <Button
                 variant="primary"
                 onClick={testAuthDocumentResolver}
             >Output "Create a test document"</Button>
+            <br/>
+            <Button
+                variant="primary"
+                onClick={testGetMoviesResolver}
+            >Output all movies from the backend</Button>
         </div>
     );
 };

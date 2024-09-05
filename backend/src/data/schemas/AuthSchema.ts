@@ -12,7 +12,7 @@ import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
 const MovieType = new GraphQLObjectType({
-    name : 'Movie',
+    name : 'movies',
     fields : () => ({
         name : { type : GraphQLString },
         description : { type : GraphQLString },
