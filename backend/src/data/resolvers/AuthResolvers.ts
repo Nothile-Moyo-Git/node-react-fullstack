@@ -40,63 +40,47 @@ const AuthResolvers = {
             }
         });
 
-        // Write our query we're going to perform
         const query = gql`
-            query {
-                movies {
-                    name
-                    description
-                    year
-                }
-            }
-        `;
+        query GetMovies($name: String!) {
+          getMovies(name: $name) {
+            name
+            description
+            year
+          }
+        }
+      `;
 
         // Set the variables we're going to use to query the database
         const variables = {
             name : 'Inception',
         };
 
+        /*
         const updatedVariables = {
             collection: "movies",  // The collection name
-            database: "react-node-typescript",  // Your database name
+            database: "backend",  // Your database name
             dataSource: "backend",  // Your data source/cluster name
-            filter: {}
-        }
+            filter: {
+                name : "Inception"
+            },
+            projection: { 
+                _id: 0, 
+                name: 1, 
+                description: 1,
+                year: 1 
+            }
+        } */
 
         try{
 
-            /* const data = await client.request(query, updatedVariables);
+            const data = await client.request(query, variables);
 
+            
             console.log("\n\n");
             console.log("data");
             console.log(data);
-            console.log("\n\n"); */
-
-            const response = await fetch(`${API_ENDPOINT}/action/findOne`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'api-key': DATA_API_KEY,
-                },
-                body: JSON.stringify({
-                    collection: "movies",  // The collection name
-                    database: "backend",  // Your database name
-                    dataSource: "backend",  // Your data source/cluster name
-                    filter : { name: "Inception" },
-                    projection: { _id: 0, 
-                        name: 1, genre: 1 }
-                }),
-            }).then();
+            console.log("\n\n");
             
-            const result = await response.json();
-            
-            if (!response.ok) {
-                console.error("Server returned an error:", result);
-            } else {
-                console.log("Document found:", result);
-            }
-
-
         }catch(error){
 
             console.log("\n\nError Details:");
