@@ -20,6 +20,7 @@ const MovieType = new GraphQLObjectType({
     })
 });
 
+/*
 // Defining the auth queries
 const AuthQuery = new GraphQLObjectType({
     name : 'AuthQuery',
@@ -37,7 +38,36 @@ const AuthQuery = new GraphQLObjectType({
             resolve: AuthResolvers.getMovies
         }
     }
-});
+}); */
+
+// Defining our auth queries
+const AuthQuery = new GraphQLObjectType({
+    name: 'AuthQuery',
+    fields: {
+      hello: {
+        type: GraphQLString,
+        resolve: AuthResolvers.hello,
+      },
+      getDocument: {
+        type: new GraphQLObjectType({
+          name: 'Document',
+          fields: {
+            name: { type: GraphQLString },
+            description: { type: GraphQLString },
+            year: { type: GraphQLString },
+          },
+        }),
+        args: {
+          filter: { type: GraphQLString },  // Add this argument to filter the documents
+        },
+        resolve: AuthResolvers.getDocument,
+      },
+      movies: {
+        type: new GraphQLList(MovieType),
+        resolve: AuthResolvers.getMovies,
+      },
+    }
+  });
 
 const AuthSchema = new GraphQLSchema({
     query : AuthQuery
