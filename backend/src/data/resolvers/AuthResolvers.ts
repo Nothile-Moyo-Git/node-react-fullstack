@@ -34,7 +34,7 @@ const AuthResolvers = {
     hello : () => {
         return "Hello world Auth!";
     },
-    getDocument: async (_ : any, { filter } : { filter : string }) => {
+    getDocument: async (_ : any, { name } : { name : string }) => {
 
         const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
            headers : {
@@ -45,7 +45,7 @@ const AuthResolvers = {
 
         try {
 
-            const variables = { filter };
+            const variables = { name };
             
             const data = await client.request(GET_DOCUMENT_QUERY, variables);
 
@@ -54,15 +54,16 @@ const AuthResolvers = {
             console.log(data);
             console.log("\n\n");
 
-            return JSON.stringify(data);
+            // return JSON.stringify(data);
 
         } catch (error) {
 
             console.error("\n\n Error details:");
             console.error(error);
             console.error("\n\n");
-            throw new Error("Failed to fetch document.");
         }
+
+        return "Create a test document";
     },
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();

@@ -58,7 +58,7 @@ const AuthQuery = new GraphQLObjectType({
           },
         }),
         args: {
-          filter: { type: GraphQLString },  // Add this argument to filter the documents
+          name: { type: GraphQLString },  // Add this argument to filter the documents
         },
         resolve: AuthResolvers.getDocument,
       },
