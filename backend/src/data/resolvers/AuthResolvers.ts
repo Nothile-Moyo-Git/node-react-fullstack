@@ -19,8 +19,8 @@ const moviesCollection = database.collection('movies');
 
 // Defining the graphql
 const GET_DOCUMENT_QUERY = gql`
-    query GetDocument($filter : String!) {
-        getDocument(filter : $filter) {
+    query GetDocument($name : String!) {
+        getDocument(name : $name) {
             name
             description
             year   
