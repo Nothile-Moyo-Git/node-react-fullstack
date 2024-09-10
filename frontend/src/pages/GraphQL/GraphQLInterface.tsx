@@ -107,7 +107,11 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 },
                 body : JSON.stringify({ 
                     query : `query ($name : String!) {
-                        getDocument(name : $name)
+                        getDocument(name : $name) {
+                            name
+                            description
+                            year
+                        }
                     }`,
                     variables : {
                         name : "Inception"
