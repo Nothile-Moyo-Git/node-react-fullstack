@@ -28,117 +28,79 @@ const GET_DOCUMENT_QUERY = gql`
     }
 `;
 
+// Regular getDocument Query in order to find inception
+const getDocument = async () => {
+
+    const response = await fetch(`${API_ENDPOINT}/action/findOne`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'api-key': DATA_API_KEY,
+        },
+        body: JSON.stringify({
+            collection: "movies",  // The collection name
+            database: "backend",  // Your database name
+            dataSource: "backend",  // Your data source/cluster name
+            filter : { name: "Inception" },
+            projection: { _id: 0, name: 1, description: 1, year : 1 }
+        }),
+    });
+
+    const result = await response.json();
+
+    console.log("Result");
+    console.log(result);
+    console.log("\n\n");
+
+    return result;
+    
+};
+
+// GraphQL version of the query for debugging
+const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
+
+    const client = new GraphQLClient(`${API_ENDPOINT}/action/find`, {
+        headers : {
+         'Content-Type' : 'application/json',
+         'api-key' : DATA_API_KEY
+        } 
+     });
+
+     try {
+
+         const variables = { name };
+         
+         const data = await client.request(GET_DOCUMENT_QUERY, variables);
+
+         console.log("\n\n");
+         console.log("Data:");
+         console.log(data);
+         console.log("\n\n");
+
+         // return JSON.stringify(data);
+
+     } catch (error) {
+
+         console.error("\n\n Error details:");
+         console.error(error);
+         console.error("\n\n");
+     }
+
+     return "Create a test document";
+};
+
 // The Auth resolver
 const AuthResolvers = {
     
     hello : () => {
         return "Hello world Auth!";
     },
-    getDocument: async (_ : any, { name } : { name : string }) => {
-
-        const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
-           headers : {
-            'Content-Type' : 'application/json',
-            'api-key' : DATA_API_KEY
-           } 
-        });
-
-        try {
-
-            const variables = { name };
-            
-            const data = await client.request(GET_DOCUMENT_QUERY, variables);
-
-            console.log("\n\n");
-            console.log("Data:");
-            console.log(data);
-            console.log("\n\n");
-
-            // return JSON.stringify(data);
-
-        } catch (error) {
-
-            console.error("\n\n Error details:");
-            console.error(error);
-            console.error("\n\n");
-        }
-
-        return "Create a test document";
-    },
+    getDocument : getDocument,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
     }
 }
-
-/*
-
-getDocument : async () => {
-
-        // Connect to our MONGODB database and perform a get request using JSON
-        const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
-            method : 'POST',
-            headers : {
-                'Content-Type': 'application/json',
-                'api-key' : DATA_API_KEY,
-            },
-            errorPolicy : 'all',
-            jsonSerializer : {
-                parse : JSON.parse,
-                stringify : JSON.stringify
-            }
-        });
-
-        const query = gql`
-        query GetMovies($name: String!) {
-          getMovies(name: $name) {
-            name
-            description
-            year
-          }
-        }`;
-
-        // Set the variables we're going to use to query the database
-        const variables = {
-            name : 'Inception',
-        };
-
-        
-        // const updatedVariables = {
-        //    collection: "movies",  // The collection name
-        //    database: "backend",  // Your database name
-        //    dataSource: "backend",  // Your data source/cluster name
-        //    filter: {
-        //        name : "Inception"
-        //    },
-        //    projection: { 
-        //        _id: 0, 
-        //        name: 1, 
-        //        description: 1,
-        //        year: 1 
-        //    }
-        // } 
-
-            try{
-
-                const data = await client.request(query, variables);
-    
-                
-                console.log("\n\n");
-                console.log("data");
-                console.log(data);
-                console.log("\n\n");
-                
-            }catch(error){
-    
-                console.log("\n\nError Details:");
-                console.log(error);
-                console.log("\n");
-            }
-    
-            return "Create a test document";
-        },
-*/
 
 export default AuthResolvers;
 
