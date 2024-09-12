@@ -11,6 +11,7 @@
 import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
 import { gql, GraphQLClient } from 'graphql-request';
 import { MongoClient } from 'mongodb';
+import { MovieDocumentResponse } from "../../@types/index.ts";
 
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);
@@ -19,7 +20,7 @@ const moviesCollection = database.collection('movies');
 
 // Defining the graphql
 const GET_DOCUMENT_QUERY = gql`
-    query GetDocument($name : String!) {
+    query getDocument($name : String!) {
         getDocument(name : $name) {
             name
             description
@@ -46,20 +47,16 @@ const getDocument = async () => {
         }),
     });
 
-    const result = await response.json();
+    const result : MovieDocumentResponse = await response.json();
 
-    console.log("Result");
-    console.log(result);
-    console.log("\n\n");
+    return result.document;
 
-    return result;
-    
 };
 
 // GraphQL version of the query for debugging
 const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
 
-    const client = new GraphQLClient(`${API_ENDPOINT}/action/find`, {
+    const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
         headers : {
          'Content-Type' : 'application/json',
          'api-key' : DATA_API_KEY
@@ -68,16 +65,16 @@ const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
 
      try {
 
-         const variables = { name };
+        const variables = { name };
          
-         const data = await client.request(GET_DOCUMENT_QUERY, variables);
+        const data = await client.request(GET_DOCUMENT_QUERY, variables);
 
-         console.log("\n\n");
-         console.log("Data:");
-         console.log(data);
-         console.log("\n\n");
+        console.log("\n\n");
+        console.log("Data:");
+        console.log(data);
+        console.log("\n\n");
 
-         // return JSON.stringify(data);
+        return data;
 
      } catch (error) {
 
@@ -86,7 +83,6 @@ const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
          console.error("\n\n");
      }
 
-     return "Create a test document";
 };
 
 // The Auth resolver
@@ -95,7 +91,7 @@ const AuthResolvers = {
     hello : () => {
         return "Hello world Auth!";
     },
-    getDocument : getDocument,
+    getDocument : getDocumentGraphQL,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
