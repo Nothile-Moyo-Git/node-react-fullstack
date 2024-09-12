@@ -150,3 +150,13 @@ interface InterServerEvents {
 interface SocketData {
     data : string
 }
+
+export interface MovieDocumentType {
+    name : string,
+    description : string,
+    year : string
+}
+
+export interface MovieDocumentResponse {
+    document : MovieDocumentType
+}
