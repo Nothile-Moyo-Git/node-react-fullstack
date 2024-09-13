@@ -56,14 +56,14 @@ const getDocument = async () => {
 // GraphQL version of the query for debugging
 const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
 
-    const client = new GraphQLClient(`${API_ENDPOINT}/action/findOne`, {
+    const client = new GraphQLClient(`${API_ENDPOINT}/graphql`, {
         headers : {
-         'Content-Type' : 'application/json',
-         'api-key' : DATA_API_KEY
+            'Content-Type' : 'application/json',
+            'api-key' : DATA_API_KEY
         } 
      });
 
-     try {
+    try {
 
         const variables = { name };
          
@@ -76,12 +76,12 @@ const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
 
         return data;
 
-     } catch (error) {
+    } catch (error) {
 
-         console.error("\n\n Error details:");
-         console.error(error);
-         console.error("\n\n");
-     }
+        console.error("\n\n Error details:");
+        console.error(error);
+        console.error("\n\n");
+    }
 
 };
 
