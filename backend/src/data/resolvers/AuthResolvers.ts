@@ -9,7 +9,6 @@
  */
 
 import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
-import { gql, GraphQLClient } from 'graphql-request';
 import { MongoClient } from 'mongodb';
 import { MovieDocumentResponse } from "../../@types/index.ts";
 
@@ -17,17 +16,6 @@ import { MovieDocumentResponse } from "../../@types/index.ts";
 const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const moviesCollection = database.collection('movies');
-
-// Defining the graphql
-const GET_DOCUMENT_QUERY = gql`
-    query getDocument($name : String!) {
-        getDocument(name : $name) {
-            name
-            description
-            year   
-        }
-    }
-`;
 
 // Regular getDocument Query in order to find inception
 const getDocument = async () => {
@@ -53,35 +41,35 @@ const getDocument = async () => {
 
 };
 
-// GraphQL version of the query for debugging
-const getDocumentGraphQL = async (_ : any, { name } : { name : string }) => {
+// Add a movie to the backend
+const AddMovieUrl = async () => {
 
-    const client = new GraphQLClient(`${API_ENDPOINT}/graphql`, {
+    const name = "Pulp Fiction";
+    const description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.";
+    const year = 1994;
+
+    // Perform a query to add an entry to our database as a document
+    const response = await fetch(`${API_ENDPOINT}/action/insertOne`, {
+        method : 'POST',
         headers : {
-            'Content-Type' : 'application/json',
-            'api-key' : DATA_API_KEY
-        } 
-     });
+            'Content-Type': 'applcation/json',
+            'api-key': DATA_API_KEY
+        },
+        body: JSON.stringify({
+            collection : "movies",
+            database : "backend",
+            dataSource: "backend",
+            document : {
+                name : name,
+                description : description, 
+                year : String(year)
+            }
+        }),
+    });
 
-    try {
+    const result = await response.json();
 
-        const variables = { name };
-         
-        const data = await client.request(GET_DOCUMENT_QUERY, variables);
-
-        console.log("\n\n");
-        console.log("Data:");
-        console.log(data);
-        console.log("\n\n");
-
-        return data;
-
-    } catch (error) {
-
-        console.error("\n\n Error details:");
-        console.error(error);
-        console.error("\n\n");
-    }
+    return result;
 
 };
 
@@ -91,7 +79,7 @@ const AuthResolvers = {
     hello : () => {
         return "Hello world Auth!";
     },
-    getDocument : getDocumentGraphQL,
+    getDocument : getDocument,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
