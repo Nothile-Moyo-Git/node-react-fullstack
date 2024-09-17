@@ -146,7 +146,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 },
                 body : JSON.stringify({ 
                     query : `query ($name : String!) {
-                        AddMovieUrl(name : $name) {
+                        insertMovie(name : $name) {
                             name
                             description
                             year
@@ -159,6 +159,17 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     }
                 })
             });
+
+            const data = await result.json();
+
+            console.clear();
+
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
 
         };
 
@@ -189,30 +200,47 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
     return (
         <div>
             <br/>
+
             <Button 
                 variant="primary" 
                 onClick={testGraphQLInterface}
             >Output "Hello World"</Button>
+
             <br/>
+
             <Button 
                 variant="secondary"
                 onClick={textGraphQLInterface}
             >Output "Gauntlet Legends"</Button>
+
             <br/>
+
             <Button
                 variant="primary"
                 onClick={testAuthResolver}
             >Output "Hello World" from Auth</Button>
+
             <br/>
+
             <Button
                 variant="primary"
                 onClick={testAuthDocumentResolver}
             >Output "Create a test document"</Button>
+
             <br/>
+
+            <Button
+                variant="primary"
+                onClick={testAddMovieResolver}
+            >Output "Movie added"</Button>
+
+            <br/>
+
             <Button
                 variant="primary"
                 onClick={testGetMoviesResolver}
             >Output all movies from the backend</Button>
+
         </div>
     );
 };
