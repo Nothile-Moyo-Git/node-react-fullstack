@@ -62,6 +62,22 @@ const AuthQuery = new GraphQLObjectType({
         },
         resolve: AuthResolvers.getDocument,
       },
+      addMovie : {
+        type : new GraphQLObjectType({
+          name : 'addMovie',
+          fields : {
+            name: { type: GraphQLString },
+            description: { type: GraphQLString },
+            year: { type: GraphQLString },
+          }
+        }),
+        args : {
+          name: { type: GraphQLString },
+          description: { type: GraphQLString },
+          year: { type: GraphQLString },
+        },
+        resolve : AuthResolvers.insertMovie
+      },
       movies: {
         type: new GraphQLList(MovieType),
         resolve: AuthResolvers.getMovies,

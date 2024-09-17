@@ -42,7 +42,7 @@ const getDocument = async () => {
 };
 
 // Add a movie to the backend
-const AddMovieUrl = async () => {
+const insertMovie = async () => {
 
     const name = "Pulp Fiction";
     const description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.";
@@ -80,6 +80,7 @@ const AuthResolvers = {
         return "Hello world Auth!";
     },
     getDocument : getDocument,
+    insertMovie : insertMovie,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
