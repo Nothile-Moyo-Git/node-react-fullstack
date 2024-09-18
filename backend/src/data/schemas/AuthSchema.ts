@@ -20,26 +20,6 @@ const MovieType = new GraphQLObjectType({
     })
 });
 
-/*
-// Defining the auth queries
-const AuthQuery = new GraphQLObjectType({
-    name : 'AuthQuery',
-    fields : {
-        hello : {
-            type : GraphQLString,
-            resolve: AuthResolvers.hello
-        },
-        getDocument : {
-            type : GraphQLString,
-            resolve: AuthResolvers.getDocument
-        },
-        movies : {
-            type : new GraphQLList(MovieType),
-            resolve: AuthResolvers.getMovies
-        }
-    }
-}); */
-
 // Defining our auth queries
 const AuthQuery = new GraphQLObjectType({
     name: 'AuthQuery',
@@ -50,7 +30,7 @@ const AuthQuery = new GraphQLObjectType({
       },
       getDocument: {
         type: new GraphQLObjectType({
-          name: 'Document',
+          name: 'SingleMovie',
           fields: {
             name: { type: GraphQLString },
             description: { type: GraphQLString },
@@ -62,13 +42,11 @@ const AuthQuery = new GraphQLObjectType({
         },
         resolve: AuthResolvers.getDocument,
       },
-      addMovie : {
+      insertMovie : {
         type : new GraphQLObjectType({
-          name : 'addMovie',
+          name : 'insertMovie',
           fields : {
-            name: { type: GraphQLString },
-            description: { type: GraphQLString },
-            year: { type: GraphQLString },
+            result : { type : GraphQLString },
           }
         }),
         args : {

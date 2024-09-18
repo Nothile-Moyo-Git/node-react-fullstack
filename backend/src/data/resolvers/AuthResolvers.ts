@@ -31,7 +31,12 @@ const getDocument = async () => {
             database: "backend",  // Your database name
             dataSource: "backend",  // Your data source/cluster name
             filter : { name: "Inception" },
-            projection: { _id: 0, name: 1, description: 1, year : 1 }
+            projection: { 
+                _id : 0, 
+                name : 1, 
+                description : 1, 
+                year : 1 
+            }
         }),
     });
 
