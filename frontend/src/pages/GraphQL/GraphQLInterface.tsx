@@ -138,20 +138,14 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             const description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.";
             const year = 1994;
 
-            const result = await fetch(`http://localhost:4000/graphlq/auth`, {
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
                 method : "POST",
                 headers : {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
                 body : JSON.stringify({ 
-                    query : `query ($name : String!) {
-                        insertMovie(name : $name) {
-                            name
-                            description
-                            year
-                        }
-                    }`,
+                    query : `insertMovie () { result }`,
                     variables : {
                         name : name,
                         description: description,
