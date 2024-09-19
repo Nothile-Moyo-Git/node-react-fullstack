@@ -145,11 +145,17 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     Accept: "application/json",
                 },
                 body : JSON.stringify({ 
-                    query : `insertMovie () { result }`,
+                    query : `
+                        mutation insertMovie($name: String!, $description: String!, $year: String!){
+                            insertMovie(name: $name, description: $description, year: $year){
+                                result
+                            }
+                        }
+                    `,
                     variables : {
                         name : name,
                         description: description,
-                        year : year
+                        year : String(year)
                     }
                 })
             });
