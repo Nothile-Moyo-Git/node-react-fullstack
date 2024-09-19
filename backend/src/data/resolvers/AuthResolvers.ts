@@ -53,6 +53,10 @@ const insertMovie = async () => {
     const description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.";
     const year = 1994;
 
+    console.log("\n\n");
+    console.log("Insert movie");
+    console.log("\n\n");
+
     // Perform a query to add an entry to our database as a document
     const response = await fetch(`${API_ENDPOINT}/action/insertOne`, {
         method : 'POST',
@@ -73,6 +77,11 @@ const insertMovie = async () => {
     });
 
     const result = await response.json();
+
+    console.log("\n\n");
+    console.log("Result");
+    console.log(result);
+    console.log("\n\n")
 
     return result;
 
