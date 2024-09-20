@@ -22,49 +22,57 @@ const MovieType = new GraphQLObjectType({
 
 // Defining our auth queries
 const AuthQuery = new GraphQLObjectType({
-    name: 'AuthQuery',
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve: AuthResolvers.hello,
-      },
-      getDocument: {
-        type: new GraphQLObjectType({
-          name: 'SingleMovie',
-          fields: {
-            name: { type: GraphQLString },
-            description: { type: GraphQLString },
-            year: { type: GraphQLString },
-          },
-        }),
-        args: {
-          name: { type: GraphQLString },  // Add this argument to filter the documents
-        },
-        resolve: AuthResolvers.getDocument,
-      },
-      insertMovie : {
-        type : new GraphQLObjectType({
-          name : 'insertMovie',
-          fields : {
-            result : { type : GraphQLString },
-          }
-        }),
-        args : {
+  name: 'AuthQuery',
+  fields: {
+    hello: {
+      type: GraphQLString,
+      resolve: AuthResolvers.hello,
+    },
+    getDocument: {
+      type: new GraphQLObjectType({
+        name: 'SingleMovie',
+        fields: {
           name: { type: GraphQLString },
           description: { type: GraphQLString },
           year: { type: GraphQLString },
         },
-        resolve : AuthResolvers.insertMovie
+      }),
+      args: {
+        name: { type: GraphQLString },  // Add this argument to filter the documents
       },
-      movies: {
-        type: new GraphQLList(MovieType),
-        resolve: AuthResolvers.getMovies,
+      resolve: AuthResolvers.getDocument,
+    },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve: AuthResolvers.getMovies,
+    },
+  }
+});
+
+// Defining our mutations, these will be used to perform operations on the backend
+const AuthMutation = new GraphQLObjectType({
+  name : "AuthMutation",
+  fields : {
+    insertMovie : {
+      type : new GraphQLObjectType({
+        name : 'insertMovie',
+        fields : {
+          result : { type : GraphQLString }
+        },
+      }),
+      args : {
+        name : { type : GraphQLString },
+        description : { type : GraphQLString },
+        year : { type : GraphQLString }
       },
+      resolve : AuthResolvers.insertMovie
     }
-  });
+  }
+});
 
 const AuthSchema = new GraphQLSchema({
-    query : AuthQuery
+    query : AuthQuery,
+    mutation : AuthMutation
 });
 
 export default AuthSchema;
