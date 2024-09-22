@@ -66,6 +66,18 @@ const AuthMutation = new GraphQLObjectType({
         year : { type : GraphQLString }
       },
       resolve : AuthResolvers.insertMovie
+    },
+    deleteMovie : {
+      type : new GraphQLObjectType({
+          name : 'deleteMovie',
+          fields : {
+            result : { type : GraphQLString }
+          },
+
+      }),
+      args : {
+        _id : { type : GraphQLString }
+      }
     }
   }
 });
