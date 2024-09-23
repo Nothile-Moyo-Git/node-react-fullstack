@@ -77,7 +77,8 @@ const AuthMutation = new GraphQLObjectType({
       }),
       args : {
         _id : { type : GraphQLString }
-      }
+      },
+      resolve : AuthResolvers.deleteMovie
     }
   }
 });

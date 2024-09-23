@@ -9,7 +9,7 @@
  */
 
 import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { MovieDocumentResponse } from "../../@types/index.ts";
 
 // Set up client and database
@@ -107,7 +107,7 @@ const insertMovie = async (parent, args) => {
         console.log(error);
         console.log("\n\n");
 
-        return { result : `Error : Query failed, please look at your server logs` }
+        return { result : `Error : Query failed, please look at your server logs` };
     }
 
 };
@@ -116,7 +116,12 @@ const insertMovie = async (parent, args) => {
 // This is the resolve which handles that request as part of the GraphQL API
 const deleteMovie = async (parent : any, args : any) => {
 
-    const id = "123456789";
+    const _id = args._id;
+
+    console.log("\n\n");
+    console.log("_id");
+    console.log(_id);
+    console.log("\n\n");
 
     try {
 
@@ -131,13 +136,23 @@ const deleteMovie = async (parent : any, args : any) => {
                 collection : "movies",
                 database : "backend",
                 dataSource: "backend",
-                filter : {  _id : id }
+                filter : {  _id : new ObjectId(_id) }
             }),
         });
 
+        // Send responses to the server and the front end
+        console.log("\n\n");
+        console.log("Response");
+        console.log(response);
+        console.log("\n\n");
+
     }catch(error){
 
-        
+        console.log("\n\n");
+        console.log("Error");
+        console.log(error);
+        console.log("\n\n");
+
     }
 
 };
@@ -150,6 +165,7 @@ const AuthResolvers = {
     },
     getDocument : getDocument,
     insertMovie : insertMovie,
+    deleteMovie : deleteMovie,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
