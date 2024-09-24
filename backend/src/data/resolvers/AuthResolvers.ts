@@ -116,7 +116,7 @@ const insertMovie = async (parent, args) => {
 // This is the resolve which handles that request as part of the GraphQL API
 const deleteMovie = async (parent : any, args : any) => {
 
-    const _id = args._id;
+    const _id = new ObjectId("66f1d361e4653bec0f11e70f");
 
     console.log("\n\n");
     console.log("_id");
@@ -136,7 +136,7 @@ const deleteMovie = async (parent : any, args : any) => {
                 collection : "movies",
                 database : "backend",
                 dataSource: "backend",
-                filter : {  _id : new ObjectId(_id) }
+                filter : { _id : _id }
             }),
         });
 
@@ -145,6 +145,17 @@ const deleteMovie = async (parent : any, args : any) => {
         console.log("Response");
         console.log(response);
         console.log("\n\n");
+
+        // Get the response from the server
+        const data = await response.json();
+
+        // Send a response back to the front end
+        console.log("\n\n");
+        console.log("Data");
+        console.log(data);
+        console.log("\n\n");
+
+        return { result : `${data.deletedCount} documents deleted` };
 
     }catch(error){
 

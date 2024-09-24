@@ -7,7 +7,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID } from 'graphql';
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
@@ -76,7 +76,7 @@ const AuthMutation = new GraphQLObjectType({
 
       }),
       args : {
-        _id : { type : GraphQLString }
+        _id : { type : GraphQLID }
       },
       resolve : AuthResolvers.deleteMovie
     }

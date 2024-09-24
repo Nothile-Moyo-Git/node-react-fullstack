@@ -155,7 +155,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 },
                 body : JSON.stringify({
                     query : `
-                        mutation deleteMovie( $_id : String! ){
+                        mutation deleteMovie( $_id : ID! ){
                             deleteMovie( _id : $_id ){
                                 result
                             }
