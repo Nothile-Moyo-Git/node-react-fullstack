@@ -144,7 +144,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const testDeleteMovieResolver = async () => {
 
             // We use this ID to reference the entry the MongoDB API
-            const _id = "66f0690ab445f23578817e89";
+            const _id = "66f47676aaeac84db7ba15f8";
 
             // Perform the delete request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {

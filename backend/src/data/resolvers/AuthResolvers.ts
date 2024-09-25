@@ -116,7 +116,7 @@ const insertMovie = async (parent, args) => {
 // This is the resolve which handles that request as part of the GraphQL API
 const deleteMovie = async (parent : any, args : any) => {
 
-    const _id = new ObjectId("66f1d361e4653bec0f11e70f");
+    const _id = args._id;
 
     console.log("\n\n");
     console.log("_id");
@@ -136,7 +136,11 @@ const deleteMovie = async (parent : any, args : any) => {
                 collection : "movies",
                 database : "backend",
                 dataSource: "backend",
-                filter : { _id : _id }
+                filter : { 
+                    _id : {
+                        $oid : new ObjectId(_id)
+                    },
+                }
             }),
         });
 
