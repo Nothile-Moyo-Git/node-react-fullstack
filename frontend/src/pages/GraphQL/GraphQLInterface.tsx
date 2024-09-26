@@ -144,7 +144,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const testDeleteMovieResolver = async () => {
 
             // We use this ID to reference the entry the MongoDB API
-            const _id = "66f47676aaeac84db7ba15f8";
+            const _id = "66f5c12389872088450512e4";
 
             // Perform the delete request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -157,6 +157,43 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     query : `
                         mutation deleteMovie( $_id : ID! ){
                             deleteMovie( _id : $_id ){
+                                result
+                            }
+                        }
+                    `,
+                    variables : { _id : _id }
+                })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+
+        };
+
+        // Update movie query
+        const testUpdateMovieResolver = async () => {
+
+            // We use this ID to reference the entry the MongoDB API
+            const _id = "66f0690ab445f23578817e89";
+
+            // Perform the delete request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body : JSON.stringify({
+                    query : `
+                        mutation updateMovie( $_id : ID!, $name : String!, $description : String!, $year : String! ){
+                            updateMovie( _id : $_id, name : $name, description : $description, year : $year ){
                                 result
                             }
                         }
