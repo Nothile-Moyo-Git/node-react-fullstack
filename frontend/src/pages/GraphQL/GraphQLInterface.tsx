@@ -182,6 +182,9 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
             // We use this ID to reference the entry the MongoDB API
             const _id = "66f0690ab445f23578817e89";
+            const name = "Pulp Fiction Updated";
+            const description = "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with Emma Thomas, his wife.";
+            const year = "1994";
 
             // Perform the delete request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -198,7 +201,12 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                             }
                         }
                     `,
-                    variables : { _id : _id }
+                    variables : { 
+                        _id : _id,
+                        name : name,
+                        description : description,
+                        year : year
+                    }
                 })
             });
 
@@ -211,7 +219,6 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             
             console.log("data");
             console.log(data);
-
         };
 
     return (
@@ -243,6 +250,13 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 variant="primary"
                 onClick={testDeleteMovieResolver}
             >Delete movie "66f0690ab445f23578817e89"</Button>
+
+            <br/>
+
+            <Button
+                variant="primary"
+                onClick={testUpdateMovieResolver}
+            >Update the Pulp Fiction movie</Button>
 
             <br/>
 

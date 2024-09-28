@@ -183,11 +183,25 @@ const updateMovie = async (parent : any, args : any) => {
                 },
                 update : {
                     set : {
-                        year : year
+                        name : name,
+                        year : year,
+                        description : description
                     }
                 }
             }),
         });
+
+        const data = await response.json();
+
+        // Get the response from the backend
+        console.log("\n\n");
+        console.log("Response");
+        console.log(response);
+        console.log("\n\n");
+
+        console.log("Data");
+        console.log(data);
+        console.log("\n\n");
 
     }catch(error){
         console.log("\n\n");
@@ -195,6 +209,7 @@ const updateMovie = async (parent : any, args : any) => {
         console.log(error);
         console.log("\n\n");
     }
+
 };
 
 // The Auth resolver
@@ -206,6 +221,7 @@ const AuthResolvers = {
     getDocument : getDocument,
     insertMovie : insertMovie,
     deleteMovie : deleteMovie,
+    updateMovie : updateMovie,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
