@@ -144,7 +144,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const testDeleteMovieResolver = async () => {
 
             // We use this ID to reference the entry the MongoDB API
-            const _id = "66f47676aaeac84db7ba15f8";
+            const _id = "66f5c12389872088450512e4";
 
             // Perform the delete request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -177,6 +177,50 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         };
 
+        // Update movie query
+        const testUpdateMovieResolver = async () => {
+
+            // We use this ID to reference the entry the MongoDB API
+            const _id = "66f0690ab445f23578817e89";
+            const name = "Pulp Fiction Updated";
+            const description = "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with Emma Thomas, his wife.";
+            const year = "1994";
+
+            // Perform the delete request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body : JSON.stringify({
+                    query : `
+                        mutation updateMovie( $_id : ID!, $name : String!, $description : String!, $year : String! ){
+                            updateMovie( _id : $_id, name : $name, description : $description, year : $year ){
+                                result
+                            }
+                        }
+                    `,
+                    variables : { 
+                        _id : _id,
+                        name : name,
+                        description : description,
+                        year : year
+                    }
+                })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+        };
+
     return (
         <div>
             <br/>
@@ -206,6 +250,13 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 variant="primary"
                 onClick={testDeleteMovieResolver}
             >Delete movie "66f0690ab445f23578817e89"</Button>
+
+            <br/>
+
+            <Button
+                variant="primary"
+                onClick={testUpdateMovieResolver}
+            >Update the Pulp Fiction movie</Button>
 
             <br/>
 

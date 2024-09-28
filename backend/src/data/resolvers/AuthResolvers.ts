@@ -116,14 +116,9 @@ const insertMovie = async (parent, args) => {
 // This is the resolve which handles that request as part of the GraphQL API
 const deleteMovie = async (parent : any, args : any) => {
 
-    const _id = args._id;
-
-    console.log("\n\n");
-    console.log("_id");
-    console.log(_id);
-    console.log("\n\n");
-
     try {
+
+        const _id = args._id;
 
         // Perform an insert one query to the MongoDB API set up in MongoDB Atlas.
         const response = await fetch(`${API_ENDPOINT}/action/deleteOne`, {
@@ -144,20 +139,8 @@ const deleteMovie = async (parent : any, args : any) => {
             }),
         });
 
-        // Send responses to the server and the front end
-        console.log("\n\n");
-        console.log("Response");
-        console.log(response);
-        console.log("\n\n");
-
         // Get the response from the server
         const data = await response.json();
-
-        // Send a response back to the front end
-        console.log("\n\n");
-        console.log("Data");
-        console.log(data);
-        console.log("\n\n");
 
         return { result : `${data.deletedCount} documents deleted` };
 
@@ -167,7 +150,64 @@ const deleteMovie = async (parent : any, args : any) => {
         console.log("Error");
         console.log(error);
         console.log("\n\n");
+    }
+};
 
+// Perform an update request to the MongoDB database using a GraphQL query on the front end
+// This is the resolve which handles that request as part of the GraphQL API
+const updateMovie = async (parent : any, args : any) => {
+    
+    try {
+
+        // Grab the id
+        const _id = args._id;
+        const name = args.name;
+        const description = args.description;
+        const year = args.year;
+
+        // Perform an insert one query to the MongoDB API set up in MongoDB Atlas.
+        const response = await fetch(`${API_ENDPOINT}/action/updateOne`, {
+            method : 'POST',
+            headers : {
+                'Content-Type': 'application/json',
+                'api-key': DATA_API_KEY
+            },
+            body: JSON.stringify({
+                collection : "movies",
+                database : "backend",
+                dataSource: "backend",
+                filter : { 
+                    _id : {
+                        $oid : new ObjectId(_id)
+                    },
+                },
+                update : {
+                    set : {
+                        name : name,
+                        year : year,
+                        description : description
+                    }
+                }
+            }),
+        });
+
+        const data = await response.json();
+
+        // Get the response from the backend
+        console.log("\n\n");
+        console.log("Response");
+        console.log(response);
+        console.log("\n\n");
+
+        console.log("Data");
+        console.log(data);
+        console.log("\n\n");
+
+    }catch(error){
+        console.log("\n\n");
+        console.log("Error");
+        console.log(error);
+        console.log("\n\n");
     }
 
 };
@@ -181,6 +221,7 @@ const AuthResolvers = {
     getDocument : getDocument,
     insertMovie : insertMovie,
     deleteMovie : deleteMovie,
+    updateMovie : updateMovie,
     getMovies : async () => {
         const movies = await moviesCollection.find({}).toArray();
         return movies;
