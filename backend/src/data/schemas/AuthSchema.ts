@@ -11,12 +11,14 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
-const MovieType = new GraphQLObjectType({
-    name : 'movies',
+const UserType = new GraphQLObjectType({
+    name : 'users',
     fields : () => ({
         name : { type : GraphQLString },
-        description : { type : GraphQLString },
-        year : { type : GraphQLString }
+        email : { type : GraphQLString },
+        password : { type : GraphQLString },
+        status : { type : GraphQLString },
+        posts : { type : new GraphQLList(GraphQLString) }
     })
 });
 
@@ -24,28 +26,7 @@ const MovieType = new GraphQLObjectType({
 const AuthQuery = new GraphQLObjectType({
   name: 'AuthQuery',
   fields: {
-    hello: {
-      type: GraphQLString,
-      resolve: AuthResolvers.hello,
-    },
-    getDocument: {
-      type: new GraphQLObjectType({
-        name: 'SingleMovie',
-        fields: {
-          name: { type: GraphQLString },
-          description: { type: GraphQLString },
-          year: { type: GraphQLString },
-        },
-      }),
-      args: {
-        name: { type: GraphQLString },  // Add this argument to filter the documents
-      },
-      resolve: AuthResolvers.getDocument,
-    },
-    movies: {
-      type: new GraphQLList(MovieType),
-      resolve: AuthResolvers.getMovies,
-    },
+
   }
 });
 
@@ -53,47 +34,25 @@ const AuthQuery = new GraphQLObjectType({
 const AuthMutation = new GraphQLObjectType({
   name : "AuthMutation",
   fields : {
-    insertMovie : {
+    signup : {
       type : new GraphQLObjectType({
-        name : 'insertMovie',
+        name : "signup",
         fields : {
-          result : { type : GraphQLString }
-        },
-      }),
-      args : {
-        name : { type : GraphQLString },
-        description : { type : GraphQLString },
-        year : { type : GraphQLString }
-      },
-      resolve : AuthResolvers.insertMovie
-    },
-    deleteMovie : {
-      type : new GraphQLObjectType({
-          name : 'deleteMovie',
-          fields : {
-            result : { type : GraphQLString }
-          },
-
-      }),
-      args : {
-        _id : { type : GraphQLID }
-      },
-      resolve : AuthResolvers.deleteMovie
-    },
-    updateMovie : {
-      type : new GraphQLObjectType({
-        name : "updateMovie",
-        fields : {
-          result : { type : GraphQLString }
+          name : { type : GraphQLString },
+          email : { type : GraphQLString },
+          password : { type : GraphQLString },
+          status : { type : GraphQLString },
         }
       }),
       args : {
-        _id : { type : GraphQLID },
         name : { type : GraphQLString },
-        description : { type : GraphQLString },
-        year : { type : GraphQLString }
+        email : { type : GraphQLString },
+        password : { type : GraphQLString },
+        status : { type : GraphQLString }
       },
-      resolve : AuthResolvers.updateMovie
+      resolve : () => {
+        return "Hello";
+      }
     }
   }
 });

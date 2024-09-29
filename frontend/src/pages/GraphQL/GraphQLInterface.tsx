@@ -182,7 +182,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
             // We use this ID to reference the entry the MongoDB API
             const _id = "66f0690ab445f23578817e89";
-            const name = "Pulp Fiction Updated";
+            const name = "Pulp Fiction";
             const description = "Inception is a 2010 science fiction action film written and directed by Christopher Nolan, who also produced it with Emma Thomas, his wife.";
             const year = "1994";
 
