@@ -221,6 +221,51 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             console.log(data);
         };
 
+        // Signup request
+        const signupResolver = async () => {
+
+            // Calling the signup resolver which will take a validated input and then send a request to the backend
+            const name = "Avril";
+            const email = "hiyac78440@sgatra.com";
+            const password = "intj";
+            const status = "active";
+
+            // Perform the signup request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        mutation signupUser($name : String!, $email : String!, $password : String!, $status : String!){
+                            signupUser(name : $name, email : $email, password : $password, status : $status){
+                                result
+                            }
+                        }
+                    `,
+                    variables : {
+                        name : name,
+                        email : email,
+                        password : password,
+                        status : status 
+                    }
+                })
+            });
+
+            const data = await result.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+            
+            console.log("data");
+            console.log(data);
+
+        };
+
     return (
         <div>
             <br/>
