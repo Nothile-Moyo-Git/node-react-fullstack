@@ -20,6 +20,7 @@ const moviesCollection = database.collection('users');
 // Handle signup mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const SignupResolver = async (parent : any, args : any) => {
 
+    return "Hello world";
 };
 
 // The Auth resolver
