@@ -254,12 +254,12 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 })
             });
 
-            const data = await result.json();
-
             console.clear();
             console.log("result");
             console.log(result);
             console.log("\n");
+
+            const data = await result.json();
             
             console.log("data");
             console.log(data);
@@ -270,6 +270,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         <div>
             <br/>
 
+        {   
+            /*
             <Button
                 variant="primary"
                 onClick={testAuthResolver}
@@ -309,6 +311,15 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 variant="primary"
                 onClick={testGetMoviesResolver}
             >Output all movies from the backend</Button>
+
+            <br/>   
+            */
+        }
+
+            <Button
+                variant="primary"
+                onClick={signupResolver}
+            >Create new user</Button>
 
         </div>
     );

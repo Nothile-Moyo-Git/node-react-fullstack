@@ -15,16 +15,28 @@ import { MovieDocumentResponse } from "../../@types/index.ts";
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
-const moviesCollection = database.collection('users');
+const usersCollection = database.collection('users');
+
+// Handle a get movies mutation from the frontend to the MongoDB database via GraphQL and Mongoose
+const GetMoviesResolver = async (parent : any, args : any) => {
+
+    console.log("\n\n");
+    console.log("Users");
+    console.log(usersCollection);
+    console.log("\n\n");
+
+    return { result : "Hello world!" };
+};
 
 // Handle signup mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const SignupResolver = async (parent : any, args : any) => {
 
-    return "Hello world";
+    return { result : "Hello world!" };
 };
 
 // The Auth resolver
 const AuthResolvers = {
+    GetMoviesResolver : GetMoviesResolver,
     SignupResolver : SignupResolver
 }
 
