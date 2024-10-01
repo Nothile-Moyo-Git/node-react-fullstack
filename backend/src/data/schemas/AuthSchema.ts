@@ -25,8 +25,11 @@ const UserType = new GraphQLObjectType({
 // Defining our auth queries
 const AuthQuery = new GraphQLObjectType({
   name: 'AuthQuery',
-  fields: {
-
+  fields : {
+    users : {
+      type : new GraphQLList(UserType),
+      resolve : AuthResolvers.GetMoviesResolver
+    }
   }
 });
 
@@ -34,9 +37,9 @@ const AuthQuery = new GraphQLObjectType({
 const AuthMutation = new GraphQLObjectType({
   name : "AuthMutation",
   fields : {
-    signup : {
+    signupUser : {
       type : new GraphQLObjectType({
-        name : "signup",
+        name : "signupUser",
         fields : {
           name : { type : GraphQLString },
           email : { type : GraphQLString },
@@ -51,7 +54,7 @@ const AuthMutation = new GraphQLObjectType({
         status : { type : GraphQLString }
       },
       resolve : () => {
-        return "Hello";
+        AuthResolvers.SignupResolver
       }
     }
   }
