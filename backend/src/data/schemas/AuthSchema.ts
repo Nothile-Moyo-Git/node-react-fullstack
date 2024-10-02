@@ -41,10 +41,7 @@ const AuthMutation = new GraphQLObjectType({
       type : new GraphQLObjectType({
         name : "signupUser",
         fields : {
-          name : { type : GraphQLString },
-          email : { type : GraphQLString },
-          password : { type : GraphQLString },
-          status : { type : GraphQLString },
+          result : { type : GraphQLString }
         }
       }),
       args : {
@@ -53,9 +50,7 @@ const AuthMutation = new GraphQLObjectType({
         password : { type : GraphQLString },
         status : { type : GraphQLString }
       },
-      resolve : () => {
-        AuthResolvers.SignupResolver
-      }
+      resolve : AuthResolvers.SignupResolver
     }
   }
 });
