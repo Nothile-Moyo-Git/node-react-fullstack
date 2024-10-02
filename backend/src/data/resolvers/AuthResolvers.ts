@@ -31,6 +31,11 @@ const GetMoviesResolver = async (parent : any, args : any) => {
 // Handle signup mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const SignupResolver = async (parent : any, args : any) => {
 
+    console.log("\n\n");
+    console.log("Users");
+    console.log(usersCollection);
+    console.log("\n\n"); 
+
     return { result : "Hello world!" };
 };
 
