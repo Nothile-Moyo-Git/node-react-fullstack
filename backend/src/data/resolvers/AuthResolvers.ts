@@ -31,12 +31,18 @@ const GetMoviesResolver = async (parent : any, args : any) => {
 // Handle signup mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const SignupResolver = async (parent : any, args : any) => {
 
+    // Get an array of the users
+    const users = await usersCollection.find().toArray();
+
     console.log("\n\n");
     console.log("Users");
-    console.log(usersCollection);
+    console.log(users);
     console.log("\n\n"); 
 
-    return { result : "Hello world!" };
+    return { 
+        result : "Hello world!",
+        users : users
+    };
 };
 
 // The Auth resolver
