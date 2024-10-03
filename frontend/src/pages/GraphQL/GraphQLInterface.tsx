@@ -241,7 +241,13 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     query :`
                         mutation signupUser($name : String!, $email : String!, $password : String!, $status : String!){
                             signupUser(name : $name, email : $email, password : $password, status : $status){
-                                result
+                                result 
+                                users {
+                                    name
+                                    email
+                                    status
+                                    posts
+                                }
                             }
                         }
                     `,

@@ -41,7 +41,8 @@ const AuthMutation = new GraphQLObjectType({
       type : new GraphQLObjectType({
         name : "signupUser",
         fields : {
-          result : { type : GraphQLString }
+          result : { type : GraphQLString },
+          users : { type : new GraphQLList(UserType) }
         }
       }),
       args : {
