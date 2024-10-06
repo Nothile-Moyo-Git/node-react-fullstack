@@ -228,7 +228,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             const name = "Avril";
             const email = "hiyac78440@sgatra.com";
             const password = "intj";
-            const status = "active";
+            const confirmPassword = "intj";
 
             // Perform the signup request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -239,8 +239,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 },
                 body : JSON.stringify({
                     query :`
-                        mutation signupUser($name : String!, $email : String!, $password : String!, $status : String!){
-                            signupUser(name : $name, email : $email, password : $password, status : $status){
+                        mutation signupUser($name : String!, $email : String!, $password : String!, $confirmPassword : String!){
+                            signupUser(name : $name, email : $email, password : $password, confirmPassword : $confirmPassword){
                                 result 
                                 users {
                                     name
@@ -255,7 +255,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                         name : name,
                         email : email,
                         password : password,
-                        status : status 
+                        confirmPassword : confirmPassword
                     }
                 })
             });
