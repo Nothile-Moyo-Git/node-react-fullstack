@@ -250,8 +250,11 @@ export const GetUserStatusController = async (request : AuthRequestInterface, re
             const status = user.status ? user.status : null;
 
             response.status(200).json({ success : true, status : status });
+
         }else{
+
             response.status(206).json({ success : false, status : null });
+
         }
 
     }catch(error){
@@ -419,7 +422,7 @@ export const PostCheckAndCreateSessionController = async (request : AuthRequestI
 
                 // Get the issued and expiry dates of our token
                 // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
-                const expiryDate = new Date(decoded['exp'] * 1000);
+                const expiryDate = new Date(decoded["exp"] * 1000);
 
                 // Set the values
                 jwtExpiryDate = createReadableDate(expiryDate);
@@ -438,10 +441,11 @@ export const PostCheckAndCreateSessionController = async (request : AuthRequestI
         }
 
         response.status(200).json({ success : true });
+
     }catch(error){
 
-        
         response.status(200).json({ success : true });
+
     }
 };
 
