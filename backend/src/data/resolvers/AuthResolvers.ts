@@ -35,20 +35,52 @@ const SignupResolver = async (parent : any, args : any) => {
 
     try{
 
-        // Get an array of the users
-        const users = await usersCollection.find().toArray();
-
         // Get the arguments from the query
         const name = args.name;
         const email = args.email;
         const password = args.password;
         const confirmPassword = args.confirmPassword;
 
+        // Get an array of the users
+        const users = await usersCollection.find({ email : email }).toArray();
+
         // Check if the inputs are valid
-        const isNameValid = validateInputLength(name, 6);
+        const isNameValid = validateInputLength(name, 4);
         const isEmailValid = validateEmailAddress(email);
         const isPasswordValid = validatePassword(password);
         const doPasswordsMatch = password === confirmPassword;
+
+        // Check if the user already exists in the database
+        const userExists = users.length > 0;
+
+        console.log("\n\n");
+        console.log("User exists?");
+        console.log(userExists);
+        console.log("\n\n");
+
+        console.log("Users");
+        console.log(users);
+        console.log("\n\n");
+
+        console.log("Name valid");
+        console.log(isNameValid);
+        console.log("\n\n");
+
+        console.log("Email valid");
+        console.log(isEmailValid);
+        console.log("\n\n");
+
+        console.log("Password valid");
+        console.log(isPasswordValid);
+        console.log("\n\n");
+
+        console.log("Password");
+        console.log(password);
+        console.log("\n\n");
+
+        console.log("Confirm Password");
+        console.log(confirmPassword);
+        console.log("\n\n");
 
         if (isNameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
 
