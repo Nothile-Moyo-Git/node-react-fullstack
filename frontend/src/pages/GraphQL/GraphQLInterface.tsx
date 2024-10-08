@@ -227,8 +227,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
             // Calling the signup resolver which will take a validated input and then send a request to the backend
             const name = "Avril";
             const email = "hiyac78440@sgatra.com";
-            const password = "intj";
-            const confirmPassword = "intj";
+            const password = "3rdFisherman";
+            const confirmPassword = "3rdFisherman";
 
             // Perform the signup request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
