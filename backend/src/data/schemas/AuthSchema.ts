@@ -38,12 +38,17 @@ const AuthQuery = new GraphQLObjectType({
 const AuthMutation = new GraphQLObjectType({
   name : "AuthMutation",
   fields : {
-    signupUser : {
+    signupUserResponse : {
       type : new GraphQLObjectType({
         name : "signupUser",
         fields : {
-          result : { type : GraphQLString },
-          users : { type : new GraphQLList(UserType) }
+          users : { type : new GraphQLList(UserType) },
+          isNameValid : { type : GraphQLString },
+          isEmailValid : { type : GraphQLString }, 
+          isPasswordValid : { type : GraphQLString }, 
+          doPasswordsMatch : { type : GraphQLString }, 
+          userExists : { type : GraphQLString },
+          userCreated : { type : GraphQLString }
         }
       }),
       args : {
@@ -52,7 +57,7 @@ const AuthMutation = new GraphQLObjectType({
         password : { type : GraphQLString },
         confirmPassword : { type : GraphQLString }
       },
-      resolve : AuthResolvers.SignupResolver
+      resolve : AuthResolvers.PostSignupResolver
     }
   }
 });
