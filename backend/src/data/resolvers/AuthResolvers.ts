@@ -30,8 +30,17 @@ const GetMoviesResolver = async (parent : any, args : any) => {
     return { result : "Hello world!" };
 };
 
-// Handle signup mutation from the frontend to the MongoDB database via GraphQL and Mongoose
-const SignupResolver = async (parent : any, args : any) => {
+/**
+ * @name : PostSignupResolver
+ * 
+ * @description : A resolver (method which handles graphql queries). It takes the information from the signup form
+ * and then proceeds to validate the inputs. If they're valid, a user is created, and if not, an error is returned
+ * 
+ * @parent : any (this property is ignored)
+ * 
+ * @args : SignupResponse
+ */
+const PostSignupResolver = async (parent : any, args : any) => {
 
     try{
 
@@ -53,39 +62,10 @@ const SignupResolver = async (parent : any, args : any) => {
         // Check if the user already exists in the database
         const userExists = users.length > 0;
 
-        console.log("\n\n");
-        console.log("User exists?");
-        console.log(userExists);
-        console.log("\n\n");
-
-        console.log("Users");
-        console.log(users);
-        console.log("\n\n");
-
-        console.log("Name valid");
-        console.log(isNameValid);
-        console.log("\n\n");
-
-        console.log("Email valid");
-        console.log(isEmailValid);
-        console.log("\n\n");
-
-        console.log("Password valid");
-        console.log(isPasswordValid);
-        console.log("\n\n");
-
-        console.log("Password");
-        console.log(password);
-        console.log("\n\n");
-
-        console.log("Confirm Password");
-        console.log(confirmPassword);
-        console.log("\n\n");
-
         if (isNameValid && isEmailValid && isPasswordValid && doPasswordsMatch) {
 
             // Query the backend
-            const response = await fetch(`${API_ENDPOINT}/action/insertOne`, {
+            await fetch(`${API_ENDPOINT}/action/insertOne`, {
                 method : "POST",
                 headers : {
                     'Content-Type': 'application/json',
@@ -104,22 +84,26 @@ const SignupResolver = async (parent : any, args : any) => {
                 })
             });
 
-            // Get the result from the backend
-            const result = await response.json();
-
-            console.log("Result");
-            console.log(result);
-
             return { 
-                result : "Hello world!",
-                users : users
+                users,
+                isNameValid,
+                isEmailValid, 
+                isPasswordValid, 
+                doPasswordsMatch, 
+                userExists,
+                userCreated : true, 
             };
 
         }else{
 
             return {
-                result : "Request wasn't valid for some reason",
-                users : []
+                users,
+                isNameValid,
+                isEmailValid, 
+                isPasswordValid, 
+                doPasswordsMatch, 
+                userExists,
+                userCreated : false, 
             }
         }
 
@@ -135,7 +119,7 @@ const SignupResolver = async (parent : any, args : any) => {
 // The Auth resolver
 const AuthResolvers = {
     GetMoviesResolver : GetMoviesResolver,
-    SignupResolver : SignupResolver
+    PostSignupResolver : PostSignupResolver
 }
 
 export default AuthResolvers;

@@ -239,14 +239,19 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 },
                 body : JSON.stringify({
                     query :`
-                        mutation signupUser($name : String!, $email : String!, $password : String!, $confirmPassword : String!){
-                            signupUser(name : $name, email : $email, password : $password, confirmPassword : $confirmPassword){
-                                result 
+                        mutation signupUserResponse($name : String!, $email : String!, $password : String!, $confirmPassword : String!){
+                            signupUserResponse(name : $name, email : $email, password : $password, confirmPassword : $confirmPassword){
+                                isNameValid,
+                                isEmailValid, 
+                                isPasswordValid, 
+                                doPasswordsMatch, 
+                                userExists,
+                                userCreated, 
                                 users {
                                     name
                                     email
                                     status
-                                    posts
+                                    posts 
                                 }
                             }
                         }
