@@ -31,14 +31,14 @@ const GetMoviesResolver = async (parent : any, args : any) => {
 };
 
 /**
- * @name : PostSignupResolver
+ * @name PostSignupResolver
  * 
- * @description : A resolver (method which handles graphql queries). It takes the information from the signup form
+ * @description A resolver (method which handles graphql queries). It takes the information from the signup form
  * and then proceeds to validate the inputs. If they're valid, a user is created, and if not, an error is returned
  * 
- * @parent : any (this property is ignored)
+ * @param parent : any (this property is ignored)
  * 
- * @args : SignupResponse
+ * @param args : SignupResponse
  */
 const PostSignupResolver = async (parent : any, args : any) => {
 
@@ -84,8 +84,7 @@ const PostSignupResolver = async (parent : any, args : any) => {
                 })
             });
 
-            return { 
-                users,
+            return {
                 isNameValid,
                 isEmailValid, 
                 isPasswordValid, 
@@ -97,7 +96,6 @@ const PostSignupResolver = async (parent : any, args : any) => {
         }else{
 
             return {
-                users,
                 isNameValid,
                 isEmailValid, 
                 isPasswordValid, 
@@ -115,6 +113,13 @@ const PostSignupResolver = async (parent : any, args : any) => {
         console.log("\n\n");
     }
 };
+
+/**
+ * 
+ * @name PostLoginResolver
+ * 
+ * @description My login resolver, this handles login attempts and returns the appropriate response
+ */
 
 // The Auth resolver
 const AuthResolvers = {

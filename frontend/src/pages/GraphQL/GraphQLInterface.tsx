@@ -242,17 +242,11 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                         mutation signupUserResponse($name : String!, $email : String!, $password : String!, $confirmPassword : String!){
                             signupUserResponse(name : $name, email : $email, password : $password, confirmPassword : $confirmPassword){
                                 isNameValid,
-                                isEmailValid, 
-                                isPasswordValid, 
+                                isEmailValid,
+                                isPasswordValid,
                                 doPasswordsMatch, 
                                 userExists,
-                                userCreated, 
-                                users {
-                                    name
-                                    email
-                                    status
-                                    posts 
-                                }
+                                userCreated
                             }
                         }
                     `,

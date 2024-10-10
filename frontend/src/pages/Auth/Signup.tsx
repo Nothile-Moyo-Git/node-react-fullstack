@@ -71,21 +71,47 @@ export const SignupPage : FC = () => {
         // Perform the signup request to the backend
         try{
 
-            // Set the form data
-            const fields = new FormData();
-            fields.append('confirmPassword', confirmPassword);
-            fields.append('email', emailAddress);
-            fields.append('password', password);
-            fields.append('name', name);
-
-            // Query the backend to see if we're authenticated
-            const response = await fetch("http://localhost:4000/signup",{
+            // Perform the signup request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
                 method : "POST",
-                body : fields
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        mutation signupUserResponse($name : String!, $email : String!, $password : String!, $confirmPassword : String!){
+                            signupUserResponse(name : $name, email : $email, password : $password, confirmPassword : $confirmPassword){
+                                isNameValid,
+                                isEmailValid,
+                                isPasswordValid,
+                                doPasswordsMatch, 
+                                userExists,
+                                userCreated
+                            }
+                        }
+                    `,
+                    variables : {
+                        name : name,
+                        email : emailAddress,
+                        password : password,
+                        confirmPassword : confirmPassword
+                    }
+                })
             });
-  
-            // Get the JSON from the request
-            const data = await response.json();
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+
+            const response = await result.json();
+
+            console.log("\n\n");
+            console.log("Response");
+            console.log(response);
+
+            const data = response.data.signupUserResponse;
             
             // Set our states and trigger a re-render so we can render errors if we have them
             setIsNameValid(data.isNameValid);

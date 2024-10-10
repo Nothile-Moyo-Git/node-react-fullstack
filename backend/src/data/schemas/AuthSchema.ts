@@ -7,7 +7,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
@@ -42,13 +42,12 @@ const AuthMutation = new GraphQLObjectType({
       type : new GraphQLObjectType({
         name : "signupUser",
         fields : {
-          users : { type : new GraphQLList(UserType) },
-          isNameValid : { type : GraphQLString },
-          isEmailValid : { type : GraphQLString }, 
-          isPasswordValid : { type : GraphQLString }, 
-          doPasswordsMatch : { type : GraphQLString }, 
-          userExists : { type : GraphQLString },
-          userCreated : { type : GraphQLString }
+          isNameValid : { type : GraphQLBoolean },
+          isEmailValid : { type : GraphQLBoolean }, 
+          isPasswordValid : { type : GraphQLBoolean }, 
+          doPasswordsMatch : { type : GraphQLBoolean }, 
+          userExists : { type : GraphQLBoolean },
+          userCreated : { type : GraphQLBoolean }
         }
       }),
       args : {
