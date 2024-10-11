@@ -12,7 +12,9 @@ import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
 import { MongoClient, ObjectId } from 'mongodb';
 import { MovieDocumentResponse } from "../../@types/index.ts";
 import { createReadableDate, validateEmailAddress, validateInputLength, validatePassword } from '../../util/utillity-methods.ts';
-
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Session from "../../models/session.ts";
 
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);
@@ -114,12 +116,103 @@ const PostSignupResolver = async (parent : any, args : any) => {
     }
 };
 
-/**
- * 
+/**  
  * @name PostLoginResolver
  * 
  * @description My login resolver, this handles login attempts and returns the appropriate response
+ * 
+ * @param parent : any (this property is ignored)
+ * 
+ * @param args : SignupResponse
  */
+const PostLoginResolver = async (parent : any, args : any) => {
+
+    try {
+
+        // Get the properties from the request from the front end
+        const email = args.email.toLowerCase();
+        const password = args.password;
+
+        // Check if the user exists
+        const user = await usersCollection.findOne({ email : email });
+
+        if (user === null) {
+            return {
+                userExists : false,
+                success : false,
+                emailValid : false,
+                passwordValid : true,
+                emailErrorText : "Error: A user with this email address could not be found",
+                passwordErrorText : "",
+                token : null,
+                userId : null
+            }
+        }else{
+
+            // Compare the passwords
+            const passwordsMatch = await bcrypt.compare(password, user.password);
+
+            // If the passwords don't match
+            if (passwordsMatch === false) {
+                return {
+                    userExists : true,
+                    success : false,
+                    emailValid : true,
+                    emailErrorText : "",
+                    passwordValid : false,
+                    passwordErrorText : "Error: The password is invalid",
+                    token : null,
+                    userId : null
+                }
+            }else{
+
+                // Create our web token and send it to the front end
+                const token = jwt.sign(
+                    {
+                        email : user.email,
+                        name : user.name,
+                        userId : user._id.toString()
+                    },
+                    "Adeptus",
+                    { expiresIn: "14d" }
+                );
+
+                // Values to be set once
+                let jwtExpiryDate = "";
+             
+                // Decode the token for the expiry date
+                // Verify the tokens
+                jwt.verify(token, "Adeptus", (error, decoded) => {
+
+                    if (decoded) {
+                        // Get the issued and expiry dates of our token
+                        // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                        const expiryDate = new Date(decoded['exp'] * 1000);
+
+                        // Set the values
+                        jwtExpiryDate = createReadableDate(expiryDate);
+                    }
+
+                });
+
+                // Check if we already have a session, if we do, then update it
+                let previousSession = await Session.findOne({
+                    creator : new ObjectId(user._id)
+                });
+
+                
+            }
+
+        }
+
+    } catch (error) {
+
+        console.log("\n\n");
+        console.log("Error");
+        console.log(error);
+        console.log("\n\n"); 
+    }
+};
 
 // The Auth resolver
 const AuthResolvers = {

@@ -52,8 +52,7 @@ export const PostSignupController = async (request : AuthRequestInterface, respo
                 response.status(200);
                 response.json({ 
                     isNameValid, 
-                    isEmailValid, 
-                    isPasswordValid,
+                    isEmailValid,  
                     doPasswordsMatch, 
                     userExists,
                     userCreated : false
