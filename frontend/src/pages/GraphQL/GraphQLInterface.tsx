@@ -17,29 +17,6 @@ interface GraphQLInterfaceProps {
 
 const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
-        // Auth GraphQLObject
-        const testAuthResolver = async (event : React.MouseEvent<HTMLElement>) => {
-
-            const result = await fetch(`http://localhost:4000/graphql/auth`, {
-                method : "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body : JSON.stringify({ query : "{ hello }" })
-            });
-
-            const data = await result.json();
-
-            console.clear();
-            console.log("result");
-            console.log(result);
-            console.log("\n");
-            
-            console.log("data");
-            console.log(data);
-        };
-
         const testAuthDocumentResolver = async (event : React.MouseEvent<HTMLElement>) => {
 
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -271,6 +248,44 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         };
 
+        // Get user status request
+        const getUserStatusResolver = async () => {
+
+            // Calling the signup resolver which will take a validated input and then send a request to the backend
+            const id = "6656382efb54b1949e66bae2";
+
+            // Perform the signup request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        query userStatusResponse($_id : String!){
+                            userStatusResponse(_id : $_id){
+                                _id,
+                            }
+                        }
+                    `,
+                    variables : {
+                        _id : id
+                    }
+                })
+            });
+
+            console.clear();
+            console.log("result");
+            console.log(result);
+            console.log("\n");
+
+            const data = await result.json();
+            
+            console.log("data");
+            console.log(data);
+        };
+
     return (
         <div>
             <br/>
@@ -325,6 +340,13 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                 variant="primary"
                 onClick={signupResolver}
             >Create new user</Button>
+
+            <br/>
+
+            <Button
+                variant="primary"
+                onClick={getUserStatusResolver}
+            >Get user status</Button>
 
         </div>
     );

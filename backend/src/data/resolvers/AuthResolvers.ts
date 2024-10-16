@@ -110,7 +110,7 @@ const PostSignupResolver = async (parent : any, args : any) => {
     }catch(error){
 
         console.log("\n\n");
-        console.log("Error");
+        console.log("PostSignupResolver Error:");
         console.log(error);
         console.log("\n\n");
     }
@@ -208,7 +208,56 @@ const PostLoginResolver = async (parent : any, args : any) => {
     } catch (error) {
 
         console.log("\n\n");
-        console.log("Error");
+        console.log("LoginResolver Error:");
+        console.log(error);
+        console.log("\n\n"); 
+    }
+};
+
+/**
+ * @name GetUserStatusResolver
+ * 
+ * @description : Get user resolver, this retrieves the user status based on the _id provided. This should be passed through the args in the api request
+ *  
+ * @param parent : any 
+ * @param args : any
+ */
+const GetUserStatusResolver = async (parent : any, args : any) => {
+
+    try {
+
+        // Get the user id from the front end and api request
+        const userId = args.id;
+
+        // If there's a user, return the user status
+        if (userId !== undefined) {
+
+            // Query the users collection and get the name, id and status from it
+            const userStatus = usersCollection.find(
+            {
+                _id : userId
+            }).project({
+                name : 1,
+                status : 1
+            });
+
+            console.log("\n\n");
+            console.log("User status");
+            console.log(userStatus);
+            console.log("\n\n");
+
+        }else{
+
+            console.log("\n\n");
+            console.log("User status not retrieved");
+            console.log("\n\n");
+
+        }
+
+    }catch(error){
+
+        console.log("\n\n");
+        console.log("GetUserStatusResolver Error:");
         console.log(error);
         console.log("\n\n"); 
     }
@@ -217,7 +266,8 @@ const PostLoginResolver = async (parent : any, args : any) => {
 // The Auth resolver
 const AuthResolvers = {
     GetMoviesResolver : GetMoviesResolver,
-    PostSignupResolver : PostSignupResolver
+    PostSignupResolver : PostSignupResolver,
+    GetUserStatusResolver : GetUserStatusResolver
 }
 
 export default AuthResolvers;

@@ -27,9 +27,17 @@ const UserType = new GraphQLObjectType({
 const AuthQuery = new GraphQLObjectType({
   name: 'AuthQuery',
   fields : {
-    users : {
-      type : new GraphQLList(UserType),
-      resolve : AuthResolvers.GetMoviesResolver
+    userStatusResponse : {
+      type : new GraphQLObjectType({
+        name : "getUserStatus",
+        fields : {
+          user : { type : UserType }
+        }
+      }),
+      args : {
+        _id : { type : GraphQLString },
+      },
+      resolve : AuthResolvers.GetUserStatusResolver
     }
   }
 });
