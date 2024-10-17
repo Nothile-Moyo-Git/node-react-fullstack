@@ -14,6 +14,7 @@ import AuthResolvers from '../resolvers/AuthResolvers.ts';
 const UserType = new GraphQLObjectType({
     name : 'users',
     fields : () => ({
+        _id : { type : GraphQLString },
         name : { type : GraphQLString },
         email : { type : GraphQLString },
         password : { type : GraphQLString },

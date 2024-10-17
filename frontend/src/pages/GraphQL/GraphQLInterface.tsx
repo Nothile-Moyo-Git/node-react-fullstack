@@ -252,7 +252,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const getUserStatusResolver = async () => {
 
             // Calling the signup resolver which will take a validated input and then send a request to the backend
-            const id = "6656382efb54b1949e66bae2";
+            const _id = "6656382efb54b1949e66bae2";
 
             // Perform the signup request
             const result = await fetch(`http://localhost:4000/graphql/auth`, {
@@ -265,12 +265,14 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                     query :`
                         query userStatusResponse($_id : String!){
                             userStatusResponse(_id : $_id){
-                                _id,
+                                user {
+                                    _id
+                                },
                             }
                         }
                     `,
                     variables : {
-                        _id : id
+                        _id : _id
                     }
                 })
             });
