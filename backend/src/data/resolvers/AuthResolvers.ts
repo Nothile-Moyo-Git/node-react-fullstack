@@ -227,30 +227,27 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
     try {
 
         // Get the user id from the front end and api request
-        const userId = args.id;
+        const userId = new ObjectId(args._id);
 
         // If there's a user, return the user status
         if (userId !== undefined) {
 
             // Query the users collection and get the name, id and status from it
-            const userStatus = usersCollection.find(
-            {
-                _id : userId
-            }).project({
-                name : 1,
-                status : 1
-            });
+            const user = await usersCollection.findOne(
+                { _id : userId },
+                { projection : { name : 1, status : 1 } }
+            );
 
-            console.log("\n\n");
+            console.log("\n");
             console.log("User status");
-            console.log(userStatus);
-            console.log("\n\n");
+            console.log(user);
+            console.log("\n");
 
         }else{
 
-            console.log("\n\n");
+            console.log("\n");
             console.log("User status not retrieved");
-            console.log("\n\n");
+            console.log("\n");
 
         }
 
