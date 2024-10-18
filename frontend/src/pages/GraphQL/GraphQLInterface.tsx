@@ -267,6 +267,8 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
                             userStatusResponse(_id : $_id){
                                 user {
                                     _id
+                                    name
+                                    status
                                 },
                             }
                         }

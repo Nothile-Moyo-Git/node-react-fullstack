@@ -243,11 +243,17 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
             console.log(user);
             console.log("\n");
 
+            // Return the user details to the front end
+            return { user };
+
         }else{
 
             console.log("\n");
             console.log("User status not retrieved");
             console.log("\n");
+
+            // Return nothing if there's no user
+            return null;
 
         }
 

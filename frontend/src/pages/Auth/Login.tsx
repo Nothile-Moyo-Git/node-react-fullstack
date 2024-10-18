@@ -52,6 +52,35 @@ export const LoginPage : FC = () => {
         // Perform the login request to the backend
         try {
 
+            // Perform the signup request
+            const result = await fetch(`http://localhost:4000/graphql/auth`, {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        mutation loginResponse($emailAddress : String!, $password : String!){
+                            loginResponse(emailAddress : $emailAddress, password : $password){
+                                userExists
+                                success
+                                emailValid
+                                passwordValid
+                                emailErrorText
+                                passwordErrorText
+                                token
+                                userId
+                            }
+                        }
+                    `,
+                    variables : {
+                        emailAddress : emailAddress,
+                        password : password
+                    }
+                })
+            });
+
             // Set the fields for the api request
             const fields = new FormData();
             fields.append('email', emailAddress);
