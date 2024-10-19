@@ -130,7 +130,7 @@ const PostLoginResolver = async (parent : any, args : any) => {
     try {
 
         // Get the properties from the request from the front end
-        const email = args.email.toLowerCase();
+        const email = args.emailAddress.toLowerCase();
         const password = args.password;
 
         // Check if the user exists
@@ -200,7 +200,37 @@ const PostLoginResolver = async (parent : any, args : any) => {
                     creator : new ObjectId(user._id)
                 });
 
+                if (previousSession) {
+
+                    // If we have a previous Session, we update it
+                    previousSession.expires = jwtExpiryDate;
+                    previousSession.token = token;
+                    await previousSession.save();
+                } else {
+
+                    // Create the session if it doesn't exist
+                    const session = new Session({
+                        expires : jwtExpiryDate,
+                        expireAt : new Date(jwtExpiryDate),
+                        token : token,
+                        creator : new ObjectId(user._id)
+                    }); 
+
+                    // Save the session
+                    await session.save();
+                }
                 
+                // Send our response to the front end
+                return{
+                    userExists : true,
+                    success : true,
+                    emailValid : true,
+                    emailErrorText : "",
+                    passwordValid : true,
+                    passwordErrorText : "",
+                    token : token,
+                    userId : user._id.toString()
+                };
             }
 
         }
@@ -270,7 +300,8 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
 const AuthResolvers = {
     GetMoviesResolver : GetMoviesResolver,
     PostSignupResolver : PostSignupResolver,
-    GetUserStatusResolver : GetUserStatusResolver
+    GetUserStatusResolver : GetUserStatusResolver,
+    PostLoginResolver : PostLoginResolver
 }
 
 export default AuthResolvers;

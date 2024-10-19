@@ -66,6 +66,26 @@ const AuthMutation = new GraphQLObjectType({
         confirmPassword : { type : GraphQLString }
       },
       resolve : AuthResolvers.PostSignupResolver
+    },
+    loginResponse : {
+      type : new GraphQLObjectType({
+        name : 'login',
+        fields : {
+          userExists : { type : GraphQLBoolean },
+          success : { type : GraphQLBoolean },
+          emailValid : { type : GraphQLBoolean },
+          emailErrorText : { type : GraphQLString },
+          passwordValid : { type : GraphQLBoolean },
+          passwordErrorText : { type : GraphQLString },
+          token : { type : GraphQLString },
+          userId : { type : GraphQLString }
+        }
+      }),
+      args : {
+        emailAddress : { type : GraphQLString },
+        password : { type : GraphQLString }
+      },
+      resolve : AuthResolvers.PostLoginResolver
     }
   }
 });
