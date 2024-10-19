@@ -81,19 +81,11 @@ export const LoginPage : FC = () => {
                 })
             });
 
-            // Set the fields for the api request
-            const fields = new FormData();
-            fields.append('email', emailAddress);
-            fields.append('password', password);
 
-            // Get response from the backend
-            const response = await fetch('http://localhost:4000/login', {
-                method : "POST",
-                body : fields
-            });
+            // Get the data from the response
+            const response = await result.json();
 
-            // Get the json response from the backend
-            const data = await response.json();
+            const data = response.data.loginResponse;
 
             // Set the states at the end of the request 
             setIsEmailValid(data.emailValid);
