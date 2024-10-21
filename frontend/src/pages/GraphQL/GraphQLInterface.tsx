@@ -202,7 +202,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const signupResolver = async () => {
 
             // Calling the signup resolver which will take a validated input and then send a request to the backend
-            const name = "Avril";
+            const name = "Morrigan";
             const email = "hiyac78440@sgatra.com";
             const password = "3rdFisherman";
             const confirmPassword = "3rdFisherman";

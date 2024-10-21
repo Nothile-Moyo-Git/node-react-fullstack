@@ -39,6 +39,21 @@ const AuthQuery = new GraphQLObjectType({
         _id : { type : GraphQLString },
       },
       resolve : AuthResolvers.GetUserStatusResolver
+    },
+    userDetailsResponse : {
+      type : new GraphQLObjectType({
+        name : "getUserDetails",
+        fields : {
+          user : { type : UserType },
+          sessionExpires : { type : GraphQLString },
+          sessionCreated : { type : GraphQLString }
+        }
+      }),
+      args : {
+        _id : { type : GraphQLString },
+        token : { type : GraphQLString }
+      },
+      resolve : AuthResolvers.PostGetUserDetailsController
     }
   }
 });
