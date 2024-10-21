@@ -296,12 +296,118 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * @name PostUpdateUserStatusController
+ * 
+ * @description Update the status of the user in the backend 
+ * 
+ * @param parent : any
+ *
+ * @param args : any
+ */
+const PostUpdateUserStatusController = async (parent : any, args : any) => {
+
+    try{
+
+        // Create a new status
+        const newStatus = args.status;
+        const userId = args._id;
+
+        // Query the users collection and get the name, id and status from it
+        const currentUser = await usersCollection.findOne({ _id : userId });
+
+        // If we have a user, then update the status otherwise return a 206 response
+        if (currentUser) {
+
+            // Save the updated field on the user
+            currentUser.status = newStatus;
+            await currentUser.save();
+
+            return { success : true, message : "Status updated successfully" };
+            
+        }else{
+
+            return { success : false, message : "Error : User could not be found" };
+        }
+
+    }catch(error){
+
+        console.log("\n\n");
+        console.log("PostUserStatusResolver Error:");
+        console.log(error);
+        console.log("\n\n"); 
+
+        return{ success : false, message : error };
+    }
+};
+
+/**
+ * @name PostGetUserDetailsController
+ * 
+ * @description Get the current details of the user session
+ * 
+ * @param parent : any 
+ * 
+ * @param args : any
+ */
+const PostGetUserDetailsController = async (parent : any, args : any) => {
+
+    try{ 
+
+        // Check if the user exists with the id
+        const userId = args._id;
+        const token = args.token;
+
+        // Values to be set once
+        let jwtCreationDate = "";
+        let jwtExpiryDate = "";
+
+        // Verify the tokens
+        jwt.verify(token, "Adeptus", (error, decoded) => {
+
+            // Get the issued and expiry dates of our token
+            // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+            const expiryDate = new Date(decoded['exp'] * 1000);
+            const issuedAtDate = new Date(decoded['iat'] * 1000);
+
+            // Set the values
+            jwtExpiryDate = createReadableDate(expiryDate);
+            jwtCreationDate = createReadableDate(issuedAtDate);
+        });
+
+        // Try to fetch the user using the userId
+        const user = await usersCollection.findOne({ _id : userId });
+
+        return {  
+            user : user,
+            sessionExpires : jwtExpiryDate,
+            sessionCreated : jwtCreationDate
+        }
+
+    }catch(error){
+
+        console.log("\n\n");
+        console.log("PostUserStatusResolver Error:");
+        console.log(error);
+        console.log("\n\n"); 
+
+        return { 
+            user : null,
+            sessionExpires : null,
+            sessionCreated : null
+        };
+
+    }
+};
+
 // The Auth resolver
 const AuthResolvers = {
     GetMoviesResolver : GetMoviesResolver,
     PostSignupResolver : PostSignupResolver,
     GetUserStatusResolver : GetUserStatusResolver,
-    PostLoginResolver : PostLoginResolver
+    PostLoginResolver : PostLoginResolver,
+    PostUpdateUserStatusController : PostUpdateUserStatusController,
+    PostGetUserDetailsController: PostGetUserDetailsController,
 }
 
 export default AuthResolvers;
