@@ -39,13 +39,40 @@ const Menu : FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
         const fields = new FormData();
         fields.append("userId", appContextInstance?.userId ? appContextInstance.userId : "");
 
-        // Log the user out of the session locally and on the server
-        await fetch(`http://localhost:4000/delete-session/${appContextInstance?.userId}`, {
+        // Perform the signup request
+        const result = await fetch(`http://localhost:4000/graphql/auth`, {
             method : "POST",
-            body : fields
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    mutation signupUserResponse($_id : String!){
+                        signupUserResponse(_id : $_id){
+                            success,
+                            message
+                        }
+                    }
+                `,
+                variables : {
+                    _id : appContextInstance?.userId,
+                }
+            })
         });
 
-        appContextInstance?.logoutUser();
+        console.log("\n");
+        console.log("Result");
+        console.log(result);
+        console.log("\n");
+
+        // Log the user out of the session locally and on the server
+        /* await fetch(`http://localhost:4000/delete-session/${appContextInstance?.userId}`, {
+            method : "POST",
+            body : fields
+        }); */
+
+        // appContextInstance?.logoutUser();
 
         // Redirect to the login page
         navigate(`${BASENAME}/login`);

@@ -101,6 +101,19 @@ const AuthMutation = new GraphQLObjectType({
         password : { type : GraphQLString }
       },
       resolve : AuthResolvers.PostLoginResolver
+    },
+    deleteSessionResponse : {
+      type : new GraphQLObjectType({
+        name : 'deleteSession',
+        fields : {
+          success : { type : GraphQLBoolean },
+          message : { type : GraphQLString }
+        }
+      }),
+      args : {
+        _id : { type : GraphQLString }
+      },
+      resolve : AuthResolvers.PostDeleteSessionController
     }
   }
 });

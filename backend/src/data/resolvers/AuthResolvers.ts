@@ -20,6 +20,7 @@ import Session from "../../models/session.ts";
 const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const usersCollection = database.collection('users');
+const sessionCollection = database.collection('session');
 
 // Handle a get movies mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const GetMoviesResolver = async (parent : any, args : any) => {
@@ -400,6 +401,44 @@ const PostGetUserDetailsController = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * @name PostDeleteSessionController
+ * 
+ * @description A controller which deletes our session if our user logs out or the session has expired
+ * 
+ * @param parent : any
+ * 
+ * @param args : any
+ */
+const PostDeleteSessionController = async (parent : any, args : any) => {
+
+    try{
+
+        // Get the ID from the front end query
+        const _id = args._id;
+
+        // Find and delete the session in the backend
+        const session = await sessionCollection.findOne({ creator : new ObjectId(_id) });
+
+        console.log("\n\n");
+        console.log("Session");
+        console.log(session);
+        console.log("\n\n");
+
+        return {
+            success : true,
+            message : "Request successful"
+        }
+
+    }catch(error){
+
+        return {
+            success : false,
+            message : "Error: No _id was provided for this request"
+        }
+    }
+};
+
 // The Auth resolver
 const AuthResolvers = {
     GetMoviesResolver : GetMoviesResolver,
@@ -408,6 +447,7 @@ const AuthResolvers = {
     PostLoginResolver : PostLoginResolver,
     PostUpdateUserStatusController : PostUpdateUserStatusController,
     PostGetUserDetailsController: PostGetUserDetailsController,
+    PostDeleteSessionController : PostDeleteSessionController
 }
 
 export default AuthResolvers;
