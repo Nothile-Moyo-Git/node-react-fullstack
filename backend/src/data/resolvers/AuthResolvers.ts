@@ -20,7 +20,7 @@ import Session from "../../models/session.ts";
 const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const usersCollection = database.collection('users');
-const sessionCollection = database.collection('session');
+const sessionCollection = database.collection('sessions');
 
 // Handle a get movies mutation from the frontend to the MongoDB database via GraphQL and Mongoose
 const GetMoviesResolver = async (parent : any, args : any) => {
@@ -415,15 +415,10 @@ const PostDeleteSessionController = async (parent : any, args : any) => {
     try{
 
         // Get the ID from the front end query
-        const _id = args._id;
+        const _id = new ObjectId(args._id);
 
         // Find and delete the session in the backend
-        const session = await sessionCollection.findOne({ creator : new ObjectId(_id) });
-
-        console.log("\n\n");
-        console.log("Session");
-        console.log(session);
-        console.log("\n\n");
+        await sessionCollection.findOneAndDelete({ creator : _id });
 
         return {
             success : true,
