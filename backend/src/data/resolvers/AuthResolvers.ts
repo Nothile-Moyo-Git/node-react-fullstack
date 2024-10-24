@@ -10,7 +10,6 @@
 
 import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
 import { MongoClient, ObjectId } from 'mongodb';
-import { MovieDocumentResponse } from "../../@types/index.ts";
 import { createReadableDate, validateEmailAddress, validateInputLength, validatePassword } from '../../util/utillity-methods.ts';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
