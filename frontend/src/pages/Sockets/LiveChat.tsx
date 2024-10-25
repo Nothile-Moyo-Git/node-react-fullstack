@@ -91,6 +91,42 @@ const LiveChat : FC = () => {
         fields.append("userId", userId);
         fields.append("recipientId", recipientId);
 
+        // Perform the signup request
+        const response = await fetch(`http://localhost:4000/graphql/chat`, {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    query chatMessagesResponse($_id : String!, $_recipientId : String){
+                        chatMessagesResponse(_id : $_id, recipientId : $_recipientId){
+                            success
+                            messages
+                            error
+                        }
+                    }
+                `,
+                variables : {
+                    _id : userId,
+                    recipientId : recipientId
+                }
+            })
+        });
+
+        const dataResponse = await response.json();
+
+        console.log("\n");
+        console.log("Response");
+        console.log(response);
+        console.log("\n");
+
+        console.log("\n");
+        console.log("Data");
+        console.log(dataResponse);
+        console.log("\n");
+
         // Query chat messages
         const result = await fetch(`http://localhost:4000/chat/get-messages`, {
             method : "POST",

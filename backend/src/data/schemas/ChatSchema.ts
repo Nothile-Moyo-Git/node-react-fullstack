@@ -8,7 +8,7 @@
  */
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
-import chatResolvers from '../resolvers/ChatResolvers';
+import chatResolvers from '../resolvers/ChatResolvers.ts';
 
 const ChatQuery = new GraphQLObjectType({
     name : 'ChatQuery',
@@ -17,10 +17,22 @@ const ChatQuery = new GraphQLObjectType({
             type : new GraphQLObjectType({
                 name : "getChatMessages",
                 fields : {
-                    succcess : { type : GraphQLBoolean }
+                    success : { type : GraphQLBoolean },
+                    messages : { type : new GraphQLList(GraphQLString) },
+                    error : { type : GraphQLBoolean }
                 }
             }),
+            args : {
+                _id : { type : GraphQLString },
+                recipientId : { type : GraphQLString }
+            },
             resolve : chatResolvers.GetChatsResolver
         }
     }
-})
+});
+
+const ChatSchema = new GraphQLSchema({
+    query : ChatQuery
+});
+
+export default ChatSchema;

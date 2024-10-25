@@ -152,7 +152,11 @@ app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
 
-// Handling graphql
+// Handling graphql schemas and creating the endpoints for them
+
+app.all('/graphql/chat', createHandler({
+    schema : schemas.ChatSchema
+}));
 
 // Auth resolver graphql
 app.all('/graphql/auth', createHandler({
