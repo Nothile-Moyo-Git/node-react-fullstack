@@ -9,10 +9,12 @@
 
 import RootSchema from "./schemas/RootSchema.ts";
 import AuthSchema from "./schemas/AuthSchema.ts";
+import ChatSchema from "./schemas/ChatSchema.ts";
 
 const schemas = {
     RootSchema : RootSchema,
-    AuthSchema : AuthSchema
+    AuthSchema : AuthSchema,
+    ChatSchema : ChatSchema
 };
 
 export default schemas;
