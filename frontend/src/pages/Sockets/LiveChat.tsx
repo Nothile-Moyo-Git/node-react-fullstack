@@ -100,8 +100,8 @@ const LiveChat : FC = () => {
             },
             body : JSON.stringify({
                 query :`
-                    query chatMessagesResponse($_id : String!, $_recipientId : String){
-                        chatMessagesResponse(_id : $_id, recipientId : $_recipientId){
+                    query chatMessagesResponse($_id : String!, $recipientId : String){
+                        chatMessagesResponse(_id : $_id, recipientId : $recipientId){
                             success
                             messages
                             error
@@ -123,7 +123,7 @@ const LiveChat : FC = () => {
         console.log("\n");
 
         console.log("\n");
-        console.log("Data");
+        console.log("DataResponse");
         console.log(dataResponse);
         console.log("\n");
 
@@ -134,6 +134,11 @@ const LiveChat : FC = () => {
         });
 
         const data = await result.json();
+
+        console.log("\n\n");
+        console.log("data");
+        console.log(data);
+        console.log("\n\n");
 
         // Set the messages from the backend if we have them
         if (data.messages.length !== 0) {
