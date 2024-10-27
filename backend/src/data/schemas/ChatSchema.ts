@@ -10,6 +10,18 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
 import chatResolvers from '../resolvers/ChatResolvers.ts';
 
+// Defining a type for our chat messages
+const MessageType = new GraphQLObjectType({
+    name : 'messages',
+    fields : () => ({
+        message : { type : GraphQLString },
+        dateSent : { type : GraphQLString },
+        senderId : { type : GraphQLString },
+        sender : { type : GraphQLString },
+        _id : { type : GraphQLString }
+    })
+});
+
 const ChatQuery = new GraphQLObjectType({
     name : 'ChatQuery',
     fields : {
@@ -18,7 +30,7 @@ const ChatQuery = new GraphQLObjectType({
                 name : "getChatMessages",
                 fields : {
                     success : { type : GraphQLBoolean },
-                    messages : { type : new GraphQLList(GraphQLString) },
+                    messages : { type : MessageType },
                     error : { type : GraphQLBoolean }
                 }
             }),

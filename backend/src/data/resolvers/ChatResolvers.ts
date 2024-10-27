@@ -20,6 +20,9 @@ const GetChatsResolver = async (parent : any, args : any) => {
 
     try{
 
+        // Get the id of the user and recipient to make sure they match the chat we're quering
+        const userId = args._id;
+
         // Get the chats if they exist
         const numberOfChats = await chatCollection.countDocuments();
 
@@ -30,14 +33,11 @@ const GetChatsResolver = async (parent : any, args : any) => {
 
         }else{
 
-            const messages = chatCollection.find();
+            const messages = await chatCollection.findOne({
+                userIds : {"$in" : [new ObjectId(userId)]}
+            });
 
-            console.log("\n");
-            console.log("messages");
-            console.log(messages);
-            console.log("\n");
-
-            return { success : true, messages : [], error : null }
+            return { success : true, messages : messages ? messages.messages : [], error : null }
         }
 
     }catch(error){
