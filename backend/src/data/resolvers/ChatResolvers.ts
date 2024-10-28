@@ -33,11 +33,12 @@ const GetChatsResolver = async (parent : any, args : any) => {
 
         }else{
 
+            // We check the userIds array in the chatCollection to see if we can find the userId
             const messages = await chatCollection.findOne({
                 userIds : {"$in" : [new ObjectId(userId)]}
             });
 
-            return { success : true, messages : messages ? messages.messages : [], error : null }
+            return { success : true, messages : messages, error : null }
         }
 
     }catch(error){

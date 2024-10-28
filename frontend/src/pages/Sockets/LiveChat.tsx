@@ -103,7 +103,16 @@ const LiveChat : FC = () => {
                     query chatMessagesResponse($_id : String!, $recipientId : String){
                         chatMessagesResponse(_id : $_id, recipientId : $recipientId){
                             success
-                            messages
+                            messages {
+                                userIds
+                                messages {
+                                    _id
+                                    dateSent
+                                    message
+                                    sender
+                                    senderId
+                                }
+                            }
                             error
                         }
                     }
@@ -116,11 +125,6 @@ const LiveChat : FC = () => {
         });
 
         const dataResponse = await response.json();
-
-        console.log("\n");
-        console.log("Response");
-        console.log(response);
-        console.log("\n");
 
         console.log("\n");
         console.log("DataResponse");

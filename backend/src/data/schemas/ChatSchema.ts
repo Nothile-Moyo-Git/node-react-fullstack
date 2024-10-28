@@ -22,6 +22,15 @@ const MessageType = new GraphQLObjectType({
     })
 });
 
+// Set the chat type which gets the entire messages assuming the users match
+const ChatType = new GraphQLObjectType({
+    name : "chats",
+    fields :  () => ({
+        userIds : { type : new GraphQLList(GraphQLString) },
+        messages : { type : new GraphQLList(MessageType) }
+    })
+});
+
 const ChatQuery = new GraphQLObjectType({
     name : 'ChatQuery',
     fields : {
@@ -30,7 +39,7 @@ const ChatQuery = new GraphQLObjectType({
                 name : "getChatMessages",
                 fields : {
                     success : { type : GraphQLBoolean },
-                    messages : { type : MessageType },
+                    messages : { type : ChatType },
                     error : { type : GraphQLBoolean }
                 }
             }),
