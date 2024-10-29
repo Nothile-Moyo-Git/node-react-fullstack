@@ -8,7 +8,7 @@
  * 
  */
 
-import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from '../connection.ts';
+import { MONGODB_URI } from '../connection.ts';
 import { MongoClient, ObjectId } from 'mongodb';
 
 // Set up client and database connection
@@ -16,6 +16,15 @@ const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const chatCollection = database.collection('chats');
 
+
+/**
+ * @name GetChatsResolver
+ * 
+ * @description Endpoint to handle the chat resolver which allows us to extract 
+ * 
+ * @param parent : any
+ * @param args : any
+ */
 const GetChatsResolver = async (parent : any, args : any) => {
 
     try{
@@ -46,6 +55,9 @@ const GetChatsResolver = async (parent : any, args : any) => {
         console.log("\n\n");
         console.log("Request error:", "\n");
         console.error(error);
+        console.log("\n");
+        console.log("Arguments");
+        console.log(args);
         console.log("\n\n");
 
         return { success : false, messages : [], error : error }

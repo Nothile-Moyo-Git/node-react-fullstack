@@ -86,11 +86,6 @@ const LiveChat : FC = () => {
     // Get the chat messages async since we can't do it in our useEffect hook
     const getChatMessages = async (userId : string, recipientId : string) => {
 
-        // Set the user and recipientId so we can query these from the backend
-        const fields = new FormData();
-        fields.append("userId", userId);
-        fields.append("recipientId", recipientId);
-
         // Perform the signup request
         const response = await fetch(`http://localhost:4000/graphql/chat`, {
             method : "POST",
@@ -124,25 +119,11 @@ const LiveChat : FC = () => {
             })
         });
 
+        // Convert the response into a json so we can extract the data from it
         const dataResponse = await response.json();
 
-        console.log("\n");
-        console.log("DataResponse");
-        console.log(dataResponse);
-        console.log("\n");
-
-        // Query chat messages
-        const result = await fetch(`http://localhost:4000/chat/get-messages`, {
-            method : "POST",
-            body : fields
-        });
-
-        const data = await result.json();
-
-        console.log("\n\n");
-        console.log("data");
-        console.log(data);
-        console.log("\n\n");
+        // Extract the data for the messages from the response of the query sent to the front end
+        const data = dataResponse.data.chatMessagesResponse;
 
         // Set the messages from the backend if we have them
         if (data.messages.length !== 0) {
@@ -162,12 +143,11 @@ const LiveChat : FC = () => {
             // Get the user information so we can share it in the post
             appContextInstance?.userId && getUserDetails(appContextInstance.userId);
 
-            // Get the Id's
-            const userId = appContextInstance?.userId ? appContextInstance.userId : "";
-
             const recipientId = "6656382efb54b1949e66bae2";
 
-            getChatMessages(userId, recipientId);
+            if (appContextInstance?.userId) {
+                getChatMessages(appContextInstance.userId, recipientId);
+            }
 
         }catch(error){
 
