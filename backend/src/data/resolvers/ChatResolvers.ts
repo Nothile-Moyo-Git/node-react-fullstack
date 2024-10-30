@@ -16,7 +16,6 @@ const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const chatCollection = database.collection('chats');
 
-
 /**
  * @name GetChatsResolver
  * 
