@@ -7,7 +7,7 @@
 
 import express from "express";
 
-import { Get404Page } from "../controllers/error";
+import { Get404Page } from "../controllers/error.ts";
 
 const errorRoutes = express.Router({ strict : true });
 
