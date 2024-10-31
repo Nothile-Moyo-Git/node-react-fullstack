@@ -153,7 +153,6 @@ app.use( authRoutes );
 app.use( chatRoutes );
 
 // Handling graphql schemas and creating the endpoints for them
-
 app.all('/graphql/chat', createHandler({
     schema : schemas.ChatSchema
 }));
@@ -163,12 +162,10 @@ app.all('/graphql/auth', createHandler({
     schema : schemas.AuthSchema
 }));
 
-app.all('/graphql', createHandler({ 
-    schema: schemas.RootSchema
-}));
-
 // Fallback route, in case no other route gets handled
-app.use( errorRoutes );
+app.use('*', createHandler({
+    schema : schemas.ErrorSchema
+}));
 
 // Spin up the local server on the port to 
 const startServer = async () => {

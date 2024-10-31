@@ -6,7 +6,11 @@
  * Description : GraphQL chat schema description file
  * 
  */
-
+/**
+ * @name GetErrorPageResolver
+ * 
+ * @description REturns a message to the 
+ */
 const GetErrorPageResolver = () => {
 
     return {message : "Error 404: Page doesn't exist"};
