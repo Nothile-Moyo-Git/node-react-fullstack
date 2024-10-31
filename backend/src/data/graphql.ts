@@ -7,14 +7,14 @@
  * 
  */
 
-import RootSchema from "./schemas/RootSchema.ts";
 import AuthSchema from "./schemas/AuthSchema.ts";
 import ChatSchema from "./schemas/ChatSchema.ts";
+import ErrorSchema from "./schemas/ErrorSchema.ts";
 
 const schemas = {
-    RootSchema : RootSchema,
     AuthSchema : AuthSchema,
-    ChatSchema : ChatSchema
+    ChatSchema : ChatSchema,
+    ErrorSchema : ErrorSchema
 };
 
 export default schemas;

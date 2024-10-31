@@ -7,5 +7,26 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
 import errorResolvers from "../resolvers/ErrorResolvers.ts";
+
+const ErrorQuery = new GraphQLObjectType({
+    name : "ErrorQuery",
+    fields  : {
+        errorPageResponse : {
+            type : new GraphQLObjectType({
+                name : "getErrorPage",
+                fields : {
+                    message : { type : GraphQLString }
+                }
+            }),
+            resolve : errorResolvers.GetErrorPageResolver
+        }
+    }
+});
+
+const ErrorSchema = new GraphQLSchema({
+    query : ErrorQuery
+});
+
+export default ErrorSchema;
