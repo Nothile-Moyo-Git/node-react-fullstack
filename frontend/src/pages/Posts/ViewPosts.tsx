@@ -46,6 +46,39 @@ export const ViewPosts : FC = () => {
 
     // Get posts method, we define it here so we can call it asynchronously
     const getPosts = useCallback( async () => {
+
+        // Perform the signup request
+        const postsResponse = await fetch(`http://localhost:4000/graphql/posts`, {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    query GetPostsResponse($currentPage : String!){
+                        chatMessagesResponse(currentPage : $currentPage){
+                            message
+                            posts {
+                                _id
+                                fileLastUpdated
+                                fileName
+                                title
+                                imageUrl
+                                content
+                                creator
+                            }
+                            success
+                            numberOfPages
+                        }
+                    }
+                `,
+                variables : {
+                    currentPage : params.page,
+                }
+            })
+        });
+        
         const response = await fetch(`http://localhost:4000/posts/${params.page}`);
 
         // Show the error if the request failed

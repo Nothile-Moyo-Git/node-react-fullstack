@@ -45,6 +45,11 @@ const GetPostsResolver = async (parent : any, args : any) => {
         // Convert the posts from a cursor object to an array, we do this here because we don't asynchronously request the posts above
         const posts = await postsCursor.toArray();
 
+        console.log("\n\n");
+        console.log("Posts response");
+        console.log(posts);
+        console.log("\n\n");
+
     }catch(error){
 
         console.log("\n\n");
