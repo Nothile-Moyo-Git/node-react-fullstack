@@ -8,7 +8,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLList } from "graphql";
 import postResolvers from "../resolvers/PostResolvers.ts";
 
 // Create the post type definition
@@ -34,13 +34,13 @@ const PostQuery = new GraphQLObjectType({
                 name : 'getPosts',
                 fields : {
                     message : { type : GraphQLString },
-                    posts : { type : PostType },
+                    posts : { type : new GraphQLList(PostType) },
                     success : { type : GraphQLBoolean },
                     numberOfPages : { type : GraphQLString }
                 }
             }),
             args : {
-                currentPage : { type : GraphQLString }
+                currentPage : { type : GraphQLInt }
             },
             resolve : postResolvers.GetPostsResolver
         }

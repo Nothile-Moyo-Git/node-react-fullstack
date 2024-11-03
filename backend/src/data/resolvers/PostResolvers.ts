@@ -36,6 +36,7 @@ const GetPostsResolver = async (parent : any, args : any) => {
 
         // Get the total number of items
         const numberOfItems = await postsCollection.countDocuments();
+        const numberOfPages = Math.ceil((numberOfItems !== 0 ? numberOfItems : 1) / perPage);
 
         // Fetch the posts from the backend, pagination is applied here
         const postsCursor = postsCollection.find()
@@ -46,9 +47,17 @@ const GetPostsResolver = async (parent : any, args : any) => {
         const posts = await postsCursor.toArray();
 
         console.log("\n\n");
-        console.log("Posts response");
+        console.log("posts");
         console.log(posts);
         console.log("\n\n");
+
+        // Return a json with our posts
+        return{
+            message : "Fetched posts successfully",
+            posts : posts,
+            success : true,
+            numberOfPages : numberOfPages
+        };
 
     }catch(error){
 
@@ -59,6 +68,13 @@ const GetPostsResolver = async (parent : any, args : any) => {
         console.log("Arguments");
         console.log(args);
         console.log("\n\n");
+
+        return {
+            message : "Error 500 : Request failed, please view the server logs",
+            posts : [],
+            success : false,
+            numberOfPages : 1
+        };
     }
 };
 

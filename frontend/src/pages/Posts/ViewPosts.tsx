@@ -56,8 +56,8 @@ export const ViewPosts : FC = () => {
             },
             body : JSON.stringify({
                 query :`
-                    query GetPostsResponse($currentPage : String!){
-                        chatMessagesResponse(currentPage : $currentPage){
+                    query GetPostsResponse($currentPage : Int!){
+                        GetPostsResponse(currentPage : $currentPage){
                             message
                             posts {
                                 _id
@@ -74,10 +74,28 @@ export const ViewPosts : FC = () => {
                     }
                 `,
                 variables : {
-                    currentPage : params.page,
+                    currentPage : params.page ? Number(params.page) : 1,
                 }
             })
         });
+
+        const postsData = await postsResponse.json();
+
+        console.clear();
+
+        console.log("Page number");
+        console.log(params.page);
+
+        console.log("\n\n");
+        console.log("Response");
+        console.log(postsResponse);
+        console.log("\n\n");
+
+        console.log("Data");
+        console.log(postsData);
+        console.log("\n\n");
+
+
         
         const response = await fetch(`http://localhost:4000/posts/${params.page}`);
 
