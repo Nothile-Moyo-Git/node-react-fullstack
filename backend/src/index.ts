@@ -157,6 +157,11 @@ app.all('/graphql/chat', createHandler({
     schema : schemas.ChatSchema
 }));
 
+// Post resolver graphql
+app.all('/graphql/posts', createHandler({
+   schema : schemas.PostSchema 
+}));
+
 // Auth resolver graphql
 app.all('/graphql/auth', createHandler({
     schema : schemas.AuthSchema
