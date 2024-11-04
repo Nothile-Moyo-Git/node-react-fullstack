@@ -54,7 +54,7 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
     },[appContextInstance, post.creator]);
 
     // Get an upload date so we can show when the post was uploaded
-    const uploadDate = generateUploadDate(post?.createdAt ? post?.createdAt : '');
+    const uploadDate = generateUploadDate(post?.createdAt ? Number(post?.createdAt) : '');
 
     return(
         <article className="article">

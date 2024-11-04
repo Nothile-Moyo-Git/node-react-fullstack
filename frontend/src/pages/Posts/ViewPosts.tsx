@@ -48,7 +48,7 @@ export const ViewPosts : FC = () => {
     const getPosts = useCallback( async () => {
 
         // Perform the signup request
-        const postsResponse = await fetch(`http://localhost:4000/graphql/posts`, {
+        const response = await fetch(`http://localhost:4000/graphql/posts`, {
             method : "POST",
             headers : {
                 "Content-Type": "application/json",
@@ -67,6 +67,8 @@ export const ViewPosts : FC = () => {
                                 imageUrl
                                 content
                                 creator
+                                createdAt
+                                updatedAt
                             }
                             success
                             numberOfPages
@@ -78,26 +80,6 @@ export const ViewPosts : FC = () => {
                 }
             })
         });
-
-        const postsData = await postsResponse.json();
-
-        console.clear();
-
-        console.log("Page number");
-        console.log(params.page);
-
-        console.log("\n\n");
-        console.log("Response");
-        console.log(postsResponse);
-        console.log("\n\n");
-
-        console.log("Data");
-        console.log(postsData);
-        console.log("\n\n");
-
-
-        
-        const response = await fetch(`http://localhost:4000/posts/${params.page}`);
 
         // Show the error if the request failed
         if (response.status === 200) {
@@ -114,7 +96,10 @@ export const ViewPosts : FC = () => {
 
         const result = await getPosts();
 
-        const data = await result.json();
+        const dataJSON = await result.json();
+
+        // Convert the response to JSON based on the response received from GraphQL
+        const data = dataJSON.data.GetPostsResponse;
 
         const success = data.success ? data.success : false;
 

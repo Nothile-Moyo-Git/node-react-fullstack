@@ -22,6 +22,8 @@ const PostType = new GraphQLObjectType({
         imageUrl : { type : GraphQLString },
         content : { type : GraphQLString },
         creator : { type : GraphQLString },
+        createdAt : { type : GraphQLString },
+        updatedAt : { type : GraphQLString }
     }
 });
 
@@ -36,7 +38,7 @@ const PostQuery = new GraphQLObjectType({
                     message : { type : GraphQLString },
                     posts : { type : new GraphQLList(PostType) },
                     success : { type : GraphQLBoolean },
-                    numberOfPages : { type : GraphQLString }
+                    numberOfPages : { type : GraphQLInt }
                 }
             }),
             args : {
