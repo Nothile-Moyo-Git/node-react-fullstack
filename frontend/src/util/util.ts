@@ -28,7 +28,7 @@ export const isValidUrl = (url : string) => {
  * 
  * @returns uploadDate : string
  */
-export const generateUploadDate = (date : string) => {
+export const generateUploadDate = (date : string | number) => {
 
     const dateObject = new Date(date);
 
