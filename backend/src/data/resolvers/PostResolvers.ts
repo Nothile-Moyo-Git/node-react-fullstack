@@ -9,7 +9,7 @@
  */
 
 import { MONGODB_URI } from '../connection.ts';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -73,8 +73,70 @@ const GetPostsResolver = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * 
+ * @name PostCreatePostResolver
+ * 
+ * @description Create a post in the backend from a GraphQL query
+ * 
+ * @param parent : any
+ * @param args : any
+ */
+const PostCreatePostResolver = async (parent : any, args : any) => {
+
+    try {
+
+        // Get the inputs
+        const title = args.title;
+        const content = args.content;
+        const userId = args.userId;
+        const fileData = args.fileData;
+
+        console.log("\n\n");
+        console.log("Title");
+        console.log(title);
+        console.log("\n\n");
+
+        console.log("Content");
+        console.log(content);
+        console.log("\n\n");
+
+        console.log("userId");
+        console.log(userId);
+        console.log("\n\n");
+
+        console.log("File data");
+        console.log(fileData);
+        console.log("\n\n");
+
+        // validate our inputs
+
+        return {
+            status : 201,
+            success : true
+        };
+
+    }catch(error){
+
+        console.log("\n\n");
+        console.log("Request error:", "\n");
+        console.error(error);
+        console.log("\n");
+        console.log("Arguments");
+        console.log(args);
+        console.log("\n\n");
+
+        return {
+            status : 500,
+            success : false
+        };
+    }
+};
+
+
 const postResolvers = {
-    GetPostsResolver : GetPostsResolver
+    GetPostsResolver : GetPostsResolver,
+    PostCreatePostResolver : PostCreatePostResolver
 };
 
 export default postResolvers;
