@@ -227,7 +227,7 @@ export const validateInputLength = (input : string, maxLength : number) => {
  * 
  * This function validates the email address entered
  * 
- * @params email : string
+ * @param email : string
  * 
  * @returns boolean
  */

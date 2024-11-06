@@ -28,7 +28,7 @@ const PostType = new GraphQLObjectType({
 });
 
 // Define the post query request handlers for GraphQL
-const PostQuery = new GraphQLObjectType({
+const PostQueries = new GraphQLObjectType({
     name : 'PostQuery',
     fields : {
         GetPostsResponse : {
@@ -49,9 +49,33 @@ const PostQuery = new GraphQLObjectType({
     }
 });
 
+// Define the query handlers for our request from GraphQL
+const PostMutations = new GraphQLObjectType({
+    name : "PostMutations",
+    fields : {
+        PostCreatPostResponse : {
+            type : new GraphQLObjectType({
+                name : "createPost",
+                fields  : {
+                    status : { type : GraphQLInt },
+                    message : { type : GraphQLString }
+                }
+            }),
+            args : {
+                title : { type : GraphQLString },
+                content : { type : GraphQLString },
+                userId : { type : GraphQLString },
+                file : { type : GraphQLString },
+            },
+            resolve : postResolvers.PostCreatePostResolver
+        }
+    }
+});
+
 // Define the post schema 
 const PostSchema = new GraphQLSchema({
-    query : PostQuery
+    query : PostQueries,
+    mutation : PostMutations
 });
 
 export default PostSchema;
