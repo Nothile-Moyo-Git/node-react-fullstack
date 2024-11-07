@@ -18,6 +18,7 @@ import { fileURLToPath } from 'url';
 import feedRoutes from "./routes/feed.ts";
 import errorRoutes from "./routes/feed.ts";
 import chatRoutes from "./routes/chat.ts";
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
 import express, { Request } from "express";
@@ -151,6 +152,9 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
+
+// Handle GraphQL file uploads
+app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
 
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({
