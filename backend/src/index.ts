@@ -18,7 +18,7 @@ import { fileURLToPath } from 'url';
 import feedRoutes from "./routes/feed.ts";
 import errorRoutes from "./routes/feed.ts";
 import chatRoutes from "./routes/chat.ts";
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import { graphqlUploadExpress } from 'graphql-upload-ts';
 import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
 import express, { Request } from "express";
@@ -62,6 +62,10 @@ const port = process.env.EXPRESS_PORT;
 // Register a templating engine even it's not the default, we do this with ejs
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
+
+// Handle GraphQL file uploads
+app.use( graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }) );
+
 
 // Set up options for disk storage, we do this because we store the files as a hashcode and a manual extention needs to be added
 const fileStorage = multer.diskStorage({
@@ -152,9 +156,6 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
-
-// Handle GraphQL file uploads
-app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
 
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({

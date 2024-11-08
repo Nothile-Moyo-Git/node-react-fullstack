@@ -10,6 +10,7 @@
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLList } from "graphql";
 import postResolvers from "../resolvers/PostResolvers.ts";
+import GraphQLUpload from "graphql-upload/GraphQLUpload.js";
 
 // Create the post type definition
 const PostType = new GraphQLObjectType({
