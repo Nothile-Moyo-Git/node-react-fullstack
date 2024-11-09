@@ -21,6 +21,9 @@
     "esm": true,
     "experimentalSpecifierResolution": "node",
   },
+  "exclude" : [
+    "node_modules"
+  ],
   "include":[
     "src/routes"
   ],
