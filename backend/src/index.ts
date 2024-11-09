@@ -18,7 +18,6 @@ import { fileURLToPath } from 'url';
 import feedRoutes from "./routes/feed.ts";
 import errorRoutes from "./routes/feed.ts";
 import chatRoutes from "./routes/chat.ts";
-import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
 import express, { Request } from "express";
@@ -47,6 +46,10 @@ declare module 'express-serve-static-core' {
 // We define our __dirname and __filename here since we wouldn't be able to reference them since we're using type : module in our package.json
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+console.log("\n");
+console.log("Starting backend...");
+console.log("\n");
 
 // Import the .env variables
 dotenv.config();
@@ -153,9 +156,6 @@ app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
 
-// Handle GraphQL file uploads
-app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
-
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({
     schema : schemas.ChatSchema
@@ -175,6 +175,9 @@ app.all('/graphql/auth', createHandler({
 app.use('*', createHandler({
     schema : schemas.ErrorSchema
 }));
+
+console.log("Setting file storage");
+console.log("\n");
 
 // Spin up the local server on the port to 
 const startServer = async () => {

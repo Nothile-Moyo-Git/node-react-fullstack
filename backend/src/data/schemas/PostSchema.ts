@@ -65,7 +65,6 @@ const PostMutations = new GraphQLObjectType({
                 title : { type : GraphQLString },
                 content : { type : GraphQLString },
                 userId : { type : GraphQLString },
-                file : { type : GraphQLString },
             },
             resolve : postResolvers.PostCreatePostResolver
         }
