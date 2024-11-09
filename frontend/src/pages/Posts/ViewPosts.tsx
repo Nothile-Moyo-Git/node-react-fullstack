@@ -155,8 +155,6 @@ export const ViewPosts : FC = () => {
                 alert(`Post ${deleteId} has successfully been deleted`);
             }
 
-            window.location.reload();
-
         }catch(error){
             console.clear();
             console.log(error);
