@@ -156,7 +156,8 @@ export const ViewPosts : FC = () => {
             }
 
         }catch(error){
-            console.clear();
+            
+            console.log("Delete post error");
             console.log(error);
         }
     };

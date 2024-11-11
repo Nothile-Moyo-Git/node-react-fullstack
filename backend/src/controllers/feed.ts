@@ -388,9 +388,6 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
         // If there's no post, return an error
         if (post) {
 
-            // Check logged in User
-            deleteFile(post.imageUrl);
-
             await Post.findByIdAndDelete(postId);
 
             // Remove the reference for the post from MongoDB
@@ -414,6 +411,9 @@ export const PostDeletePostController = async (request : FeedRequestInterface, r
             });
 
             await user.save();
+
+            // Check logged in User
+            deleteFile(post.imageUrl);
 
             response.status(200).json({ success : true });
         }

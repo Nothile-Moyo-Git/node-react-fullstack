@@ -47,10 +47,6 @@ declare module 'express-serve-static-core' {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log("\n");
-console.log("Starting backend...");
-console.log("\n");
-
 // Import the .env variables
 dotenv.config();
 
@@ -151,6 +147,11 @@ app.use(
 // Serve our uploaded images statically
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 
+app.use('/uploads', (req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+});
+
 // Implement Route handlers here
 app.use( feedRoutes );
 app.use( authRoutes );
@@ -175,9 +176,6 @@ app.all('/graphql/auth', createHandler({
 app.use('*', createHandler({
     schema : schemas.ErrorSchema
 }));
-
-console.log("Setting file storage");
-console.log("\n");
 
 // Spin up the local server on the port to 
 const startServer = async () => {

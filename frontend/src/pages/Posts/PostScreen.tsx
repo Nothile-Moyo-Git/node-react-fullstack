@@ -26,6 +26,7 @@ const PostScreen : FC = () => {
     const [isQuerying, setIsQuerying] = useState<boolean>(true);
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const [postData, setPostData] = useState<Post | null>(null);
+    const [image, setImage] = useState<string>();
 
     const params = useParams();
     const postId = params.postId;
@@ -34,20 +35,6 @@ const PostScreen : FC = () => {
     const appContextInstance = useContext(AppContext);
     const navigate = useNavigate();
     const location = useLocation();
-
-    let image = "";
-
-    try{
-
-        if (postData?.fileName){
-            // Fetch the image, if it fails, reload the component
-            image = require(`../../uploads/${postData.fileLastUpdated}/${postData?.fileName}`);
-        }
-
-    }catch(error){
-        
-        console.log(error);
-    }
 
     useEffect(() => {
 
@@ -103,6 +90,28 @@ const PostScreen : FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[appContextInstance, postId]);
+
+    useEffect(() => {
+
+        const getImage = async () => {
+            try{
+    
+                if (postData?.fileName && postData?.fileLastUpdated){
+                    // Fetch the image, if it fails, reload the component
+                    // eslint-disable-next-line import/no-unresolved
+                    setImage(await require(`../../uploads/${postData.fileLastUpdated}/${postData?.fileName}`));
+                }
+        
+            }catch(error){
+                
+                console.log("Post screen image error");
+                console.log(error);
+            }
+        };
+
+        getImage();
+
+    },[postData]);
 
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(postData?.createdAt ? postData?.createdAt : '');

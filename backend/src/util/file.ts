@@ -21,22 +21,30 @@ import fs from "fs";
  * @param filePath : string
  * @returns void
  */
-export const deleteFile = (filePath : string) => {
+export const deleteFile = async (filePath : string) => {
 
-    let fileExists : boolean;
-
-    // Check if the file with the name already exists
-    fs.access(filePath, fs.constants.F_OK, (err : Error | null) => {
-
-        fileExists = err ? false : true; 
-        console.log(`${filePath} ${err ? 'does not exist' : 'exists :)'}`);
-
-        // Execute our file deletion here since this code runs asynchronously
-        fileExists === true && fs.unlink(filePath, (err) => {
-            err ? console.log("Error: File was not deleted") : console.log("File was successfully deleted");
+    try {
+        // Check if the file exists using fs.access
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                // File does not exist
+                console.log(`${filePath} does not exist.`);
+            } else {
+                // File exists, proceed to delete
+                fs.unlink(filePath, (deleteErr) => {
+                    if (deleteErr) {
+                        console.log("Error: File was not deleted");
+                    } else {
+                        console.log("File was successfully deleted");
+                    }
+                });
+            }
         });
-        
-    });
+    } catch (error) {
+        console.log("Deletion error");
+        console.log(error);
+    }
+
 };
 
 /**

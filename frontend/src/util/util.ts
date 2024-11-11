@@ -86,7 +86,6 @@ export const checkSessionValidation = async (userId : string, token : string) =>
         
     }catch(error){
         
-        console.clear();
         console.log("Error");
         console.log(error);
     }

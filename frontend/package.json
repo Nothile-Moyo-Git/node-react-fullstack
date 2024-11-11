@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:clean": "rimraf node_modules/.cache && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -46,5 +47,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "/typescript-fullstack"
+  "homepage": "/typescript-fullstack",
+  "devDependencies": {
+    "rimraf": "^6.0.1"
+  }
 }

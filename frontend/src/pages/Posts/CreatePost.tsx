@@ -108,7 +108,7 @@ export const CreatePostComponent : FC = () => {
 
         if (data.success === true) {
             alert("Post successfully submitted");
-            navigate(`${BASENAME}/posts`, { replace : true });
+            window.location.href = `${BASENAME}/posts`;
         }
     };
 
