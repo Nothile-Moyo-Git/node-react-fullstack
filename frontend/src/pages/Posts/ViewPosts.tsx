@@ -48,7 +48,7 @@ export const ViewPosts : FC = () => {
     const getPosts = useCallback( async () => {
 
         // Perform the signup request
-        const response = await fetch(`http://localhost:4000/graphql/posts`, {
+        const response = await fetch(`/graphql/posts`, {
             method : "POST",
             headers : {
                 "Content-Type": "application/json",
@@ -155,10 +155,9 @@ export const ViewPosts : FC = () => {
                 alert(`Post ${deleteId} has successfully been deleted`);
             }
 
-            window.location.reload();
-
         }catch(error){
-            console.clear();
+            
+            console.log("Delete post error");
             console.log(error);
         }
     };

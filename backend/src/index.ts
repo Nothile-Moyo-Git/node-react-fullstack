@@ -47,10 +47,6 @@ declare module 'express-serve-static-core' {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log("\n");
-console.log("Starting backend...");
-console.log("\n");
-
 // Import the .env variables
 dotenv.config();
 
@@ -175,9 +171,6 @@ app.all('/graphql/auth', createHandler({
 app.use('*', createHandler({
     schema : schemas.ErrorSchema
 }));
-
-console.log("Setting file storage");
-console.log("\n");
 
 // Spin up the local server on the port to 
 const startServer = async () => {

@@ -22,7 +22,7 @@
     "experimentalSpecifierResolution": "node",
   },
   "exclude" : [
-    "node_modules"
+    "node_modules", "../frontend/src/uploads"
   ],
   "include":[
     "src/routes"

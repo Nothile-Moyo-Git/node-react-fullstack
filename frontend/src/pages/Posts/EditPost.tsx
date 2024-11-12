@@ -47,6 +47,7 @@ export const EditPost : FC = () => {
     const location = useLocation();
 
     // State for the page
+    const [image, setImage] = useState<string>();
     const [postData, setPostData] = useState<Post>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
@@ -90,22 +91,20 @@ export const EditPost : FC = () => {
     };
 
     // Set the preview of the file when the api request concludes so we can view it on the page immediately
-    const formatPreviousPostImage = (post : Post) => {
+    const formatPreviousPostImage = async (post : Post) => {
 
         try{
 
             // Only fetch the file if we have a filename
-            if (post?.fileName) {
+            if (post?.fileName && post?.fileLastUpdated) {
     
                 // Fetch the image, if it fails, reload the component
-                let image = "";
-                image = require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`);
-                setPreviousImageUrl(image);
+                setPreviousImageUrl(await require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`));
             }
     
         }catch(error){
             
-            console.log(error);
+            // console.log(error);
         }
     };
 

@@ -3,7 +3,7 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "frontend": "npm run start --prefix frontend",
+    "frontend": "npm run start:clean --prefix frontend",
     "backend": "npm run start --experimental-modules --prefix backend",
     "application": "concurrently \"npm run frontend\" \"npm run backend\""
   },

@@ -24,7 +24,7 @@ interface ComponentProps {
 
 export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal }) => {
 
-    let image = "";
+    const [image, setImage] = useState<string>();
 
     // We use this state in order to determine whether we shoud show the edit and delete buttons or not
     const [isPostCreator, setIsPostCreator] = useState<boolean>();
@@ -32,26 +32,37 @@ export const PostCard : FC<ComponentProps> = ({ post, toggleConfirmationModal })
     // Get the app context so we can get the userId for comparison
     const appContextInstance = useContext(AppContext);
 
-    try{
-
-        // Only fetch the file if we have a filename
-        if (post?.fileName) {
-
-            // Fetch the image, if it fails, reload the component
-            image = require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`);
-        }
-
-    }catch(error){
-        
-        console.log(error);
-    }
-
     // Check if we're the same user here
     useEffect(() => {
 
         setIsPostCreator(appContextInstance?.userId === post.creator);
 
     },[appContextInstance, post.creator]);
+
+    useEffect(() => {
+
+        const getImage = async () => {
+
+            try{
+
+                // Only fetch the file if we have a filename
+                if (post?.fileName && post?.fileLastUpdated) {
+        
+                    // Fetch the image, if it fails, reload the component
+                    // eslint-disable-next-line import/no-unresolved
+                    setImage(await require(`../../uploads/${post?.fileLastUpdated}/${post?.fileName}`));
+                }
+        
+            }catch(error){
+                
+                console.log("Could not extract image");
+                console.log(error);
+            }
+        };
+
+        getImage();
+
+    },[post]);
 
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(post?.createdAt ? Number(post?.createdAt) : '');
