@@ -24,9 +24,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start:clean": "rimraf node_modules/.cache && npm start",
-    "build": "react-scripts build",
+    "start": "SET NODE_ENV=development & react-scripts start",
+    "start:clean": "SET NODE_ENV=development & rimraf node_modules/.cache && npm start",
+    "build": "SET NODE_ENV=production & react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
