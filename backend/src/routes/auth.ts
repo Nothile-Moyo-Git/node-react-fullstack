@@ -29,4 +29,5 @@ authRoutes.post("/signup", PostSignupController);
 authRoutes.post("/user/:id/update", PostUpdateUserStatusController);
 authRoutes.post("/check-create-session/:userId?", PostCheckAndCreateSessionController);
 
+
 export default authRoutes;

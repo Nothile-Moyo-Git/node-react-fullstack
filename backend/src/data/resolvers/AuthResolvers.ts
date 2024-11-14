@@ -376,7 +376,7 @@ const PostGetUserDetailsController = async (parent : any, args : any) => {
         });
 
         // Try to fetch the user using the userId
-        const user = await usersCollection.findOne({ _id : userId });
+        const user = await usersCollection.findOne({ _id : new ObjectId(userId) });
 
         return {  
             user : user,

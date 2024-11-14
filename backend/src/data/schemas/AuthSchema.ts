@@ -28,7 +28,7 @@ const UserType = new GraphQLObjectType({
 const AuthQuery = new GraphQLObjectType({
   name: 'AuthQuery',
   fields : {
-    userStatusResponse : {
+    PostUserStatusResponse : {
       type : new GraphQLObjectType({
         name : "getUserStatus",
         fields : {
@@ -40,7 +40,7 @@ const AuthQuery = new GraphQLObjectType({
       },
       resolve : AuthResolvers.GetUserStatusResolver
     },
-    userDetailsResponse : {
+    PostUserDetailsResponse : {
       type : new GraphQLObjectType({
         name : "getUserDetails",
         fields : {
