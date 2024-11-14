@@ -27,17 +27,41 @@ const App : FC = () => {
     // Get user details if the user is authenticated from the backend
     const getUserDetails = async (userId : string) => {
 
-      // We assign Formdata here so we can use this with cors in the backend
-      const fields = new FormData();
-      fields.append("userId", userId);
-      fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
-
-      const result = await fetch(`http://localhost:4000/user/${userId}`, {
+      // Perform the fetch request using GraphQL in order to get the user details on the main app page
+      // Note: Please convert your id to an objectId in the backend
+      const response = await fetch(`/graphql/auth`, {
         method : "POST",
-        body : fields
+        headers : {
+            "Content-Type": "application/json",
+            Accept: "application/json", 
+        },
+        body : JSON.stringify({
+          query :`
+            query PostUserDetailsResponse($_id : String!, $token : String!){
+              PostUserDetailsResponse(_id : $_id, token : $token){
+                user {
+                  _id
+                  name
+                  email
+                  password
+                  confirmPassword
+                  status
+                  posts
+                }
+                sessionCreated
+                sessionExpires
+                }
+              }
+            `,
+            variables : {
+              _id : userId,
+              token : appContextInstance?.token ? appContextInstance.token : ""
+            }
+        })
       });
 
-      const data = await result.json();
+      const userDetailsResponse = await response.json();
+      const data = userDetailsResponse.data.PostUserDetailsResponse;
 
       // Set the user details so 
       setUser(data.user);

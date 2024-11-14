@@ -38,7 +38,7 @@ const ExpiryWrapper : FC<ComponentProps> = ({ lengthInSeconds, children }) => {
 
         }, expiryDate);
 
-    },[]);
+    },[expiryDate]);
 
     // Determine which component we're going to render
     const componentToRender = shouldRender ? children : null;

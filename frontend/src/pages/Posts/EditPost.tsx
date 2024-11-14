@@ -47,7 +47,6 @@ export const EditPost : FC = () => {
     const location = useLocation();
 
     // State for the page
-    const [image, setImage] = useState<string>();
     const [postData, setPostData] = useState<Post>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
