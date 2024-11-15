@@ -91,7 +91,7 @@ export const CreatePostComponent : FC = () => {
         uploadFile &&  fields.append("image", uploadFile);
         fields.append('content', content);
         userId && fields.append('userId', userId);
-        
+
         // Perform the API request to the backend
         const response = await fetch('http://localhost:4000/create-post', {
             method : "POST",
