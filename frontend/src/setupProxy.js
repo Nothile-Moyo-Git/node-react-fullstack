@@ -6,6 +6,8 @@ const target = process.env.NODE_ENV === 'development'
 : process.env.API_URL_PROD
 
 module.exports = function(app) {
+
+  // Handle GraphQL endpoints
   app.use(
     '/graphql',
     createProxyMiddleware({
@@ -13,4 +15,13 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+
+  // Handle rest endpoints which aren't handled by GraphQL
+  app.use(
+    '/rest',
+    createProxyMiddleware({
+      target : `${target}/rest`
+    })
+  );
 };
+
