@@ -85,20 +85,49 @@ export const CreatePostComponent : FC = () => {
         if (titleRef.current) { title = titleRef.current.value; }
         if (contentRef.current) { content = contentRef.current.value; }
 
-        // Set form inputs for the api request to the bakend
+        // Set form inputs for the api requests to the bakend
         const fields = new FormData();
-        fields.append('title', title);
         uploadFile &&  fields.append("image", uploadFile);
-        fields.append('content', content);
-        userId && fields.append('userId', userId);
 
-        // Perform the API request to the backend
-        const response = await fetch('http://localhost:4000/create-post', {
-            method : "POST",
+        // File upload response
+        const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
+            method : 'POST',
             body : fields
         });
 
-        const data : CreatePostResponse = await response.json();
+        const fileUploadData =  await fileUploadResponse.json();
+
+        const createPostFields = new FormData();
+        createPostFields.append('title', title);
+        createPostFields.append('content', content);
+        userId && createPostFields.append('userId', userId);
+
+        // Perform the API request to the backend
+        const createPostResponse = await fetch('/graphql/posts', {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    mutation signupUserResponse($title : String!, $content : String!, $userId : String!){
+                        signupUserResponse(title : $title, content : $content, userId : $userId){
+                            title,
+                            content,
+                            userId
+                        }
+                    }
+                `,
+                variables : {
+                    title : title,
+                    content : content,
+                    userId : userId
+                }
+            })
+        });
+
+        const data : CreatePostResponse = await createPostResponse.json();
 
         // Set & handle validation on the front end
         setIsFormValid(data.success);

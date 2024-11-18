@@ -58,7 +58,20 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         // Prevent the page from reloading
         event.preventDefault();
 
-        
+        // Setting the fields
+        const fields = new FormData();
+        uploadFile &&  fields.append("image", uploadFile);
+
+        const response = await fetch(`/rest/post/file-upload`,{
+            method : 'POST',
+            body : fields 
+        });
+
+        const data = await response.json();
+
+        console.clear();
+        console.log("Data");
+        console.log(data);
 
     };
 

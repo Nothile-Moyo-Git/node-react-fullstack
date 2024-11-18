@@ -199,16 +199,20 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
                 creator : null,
                 isImageUrlValid : false,
                 isFileSizeValid : false,
-                isFileTypeValid : true,
+                isFileTypeValid : false,
+                isFileValid : false,
                 message : 'Error: No Image Provided',
                 mimeType : null,
-                success : false
+                success : false,
+                fileName : null,
+                imageUrl : null
             });
 
         } else {
 
             // Extract feed values from the request
             const imageUrl = request.file.path;
+            const fileName = request.file.filename;
 
             // Validate inputs based on file type or length
             const isImageUrlValid : boolean = imageUrl.length > 0;
@@ -227,9 +231,12 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
                     isImageUrlValid : isImageUrlValid,
                     isFileSizeValid : isFileSizeValid,
                     isFileTypeValid : isFileTypeValid,
+                    isFileValid : isFileValid,
                     message : "Error, Image upload failed, please check the logs",
                     mimeType : null,
-                    success : false
+                    success : false,
+                    fileName : null,
+                    imageUrl : null
                 });
 
             }else{
@@ -239,15 +246,16 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
                     isImageUrlValid : true,
                     isFileSizeValid : true,
                     isFileTypeValid : true,
+                    isFileValid : isFileValid,
                     message : "Success, image has been uploaded",
                     mimeType : fileMimeType,
-                    success : true
+                    success : true,
+                    imageUrl : imageUrl,
+                    fileName : fileName
                 });
-
             } 
-
         }
-        
+
     } catch(error) {
 
         // Error handling, you should see this in your backend server logs if the upload fails
