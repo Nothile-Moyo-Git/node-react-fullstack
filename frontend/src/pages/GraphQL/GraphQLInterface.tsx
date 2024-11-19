@@ -53,7 +53,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         }
     };
     
-    const createDummyPostRsolver = async (event : FormEvent) => {
+    const createDummyPostResolver = async (event : FormEvent) => {
 
         // Prevent the page from reloading
         event.preventDefault();
@@ -62,6 +62,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
         const fields = new FormData();
         uploadFile &&  fields.append("image", uploadFile);
 
+        // Upload the file
         const response = await fetch(`/rest/post/file-upload`,{
             method : 'POST',
             body : fields 
@@ -69,7 +70,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
         const data = await response.json();
 
-        console.clear();
+        console.log("\n\n");
         console.log("Data");
         console.log(data);
 
@@ -187,7 +188,7 @@ const GraphQLInterface : FC<GraphQLInterfaceProps> = () => {
 
             <br/>
 
-            <Form onSubmit={createDummyPostRsolver}>
+            <Form onSubmit={createDummyPostResolver}>
 
                 <Field>
                     <Label

@@ -95,12 +95,20 @@ export const CreatePostComponent : FC = () => {
             body : fields
         });
 
-        const fileUploadData =  await fileUploadResponse.json();
+        // Get the file data we need to send to the api request
+        const fileUploadData = await fileUploadResponse.json();
+        const fileData = { 
+            fileName : fileUploadData.fileName,
+            imageUrl : fileUploadData.imageUrl,
+            isFileValid : fileUploadData.isFileValid,
+            isFileSizeValid : fileUploadData.isFileSizeValid,
+            isFileTypeValid : fileUploadData.isFileTypeValid,
+            isImageUrlValid : fileUploadData.isImageUrlValid
+        };
 
-        const createPostFields = new FormData();
-        createPostFields.append('title', title);
-        createPostFields.append('content', content);
-        userId && createPostFields.append('userId', userId);
+        console.log("\n\n");
+        console.log("File upload data");
+        console.log(fileUploadData);
 
         // Perform the API request to the backend
         const createPostResponse = await fetch('/graphql/posts', {
@@ -111,8 +119,8 @@ export const CreatePostComponent : FC = () => {
             },
             body : JSON.stringify({
                 query :`
-                    mutation signupUserResponse($title : String!, $content : String!, $userId : String!){
-                        signupUserResponse(title : $title, content : $content, userId : $userId){
+                    mutation PostCreatPostResponse($title : String!, $content : String!, $userId : String!){
+                        PostCreatPostResponse(title : $title, content : $content, userId : $userId){
                             title,
                             content,
                             userId
@@ -127,7 +135,11 @@ export const CreatePostComponent : FC = () => {
             })
         });
 
-        const data : CreatePostResponse = await createPostResponse.json();
+        console.log("\n\n");
+        console.log("Create post response");
+        console.log(createPostResponse);
+
+        /* const data : CreatePostResponse = await createPostResponse.json();
 
         // Set & handle validation on the front end
         setIsFormValid(data.success);
@@ -138,7 +150,7 @@ export const CreatePostComponent : FC = () => {
         if (data.success === true) {
             alert("Post successfully submitted");
             window.location.href = `${BASENAME}/posts`;
-        }
+        } */
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend

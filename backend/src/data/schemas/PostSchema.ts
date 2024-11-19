@@ -27,6 +27,19 @@ const PostType = new GraphQLObjectType({
     }
 });
 
+// Defining the type for file data when we're creating posts
+const FileDataType = new GraphQLObjectType({
+    name : "file",
+    fields : {
+        fileName : { type : GraphQLString },
+        imageUrl : { type : GraphQLString },
+        isImageUrlValid : { type : GraphQLBoolean },
+        isFileSizeValid : { type : GraphQLBoolean },
+        isFileTypeValid : { type : GraphQLBoolean },
+        isFileValid : { type : GraphQLBoolean },
+    }
+});
+
 // Define the post query request handlers for GraphQL
 const PostQueries = new GraphQLObjectType({
     name : 'PostQuery',
@@ -65,6 +78,7 @@ const PostMutations = new GraphQLObjectType({
                 title : { type : GraphQLString },
                 content : { type : GraphQLString },
                 userId : { type : GraphQLString },
+                fileData : { type : FileDataType }
             },
             resolve : postResolvers.PostCreatePostResolver
         }
