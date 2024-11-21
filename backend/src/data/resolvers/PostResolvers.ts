@@ -112,8 +112,9 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         // validate our inputs
 
         return {
-            status : 201,
-            success : true
+            isTitleValid : true,
+            success : true,
+            message : "Test successful"
         };
 
     }catch(error){
@@ -128,7 +129,8 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
 
         return {
             status : 500,
-            success : false
+            success : false,
+            message : "Test ignored"
         };
     }
 };
