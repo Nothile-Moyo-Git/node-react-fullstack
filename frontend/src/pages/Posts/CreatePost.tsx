@@ -119,25 +119,33 @@ export const CreatePostComponent : FC = () => {
             },
             body : JSON.stringify({
                 query :`
-                    mutation PostCreatPostResponse($title : String!, $content : String!, $userId : String!){
-                        PostCreatPostResponse(title : $title, content : $content, userId : $userId){
-                            title,
-                            content,
-                            userId
+                    mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
+                        PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
+                            success
+                            message
+                            isTitleValid
                         }
                     }
                 `,
                 variables : {
                     title : title,
                     content : content,
-                    userId : userId
+                    userId : userId,
+                    fileData : fileData
                 }
             })
         });
 
+        // Extract the data from the stream
+        const createPostData = await createPostResponse.json();
+
         console.log("\n\n");
         console.log("Create post response");
         console.log(createPostResponse);
+
+        console.log("\n\n");
+        console.log("Create post data");
+        console.log(createPostData);
 
         /* const data : CreatePostResponse = await createPostResponse.json();
 

@@ -8,7 +8,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLList } from "graphql";
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLInputObjectType } from "graphql";
 import postResolvers from "../resolvers/PostResolvers.ts";
 
 // Create the post type definition
@@ -28,8 +28,8 @@ const PostType = new GraphQLObjectType({
 });
 
 // Defining the type for file data when we're creating posts
-const FileDataType = new GraphQLObjectType({
-    name : "file",
+const FileDataInputType = new GraphQLInputObjectType({
+    name : "FileInput",
     fields : {
         fileName : { type : GraphQLString },
         imageUrl : { type : GraphQLString },
@@ -39,6 +39,7 @@ const FileDataType = new GraphQLObjectType({
         isFileValid : { type : GraphQLBoolean },
     }
 });
+
 
 // Define the post query request handlers for GraphQL
 const PostQueries = new GraphQLObjectType({
@@ -66,19 +67,20 @@ const PostQueries = new GraphQLObjectType({
 const PostMutations = new GraphQLObjectType({
     name : "PostMutations",
     fields : {
-        PostCreatPostResponse : {
+        PostCreatePostResponse : {
             type : new GraphQLObjectType({
                 name : "createPost",
                 fields  : {
-                    status : { type : GraphQLInt },
-                    message : { type : GraphQLString }
+                    success : { type : GraphQLBoolean },
+                    message : { type : GraphQLString },
+                    isTitleValid : { type : GraphQLBoolean }
                 }
             }),
             args : {
                 title : { type : GraphQLString },
                 content : { type : GraphQLString },
                 userId : { type : GraphQLString },
-                fileData : { type : FileDataType }
+                fileData : { type : FileDataInputType }
             },
             resolve : postResolvers.PostCreatePostResolver
         }
