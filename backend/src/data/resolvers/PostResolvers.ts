@@ -9,7 +9,9 @@
  */
 
 import { MONGODB_URI } from '../connection.ts';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
+import Post from '../../models/post.ts';
+import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -92,24 +94,56 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         const userId = args.userId;
         const fileData = args.fileData;
 
-        console.log("\n\n");
+        // Delete the image
+        console.log("Deleting image");
+        deleteFile(fileData.imageUrl);
+
+        console.log("\n");
         console.log("Title");
         console.log(title);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("Content");
         console.log(content);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("userId");
         console.log(userId);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("File data");
         console.log(fileData);
         console.log("\n\n");
 
-        // validate our inputs
+        // Validate our inputs
+        const isTitleValid : boolean = title.length >= 3;
+        const isContentValid : boolean = content.length >= 6 && content.length <= 400;
+
+        // Getting file data
+        const fileName : string = fileData.fileName;
+        const imageUrl : string = fileData.imageUrl;
+        const isFileValid : boolean = fileData.isFileValid;
+        const isFileTypeValid : boolean = fileData.isFileTypeValid;
+        const isImageUrlValid : boolean = fileData.isImageUrlValid;
+        const isFileSizeValid : boolean = fileData.isFileSizeValid;
+
+        // If any of our conditions are invalid, delete the file we just uploaded
+        // if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { deleteFile(imageUrl); }
+
+        const post = new Post({
+            fileName : fileName,
+            fileLastUpdated : getCurrentMonthAndYear(),
+            title : title,
+            content : content,
+            imageUrl : imageUrl,
+            creator : new ObjectId(userId)
+        });
+
+
+        console.log("Post");
+        console.log(post);
+        console.log("\n");
+
 
         return {
             isTitleValid : true,
