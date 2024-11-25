@@ -154,13 +154,13 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         // Check if we have a user
         if (user && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
 
-            await post.save();
+            // await post.save();
 
             // Add reference details of the post to the user
             user.posts?.push(post);
 
             // Update the user
-            await user.save();
+            // await user.save();
 
             /*
             if (getIO) {
@@ -178,7 +178,12 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         }
 
         return {
-            isTitleValid : true,
+            status : 200,
+            isContentValid : isContentValid,
+            isTitleValid : isTitleValid,
+            isFileValid : isFileValid,
+            isFileTypeValid : isFileTypeValid,
+            isFileSizeValid : isFileSizeValid,
             success : true,
             message : "Test successful"
         };
@@ -195,6 +200,11 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
 
         return {
             status : 500,
+            isContentValid : false,
+            isTitleValid : false,
+            isFileValid : false,
+            isFileTypeValid : false,
+            isFileZievalid : false,
             success : false,
             message : "Test ignored"
         };
