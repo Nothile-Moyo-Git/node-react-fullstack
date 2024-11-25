@@ -9,7 +9,11 @@
  */
 
 import { MONGODB_URI } from '../connection.ts';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
+import Post from '../../models/post.ts';
+import User from '../../models/user.ts';
+import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
+import { getIO } from '../../socket.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -92,24 +96,86 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         const userId = args.userId;
         const fileData = args.fileData;
 
-        console.log("\n\n");
+        // Delete the image
+        console.log("Deleting image");
+        deleteFile(fileData.imageUrl);
+
+        // Validate our inputs
+        const isTitleValid : boolean = title.length >= 3;
+        const isContentValid : boolean = content.length >= 6 && content.length <= 400;
+
+        // Getting file data
+        const fileName : string = fileData.fileName;
+        const imageUrl : string = fileData.imageUrl;
+        const isFileValid : boolean = fileData.isFileValid;
+        const isFileTypeValid : boolean = fileData.isFileTypeValid;
+        const isImageUrlValid : boolean = fileData.isImageUrlValid;
+        const isFileSizeValid : boolean = fileData.isFileSizeValid;
+
+        // If any of our conditions are invalid, delete the file we just uploaded
+        // if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { deleteFile(imageUrl); }
+
+        const post = new Post({
+            fileName : fileName,
+            fileLastUpdated : getCurrentMonthAndYear(),
+            title : title,
+            content : content,
+            imageUrl : imageUrl,
+            creator : new ObjectId(userId)
+        });
+
+        const user = await User.findById(new ObjectId(userId));
+
+        console.log("\n");
         console.log("Title");
         console.log(title);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("Content");
         console.log(content);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("userId");
         console.log(userId);
-        console.log("\n\n");
+        console.log("\n");
 
         console.log("File data");
         console.log(fileData);
-        console.log("\n\n");
+        console.log("\n");
 
-        // validate our inputs
+        console.log("Post");
+        console.log(post);
+        console.log("\n");
+
+        console.log("User");
+        console.log(user);
+        console.log("\n");
+
+        // Check if we have a user
+        if (user && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
+
+            await post.save();
+
+            // Add reference details of the post to the user
+            user.posts?.push(post);
+
+            // Update the user
+            await user.save();
+
+            /*
+            if (getIO) {
+
+                // Send the response to the front end
+                getIO().emit('post added', {
+                    post : post
+                });
+            } */
+
+   
+
+        } else {
+
+        }
 
         return {
             isTitleValid : true,
