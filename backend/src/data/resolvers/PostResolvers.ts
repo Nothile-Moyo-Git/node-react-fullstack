@@ -11,7 +11,9 @@
 import { MONGODB_URI } from '../connection.ts';
 import { MongoClient, ObjectId } from 'mongodb';
 import Post from '../../models/post.ts';
+import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
+import { getIO } from '../../socket.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -98,23 +100,6 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         console.log("Deleting image");
         deleteFile(fileData.imageUrl);
 
-        console.log("\n");
-        console.log("Title");
-        console.log(title);
-        console.log("\n");
-
-        console.log("Content");
-        console.log(content);
-        console.log("\n");
-
-        console.log("userId");
-        console.log(userId);
-        console.log("\n");
-
-        console.log("File data");
-        console.log(fileData);
-        console.log("\n\n");
-
         // Validate our inputs
         const isTitleValid : boolean = title.length >= 3;
         const isContentValid : boolean = content.length >= 6 && content.length <= 400;
@@ -139,11 +124,58 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             creator : new ObjectId(userId)
         });
 
+        const user = await User.findById(new ObjectId(userId));
+
+        console.log("\n");
+        console.log("Title");
+        console.log(title);
+        console.log("\n");
+
+        console.log("Content");
+        console.log(content);
+        console.log("\n");
+
+        console.log("userId");
+        console.log(userId);
+        console.log("\n");
+
+        console.log("File data");
+        console.log(fileData);
+        console.log("\n");
 
         console.log("Post");
         console.log(post);
         console.log("\n");
 
+        console.log("User");
+        console.log(user);
+        console.log("\n");
+
+        // Check if we have a user
+        if (user && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
+
+            await post.save();
+
+            // Add reference details of the post to the user
+            user.posts?.push(post);
+
+            // Update the user
+            await user.save();
+
+            /*
+            if (getIO) {
+
+                // Send the response to the front end
+                getIO().emit('post added', {
+                    post : post
+                });
+            } */
+
+   
+
+        } else {
+
+        }
 
         return {
             isTitleValid : true,
