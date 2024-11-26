@@ -162,14 +162,12 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             // Update the user
             // await user.save();
 
-            /*
-            if (getIO) {
+            // Instantiate 
+            const io = getIO();
+            
+            // Send the response to the front end
+            // io ? io.emit('post added', { post : post }) : console.log("Socket.IO server is not initialized; skipping emit.");
 
-                // Send the response to the front end
-                getIO().emit('post added', {
-                    post : post
-                });
-            } */
 
    
 

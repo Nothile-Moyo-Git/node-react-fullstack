@@ -152,7 +152,8 @@ export const CreatePostComponent : FC = () => {
         console.log("Create post data");
         console.log(createPostData);
 
-        /* const data : CreatePostResponse = await createPostResponse.json();
+        const data = createPostData.data.PostCreatePostResponse;
+
 
         // Set & handle validation on the front end
         setIsFormValid(data.success);
@@ -163,7 +164,8 @@ export const CreatePostComponent : FC = () => {
         if (data.success === true) {
             alert("Post successfully submitted");
             window.location.href = `${BASENAME}/posts`;
-        } */
+        }
+        
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend

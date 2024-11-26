@@ -123,6 +123,11 @@ export interface AuthRequestInterface extends Request {
     }
 }
 
+export interface SocketRequest extends Request {
+    message : string,
+    post : PostsInterface
+}
+
 export interface FeedRequestInterface extends Request {
     file: Express.Multer.File,
     filename : string,
