@@ -121,6 +121,7 @@ export const CreatePostComponent : FC = () => {
                 query :`
                     mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
                         PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
+                            user
                             status
                             success
                             message
