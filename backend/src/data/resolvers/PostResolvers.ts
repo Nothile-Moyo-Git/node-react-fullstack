@@ -162,29 +162,32 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             // Update the user
             // await user.save();
 
-            // Instantiate 
-            const io = getIO();
-            
-            // Send the response to the front end
-            // io ? io.emit('post added', { post : post }) : console.log("Socket.IO server is not initialized; skipping emit.");
-
-
-   
+            return {
+                user : user._id,
+                status : 201,
+                isContentValid : isContentValid,
+                isTitleValid : isTitleValid,
+                isFileValid : isFileValid,
+                isFileTypeValid : isFileTypeValid,
+                isFileSizeValid : isFileSizeValid,
+                success : true,
+                message : "Post created successfully"
+            };
 
         } else {
 
+            return {
+                user : user ? user._id : null,
+                status : 421,
+                isContentValid : isContentValid,
+                isTitleValid : isTitleValid,
+                isFileValid : isFileValid,
+                isFileTypeValid : isFileTypeValid,
+                isFileSizeValid : isFileSizeValid,
+                success : false,
+                message : "Post creation unsuccessful"
+            };
         }
-
-        return {
-            status : 200,
-            isContentValid : isContentValid,
-            isTitleValid : isTitleValid,
-            isFileValid : isFileValid,
-            isFileTypeValid : isFileTypeValid,
-            isFileSizeValid : isFileSizeValid,
-            success : true,
-            message : "Test successful"
-        };
 
     }catch(error){
 
@@ -204,7 +207,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             isFileTypeValid : false,
             isFileZievalid : false,
             success : false,
-            message : "Test ignored"
+            message : "500 : Request was unsuccessful"
         };
     }
 };

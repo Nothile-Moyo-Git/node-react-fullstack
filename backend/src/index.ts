@@ -17,6 +17,7 @@ import path from "path";
 import { fileURLToPath } from 'url';
 import feedRoutes from "./routes/feed.ts";
 import errorRoutes from "./routes/feed.ts";
+import socketRoutes from "./routes/socket.ts";
 import chatRoutes from "./routes/chat.ts";
 import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
@@ -151,6 +152,7 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 app.use( feedRoutes );
 app.use( authRoutes );
 app.use( chatRoutes );
+app.use( socketRoutes );
 
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({
