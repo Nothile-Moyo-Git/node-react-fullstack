@@ -13,6 +13,6 @@ import { PostEmitPostCreation } from '../controllers/socket.ts';
 const socketRoutes = express.Router({ strict : true });
 
 // Assign routes to endpoints
-socketRoutes.post("/rest/socket/emit/post-created", PostEmitPostCreation);
+socketRoutes.get("/rest/socket/emit/post-created", PostEmitPostCreation);
 
 export default socketRoutes;

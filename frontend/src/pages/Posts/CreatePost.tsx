@@ -87,7 +87,7 @@ export const CreatePostComponent : FC = () => {
 
         // Set form inputs for the api requests to the bakend
         const fields = new FormData();
-        uploadFile &&  fields.append("image", uploadFile);
+        uploadFile && fields.append("image", uploadFile);
 
         // File upload response
         const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
@@ -121,6 +121,7 @@ export const CreatePostComponent : FC = () => {
                 query :`
                     mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
                         PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
+                            postId
                             user
                             status
                             success
@@ -155,7 +156,6 @@ export const CreatePostComponent : FC = () => {
 
         const data = createPostData.data.PostCreatePostResponse;
 
-
         // Set & handle validation on the front end
         setIsFormValid(data.success);
         setIsFileValid(data.isFileValid);
@@ -163,8 +163,19 @@ export const CreatePostComponent : FC = () => {
         setIsContentValid(data.isContentValid);
 
         if (data.success === true) {
-            alert("Post successfully submitted");
-            window.location.href = `${BASENAME}/posts`;
+
+            // Created form data
+            const fields = new FormData();
+            fields.append('postId', data.postId);
+
+            // Query the backend with post data
+            await fetch('/rest/socket/emit/post-created', {
+                method : 'POST',
+                body : fields
+            });
+
+            // alert("Post successfully submitted");
+            // window.location.href = `${BASENAME}/posts`;
         }
         
     };
