@@ -76,95 +76,124 @@ export const CreatePostComponent : FC = () => {
 
         event.preventDefault();
 
-        const userId = appContextInstance?.userId;
+        try {
 
-        let title = "";
-        let content = "";
+            const userId = appContextInstance?.userId;
 
-        // Extract inputs
-        if (titleRef.current) { title = titleRef.current.value; }
-        if (contentRef.current) { content = contentRef.current.value; }
-
-        // Set form inputs for the api requests to the bakend
-        const fields = new FormData();
-        uploadFile &&  fields.append("image", uploadFile);
-
-        // File upload response
-        const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
-            method : 'POST',
-            body : fields
-        });
-
-        // Get the file data we need to send to the api request
-        const fileUploadData = await fileUploadResponse.json();
-        const fileData = { 
-            fileName : fileUploadData.fileName,
-            imageUrl : fileUploadData.imageUrl,
-            isFileValid : fileUploadData.isFileValid,
-            isFileSizeValid : fileUploadData.isFileSizeValid,
-            isFileTypeValid : fileUploadData.isFileTypeValid,
-            isImageUrlValid : fileUploadData.isImageUrlValid
-        };
-
-        console.log("\n\n");
-        console.log("File upload data");
-        console.log(fileUploadData);
-
-        // Perform the API request to the backend
-        const createPostResponse = await fetch('/graphql/posts', {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                Accept: "application/json", 
-            },
-            body : JSON.stringify({
-                query :`
-                    mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
-                        PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
-                            user
-                            status
-                            success
-                            message
-                            isContentValid
-                            isTitleValid
-                            isFileValid
-                            isFileTypeValid
-                            isFileSizeValid
+            let title = "";
+            let content = "";
+    
+            // Extract inputs
+            if (titleRef.current) { title = titleRef.current.value; }
+            if (contentRef.current) { content = contentRef.current.value; }
+    
+            // Set form inputs for the api requests to the bakend
+            const fields = new FormData();
+            uploadFile && fields.append("image", uploadFile);
+    
+            // File upload response
+            const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
+                method : 'POST',
+                body : fields
+            });
+    
+            // Get the file data we need to send to the api request
+            const fileUploadData = await fileUploadResponse.json();
+            const fileData = { 
+                fileName : fileUploadData.fileName,
+                imageUrl : fileUploadData.imageUrl,
+                isFileValid : fileUploadData.isFileValid,
+                isFileSizeValid : fileUploadData.isFileSizeValid,
+                isFileTypeValid : fileUploadData.isFileTypeValid,
+                isImageUrlValid : fileUploadData.isImageUrlValid
+            };
+    
+            console.log("\n\n");
+            console.log("File upload data");
+            console.log(fileUploadData);
+    
+            // Perform the API request to the backend
+            const createPostResponse = await fetch('/graphql/posts', {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
+                            PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
+                                post {
+                                    _id
+                                    fileLastUpdated
+                                    fileName
+                                    title
+                                    imageUrl
+                                    content
+                                    creator
+                                    createdAt
+                                    updatedAt
+                                }
+                                user
+                                status
+                                success
+                                message
+                                isContentValid
+                                isTitleValid
+                                isFileValid
+                                isFileTypeValid
+                                isFileSizeValid
+                            }
                         }
+                    `,
+                    variables : {
+                        title : title,
+                        content : content,
+                        userId : userId,
+                        fileData : fileData
                     }
-                `,
-                variables : {
-                    title : title,
-                    content : content,
-                    userId : userId,
-                    fileData : fileData
-                }
-            })
-        });
+                })
+            });
+    
+            // Extract the data from the stream
+            const createPostData = await createPostResponse.json();
+    
+            console.log("\n\n");
+            console.log("Create post response");
+            console.log(createPostResponse);
+    
+            console.log("\n\n");
+            console.log("Create post data");
+            console.log(createPostData);
+    
+            const data = createPostData.data.PostCreatePostResponse;
+    
+            // Set & handle validation on the front end
+            setIsFormValid(data.success);
+            setIsFileValid(data.isFileValid);
+            setIsTitleValid(data.isTitleValid);
+            setIsContentValid(data.isContentValid);
+    
+            if (data.success === true) {
+    
+                // Created form data
+                const fields = new FormData();
+                fields.append('post', data.post);
+    
+                // Query the backend with post data
+                await fetch('/rest/socket/emit/post-created', {
+                    method : 'POST',
+                    body : fields
+                });
+    
+                // alert("Post successfully submitted");
+                // window.location.href = `${BASENAME}/posts`;
+            }
 
-        // Extract the data from the stream
-        const createPostData = await createPostResponse.json();
+        }catch(error){
 
-        console.log("\n\n");
-        console.log("Create post response");
-        console.log(createPostResponse);
-
-        console.log("\n\n");
-        console.log("Create post data");
-        console.log(createPostData);
-
-        const data = createPostData.data.PostCreatePostResponse;
-
-
-        // Set & handle validation on the front end
-        setIsFormValid(data.success);
-        setIsFileValid(data.isFileValid);
-        setIsTitleValid(data.isTitleValid);
-        setIsContentValid(data.isContentValid);
-
-        if (data.success === true) {
-            alert("Post successfully submitted");
-            window.location.href = `${BASENAME}/posts`;
+            console.warn("Error");
+            console.warn(error);
         }
         
     };

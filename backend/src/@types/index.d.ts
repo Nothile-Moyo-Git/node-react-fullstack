@@ -58,6 +58,12 @@ export interface ChatInterface {
     userIds : ObjectId[]
 }
 
+export interface CreatorInterface {
+    type : ObjectId,
+    ref : string,
+    required : true
+}
+
 export interface PostsInterface {
     fileLastUpdated : string,
     fileName : string,
@@ -65,11 +71,7 @@ export interface PostsInterface {
     title : string,
     imageUrl : string,
     content : string,
-    creator : {
-        type : ObjectId,
-        ref : string,
-        required : true
-    }
+    creator : CreatorInterface | string
 }
 
 export interface PostsMethodsInterface {
@@ -124,8 +126,13 @@ export interface AuthRequestInterface extends Request {
 }
 
 export interface SocketRequest extends Request {
-    message : string,
-    post : PostsInterface
+    fileLastUpdated ?: string,
+    fileName ?: string,
+    _id ?: ObjectId,
+    title ?: string,
+    imageUrl ?: string,
+    content ?: string,
+    creator ?: CreatorInterface | string
 }
 
 export interface FeedRequestInterface extends Request {
