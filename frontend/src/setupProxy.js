@@ -20,7 +20,8 @@ module.exports = function(app) {
   app.use(
     '/rest',
     createProxyMiddleware({
-      target : `${target}/rest`
+      target : `${target}/rest`,
+      changeOrigin : true
     })
   );
 };

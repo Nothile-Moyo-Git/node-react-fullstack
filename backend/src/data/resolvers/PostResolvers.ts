@@ -163,7 +163,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             // await user.save();
 
             return {
-                postId : post._id,
+                post : post,
                 user : user._id,
                 status : 201,
                 isContentValid : isContentValid,
@@ -178,7 +178,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         } else {
 
             return {
-                postId : null,
+                post : null,
                 user : user ? user._id : null,
                 status : 421,
                 isContentValid : isContentValid,
@@ -202,6 +202,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         console.log("\n\n");
 
         return {
+            post : null,
             status : 500,
             isContentValid : false,
             isTitleValid : false,

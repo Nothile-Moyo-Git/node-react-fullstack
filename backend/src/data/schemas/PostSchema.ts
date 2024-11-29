@@ -71,7 +71,7 @@ const PostMutations = new GraphQLObjectType({
             type : new GraphQLObjectType({
                 name : "createPost",
                 fields  : {
-                    postId : { type : GraphQLString },
+                    post : { type : PostType },
                     user : { type : GraphQLString },
                     status : { type : GraphQLInt },
                     success : { type : GraphQLBoolean },

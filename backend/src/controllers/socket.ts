@@ -28,9 +28,12 @@ export const PostEmitPostCreation = (request : SocketRequest, response : Respons
     // Get the post body of the request
     const post = request.body.post;
 
+    console.log("Post");
+    console.log(request.body);
+
     // Send the response to the front end
-    getIO().emit('post added', {
+    /* getIO().emit('post added', {
         post : post
-    });
+    }); */
     
 };
