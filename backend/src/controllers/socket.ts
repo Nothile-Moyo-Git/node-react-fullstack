@@ -26,7 +26,7 @@ import { getIO } from '../socket.ts';
 export const PostEmitPostCreation = (request : SocketRequest, response : Response, next : NextFunction) => {
     
     // Get the post body of the request
-    const post = request.body.post;
+    const post = request.body
 
     console.log("Post");
     console.log(request.body);

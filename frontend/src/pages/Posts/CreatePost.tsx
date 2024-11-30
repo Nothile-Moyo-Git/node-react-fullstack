@@ -167,6 +167,11 @@ export const CreatePostComponent : FC = () => {
             console.log(createPostData);
     
             const data = createPostData.data.PostCreatePostResponse;
+
+            console.log("\n\n");
+            console.log("Data");
+            console.log(data);
+            console.log("\n\n");
     
             // Set & handle validation on the front end
             setIsFormValid(data.success);
@@ -178,13 +183,25 @@ export const CreatePostComponent : FC = () => {
     
                 // Created form data
                 const fields = new FormData();
-                fields.append('post', data.post);
-    
+
+                for ( const property in data.post ) {
+
+                    console.log("property");
+                    console.log(data.post[property]);
+
+                    fields.append(property, String(data.post[property]));
+                }
+
+                console.log("\n\n");
+                console.log("fields");
+                console.log(fields);
+
+                /*
                 // Query the backend with post data
                 await fetch('/rest/socket/emit/post-created', {
                     method : 'POST',
                     body : fields
-                });
+                }); */
     
                 // alert("Post successfully submitted");
                 // window.location.href = `${BASENAME}/posts`;
