@@ -186,22 +186,15 @@ export const CreatePostComponent : FC = () => {
 
                 for ( const property in data.post ) {
 
-                    console.log("property");
-                    console.log(data.post[property]);
-
-                    fields.append(property, String(data.post[property]));
+                    // Pass through non null or undefined values as FormData can only take strings or blobs
+                    data.post[property] && fields.append(property, data.post[property]);
                 }
 
-                console.log("\n\n");
-                console.log("fields");
-                console.log(fields);
-
-                /*
                 // Query the backend with post data
                 await fetch('/rest/socket/emit/post-created', {
                     method : 'POST',
                     body : fields
-                }); */
+                });
     
                 // alert("Post successfully submitted");
                 // window.location.href = `${BASENAME}/posts`;
