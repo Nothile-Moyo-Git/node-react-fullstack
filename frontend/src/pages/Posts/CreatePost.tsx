@@ -108,10 +108,6 @@ export const CreatePostComponent : FC = () => {
                 isImageUrlValid : fileUploadData.isImageUrlValid
             };
     
-            console.log("\n\n");
-            console.log("File upload data");
-            console.log(fileUploadData);
-    
             // Perform the API request to the backend
             const createPostResponse = await fetch('/graphql/posts', {
                 method : "POST",
@@ -158,20 +154,8 @@ export const CreatePostComponent : FC = () => {
             // Extract the data from the stream
             const createPostData = await createPostResponse.json();
     
-            console.log("\n\n");
-            console.log("Create post response");
-            console.log(createPostResponse);
-    
-            console.log("\n\n");
-            console.log("Create post data");
-            console.log(createPostData);
-    
+            // Get the GraphQL request response
             const data = createPostData.data.PostCreatePostResponse;
-
-            console.log("\n\n");
-            console.log("Data");
-            console.log(data);
-            console.log("\n\n");
     
             // Set & handle validation on the front end
             setIsFormValid(data.success);
@@ -196,8 +180,8 @@ export const CreatePostComponent : FC = () => {
                     body : fields
                 });
     
-                // alert("Post successfully submitted");
-                // window.location.href = `${BASENAME}/posts`;
+                alert("Post successfully submitted");
+                window.location.href = `${BASENAME}/posts`;
             }
 
         }catch(error){

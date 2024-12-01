@@ -96,10 +96,6 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         const userId = args.userId;
         const fileData = args.fileData;
 
-        // Delete the image
-        console.log("Deleting image");
-        deleteFile(fileData.imageUrl);
-
         // Validate our inputs
         const isTitleValid : boolean = title.length >= 3;
         const isContentValid : boolean = content.length >= 6 && content.length <= 400;
@@ -113,7 +109,9 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         const isFileSizeValid : boolean = fileData.isFileSizeValid;
 
         // If any of our conditions are invalid, delete the file we just uploaded
-        // if ( !isImageUrlValid || !isTitleValid || !isContentValid ) { deleteFile(imageUrl); }
+        if ( !isImageUrlValid || !isTitleValid || !isContentValid || !isFileValid || !isFileTypeValid || !isImageUrlValid ) { 
+            deleteFile(imageUrl); 
+        }
 
         const post = new Post({
             fileName : fileName,
@@ -124,43 +122,19 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             creator : new ObjectId(userId)
         });
 
+        // Get the current user so we can create a relation to the posts collection
         const user = await User.findById(new ObjectId(userId));
-
-        console.log("\n");
-        console.log("Title");
-        console.log(title);
-        console.log("\n");
-
-        console.log("Content");
-        console.log(content);
-        console.log("\n");
-
-        console.log("userId");
-        console.log(userId);
-        console.log("\n");
-
-        console.log("File data");
-        console.log(fileData);
-        console.log("\n");
-
-        console.log("Post");
-        console.log(post);
-        console.log("\n");
-
-        console.log("User");
-        console.log(user);
-        console.log("\n");
 
         // Check if we have a user
         if (user && isImageUrlValid === true && isTitleValid === true && isContentValid === true) {
 
-            // await post.save();
+            await post.save();
 
             // Add reference details of the post to the user
             user.posts?.push(post);
 
             // Update the user
-            // await user.save();
+            await user.save();
 
             return {
                 post : post,

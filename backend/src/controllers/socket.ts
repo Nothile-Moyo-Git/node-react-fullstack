@@ -28,12 +28,14 @@ export const PostEmitPostCreation = (request : SocketRequest, response : Respons
     // Get the post body of the request
     const post = request.body
 
-    console.log("Post");
-    console.log(request.body);
-
     // Send the response to the front end
-    /* getIO().emit('post added', {
+    getIO().emit('post added', {
         post : post
-    }); */
+    });
     
+    // Return our response
+    response.status(200).json({
+        success : true,
+        message : "post added"
+    })
 };
