@@ -26,14 +26,16 @@ import { getIO } from '../socket.ts';
 export const PostEmitPostCreation = (request : SocketRequest, response : Response, next : NextFunction) => {
     
     // Get the post body of the request
-    const post = request.body.post;
-
-    console.log("Post");
-    console.log(request.body);
+    const post = request.body
 
     // Send the response to the front end
-    /* getIO().emit('post added', {
+    getIO().emit('post added', {
         post : post
-    }); */
+    });
     
+    // Return our response
+    response.status(200).json({
+        success : true,
+        message : "post added"
+    })
 };
