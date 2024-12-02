@@ -40,6 +40,41 @@ const PostScreen : FC = () => {
 
         // Get posts method, we define it here so we can call it asynchronously
         const getPostData = async () => {
+
+            // Requesting the post from GraphQL using the postID, it's a post request
+            const result = await fetch('/graphql/posts/single', {
+                method : 'POST',
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query : `
+                        query GetPostResponse($postId : String!){
+                            GetPostResponse(postId : $postId){
+                                success
+                                message
+                                post {
+                                    _id
+                                    fileLastUpdated
+                                    fileName
+                                    title
+                                    imageUrl
+                                    content
+                                    creator
+                                    createdAt
+                                    updatedAt
+                                }
+                            }
+                        }
+                    `
+                })
+            });
+
+            console.log("\n\n");
+            console.log("Result");
+            console.log(result);
+
             const response = await fetch(`http://localhost:4000/post/${postId ?? ''}`);
 
             // Show the error if the request failed

@@ -189,8 +189,43 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * 
+ * @name PostGetPostResolver
+ * 
+ * @description Gets a single post from the backend
+ * 
+ * @param parent
+ * @param args
+ */
+const GetPostResolver = async (parent : any, args : any) => {
+
+    try {
+
+        // Get arguments from the request
+        const postId = new ObjectId(args.postId);
+
+        // Get the post from the backend
+        const post = await Post.findById(postId);
+
+        return {
+            success : true,
+            message : "Request successful",
+            post : post
+        };
+
+    }catch(error) {
+
+        return {
+            success : false,
+            message : error,
+            post : null
+        };
+    }
+};
 
 const postResolvers = {
+    GetPostResolver : GetPostResolver,
     GetPostsResolver : GetPostsResolver,
     PostCreatePostResolver : PostCreatePostResolver
 };
