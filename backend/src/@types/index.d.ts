@@ -71,7 +71,9 @@ export interface PostsInterface {
     title : string,
     imageUrl : string,
     content : string,
-    creator : CreatorInterface | string
+    creator : CreatorInterface | string,
+    createdAt ?: Date | number | string,
+    updatedAt ?: Date | number | string
 }
 
 export interface PostsMethodsInterface {

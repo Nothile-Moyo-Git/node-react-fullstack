@@ -42,7 +42,7 @@ const PostScreen : FC = () => {
         const getPostData = async () => {
 
             // Requesting the post from GraphQL using the postID, it's a post request
-            const result = await fetch('/graphql/posts/single', {
+            const response = await fetch('/graphql/posts', {
                 method : 'POST',
                 headers : {
                     "Content-Type": "application/json",
@@ -67,15 +67,12 @@ const PostScreen : FC = () => {
                                 }
                             }
                         }
-                    `
+                    `,
+                    variables : {
+                        postId : postId ? postId : ''
+                    }
                 })
             });
-
-            console.log("\n\n");
-            console.log("Result");
-            console.log(result);
-
-            const response = await fetch(`http://localhost:4000/post/${postId ?? ''}`);
 
             // Show the error if the request failed
             if (response.status === 200) {
@@ -101,12 +98,12 @@ const PostScreen : FC = () => {
 
                     const result = await getPostData();
 
-                    const data = await result.json();
+                    const json = await result.json();
 
                     const statusCode = result.status;
 
                     if (statusCode === 200) {
-                        setPostData(data.post);
+                        setPostData(json.data.GetPostResponse.post);
                     }
                 };
                 
@@ -147,6 +144,10 @@ const PostScreen : FC = () => {
         getImage();
 
     },[postData]);
+
+    console.log("\n\n");
+    console.log("Test date");
+    console.log(new Date(postData?.createdAt ? postData?.createdAt : ''));
 
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(postData?.createdAt ? postData?.createdAt : '');

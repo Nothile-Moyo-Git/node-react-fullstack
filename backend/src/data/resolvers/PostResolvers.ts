@@ -13,7 +13,6 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
-import { getIO } from '../../socket.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -207,6 +206,10 @@ const GetPostResolver = async (parent : any, args : any) => {
 
         // Get the post from the backend
         const post = await Post.findById(postId);
+
+        // Format the date by destructuring the post
+        console.log("Creation date");
+        console.log(post?.createdAt);
 
         return {
             success : true,
