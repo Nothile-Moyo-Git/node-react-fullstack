@@ -59,6 +59,20 @@ const PostQueries = new GraphQLObjectType({
                 currentPage : { type : GraphQLInt }
             },
             resolve : postResolvers.GetPostsResolver
+        },
+        GetPostResponse : {
+            type : new GraphQLObjectType({
+                name : "getPost",
+                fields : {
+                    message : { type : GraphQLString },
+                    success : { type : GraphQLBoolean },
+                    post : { type : PostType }
+                }
+            }),
+            args : {
+                postId : { type : GraphQLString }
+            },
+            resolve : postResolvers.GetPostResolver
         }
     }
 });
@@ -70,7 +84,7 @@ const PostMutations = new GraphQLObjectType({
         PostCreatePostResponse : {
             type : new GraphQLObjectType({
                 name : "createPost",
-                fields  : {
+                fields : {
                     post : { type : PostType },
                     user : { type : GraphQLString },
                     status : { type : GraphQLInt },
@@ -90,7 +104,7 @@ const PostMutations = new GraphQLObjectType({
                 fileData : { type : FileDataInputType }
             },
             resolve : postResolvers.PostCreatePostResolver
-        }
+        },
     }
 });
 

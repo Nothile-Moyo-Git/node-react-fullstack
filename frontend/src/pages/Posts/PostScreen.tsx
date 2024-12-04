@@ -40,7 +40,39 @@ const PostScreen : FC = () => {
 
         // Get posts method, we define it here so we can call it asynchronously
         const getPostData = async () => {
-            const response = await fetch(`http://localhost:4000/post/${postId ?? ''}`);
+
+            // Requesting the post from GraphQL using the postID, it's a post request
+            const response = await fetch('/graphql/posts', {
+                method : 'POST',
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query : `
+                        query GetPostResponse($postId : String!){
+                            GetPostResponse(postId : $postId){
+                                success
+                                message
+                                post {
+                                    _id
+                                    fileLastUpdated
+                                    fileName
+                                    title
+                                    imageUrl
+                                    content
+                                    creator
+                                    createdAt
+                                    updatedAt
+                                }
+                            }
+                        }
+                    `,
+                    variables : {
+                        postId : postId ? postId : ''
+                    }
+                })
+            });
 
             // Show the error if the request failed
             if (response.status === 200) {
@@ -66,12 +98,12 @@ const PostScreen : FC = () => {
 
                     const result = await getPostData();
 
-                    const data = await result.json();
+                    const json = await result.json();
 
                     const statusCode = result.status;
 
                     if (statusCode === 200) {
-                        setPostData(data.post);
+                        setPostData(json.data.GetPostResponse.post);
                     }
                 };
                 
@@ -112,6 +144,10 @@ const PostScreen : FC = () => {
         getImage();
 
     },[postData]);
+
+    console.log("\n\n");
+    console.log("Test date");
+    console.log(new Date(postData?.createdAt ? postData?.createdAt : ''));
 
     // Get an upload date so we can show when the post was uploaded
     const uploadDate = generateUploadDate(postData?.createdAt ? postData?.createdAt : '');
