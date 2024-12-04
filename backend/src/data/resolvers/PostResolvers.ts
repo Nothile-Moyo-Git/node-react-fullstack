@@ -13,6 +13,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
+import { generateUploadDate, createReadableDate } from '../../util/utillity-methods.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -208,13 +209,48 @@ const GetPostResolver = async (parent : any, args : any) => {
         const post = await Post.findById(postId);
 
         // Format the date by destructuring the post
-        console.log("Creation date");
-        console.log(post?.createdAt);
+        const createdAt = new Date(post ? post.createdAt : "");
+        const createdAtFormatted = generateUploadDate(createdAt);
+
+        const updatedAt = new Date(post ? post.updatedAt : "");
+        const updatedAtFormatted = createReadableDate(updatedAt);
+
+        // Create a formatted date
+        const postFormatted = {
+            _id : post?._id,
+            fileLastUpdated : post?.fileLastUpdated,
+            fileName : post?.fileLastUpdated,
+            title : post?.title,
+            imageUrl : post?.imageUrl,
+            content : post?.content,
+            creator : post?.creator.toString(),
+            createdAt : post?.createdAt,
+            updatedAt : post?.updatedAt
+        }
+
+        postFormatted.createdAt = createdAtFormatted;
+        postFormatted.updatedAt = updatedAtFormatted;
+
+        /* console.log("\n");
+        console.log("Creation date formatted");
+        console.log(createdAtFormatted);
+
+        console.log("\n");
+        console.log("Updated at formatted");
+        console.log(updatedAtFormatted);
+
+        console.log("\n");
+        console.log("Post formatted");
+        console.log(postFormatted); */
+
+        console.log("\n\n");
+        console.log("post");
+        console.log(post);
 
         return {
             success : true,
             message : "Request successful",
-            post : post
+            post : postFormatted
         };
 
     }catch(error) {

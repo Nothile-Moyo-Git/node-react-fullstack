@@ -72,8 +72,8 @@ export interface PostsInterface {
     imageUrl : string,
     content : string,
     creator : CreatorInterface | string,
-    createdAt ?: Date | number | string,
-    updatedAt ?: Date | number | string
+    createdAt : Date | number | string,
+    updatedAt : Date | number | string
 }
 
 export interface PostsMethodsInterface {
