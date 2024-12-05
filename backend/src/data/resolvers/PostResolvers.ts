@@ -219,7 +219,7 @@ const GetPostResolver = async (parent : any, args : any) => {
         const postFormatted = {
             _id : post?._id,
             fileLastUpdated : post?.fileLastUpdated,
-            fileName : post?.fileLastUpdated,
+            fileName : post?.fileName,
             title : post?.title,
             imageUrl : post?.imageUrl,
             content : post?.content,
@@ -228,26 +228,11 @@ const GetPostResolver = async (parent : any, args : any) => {
             updatedAt : post?.updatedAt
         }
 
+        // Format the created and updated date so they're readable in the frontend
         postFormatted.createdAt = createdAtFormatted;
         postFormatted.updatedAt = updatedAtFormatted;
 
-        /* console.log("\n");
-        console.log("Creation date formatted");
-        console.log(createdAtFormatted);
-
-        console.log("\n");
-        console.log("Updated at formatted");
-        console.log(updatedAtFormatted);
-
-        console.log("\n");
-        console.log("Post formatted");
-        console.log(postFormatted); */
-
-        console.log("\n\n");
-        console.log("post");
-        console.log(post);
-
-        return {
+        return { 
             success : true,
             message : "Request successful",
             post : postFormatted
@@ -263,7 +248,25 @@ const GetPostResolver = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * @name GetAndValidatePostResolver
+ * 
+ * @description Get the post and make sure that there's a user associated with it so the request is valid
+ * 
+ * @param parent
+ * @param args
+ */
+const GetAndValidatePostResolver = async (parent : any, args : any) => {
+
+    return {
+        success : false,
+        message : "Response",
+        post : null
+    };
+};
+
 const postResolvers = {
+    GetAndValidatePostResolver : GetAndValidatePostResolver,
     GetPostResolver : GetPostResolver,
     GetPostsResolver : GetPostsResolver,
     PostCreatePostResolver : PostCreatePostResolver

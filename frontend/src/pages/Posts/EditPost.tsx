@@ -77,6 +77,44 @@ export const EditPost : FC = () => {
             body : fields
         });
 
+        // Query to GraphQL
+        const result = await fetch(`/graphql/posts`,{
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({ 
+                query : `
+                    query GetAndValidatePostResponse($postId : String!, $userId : String!){
+                        GetAndValidatePostResponse(postId : $postId, userId : $userId){
+                            success
+                            message
+                            post {
+                                _id
+                                fileLastUpdated
+                                fileName
+                                title
+                                imageUrl
+                                content
+                                creator
+                                createdAt
+                                updatedAt
+                            }
+                        }
+                    }
+                `,
+                variables : {
+                    postId : postId,
+                    userId : userId
+                }
+            })
+        });
+
+        console.log("\n\n");
+        console.log("Result");
+        console.log(result);
+
         // Show the error modal if the request fails
         if (response.status === 200) {
             setShowErrorText(false);

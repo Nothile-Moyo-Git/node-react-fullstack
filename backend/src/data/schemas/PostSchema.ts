@@ -73,7 +73,23 @@ const PostQueries = new GraphQLObjectType({
                 postId : { type : GraphQLString }
             },
             resolve : postResolvers.GetPostResolver
+        },
+        GetAndValidatePostResponse : {
+            type : new GraphQLObjectType({
+                name : "getAndValidatePost",
+                fields : {
+                    message : { type : GraphQLString },
+                    success : { type : GraphQLBoolean },
+                    post : { type : PostType }
+                }
+            }),
+            args : {
+                postId : { type : GraphQLString },
+                userId : { type : GraphQLString }
+            },
+            resolve : postResolvers.GetAndValidatePostResolver
         }
+
     }
 });
 
