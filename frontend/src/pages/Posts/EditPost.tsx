@@ -115,6 +115,12 @@ export const EditPost : FC = () => {
         console.log("Result");
         console.log(result);
 
+        const data = await result.json();
+
+        console.log("\n");
+        console.log("data");
+        console.log(data);
+
         // Show the error modal if the request fails
         if (response.status === 200) {
             setShowErrorText(false);
