@@ -168,7 +168,7 @@ export const PostAndValidatePostController = async (request : FeedRequestInterfa
         const user = await User.findById({ _id : new Object(userId)});
 
         // Get the post
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId);    
 
         if (!post || user._id.toString() !== userId) {
 

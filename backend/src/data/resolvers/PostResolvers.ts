@@ -258,11 +258,52 @@ const GetPostResolver = async (parent : any, args : any) => {
  */
 const GetAndValidatePostResolver = async (parent : any, args : any) => {
 
-    return {
-        success : false,
-        message : "Response",
-        post : null
-    };
+    // Get the postId from the url passed through
+    const postId = new ObjectId(args.postId);
+
+    // Get the userId from the post to check if they match
+    const userId = args.userId;
+
+    try {
+
+        // Check if the user exists
+        const user = await User.findById({ _id : new Object(userId) });
+
+        // Get the post
+        const post = await Post.findById(postId);
+
+        const canUserEdit = (post && user) && post.creator.toString() === user._id.toString();
+
+        if (canUserEdit) {
+
+            return {
+                success : true,
+                message : "Request successful",
+                post : post
+            };
+
+        }else{
+
+            return {
+                success : false,
+                message : "User is not validated or post is not found",
+                post : post
+            };
+
+        }
+
+    }catch(error){
+
+        console.warn("Request failed");
+        console.log(error);
+
+        return {
+            success : false,
+            message : error,
+            post : null
+        }
+    }
+
 };
 
 const postResolvers = {

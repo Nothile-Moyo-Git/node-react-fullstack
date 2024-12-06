@@ -15,6 +15,8 @@
  * @method createReadableDate : (date : Date) => string
  */
 
+import { PostsInterface } from "../@types/index.js";
+
 export const isInt = (number : any) => {
     return Number(number) === number && number % 1 === 0;
 };
@@ -291,3 +293,16 @@ export const validatePassword = (password : string) => {
         return false;
     }
 };
+
+/**
+ * @name formatPost
+ * 
+ * @description Format the post data and return a new object which handles the timestamps returned from the backend
+ * This is 
+ * 
+ * @param post : Post
+ * @param formattedPost : Post
+ */
+export const formatPost = (post : PostsInterface) => {
+
+}
