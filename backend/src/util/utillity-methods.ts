@@ -305,4 +305,29 @@ export const validatePassword = (password : string) => {
  */
 export const formatPost = (post : PostsInterface) => {
 
+    // Format the date by destructuring the post
+    const createdAt = new Date(post ? post.createdAt : "");
+    const createdAtFormatted = generateUploadDate(createdAt);
+
+    const updatedAt = new Date(post ? post.updatedAt : "");
+    const updatedAtFormatted = createReadableDate(updatedAt);
+
+    // Create a formatted date
+    const postFormatted = {
+        _id : post?._id,
+        fileLastUpdated : post?.fileLastUpdated,
+        fileName : post?.fileName,
+        title : post?.title,
+        imageUrl : post?.imageUrl,
+        content : post?.content,
+        creator : post?.creator.toString(),
+        createdAt : post?.createdAt,
+        updatedAt : post?.updatedAt
+    }
+
+    // Format the created and updated date so they're readable in the frontend
+    postFormatted.createdAt = createdAtFormatted;
+    postFormatted.updatedAt = updatedAtFormatted;
+
+    return postFormatted;
 }

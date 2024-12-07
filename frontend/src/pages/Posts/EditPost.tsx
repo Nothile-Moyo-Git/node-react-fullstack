@@ -101,6 +101,7 @@ export const EditPost : FC = () => {
                                 createdAt
                                 updatedAt
                             }
+                            isUserValidated
                         }
                     }
                 `,
@@ -115,18 +116,18 @@ export const EditPost : FC = () => {
         console.log("Result");
         console.log(result);
 
-        const data = await result.json();
+        // Get the json from the backend
+        const dataResponse = await result.json();
 
-        console.log("\n");
-        console.log("data");
-        console.log(data);
+        // Get the data from the json
+        const data = dataResponse.data.GetAndValidatePostResponse;
 
         // Show the error modal if the request fails
-        if (response.status === 200) {
+        if (!dataResponse.errors) {
             setShowErrorText(false);
         }
         
-        if (response.status === 500) {
+        if (dataResponse.errors) {
             setShowErrorText(true);
         }
 
