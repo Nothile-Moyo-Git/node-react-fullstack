@@ -80,7 +80,8 @@ const PostQueries = new GraphQLObjectType({
                 fields : {
                     message : { type : GraphQLString },
                     success : { type : GraphQLBoolean },
-                    post : { type : PostType }
+                    post : { type : PostType },
+                    isUserValidated : { type : GraphQLBoolean }
                 }
             }),
             args : {

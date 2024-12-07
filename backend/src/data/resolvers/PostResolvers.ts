@@ -13,7 +13,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
-import { generateUploadDate, createReadableDate } from '../../util/utillity-methods.ts';
+import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -208,35 +208,25 @@ const GetPostResolver = async (parent : any, args : any) => {
         // Get the post from the backend
         const post = await Post.findById(postId);
 
-        // Format the date by destructuring the post
-        const createdAt = new Date(post ? post.createdAt : "");
-        const createdAtFormatted = generateUploadDate(createdAt);
+        if (post) {
 
-        const updatedAt = new Date(post ? post.updatedAt : "");
-        const updatedAtFormatted = createReadableDate(updatedAt);
+            // Format the post so we have appropriate dates
+            const postFormatted = formatPost(post);
 
-        // Create a formatted date
-        const postFormatted = {
-            _id : post?._id,
-            fileLastUpdated : post?.fileLastUpdated,
-            fileName : post?.fileName,
-            title : post?.title,
-            imageUrl : post?.imageUrl,
-            content : post?.content,
-            creator : post?.creator.toString(),
-            createdAt : post?.createdAt,
-            updatedAt : post?.updatedAt
+            return {
+                success : true,
+                message : "Request successful",
+                post : postFormatted
+            };
+
+        } else {
+           
+            return { 
+                success : false,
+                message : "Request successful",
+                post : null
+            };
         }
-
-        // Format the created and updated date so they're readable in the frontend
-        postFormatted.createdAt = createdAtFormatted;
-        postFormatted.updatedAt = updatedAtFormatted;
-
-        return { 
-            success : true,
-            message : "Request successful",
-            post : postFormatted
-        };
 
     }catch(error) {
 
@@ -274,12 +264,18 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
 
         const canUserEdit = (post && user) && post.creator.toString() === user._id.toString();
 
+        
+
         if (canUserEdit) {
+
+            // Format the post so we have appropriate dates
+            const postFormatted = formatPost(post);
 
             return {
                 success : true,
                 message : "Request successful",
-                post : post
+                post : postFormatted,
+                isUserValidated : canUserEdit
             };
 
         }else{
@@ -287,7 +283,8 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
             return {
                 success : false,
                 message : "User is not validated or post is not found",
-                post : post
+                post : post,
+                isUserValidated : canUserEdit
             };
 
         }
@@ -300,7 +297,8 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
         return {
             success : false,
             message : error,
-            post : null
+            post : null,
+            isUserValidated : false
         }
     }
 
