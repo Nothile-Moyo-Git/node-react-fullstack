@@ -304,6 +304,15 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
 
 };
 
+/**
+ * @name PostUpdatePostResolver
+ * 
+ * @description Update the post data based on the ID and the EditForm component on the front end
+ * 
+ * @param request : any
+ * @param args : any
+ */
+
 const postResolvers = {
     GetAndValidatePostResolver : GetAndValidatePostResolver,
     GetPostResolver : GetPostResolver,

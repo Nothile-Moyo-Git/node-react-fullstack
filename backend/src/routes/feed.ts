@@ -7,23 +7,18 @@
 
 import express from "express";
 import { 
-    testEndpoint, 
-    GetPostController, 
+    testEndpoint,
     PostDeletePostController,
     PutUpdatePostController,
-    PostAndValidatePostController,
     PostUploadFileController
 } from "../controllers/feed.ts";
-
 
 const feedRoutes = express.Router({ strict : true });
 
 // Handle our api routes
 feedRoutes.get('/test', testEndpoint);
-feedRoutes.get('/post/:postId', GetPostController);
 feedRoutes.post('/rest/post/file-upload', PostUploadFileController);
 feedRoutes.post('/delete-post', PostDeletePostController);
 feedRoutes.put('/update-post/:postId?', PutUpdatePostController);
-feedRoutes.post('/post-and-validate/:postId?', PostAndValidatePostController);
 
 export default feedRoutes;
