@@ -48,7 +48,7 @@ export const EditPost : FC = () => {
 
     // State for the page
     const [postData, setPostData] = useState<Post>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [showErrorText, setShowErrorText] = useState<boolean>(false);
     const [isFormValid, setIsFormValid] = useState<boolean>(true);
     const [isTitleValid, setIsTitleValid] = useState<boolean>(true);
@@ -71,14 +71,8 @@ export const EditPost : FC = () => {
         const fields = new FormData();
         fields.append("userId", userId);
 
-        // Requst and validate the post
-        const response = await fetch(`http://localhost:4000/post-and-validate/${postId}`,{
-            method : "POST",
-            body : fields
-        });
-
         // Query to GraphQL
-        const result = await fetch(`/graphql/posts`,{
+        const response = await fetch(`/graphql/posts`,{
             method : "POST",
             headers : {
                 "Content-Type": "application/json",
@@ -112,12 +106,8 @@ export const EditPost : FC = () => {
             })
         });
 
-        console.log("\n\n");
-        console.log("Result");
-        console.log(result);
-
         // Get the json from the backend
-        const dataResponse = await result.json();
+        const dataResponse = await response.json();
 
         // Get the data from the json
         const data = dataResponse.data.GetAndValidatePostResponse;
@@ -131,7 +121,7 @@ export const EditPost : FC = () => {
             setShowErrorText(true);
         }
 
-        return response;
+        return data;
     };
 
     // Set the preview of the file when the api request concludes so we can view it on the page immediately
@@ -148,16 +138,17 @@ export const EditPost : FC = () => {
     
         }catch(error){
             
-            // console.log(error);
+            console.log("\n\n");
+            console.log("Error loading image");
+            console.log(error);
         }
     };
 
     // This method runs the get method and then formats the results
     const handlePostDataQuery = async (userId : string) => {
 
-        const result = await getPostData(userId);
-
-        const data = await result.json();
+        // Perform the api request
+        const data = await getPostData(userId);
 
         if (data.isUserValidated === false) {
             navigate(`${BASENAME}/posts`);
@@ -203,7 +194,7 @@ export const EditPost : FC = () => {
 
     useEffect(() => {
 
-        // Toggle the loading spinner util the request ends
+        // Toggle the loading spinner until the request ends
         setIsLoading(true);
         appContextInstance?.validateAuthentication();
         
@@ -216,11 +207,11 @@ export const EditPost : FC = () => {
                 }
             }
 
-            setIsLoading(false);
-
         }catch(error){
             console.error(error);
         }
+
+        setIsLoading(false);
 
         // If the user isn't authenticated, redirect this route to the previous page
         appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
