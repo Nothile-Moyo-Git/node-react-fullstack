@@ -70,3 +70,35 @@ export const getCurrentMonthAndYear = () => {
 
   return `${currentYear}/${stringMonth}`;
 };
+
+/**
+ * @name fileUploadHandler
+ * 
+ * @description Handles the fileupload for the frontend, calls the api request too and returns the appropriate response
+ * 
+ * @param uploadFile : File
+ */
+export const fileUploadHandler = async (uploadFile : File) => {
+
+  const fields = new FormData();
+  fields.append("image", uploadFile)
+
+  // File upload response
+  const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
+    method : 'POST',
+    body : fields
+  });
+
+  // Get the file data we need to send to the api request
+  const fileUploadData = await fileUploadResponse.json();
+  const fileData = { 
+    fileName : fileUploadData.fileName,
+    imageUrl : fileUploadData.imageUrl,
+    isFileValid : fileUploadData.isFileValid,
+    isFileSizeValid : fileUploadData.isFileSizeValid,
+    isFileTypeValid : fileUploadData.isFileTypeValid,
+    isImageUrlValid : fileUploadData.isImageUrlValid
+  };
+
+  return fileData;
+};
