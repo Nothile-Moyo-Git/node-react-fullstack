@@ -20,7 +20,7 @@ import Field from "../../components/form/Field";
 import Button from "../../components/button/Button";
 import TextArea from "../../components/form/TextArea";
 import ImagePreview from "../../components/form/ImagePreview";
-import { generateBase64FromImage } from "../../util/file";
+import { fileUploadHandler, generateBase64FromImage } from "../../util/file";
 
 import "./CreatePost.scss";
 
@@ -87,27 +87,9 @@ export const CreatePostComponent : FC = () => {
             if (titleRef.current) { title = titleRef.current.value; }
             if (contentRef.current) { content = contentRef.current.value; }
     
-            // Set form inputs for the api requests to the bakend
-            const fields = new FormData();
-            uploadFile && fields.append("image", uploadFile);
-    
-            // File upload response
-            const fileUploadResponse = await fetch(`/rest/post/file-upload`, {
-                method : 'POST',
-                body : fields
-            });
-    
-            // Get the file data we need to send to the api request
-            const fileUploadData = await fileUploadResponse.json();
-            const fileData = { 
-                fileName : fileUploadData.fileName,
-                imageUrl : fileUploadData.imageUrl,
-                isFileValid : fileUploadData.isFileValid,
-                isFileSizeValid : fileUploadData.isFileSizeValid,
-                isFileTypeValid : fileUploadData.isFileTypeValid,
-                isImageUrlValid : fileUploadData.isImageUrlValid
-            };
-    
+            let fileData = {};
+            uploadFile && (fileData = await fileUploadHandler(uploadFile));
+            
             // Perform the API request to the backend
             const createPostResponse = await fetch('/graphql/posts', {
                 method : "POST",
@@ -193,7 +175,7 @@ export const CreatePostComponent : FC = () => {
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
-    const fileUploadHandler = async (event : React.ChangeEvent<HTMLInputElement>) => {
+    const fileUploadEvent = async (event : React.ChangeEvent<HTMLInputElement>) => {
 
         // Set the file so that it's ready for upload
         if (event.target.files) {
@@ -249,7 +231,7 @@ export const CreatePostComponent : FC = () => {
                             ariaLabelledBy="imageUrlLabel"
                             error={!isFileValid}
                             name="image"
-                            onChange={fileUploadHandler}
+                            onChange={fileUploadEvent}
                             ref={imageUrlRef}
                             required={true}
                             type="file"
