@@ -182,7 +182,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
             isTitleValid : false,
             isFileValid : false,
             isFileTypeValid : false,
-            isFileZievalid : false,
+            isFileSizeValid : false,
             success : false,
             message : "500 : Request was unsuccessful"
         };
@@ -264,8 +264,6 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
 
         const canUserEdit = (post && user) && post.creator.toString() === user._id.toString();
 
-        
-
         if (canUserEdit) {
 
             // Format the post so we have appropriate dates
@@ -314,13 +312,33 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
  */
 const PostUpdatePostResolver = (parent : any, args : any) => {
 
+    const fileValidProps = {
+        fileName : "",
+        imageUrl : "",
+        isImageUrlValid : false,
+        isFileValid : false,
+        isFileTypeValid : false,
+        isFileSizeValid : false,
+    };
+
+    return {
+        post : null,
+        status : 500,
+        isContentValid : false,
+        isTitleValid : false,
+        success : false,
+        message : "500 : Request was unsuccessful",
+        fileValidProps : fileValidProps
+    };
+
 };
 
 const postResolvers = {
     GetAndValidatePostResolver : GetAndValidatePostResolver,
     GetPostResolver : GetPostResolver,
     GetPostsResolver : GetPostsResolver,
-    PostCreatePostResolver : PostCreatePostResolver
+    PostCreatePostResolver : PostCreatePostResolver,
+    PostUpdatePostResolver : PostUpdatePostResolver
 };
 
 export default postResolvers;

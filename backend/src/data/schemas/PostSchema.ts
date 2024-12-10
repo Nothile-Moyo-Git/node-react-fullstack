@@ -27,19 +27,27 @@ const PostType = new GraphQLObjectType({
     }
 });
 
+// default layout for fileData
+const fileDataFields = {
+    fileName : { type : GraphQLString },
+    imageUrl : { type : GraphQLString },
+    isImageUrlValid : { type : GraphQLBoolean },
+    isFileSizeValid : { type : GraphQLBoolean },
+    isFileTypeValid : { type : GraphQLBoolean },
+    isFileValid : { type : GraphQLBoolean }
+}
+
+// Create a fileType that we return
+const FileDataObjectType = new GraphQLObjectType({
+    name : "FileObject",
+    fields : fileDataFields
+});
+
 // Defining the type for file data when we're creating posts
 const FileDataInputType = new GraphQLInputObjectType({
     name : "FileInput",
-    fields : {
-        fileName : { type : GraphQLString },
-        imageUrl : { type : GraphQLString },
-        isImageUrlValid : { type : GraphQLBoolean },
-        isFileSizeValid : { type : GraphQLBoolean },
-        isFileTypeValid : { type : GraphQLBoolean },
-        isFileValid : { type : GraphQLBoolean },
-    }
+    fields : fileDataFields
 });
-
 
 // Define the post query request handlers for GraphQL
 const PostQueries = new GraphQLObjectType({
@@ -122,6 +130,28 @@ const PostMutations = new GraphQLObjectType({
             },
             resolve : postResolvers.PostCreatePostResolver
         },
+        PostEditPostResponse : {
+            type : new GraphQLObjectType({
+                name : "editPost",
+                fields : {
+                    post : { type : PostType },
+                    user : { type : GraphQLString },
+                    status : { type : GraphQLInt },
+                    success : { type : GraphQLBoolean },
+                    message : { type : GraphQLString },
+                    isContentValid : { type : GraphQLBoolean },
+                    isTitleValid : { type : GraphQLBoolean },
+                    fileValidProps : { type : FileDataObjectType }
+                }
+            }),
+            args : {
+                title : { type : GraphQLString },
+                content : { type : GraphQLString },
+                userId : { type : GraphQLString },
+                fileData : { type : FileDataInputType }
+            },
+            resolve : postResolvers.PostUpdatePostResolver
+        }
     }
 });
 
