@@ -224,6 +224,9 @@ export const EditPost : FC = () => {
 
         event.preventDefault();
 
+        // let fileData = {};
+        // uploadFile && (fileData = await fileUploadHandler(uploadFile));
+
         const userId = appContextInstance?.userId;
 
         let title = "";
