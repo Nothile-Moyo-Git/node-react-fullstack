@@ -227,7 +227,7 @@ export const EditPost : FC = () => {
         // let fileData = {};
         // uploadFile && (fileData = await fileUploadHandler(uploadFile));
 
-        const userId = appContextInstance?.userId;
+        /* const userId = appContextInstance?.userId;
 
         let title = "";
         let content = "";
@@ -277,6 +277,85 @@ export const EditPost : FC = () => {
 
         }catch(error){
             console.log(error);
+        } */
+
+        try {
+
+            // Get values
+            const userId = appContextInstance?.userId ?? "";
+            const title = titleRef.current?.value || "";
+            const content = contentRef.current?.value || "";
+
+            // Temp fileData
+            const fileValidProps = {
+                fileName : "",
+                imageUrl : "",
+                isImageUrlValid : false,
+                isFileValid : false,
+                isFileTypeValid : false,
+                isFileSizeValid : false,
+            };
+
+            // Perform the API request to the backend
+            const editPostResponse = await fetch('/graphql/posts', {
+                method : "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({ 
+                    query : `
+                        mutation PostEditPostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
+                            PostEditPostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData){
+                                post {
+                                    _id
+                                    fileLastUpdated
+                                    fileName
+                                    title
+                                    imageUrl
+                                    content
+                                    creator
+                                    createdAt
+                                    updatedAt
+                                }
+                                user
+                                status
+                                success
+                                message
+                                fileValidProps {
+                                    fileName
+                                    imageUrl
+                                    isImageUrlValid
+                                    isFileSizeValid
+                                    isFileTypeValid
+                                    isFileValid
+                                }
+                            }
+                        }
+                    `,
+                    variables : {
+                        title : title,
+                        content : content,
+                        userId : userId,
+                        fileData : fileValidProps
+                    }
+                })
+            });
+
+            const data = await editPostResponse.json();
+
+            console.log("\n");
+            console.log("Response");
+            console.log(editPostResponse);
+
+            console.log("\n");
+            console.log("Data");
+            console.log(data);
+
+        }catch(error){
+
+            console.log("Request failed");
+            console.error(error);
         }
     };
 
