@@ -50,3 +50,20 @@ export interface User {
     status : string,
     posts : string[]
 }
+
+/**
+ * @name FileUploadEventType
+ * 
+ * @description Use for file upload events
+ * 
+ * @type event : React.ChangeEvent<HTMLInputElement>
+ * @type setUploadFile : (value: React.SetStateAction<File | undefined>) => void
+ * @type setImagePreview: (value: unknown) => void
+ * @type setShowImagePreview: (value: React.SetStateAction<boolean | undefined>) => void
+ */
+export interface FileUploadEventType {
+    event : React.ChangeEvent<HTMLInputElement>,
+    setUploadFile : (value: React.SetStateAction<File | undefined>) => void,
+    setImagePreview: (value: unknown) => void,
+    setShowImagePreview: (value: React.SetStateAction<boolean | undefined>) => void
+}
