@@ -312,6 +312,24 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
  */
 const PostUpdatePostResolver = (parent : any, args : any) => {
 
+    // Get arguments
+    const { title, userId, content, fileData } = args;
+    
+    console.log("\n\n", "title");
+    console.log(title);
+
+    console.log("\n", "content");
+    console.log(content);
+    
+    console.log("\n", "userId");
+    console.log(userId);
+
+    console.log("\n", "fileData");
+    console.log(fileData);
+
+    const imageUrl = fileData.imageUrl;
+    deleteFile(imageUrl); 
+
     const fileValidProps = {
         fileName : "",
         imageUrl : "",

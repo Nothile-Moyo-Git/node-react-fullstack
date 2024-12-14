@@ -23,7 +23,7 @@ import Field from "../../components/form/Field";
 import Label from "../../components/form/Label";
 import Input from "../../components/form/Input";
 import Button from "../../components/button/Button";
-import { generateBase64FromImage } from "../../util/file";
+import { fileUploadHandler, generateBase64FromImage } from "../../util/file";
 import ImagePreview from "../../components/form/ImagePreview";
 import TextArea from "../../components/form/TextArea";
 import { MdKeyboardBackspace } from "react-icons/md";
@@ -169,29 +169,6 @@ export const EditPost : FC = () => {
         if (location.key !== 'default') { navigate(-1); }
     };
 
-    // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
-    const fileUploadHandler = async (event : React.ChangeEvent<HTMLInputElement>) => {
-
-        // Set the file so that it's ready for upload
-        if (event.target.files) {
-            const file = event.target.files[0];
-
-            // Raise and error and empty the input, otherwise, set the state to sent to the backend
-            // Note: This is for UX purposes, file uploads are also verified in the backend
-            if (file.size > 5250000 || file.type === "video/webm") {
-                alert("Error: Please upload a PNG, JPEG or JPG (max size: 5Mb)");
-                event.target.value = "";
-                setIsFileValid(false);
-            }else{
-                setUploadFile(file);
-                const base64Image = await generateBase64FromImage(file);
-                setImagePreview(base64Image);
-                setShowImagePreview(true);
-                setIsFileValid(true);
-            }
-        }
-    }
-
     useEffect(() => {
 
         // Toggle the loading spinner until the request ends
@@ -286,15 +263,8 @@ export const EditPost : FC = () => {
             const title = titleRef.current?.value || "";
             const content = contentRef.current?.value || "";
 
-            // Temp fileData
-            const fileValidProps = {
-                fileName : "",
-                imageUrl : "",
-                isImageUrlValid : false,
-                isFileValid : false,
-                isFileTypeValid : false,
-                isFileSizeValid : false,
-            };
+            let fileData = {};
+            uploadFile && (fileData = await fileUploadHandler(uploadFile));
 
             // Perform the API request to the backend
             const editPostResponse = await fetch('/graphql/posts', {
@@ -337,7 +307,7 @@ export const EditPost : FC = () => {
                         title : title,
                         content : content,
                         userId : userId,
-                        fileData : fileValidProps
+                        fileData : fileData
                     }
                 })
             });
@@ -358,6 +328,27 @@ export const EditPost : FC = () => {
             console.error(error);
         }
     };
+
+    // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
+    const fileUploadChangeEvent = async (event : React.ChangeEvent<HTMLInputElement>) => {
+
+        // Set the file so that it's ready for upload
+        if (event.target.files) {
+            const file = event.target.files[0];
+
+            // Raise and error and empty the input, otherwise, set the state to sent to the backend
+            // Note: This is for UX purposes, file uploads are also verified in the backend
+            if (file.size > 5000000) {
+                alert("Please upload a file smaller than 5MB");
+                event.target.value = "";
+            }else{
+                setUploadFile(file);
+                const base64Image = await generateBase64FromImage(file);
+                setImagePreview(base64Image);
+                setShowImagePreview(true);
+            }
+        }
+    }
 
     return(
         <section className="editPost">
@@ -412,7 +403,7 @@ export const EditPost : FC = () => {
                             ariaLabelledBy="imageUrlLabel"
                             error={!isFileValid}
                             name="image"
-                            onChange={fileUploadHandler}
+                            onChange={fileUploadChangeEvent}
                             ref={imageUrlRef}
                             required={false}
                             type="file"
