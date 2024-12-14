@@ -327,6 +327,9 @@ const PostUpdatePostResolver = (parent : any, args : any) => {
     console.log("\n", "fileData");
     console.log(fileData);
 
+    const imageUrl = fileData.imageUrl;
+    deleteFile(imageUrl); 
+
     const fileValidProps = {
         fileName : "",
         imageUrl : "",

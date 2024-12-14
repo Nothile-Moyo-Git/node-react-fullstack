@@ -7,8 +7,6 @@
  * It handles functionality such as deleting files when a product is deleted, and replacing it when it gets updated
  */
 
-import { FileUploadEventType } from "../@types";
-
 /**
  * @name generateBase64FromImage
  * 
@@ -104,29 +102,3 @@ export const fileUploadHandler = async (uploadFile : File) => {
 
   return fileData;
 };
-
-export const setImage = async () => {
-
-};
-
-// File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
-export const fileUploadEvent = async ({event, setUploadFile, setImagePreview, setShowImagePreview} : FileUploadEventType) => {
-
-  // Set the file so that it's ready for upload
-  if (event.target.files) {
-
-    const file = event.target.files[0];
-
-    // Raise and error and empty the input, otherwise, set the state to sent to the backend
-    // Note: This is for UX purposes, file uploads are also verified in the backend
-    if (file.size > 5000000) {
-      alert("Please upload a file smaller than 5MB");
-      event.target.value = "";
-    }else{
-      setUploadFile(file);
-      const base64Image = await generateBase64FromImage(file);
-      setImagePreview(base64Image);
-      setShowImagePreview(true);
-    }
-  }
-}

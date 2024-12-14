@@ -330,7 +330,7 @@ export const EditPost : FC = () => {
     };
 
     // File upload handler, this is done so we can encode the file in a b64 format which allows us to send it to the backend
-    const fileUploadEvent = async (event : React.ChangeEvent<HTMLInputElement>) => {
+    const fileUploadChangeEvent = async (event : React.ChangeEvent<HTMLInputElement>) => {
 
         // Set the file so that it's ready for upload
         if (event.target.files) {
@@ -403,7 +403,7 @@ export const EditPost : FC = () => {
                             ariaLabelledBy="imageUrlLabel"
                             error={!isFileValid}
                             name="image"
-                            onChange={fileUploadEvent}
+                            onChange={fileUploadChangeEvent}
                             ref={imageUrlRef}
                             required={false}
                             type="file"
