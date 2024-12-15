@@ -275,8 +275,8 @@ export const EditPost : FC = () => {
                 },
                 body : JSON.stringify({ 
                     query : `
-                        mutation PostEditPostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
-                            PostEditPostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData){
+                        mutation PostEditPostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!, $postId : String!){
+                            PostEditPostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData, postId : $postId){
                                 post {
                                     _id
                                     fileLastUpdated
@@ -307,7 +307,8 @@ export const EditPost : FC = () => {
                         title : title,
                         content : content,
                         userId : userId,
-                        fileData : fileData
+                        fileData : fileData,
+                        postId : postId
                     }
                 })
             });

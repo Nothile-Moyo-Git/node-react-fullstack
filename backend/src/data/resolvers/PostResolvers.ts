@@ -14,6 +14,7 @@ import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
+import { PostsInterface } from '../../@types/index';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -310,12 +311,12 @@ const GetAndValidatePostResolver = async (parent : any, args : any) => {
  * @param parent : any
  * @param args : any
  */
-const PostUpdatePostResolver = (parent : any, args : any) => {
+const PostUpdatePostResolver = async (parent : any, args : any) => {
 
     // Get arguments
-    const { title, userId, content, fileData } = args;
+    const { title, userId, content, fileData, postId } = args;
     
-    console.log("\n\n", "title");
+    /*console.log("\n\n", "title");
     console.log(title);
 
     console.log("\n", "content");
@@ -324,20 +325,60 @@ const PostUpdatePostResolver = (parent : any, args : any) => {
     console.log("\n", "userId");
     console.log(userId);
 
+    console.log("\n", "postId");
+    console.log(postId);
+
     console.log("\n", "fileData");
-    console.log(fileData);
+    console.log(fileData); */
 
     const imageUrl = fileData.imageUrl;
-    deleteFile(imageUrl); 
+    deleteFile(imageUrl);
 
-    const fileValidProps = {
-        fileName : "",
-        imageUrl : "",
-        isImageUrlValid : false,
-        isFileValid : false,
-        isFileTypeValid : false,
-        isFileSizeValid : false,
-    };
+    // Validating the fields in the backend so they can't be exploited
+    const isTitleValid = title.length >= 3;
+    const isContentValid = content.length >= 6 && content.length <= 400;
+    const isFileUploadSuccessful = (
+        fileData.isImageUrlValid &&
+        fileData.isFileSizeValid &&
+        fileData.isFileTypeValid &&
+        fileData.isFileValid
+    );
+
+    /* console.log("\n\n", "Did file upload?");
+    console.log(isFileUploadSuccessful); */
+
+    try {
+
+        if (isFileUploadSuccessful && (!isTitleValid || !isContentValid)) {
+            // deleteFile(imageUrl);
+        }else{
+
+            // Get the post and the user
+            const post = await Post.findById(new ObjectId(postId));
+            const user = await User.findById(new ObjectId(userId));
+
+            let isPostCreator = true;
+
+            console.log("\n\n", "Post");
+            console.log(post);
+
+            console.log("\n", "User");
+            console.log(user);
+
+            if (post && user && user.posts) {
+
+                // Validate the creator since only they should be able to edit their posts
+                // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
+                user.posts.map((userPostId : PostsInterface) => {
+                    userPostId.toString() === postId.toString() && (isPostCreator = true);  
+                });
+            }
+
+        }
+
+    }catch(error){
+
+    }
 
     return {
         post : null,
@@ -346,7 +387,7 @@ const PostUpdatePostResolver = (parent : any, args : any) => {
         isTitleValid : false,
         success : false,
         message : "500 : Request was unsuccessful",
-        fileValidProps : fileValidProps
+        fileValidProps : fileData
     };
 
 };
