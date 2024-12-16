@@ -14,7 +14,7 @@ import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
-import { PostsInterface } from '../../@types/index';
+import { PostsInterface } from '../../@types/index.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -316,7 +316,7 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     // Get arguments
     const { title, userId, content, fileData, postId } = args;
     
-    /*console.log("\n\n", "title");
+    /* console.log("\n\n", "title");
     console.log(title);
 
     console.log("\n", "content");
@@ -332,7 +332,7 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     console.log(fileData); */
 
     const imageUrl = fileData.imageUrl;
-    deleteFile(imageUrl);
+    // deleteFile(imageUrl);
 
     // Validating the fields in the backend so they can't be exploited
     const isTitleValid = title.length >= 3;
@@ -350,45 +350,65 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     try {
 
         if (isFileUploadSuccessful && (!isTitleValid || !isContentValid)) {
-            // deleteFile(imageUrl);
+            deleteFile(imageUrl);
         }else{
 
             // Get the post and the user
             const post = await Post.findById(new ObjectId(postId));
             const user = await User.findById(new ObjectId(userId));
 
-            let isPostCreator = true;
+            let isPostCreator = false;
 
-            console.log("\n\n", "Post");
+            /* console.log("\n\n", "Post");
             console.log(post);
 
             console.log("\n", "User");
-            console.log(user);
+            console.log(user); */
 
-            if (post && user && user.posts) {
+            // Validate the creator since only they should be able to edit their posts
+            // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
+            user && user.posts && user.posts.map((userPostId : PostsInterface) => {
+                userPostId.toString() === postId.toString() && (isPostCreator = true);  
+            });
 
-                // Validate the creator since only they should be able to edit their posts
-                // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
-                user.posts.map((userPostId : PostsInterface) => {
-                    userPostId.toString() === postId.toString() && (isPostCreator = true);  
-                });
+            /* console.log("\n", "IsPostCreator");
+            console.log(isPostCreator); */
+
+            if (post && isPostCreator) {
+
+                // Update post details
+                post.content = content;
+                post.fileName = fileData.fileName;
+                post.fileLastUpdated = getCurrentMonthAndYear();
+                post.imageUrl = fileData.imageUrl;
+                post.title = title;
+
+                await post.save();
             }
 
+            return {
+                post : post,
+                status : 200,
+                isContentValid : isContentValid,
+                isTitleValid : isTitleValid,
+                success : true,
+                message : "200 : Request was successful",
+                fileValidProps : fileData
+            };
         }
 
     }catch(error){
 
+        return {
+            post : null,
+            status : 500,
+            isContentValid : false,
+            isTitleValid : false,
+            success : false,
+            message : "500 : Request was unsuccessful",
+            fileValidProps : fileData
+        };
     }
-
-    return {
-        post : null,
-        status : 500,
-        isContentValid : false,
-        isTitleValid : false,
-        success : false,
-        message : "500 : Request was unsuccessful",
-        fileValidProps : fileData
-    };
 
 };
 
