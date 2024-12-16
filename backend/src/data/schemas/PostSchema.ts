@@ -147,6 +147,7 @@ const PostMutations = new GraphQLObjectType({
             args : {
                 title : { type : GraphQLString },
                 content : { type : GraphQLString },
+                postId : { type : GraphQLString },
                 userId : { type : GraphQLString },
                 fileData : { type : FileDataInputType }
             },
