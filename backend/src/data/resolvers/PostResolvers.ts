@@ -316,7 +316,7 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     // Get arguments
     const { title, userId, content, fileData, postId } = args;
     
-    /* console.log("\n\n", "title");
+    console.log("\n\n", "title");
     console.log(title);
 
     console.log("\n", "content");
@@ -329,28 +329,25 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     console.log(postId);
 
     console.log("\n", "fileData");
-    console.log(fileData); */
-
-    const imageUrl = fileData.imageUrl;
-    // deleteFile(imageUrl);
+    console.log(fileData); 
 
     // Validating the fields in the backend so they can't be exploited
     const isTitleValid = title.length >= 3;
     const isContentValid = content.length >= 6 && content.length <= 400;
-    const isFileUploadSuccessful = (
+    const isFileUploadSuccessful = fileData ? (
         fileData.isImageUrlValid &&
         fileData.isFileSizeValid &&
         fileData.isFileTypeValid &&
         fileData.isFileValid
-    );
+    ) : false;
 
-    /* console.log("\n\n", "Did file upload?");
-    console.log(isFileUploadSuccessful); */
+    console.log("\n\n", "Did file upload?");
+    console.log(isFileUploadSuccessful);
 
     try {
 
         if (isFileUploadSuccessful && (!isTitleValid || !isContentValid)) {
-            deleteFile(imageUrl);
+            deleteFile(fileData.imageUrl);
         }else{
 
             // Get the post and the user
@@ -359,11 +356,11 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
 
             let isPostCreator = false;
 
-            /* console.log("\n\n", "Post");
+            console.log("\n\n", "Post");
             console.log(post);
 
             console.log("\n", "User");
-            console.log(user); */
+            console.log(user);
 
             // Validate the creator since only they should be able to edit their posts
             // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
@@ -371,10 +368,10 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
                 userPostId.toString() === postId.toString() && (isPostCreator = true);  
             });
 
-            /* console.log("\n", "IsPostCreator");
-            console.log(isPostCreator); */
-
             if (post && isPostCreator) {
+
+                // Delete the old image as we update the url with the new one
+                isFileUploadSuccessful && deleteFile(post.imageUrl);
 
                 // Update post details
                 post.content = content;

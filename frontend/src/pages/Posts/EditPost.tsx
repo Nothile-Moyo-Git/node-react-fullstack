@@ -275,7 +275,7 @@ export const EditPost : FC = () => {
                 },
                 body : JSON.stringify({ 
                     query : `
-                        mutation PostEditPostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!, $postId : String!){
+                        mutation PostEditPostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput, $postId : String!){
                             PostEditPostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData, postId : $postId){
                                 post {
                                     _id
@@ -307,21 +307,22 @@ export const EditPost : FC = () => {
                         title : title,
                         content : content,
                         userId : userId,
-                        fileData : fileData,
+                        fileData : null,
                         postId : postId
                     }
                 })
             });
 
+            // Get the result of the API request
             const data = await editPostResponse.json();
+            const response = data.data.PostEditPostResponse;
+
+            console.log("\n", "data");
+            console.log(data);
 
             console.log("\n");
             console.log("Response");
-            console.log(editPostResponse);
-
-            console.log("\n");
-            console.log("Data");
-            console.log(data);
+            console.log(response);
 
         }catch(error){
 
