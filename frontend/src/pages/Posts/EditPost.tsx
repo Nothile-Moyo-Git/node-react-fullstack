@@ -307,7 +307,7 @@ export const EditPost : FC = () => {
                         title : title,
                         content : content,
                         userId : userId,
-                        fileData : null,
+                        fileData : fileData,
                         postId : postId
                     }
                 })
