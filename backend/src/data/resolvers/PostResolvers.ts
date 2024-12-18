@@ -329,20 +329,17 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     console.log(postId);
 
     console.log("\n", "fileData");
-    console.log(fileData); */
-
-    const imageUrl = fileData.imageUrl;
-    // deleteFile(imageUrl);
+    console.log(fileData);  */
 
     // Validating the fields in the backend so they can't be exploited
     const isTitleValid = title.length >= 3;
     const isContentValid = content.length >= 6 && content.length <= 400;
-    const isFileUploadSuccessful = (
+    const isFileUploadSuccessful = fileData ? (
         fileData.isImageUrlValid &&
         fileData.isFileSizeValid &&
         fileData.isFileTypeValid &&
         fileData.isFileValid
-    );
+    ) : false;
 
     /* console.log("\n\n", "Did file upload?");
     console.log(isFileUploadSuccessful); */
@@ -350,7 +347,17 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     try {
 
         if (isFileUploadSuccessful && (!isTitleValid || !isContentValid)) {
-            deleteFile(imageUrl);
+
+            deleteFile(fileData.imageUrl);
+            return {
+                post : null,
+                status : 200,
+                isContentValid : isContentValid,
+                isTitleValid : isTitleValid,
+                success : true,
+                message : "200 : Request was successful",
+                fileValidProps : fileData
+            };
         }else{
 
             // Get the post and the user
@@ -371,16 +378,18 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
                 userPostId.toString() === postId.toString() && (isPostCreator = true);  
             });
 
-            /* console.log("\n", "IsPostCreator");
-            console.log(isPostCreator); */
-
             if (post && isPostCreator) {
+
+                // Delete the old image as we update the url with the new one
+                if (isFileUploadSuccessful) {
+                    deleteFile(post.imageUrl);
+                    post.fileName = fileData.fileName;
+                    post.fileLastUpdated = getCurrentMonthAndYear();
+                    post.imageUrl = fileData.imageUrl;
+                }
 
                 // Update post details
                 post.content = content;
-                post.fileName = fileData.fileName;
-                post.fileLastUpdated = getCurrentMonthAndYear();
-                post.imageUrl = fileData.imageUrl;
                 post.title = title;
 
                 await post.save();
