@@ -300,6 +300,9 @@ export const EditPost : FC = () => {
                                     isFileTypeValid
                                     isFileValid
                                 }
+                                isContentValid
+                                isTitleValid
+                                isPostCreator
                             }
                         }
                     `,
@@ -323,6 +326,29 @@ export const EditPost : FC = () => {
             console.log("\n");
             console.log("Response");
             console.log(response);
+
+            /*
+            // Apply validation on the fields so we can show errors if needed
+            setIsFormValid(response.success);
+            setIsFileValid(response.fileValidProps.isFileValid);
+            setIsTitleValid(response.isTitleValid);
+            setIsContentValid(data.isContentValid);
+            setIsPostCreatorValid(data.isPostCreator);
+
+            if (data.success === true) {
+                
+                // Reload the page if we were successful so we can query the updated results
+                alert(`Success, Post ${postId} updated`);
+                window.location.reload();
+            }
+
+            // Remove the image preview / file if it isn't valid so the user can upload a new one
+            if (!data.isFileValid) {
+                setUploadFile(undefined);
+                setImagePreview(null);
+                setShowImagePreview(false);
+                imageUrlRef.current && (imageUrlRef.current.value = "");
+            } */
 
         }catch(error){
 
