@@ -140,6 +140,7 @@ const PostMutations = new GraphQLObjectType({
                     success : { type : GraphQLBoolean },
                     message : { type : GraphQLString },
                     isContentValid : { type : GraphQLBoolean },
+                    isPostCreator : { type : GraphQLBoolean },
                     isTitleValid : { type : GraphQLBoolean },
                     fileValidProps : { type : FileDataObjectType }
                 }

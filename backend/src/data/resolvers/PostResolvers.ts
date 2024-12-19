@@ -356,7 +356,8 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
                 isTitleValid : isTitleValid,
                 success : true,
                 message : "200 : Request was successful",
-                fileValidProps : fileData
+                fileValidProps : fileData,
+                isPostCreator : null
             };
         }else{
 
@@ -402,7 +403,8 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
                 isTitleValid : isTitleValid,
                 success : true,
                 message : "200 : Request was successful",
-                fileValidProps : fileData
+                fileValidProps : fileData,
+                isPostCreator : isPostCreator
             };
         }
 
@@ -415,7 +417,8 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
             isTitleValid : false,
             success : false,
             message : "500 : Request was unsuccessful",
-            fileValidProps : fileData
+            fileValidProps : fileData,
+            isPostCreator : null
         };
     }
 
