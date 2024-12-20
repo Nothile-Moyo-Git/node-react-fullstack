@@ -201,61 +201,6 @@ export const EditPost : FC = () => {
 
         event.preventDefault();
 
-        // let fileData = {};
-        // uploadFile && (fileData = await fileUploadHandler(uploadFile));
-
-        /* const userId = appContextInstance?.userId;
-
-        let title = "";
-        let content = "";
-
-        // Extract inputs
-        if (titleRef.current) { title = titleRef.current.value; }
-        if (contentRef.current) { content = contentRef.current.value; }
-
-        // Set form inputs for the api request to the bakend
-        const fields = new FormData();
-        fields.append('title', title);
-        uploadFile && fields.append("image", uploadFile);
-        fields.append('content', content);
-        userId && fields.append('userId', userId);
-
-        try{
-
-            // Perform the API request to the backend
-            const response = await fetch(`http://localhost:4000/update-post/${postId}`, {
-                method : "PUT",
-                body : fields
-            });
-
-            const data = await response.json();
-
-            // Apply validation on the fields so we can show errors if needed
-            setIsFormValid(data.success);
-            setIsFileValid(data.isFileValid);
-            setIsTitleValid(data.isTitleValid);
-            setIsContentValid(data.isContentValid);
-            setIsPostCreatorValid(data.isPostCreator);
-
-            if (data.success === true) {
-                
-                // Reload the page if we were successful so we can query the updated results
-                alert(`Success, Post ${postId} updated`);
-                window.location.reload();
-            }
-
-            // Remove the image preview / file if it isn't valid so the user can upload a new one
-            if (!data.isFileValid) {
-                setUploadFile(undefined);
-                setImagePreview(null);
-                setShowImagePreview(false);
-                imageUrlRef.current && (imageUrlRef.current.value = "");
-            }
-
-        }catch(error){
-            console.log(error);
-        } */
-
         try {
 
             // Get values
@@ -265,6 +210,9 @@ export const EditPost : FC = () => {
 
             let fileData = {};
             uploadFile && (fileData = await fileUploadHandler(uploadFile));
+
+            console.log("\n", "fileData");
+            console.log(fileData);
 
             // Perform the API request to the backend
             const editPostResponse = await fetch('/graphql/posts', {
@@ -319,6 +267,12 @@ export const EditPost : FC = () => {
             // Get the result of the API request
             const data = await editPostResponse.json();
             const response = data.data.PostEditPostResponse;
+            const isFileValid = (
+                response.fileValidProps.isFileSizeValid &&
+                response.fileValidProps.isFileTypeValid &&
+                response.fileValidProps.isFileValid &&
+                response.fileValidProps.isImageUrlValid
+            );
 
             console.log("\n", "data");
             console.log(data);
@@ -327,15 +281,14 @@ export const EditPost : FC = () => {
             console.log("Response");
             console.log(response);
 
-            /*
             // Apply validation on the fields so we can show errors if needed
+            uploadFile && setIsFileValid(isFileValid);
             setIsFormValid(response.success);
-            setIsFileValid(response.fileValidProps.isFileValid);
             setIsTitleValid(response.isTitleValid);
-            setIsContentValid(data.isContentValid);
-            setIsPostCreatorValid(data.isPostCreator);
+            setIsContentValid(response.isContentValid);
+            setIsPostCreatorValid(response.isPostCreator);
 
-            if (data.success === true) {
+            if (response.success === true) {
                 
                 // Reload the page if we were successful so we can query the updated results
                 alert(`Success, Post ${postId} updated`);
@@ -343,12 +296,12 @@ export const EditPost : FC = () => {
             }
 
             // Remove the image preview / file if it isn't valid so the user can upload a new one
-            if (!data.isFileValid) {
+            if (uploadFile && !isFileValid) {
                 setUploadFile(undefined);
                 setImagePreview(null);
                 setShowImagePreview(false);
                 imageUrlRef.current && (imageUrlRef.current.value = "");
-            } */
+            }
 
         }catch(error){
 
