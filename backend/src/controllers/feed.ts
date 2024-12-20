@@ -49,6 +49,7 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
             // Response
             response.status(204).json({
                 creator : null,
+                fileUploaded : false,
                 isImageUrlValid : false,
                 isFileSizeValid : false,
                 isFileTypeValid : false,
@@ -80,6 +81,7 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
 
                 response.status(400).json({
                     creator : null,
+                    fileUploaded : false,
                     isImageUrlValid : isImageUrlValid,
                     isFileSizeValid : isFileSizeValid,
                     isFileTypeValid : isFileTypeValid,
@@ -95,6 +97,7 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
 
                 response.status(200).json({
                     creator : null,
+                    fileUploaded : true,
                     isImageUrlValid : true,
                     isFileSizeValid : true,
                     isFileTypeValid : true,
