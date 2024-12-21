@@ -59,7 +59,7 @@ export const ViewPosts : FC = () => {
                     query GetPostsResponse($currentPage : Int!){
                         GetPostsResponse(currentPage : $currentPage){
                             message
-                            posts {
+                            posts  {
                                 _id
                                 fileLastUpdated
                                 fileName
@@ -135,8 +135,12 @@ export const ViewPosts : FC = () => {
     // Handle the deletion of a post
     const deletePost = async () => {
 
+        // Get values
+        const userId = appContextInstance?.userId ?? "";
+        const postId = deleteId;
+
         // create out fields to help authorize the request
-        const fields = new FormData();
+        /* const fields = new FormData();
         fields.append('postId', deleteId);
         fields.append('userId', appContextInstance?.userId ? appContextInstance?.userId : '');
 
@@ -159,7 +163,9 @@ export const ViewPosts : FC = () => {
             
             console.log("Delete post error");
             console.log(error);
-        }
+        } */
+
+
     };
 
     useEffect(() => {

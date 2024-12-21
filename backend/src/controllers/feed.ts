@@ -18,13 +18,10 @@
  * @method testEndpoint : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  */
 
-import fs from "fs";
-import path from "path";
 import Post from "../models/post.ts";
 import User from "../models/user.ts";
 import { FeedRequestInterface, PostsInterface } from "../@types/index.ts";
 import { NextFunction, Response } from "express";
-import { ObjectId } from "mongodb";
 import { deleteFile, checkFileType } from "../util/file.ts";
 import { getIO } from "../socket.ts";
 
@@ -121,130 +118,7 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
     }
 };
 
-export const PutUpdatePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
-    // Grabving the postId
-    const postId = new ObjectId(request.params.postId);
-
-    // Get our initial values and validate them so that even if we don't have an image, we can evaluate the other inputs
-    const title = request.body.title;
-    const content = request.body.content;
-
-    // Validate out inputs
-    const isTitleValid : boolean = title.length >= 3;
-    const isContentValid : boolean = content.length >= 6 && content.length <= 400;
-
-    // File validation variables
-    let wasImageUploaded = false;
-    let imageUrl = "";
-    let isFileValid = true;
-    let fileMimeType = "";
-    let isFileTypeValid = true;
-
-    // If there is no image
-    if (!request.file) {
-
-        wasImageUploaded = false;
-
-    }else{
-
-        // If we uploaded a new file
-        fileMimeType = checkFileType(request.file);
-        imageUrl = request.file.path;
-        isFileValid = (request.file && request.file.size < 5250000) ? true : false;
-        isFileTypeValid = (fileMimeType === "image/png" || fileMimeType === "image/jpg" || fileMimeType === "image/jpeg" );
-        wasImageUploaded = true;
-    }
-
-    // Validate the image, and proceed to delete it if it isn't valid
-    const isImageUrlValid : boolean = imageUrl.length > 0;
-
-    // If any of our conditions are invalid, delete the file we just uploaded
-    if ( !isImageUrlValid || !isTitleValid || !isContentValid || !isFileValid ) { 
-        wasImageUploaded === true && deleteFile(imageUrl);  
-    } 
-
-    // Update post data
-    try {
-
-        // Get the post data
-        const post = await Post.findById(postId);
-        const user = await User.findById(new ObjectId(request.body.userId));
-
-        let isPostCreator : boolean = true;
-
-        if (post) {
-
-            // Set the value to false and then only set it to true if it matches a single time
-            isPostCreator = false;
-
-            // Validate the creator since only they should be able to edit their posts
-            // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
-            user.posts.map((userPostId : PostsInterface) => {
-                if (userPostId.toString() === postId.toString()){
-                    isPostCreator = true;
-                }
-            });
-        }
-
-
-        if (post && isPostCreator === true && isTitleValid === true && isContentValid === true && isFileValid === true) {
-
-            // Since our new image is valid, delete the old one and keep the uploaded one
-            wasImageUploaded && deleteFile(post.imageUrl);
-
-            // Update post details
-            post.title = title;
-            isImageUrlValid && (post.imageUrl = imageUrl);
-            request.file && (post.fileName = request.file.filename);
-            post.content = content;
-
-            // Update our post
-            await post.save();
-
-            // Send a response to the front end in JSON format which we can extract using the data property
-            response.status(200).json({
-                creator : user,
-                imageUrl : imageUrl,
-                isContentValid : isContentValid,
-                isFileTypeValid : isFileTypeValid,
-                isImageUrlValid : isImageUrlValid,
-                isFileValid : isFileValid,
-                isPostCreator : isPostCreator,
-                isTitleValid : isTitleValid,
-                message : "Post edited successfully",
-                mimeType : fileMimeType,
-                post : post,
-                success : true
-            });
-
-        }else{
-
-            response.status(400).json({
-                creator : user,
-                imageUrl : imageUrl,
-                isContentValid : isContentValid,
-                isFileTypeValid : isFileTypeValid,
-                isImageUrlValid : isImageUrlValid,
-                isFileValid : isFileValid,
-                isPostCreator : isPostCreator,
-                isTitleValid : isTitleValid,
-                message : "Post edited unsuccessfully",
-                mimeType : fileMimeType,
-                post : null,
-                success : false
-            });
-        }
-
-    } catch (error) {
-        console.log(error);
-        
-        response.status(400).json({
-            message : "Server error",
-            success : false
-        });
-    }
-};
 
 // Delete the post controller
 export const PostDeletePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
@@ -303,13 +177,5 @@ export const testEndpoint = (request : FeedRequestInterface, response : Response
     // Send a response to the browser or the frontend
     response.status(201);
     response.json({ message : 'Test' });
-};
-
-// Delete image controller for the page
-const clearImage = (filepath : string) => {
-
-    // Delete the image
-    filepath = path.join(__dirname, '..', filepath);
-    fs.unlink(filepath, error => console.log(error));
 };
 
