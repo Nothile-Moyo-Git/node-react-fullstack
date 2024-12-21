@@ -153,6 +153,20 @@ const PostMutations = new GraphQLObjectType({
                 fileData : { type : FileDataInputType }
             },
             resolve : postResolvers.PostUpdatePostResolver
+        },
+        PostDeletePostResponse : {
+            type : new GraphQLObjectType({
+                name : "deletePost",
+                fields : {
+                    status : { type : GraphQLInt },
+                    success : { type : GraphQLBoolean }
+                }
+            }),
+            args : {
+                postId : { type : GraphQLString },
+                userId : { type : GraphQLString }
+            },
+            resolve : postResolvers.PostDeletePostResolver
         }
     }
 });

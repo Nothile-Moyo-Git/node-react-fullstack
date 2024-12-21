@@ -274,13 +274,6 @@ export const EditPost : FC = () => {
                 response.fileValidProps.isImageUrlValid
             );
 
-            console.log("\n", "data");
-            console.log(data);
-
-            console.log("\n");
-            console.log("Response");
-            console.log(response);
-
             // Apply validation on the fields so we can show errors if needed
             uploadFile && setIsFileValid(isFileValid);
             setIsFormValid(response.success);

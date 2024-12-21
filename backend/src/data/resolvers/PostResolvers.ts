@@ -316,21 +316,6 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
     // Get arguments
     const { title, userId, content, fileData, postId } = args;
     
-    /* console.log("\n\n", "title");
-    console.log(title);
-
-    console.log("\n", "content");
-    console.log(content);
-    
-    console.log("\n", "userId");
-    console.log(userId);
-
-    console.log("\n", "postId");
-    console.log(postId);
-
-    console.log("\n", "fileData");
-    console.log(fileData);  */
-
     // Validating the fields in the backend so they can't be exploited
     const isTitleValid = title.length >= 3;
     const isContentValid = content.length >= 6 && content.length <= 400;
@@ -340,9 +325,6 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
         fileData.isFileTypeValid &&
         fileData.isFileValid
     ) : false;
-
-    /* console.log("\n\n", "Did file upload?");
-    console.log(isFileUploadSuccessful); */
 
     try {
 
@@ -366,12 +348,6 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
             const user = await User.findById(new ObjectId(userId));
 
             let isPostCreator = false;
-
-            /* console.log("\n\n", "Post");
-            console.log(post);
-
-            console.log("\n", "User");
-            console.log(user); */
 
             // Validate the creator since only they should be able to edit their posts
             // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
@@ -424,12 +400,32 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
 
 };
 
+/**
+ * @name PostDeletePostController
+ * 
+ * @description Delete the post from the backend
+ * 
+ * @param parent : any
+ * @param args : any
+ */
+const PostDeletePostResolver = async (parent : any, args : any) => {
+
+
+
+    // Get arguments
+    return {
+        status : 200,
+        success : true
+    };
+};
+
 const postResolvers = {
     GetAndValidatePostResolver : GetAndValidatePostResolver,
     GetPostResolver : GetPostResolver,
     GetPostsResolver : GetPostsResolver,
     PostCreatePostResolver : PostCreatePostResolver,
-    PostUpdatePostResolver : PostUpdatePostResolver
+    PostUpdatePostResolver : PostUpdatePostResolver,
+    PostDeletePostResolver : PostDeletePostResolver
 };
 
 export default postResolvers;
