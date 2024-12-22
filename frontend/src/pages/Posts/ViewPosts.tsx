@@ -139,6 +139,33 @@ export const ViewPosts : FC = () => {
         const userId = appContextInstance?.userId ?? "";
         const postId = deleteId;
 
+        // Perform the signup request
+        const response = await fetch(`/graphql/posts`, {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    query PostDeletePostResponse($postId : String!, $userId : String!){
+                        PostDeletePostResponse(postId : $postId, userId : $userId){
+                            success
+                            status
+                        }
+                    }
+                `,
+                variables : {
+                    postId : postId,
+                    userId : userId
+                }
+            })
+        });
+
+        // Handle response from the deletion
+        console.log("\n", "Response");
+        console.log(response);
+
         // create out fields to help authorize the request
         /* const fields = new FormData();
         fields.append('postId', deleteId);

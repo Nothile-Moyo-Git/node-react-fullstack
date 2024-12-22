@@ -410,13 +410,31 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
  */
 const PostDeletePostResolver = async (parent : any, args : any) => {
 
-
-
     // Get arguments
-    return {
-        status : 200,
-        success : true
-    };
+    const postId = args.postId;
+    const userId = args.userId;
+
+    try {
+
+        console.log("\n", "postId");
+        console.log(postId);
+
+        console.log("\n", "userId");
+        console.log(userId);
+
+        return {
+            status : 200,
+            success : true
+        }
+
+    } catch (error) {
+
+        return {
+            status : 200,
+            success : true
+        }
+    }
+
 };
 
 const postResolvers = {
