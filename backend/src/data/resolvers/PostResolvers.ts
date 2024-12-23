@@ -416,11 +416,38 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
 
     try {
 
+        // Get post data
+        const post = await Post.findById(new ObjectId(postId));
+
+        // Remove the reference for the post from MongoDB
+        const user = await User.findById(userId);
+
         console.log("\n", "postId");
         console.log(postId);
 
         console.log("\n", "userId");
         console.log(userId);
+
+        console.log("\n", "post");
+        console.log(post);
+
+        // If there's no post, return an error
+        if (post && user) {
+         
+            // await Post.findByIdAndDelete(postId);
+
+            const filteredPosts = user.posts ? user.posts.filter((post : PostsInterface) => post._id.toString() !== postId ) : [];
+
+            // Update the posts with the new one to reflect the deleted post
+            user.posts = filteredPosts;
+
+            // Get the number of posts so we can determine what page we're on
+            const numberOfPosts = await Post.find().countDocuments();
+
+            // Calculate the highest page number so we can change it to that if there are no posts on our page
+            const highestPageNumber = Math.ceil(numberOfPosts / perPage);
+
+        }
 
         return {
             status : 200,
