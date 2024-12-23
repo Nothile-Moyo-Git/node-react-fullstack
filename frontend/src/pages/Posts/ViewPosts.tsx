@@ -148,7 +148,7 @@ export const ViewPosts : FC = () => {
             },
             body : JSON.stringify({
                 query :`
-                    query PostDeletePostResponse($postId : String!, $userId : String!){
+                    mutation PostDeletePostResponse($postId : String!, $userId : String!){
                         PostDeletePostResponse(postId : $postId, userId : $userId){
                             success
                             status
@@ -165,6 +165,11 @@ export const ViewPosts : FC = () => {
         // Handle response from the deletion
         console.log("\n", "Response");
         console.log(response);
+
+        const data = await response.json();
+
+        console.log("\n", "data");
+        console.log(data);
 
         // create out fields to help authorize the request
         /* const fields = new FormData();
