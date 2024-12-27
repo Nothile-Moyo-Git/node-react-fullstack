@@ -447,6 +447,11 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
             // Calculate the highest page number so we can change it to that if there are no posts on our page
             const highestPageNumber = Math.ceil(numberOfPosts / perPage);
 
+            // await user.save();
+
+            // Check logged in User
+            deleteFile(post.imageUrl);
+
         }
 
         return {

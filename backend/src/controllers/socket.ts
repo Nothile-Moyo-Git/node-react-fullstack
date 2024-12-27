@@ -39,3 +39,32 @@ export const PostEmitPostCreation = (request : SocketRequest, response : Respons
         message : "post added"
     })
 };
+
+/**
+ * 
+ * @name emitPostDeletion
+ * 
+ * @description Output the message for the post deletion endpoint, should be done after querying PostDeletePostResponse
+ * 
+ * @param request : SocketRequest
+ * @param response : Response
+ * @param next : NextFunction
+ */
+export const PostEmitPostDeletion = (request : SocketRequest, response : Response, next : NextFunction) => {
+
+    // Get the post body of the request
+    const { numberOfPosts, highestPageNumber } = request.body
+
+    // Send the response to the front end
+    getIO().emit('post deleted', {
+        numberOfPosts : numberOfPosts,
+        highestPageNumber : highestPageNumber
+    });
+    
+    // Return our response
+    response.status(200).json({
+        success : true,
+        message : "post added"
+    })
+
+};

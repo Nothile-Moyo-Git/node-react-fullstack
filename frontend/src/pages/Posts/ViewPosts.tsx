@@ -139,64 +139,46 @@ export const ViewPosts : FC = () => {
         const userId = appContextInstance?.userId ?? "";
         const postId = deleteId;
 
-        // Perform the signup request
-        const response = await fetch(`/graphql/posts`, {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                Accept: "application/json", 
-            },
-            body : JSON.stringify({
-                query :`
-                    mutation PostDeletePostResponse($postId : String!, $userId : String!){
-                        PostDeletePostResponse(postId : $postId, userId : $userId){
-                            success
-                            status
-                        }
-                    }
-                `,
-                variables : {
-                    postId : postId,
-                    userId : userId
-                }
-            })
-        });
+        try {
 
-        // Handle response from the deletion
-        console.log("\n", "Response");
-        console.log(response);
-
-        const data = await response.json();
-
-        console.log("\n", "data");
-        console.log(data);
-
-        // create out fields to help authorize the request
-        /* const fields = new FormData();
-        fields.append('postId', deleteId);
-        fields.append('userId', appContextInstance?.userId ? appContextInstance?.userId : '');
-
-        try{
-
-            // Perform the api request to delete the post
-            const response = await fetch(`http://localhost:4000/delete-post`,{
+            // Perform the signup request
+            const response = await fetch(`/graphql/posts`, {
                 method : "POST",
-                body : fields
+                headers : {
+                    "Content-Type": "application/json",
+                    Accept: "application/json", 
+                },
+                body : JSON.stringify({
+                    query :`
+                        mutation PostDeletePostResponse($postId : String!, $userId : String!){
+                            PostDeletePostResponse(postId : $postId, userId : $userId){
+                                success
+                                status
+                            }
+                        }
+                    `,
+                    variables : {
+                        postId : postId,
+                        userId : userId
+                    }
+                })
             });
+
+            // Get the result from the endpoint
+            const { data : { PostDeletePostResponse : result } } = await response.json();
 
             fetchPosts();
             setShowConfirmationModal(false);
 
-            if (response.status === 200) {
+            if (result.status === 200) {
                 alert(`Post ${deleteId} has successfully been deleted`);
             }
 
-        }catch(error){
-            
+        }catch(error : unknown){
+
             console.log("Delete post error");
             console.log(error);
-        } */
-
+        }
 
     };
 
