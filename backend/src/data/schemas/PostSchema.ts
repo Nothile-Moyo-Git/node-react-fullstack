@@ -159,7 +159,9 @@ const PostMutations = new GraphQLObjectType({
                 name : "deletePost",
                 fields : {
                     status : { type : GraphQLInt },
-                    success : { type : GraphQLBoolean }
+                    success : { type : GraphQLBoolean },
+                    numberOfPosts : { type : GraphQLInt },
+                    highestPageNumber : { type : GraphQLInt }
                 }
             }),
             args : {

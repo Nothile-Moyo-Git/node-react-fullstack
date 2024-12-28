@@ -57,14 +57,14 @@ export const PostEmitPostDeletion = (request : SocketRequest, response : Respons
 
     // Send the response to the front end
     getIO().emit('post deleted', {
-        numberOfPosts : numberOfPosts,
-        highestPageNumber : highestPageNumber
+        numberOfPosts,
+        highestPageNumber
     });
     
     // Return our response
     response.status(200).json({
-        success : true,
-        message : "post added"
+        numberOfPosts,
+        highestPageNumber
     })
 
 };

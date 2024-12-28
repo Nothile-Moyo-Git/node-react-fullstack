@@ -154,6 +154,8 @@ export const ViewPosts : FC = () => {
                             PostDeletePostResponse(postId : $postId, userId : $userId){
                                 success
                                 status
+                                numberOfPosts
+                                highestPageNumber
                             }
                         }
                     `,
@@ -166,6 +168,17 @@ export const ViewPosts : FC = () => {
 
             // Get the result from the endpoint
             const { data : { PostDeletePostResponse : result } } = await response.json();
+
+            // Set the fields for the websocket emit
+            const fields = new FormData();
+            fields.append('numberOfPosts', result.numberOfPosts);
+            fields.append('highestPageNumber', result.highestPageNumber);
+
+            // Trigger a modal which informs users that the post has been deleted
+            await fetch('/rest/socket/emit/post-deleted', {
+                method : 'POST',
+                body : fields
+            });
 
             fetchPosts();
             setShowConfirmationModal(false);

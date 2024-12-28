@@ -156,7 +156,7 @@ export const CreatePostComponent : FC = () => {
                     data.post[property] && fields.append(property, data.post[property]);
                 }
 
-                // Query the backend with post data
+                // Trigger a modal which informs users that the post has been created
                 await fetch('/rest/socket/emit/post-created', {
                     method : 'POST',
                     body : fields
