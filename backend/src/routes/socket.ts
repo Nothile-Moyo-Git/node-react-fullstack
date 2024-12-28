@@ -7,12 +7,13 @@
  */
 
 import express from "express";
-import { PostEmitPostCreation } from '../controllers/socket.ts';
+import { PostEmitPostCreation, PostEmitPostDeletion } from '../controllers/socket.ts';
 
 // Setting strict API routes
 const socketRoutes = express.Router({ strict : true });
 
 // Assign routes to endpoints
 socketRoutes.post("/rest/socket/emit/post-created", PostEmitPostCreation);
+socketRoutes.post("/rest/socket/emit/post-deleted", PostEmitPostDeletion);
 
 export default socketRoutes;

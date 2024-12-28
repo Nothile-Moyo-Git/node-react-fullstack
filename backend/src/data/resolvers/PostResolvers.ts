@@ -414,6 +414,8 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
     const postId = args.postId;
     const userId = args.userId;
 
+    let numberOfPosts = 0, highestPageNumber = 1;
+
     try {
 
         // Get post data
@@ -422,19 +424,10 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
         // Remove the reference for the post from MongoDB
         const user = await User.findById(userId);
 
-        console.log("\n", "postId");
-        console.log(postId);
-
-        console.log("\n", "userId");
-        console.log(userId);
-
-        console.log("\n", "post");
-        console.log(post);
-
         // If there's no post, return an error
         if (post && user) {
          
-            // await Post.findByIdAndDelete(postId);
+            await Post.findByIdAndDelete(postId);
 
             const filteredPosts = user.posts ? user.posts.filter((post : PostsInterface) => post._id.toString() !== postId ) : [];
 
@@ -442,12 +435,12 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
             user.posts = filteredPosts;
 
             // Get the number of posts so we can determine what page we're on
-            const numberOfPosts = await Post.find().countDocuments();
+            numberOfPosts = await Post.find().countDocuments();
 
             // Calculate the highest page number so we can change it to that if there are no posts on our page
-            const highestPageNumber = Math.ceil(numberOfPosts / perPage);
+            highestPageNumber = Math.ceil(numberOfPosts / perPage);
 
-            // await user.save();
+            await user.save();
 
             // Check logged in User
             deleteFile(post.imageUrl);
@@ -456,14 +449,18 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
 
         return {
             status : 200,
-            success : true
+            success : true,
+            numberOfPosts,
+            highestPageNumber
         }
 
     } catch (error) {
 
         return {
             status : 200,
-            success : true
+            success : true,
+            numberOfPosts,
+            highestPageNumber
         }
     }
 
