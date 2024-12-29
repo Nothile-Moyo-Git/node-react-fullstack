@@ -170,9 +170,11 @@ app.all('/graphql/auth', createHandler({
 }));
 
 // Fallback route, in case no other route gets handled
-app.use('*', createHandler({
+app.use('/graphql/*', createHandler({
     schema : schemas.ErrorSchema
 }));
+
+app.use( errorRoutes );
 
 // Spin up the local server on the port to 
 const startServer = async () => {
