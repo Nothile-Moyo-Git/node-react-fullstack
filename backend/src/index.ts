@@ -169,8 +169,8 @@ app.all('/graphql/auth', createHandler({
     schema : schemas.AuthSchema
 }));
 
-// Fallback route, in case no other route gets handled
-app.use('/graphql/*', createHandler({
+// Return a GraphQL error 
+app.all('/graphql/*', createHandler({
     schema : schemas.ErrorSchema
 }));
 
