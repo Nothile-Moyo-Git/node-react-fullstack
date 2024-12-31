@@ -16,7 +16,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from 'url';
 import feedRoutes from "./routes/feed.ts";
-import errorRoutes from "./routes/feed.ts";
+import errorRoutes from "./routes/error.ts";
 import socketRoutes from "./routes/socket.ts";
 import chatRoutes from "./routes/chat.ts";
 import { RequestInterface } from "./@types/index.ts";

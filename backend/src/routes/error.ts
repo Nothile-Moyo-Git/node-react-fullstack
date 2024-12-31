@@ -7,11 +7,11 @@
 
 import express from "express";
 
-import { Get404Page } from "../controllers/error.ts";
+import { Handle404Response } from "../controllers/error.ts";
 
 const errorRoutes = express.Router({ strict : true });
 
 // Handle our fallback router, this uses the * value
-errorRoutes.get("/f", Get404Page);
+errorRoutes.all("*", Handle404Response);
 
 export default errorRoutes;
