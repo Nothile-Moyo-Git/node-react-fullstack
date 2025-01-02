@@ -8,6 +8,7 @@
  * Has the base styling and will also perform event handling if required
  */
 
+import { ButtonType } from "../../@types";
 import "./Button.scss";
 
 import { FC, MouseEvent, ReactNode } from "react";
@@ -15,6 +16,7 @@ import { FC, MouseEvent, ReactNode } from "react";
 interface ComponentProps {
     children : ReactNode,
     variant ?: string,
+    type ?: ButtonType,
     onClick ?: (event : React.MouseEvent<HTMLElement>) => void
 };
 
@@ -28,7 +30,7 @@ interface ComponentProps {
  * 
  * @returns Button : FC<ComponentProps>
  */
-const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
+const Button : FC<ComponentProps> = ({children, variant, type, onClick}) => {
 
     let variantClassName = "";
 
@@ -68,8 +70,16 @@ const Button : FC<ComponentProps> = ({children, variant, onClick}) => {
             break;
     }
 
+
+
     return(
-        <button className={`button ${variantClassName}`} onClick={onClick}>{children}</button>
+        <button 
+            className={`button ${variantClassName}`} 
+            onClick={onClick}
+            type={type || "submit"}
+        >
+            {children}
+        </button>
     );
 };
 

@@ -50,3 +50,5 @@ export interface User {
     status : string,
     posts : string[]
 }
+
+export type ButtonType = "button" | "submit" | "reset" | undefined;

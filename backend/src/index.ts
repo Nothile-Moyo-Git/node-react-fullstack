@@ -149,10 +149,7 @@ app.use(
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 
 // Implement Route handlers here
-app.use( feedRoutes );
-app.use( authRoutes );
-app.use( chatRoutes );
-app.use( socketRoutes );
+app.use( feedRoutes, authRoutes, chatRoutes, socketRoutes );
 
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({
@@ -174,6 +171,7 @@ app.all('/graphql/*', createHandler({
     schema : schemas.ErrorSchema
 }));
 
+// Error handling for REST routes
 app.use( errorRoutes );
 
 // Spin up the local server on the port to 
