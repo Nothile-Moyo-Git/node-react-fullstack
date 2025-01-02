@@ -9,23 +9,11 @@
  * 
  * Note: This does not cover the middleware which is used to authenticate requests before execution
  * 
- * @method GetPostsController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method PostCreatePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method GetPostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method PostUpdatePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method PostDeletePostController : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method ClearImage : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
- * @method testEndpoint : async (request : FeedRequestInterface, response : Response, next : NextFunction) => void
  */
 
-import Post from "../models/post.ts";
-import User from "../models/user.ts";
-import { FeedRequestInterface, PostsInterface } from "../@types/index.ts";
+import { FeedRequestInterface } from "../@types/index.ts";
 import { NextFunction, Response } from "express";
 import { deleteFile, checkFileType } from "../util/file.ts";
-import { getIO } from "../socket.ts";
-
-const perPage = 3;
 
 /**
  * @name PostUploadFileController
@@ -118,60 +106,15 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
     }
 };
 
-
-
-// Delete the post controller
-export const PostDeletePostController = async (request : FeedRequestInterface, response : Response, next : NextFunction) => {
-
-    // Get the postId
-    const postId = request.body.postId;
-    const userId = request.body.userId;
-
-    try {
-
-        // Get the post data
-        const post = await Post.findById(postId);
-
-        // If there's no post, return an error
-        if (post) {
-
-            await Post.findByIdAndDelete(postId);
-
-            // Remove the reference for the post from MongoDB
-            const user = await User.findById(userId);
-
-            const filteredPosts = user.posts.filter((post : PostsInterface) => post._id.toString() !== postId );
-
-            // Update the posts with the new one to reflect the deleted post
-            user.posts = filteredPosts;
-
-            // Get the number of posts so we can determine what page we're on
-            const numberOfPosts = await Post.find().countDocuments();
-
-            // Calculate the highest page number so we can change it to that if there are no posts on our page
-            const highestPageNumber = Math.ceil(numberOfPosts / perPage);
-
-            // Send the response to the front end
-            getIO().emit('post deleted', { 
-                numberOfPosts,
-                highestPageNumber
-            });
-
-            await user.save();
-
-            // Check logged in User
-            deleteFile(post.imageUrl);
-
-            response.status(200).json({ success : true });
-        }
-
-    } catch (error) {
-
-        next(error);
-    }
-};
-
-// Test endpoint
+/**
+ * @name testEndpoint
+ * 
+ * @description Use to check if endpoints work
+ * 
+ * @param request : FeedRequestInterface
+ * @param response : Response
+ * @param next : NextFunction
+ */
 export const testEndpoint = (request : FeedRequestInterface, response : Response, next : NextFunction) => {
 
     // Send a response to the browser or the frontend

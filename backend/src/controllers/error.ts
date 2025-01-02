@@ -19,6 +19,6 @@ import { Request, Response, NextFunction } from "express";
 export const Handle404Response = (request : Request, response : Response, next : NextFunction) => {
 
     // Return a 404 response for a URL that doesn't exist
-    response.status(201).json({message : "Error 404: This endpoint does not exist, please check your routing."});
+    response.status(404).json({message : "Error 404: This endpoint does not exist, please check your routing."});
 };
 

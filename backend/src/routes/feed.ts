@@ -8,7 +8,6 @@
 import express from "express";
 import { 
     testEndpoint,
-    PostDeletePostController,
     PostUploadFileController
 } from "../controllers/feed.ts";
 
@@ -17,6 +16,5 @@ const feedRoutes = express.Router({ strict : true });
 // Handle our api routes
 feedRoutes.get('/test', testEndpoint);
 feedRoutes.post('/rest/post/file-upload', PostUploadFileController);
-feedRoutes.post('/delete-post', PostDeletePostController);
 
 export default feedRoutes;

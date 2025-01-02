@@ -163,7 +163,10 @@ export const EditPost : FC = () => {
     };
 
     // Back handler
-    const backToPreviousPage = () => {
+    const backToPreviousPage = (event : React.MouseEvent) => {
+
+        // Prevent form submission from button click
+        event.preventDefault();
 
         // If we were on the domain, then go back to the previous page
         if (location.key !== 'default') { navigate(-1); }
@@ -200,6 +203,10 @@ export const EditPost : FC = () => {
     const submitHandler = async (event : FormEvent) => {
 
         event.preventDefault();
+
+        console.log("\n", "Submit handler called");
+        console.log(event);
+        console.log("\n");
 
         try {
 
@@ -344,7 +351,7 @@ export const EditPost : FC = () => {
 
                     {
                         location.key !== 'default' &&
-                        <Button variant="back" onClick={backToPreviousPage}><MdKeyboardBackspace/>Go back</Button>
+                        <Button type="button" variant="back" onClick={backToPreviousPage}><MdKeyboardBackspace/>Go back</Button>
                     }
 
                     <Field>
