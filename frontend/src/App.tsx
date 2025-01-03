@@ -55,13 +55,18 @@ const App : FC = () => {
             `,
             variables : {
               _id : userId,
-              token : appContextInstance?.token ? appContextInstance.token : ""
+              token : appContextInstance?.token ?? ""
             }
         })
       });
 
       const userDetailsResponse = await response.json();
       const data = userDetailsResponse.data.PostUserDetailsResponse;
+
+      // Get the result from the endpoint
+      //const { data2 : { PostUserDetailsResponse : user } } = await response.json();
+
+      // console.log()
 
       // Set the user details so 
       setUser(data.user);

@@ -67,20 +67,40 @@ const LiveChat : FC = () => {
     // Get user details if the user is authenticated from the backend
     const getUserDetails = async (userId : string) => {
 
-        // We assign Formdata here so we can use this with cors in the backend
-        const fields = new FormData();
-        fields.append("userId", userId);
-        fields.append("token", appContextInstance?.token ? appContextInstance.token : "");
-    
-        const result = await fetch(`http://localhost:4000/user/${userId}`, {
+        const response = await fetch(`/graphql/auth`, {
             method : "POST",
-            body : fields
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+              query :`
+                query PostUserDetailsResponse($_id : String!, $token : String!){
+                  PostUserDetailsResponse(_id : $_id, token : $token){
+                    user {
+                      _id
+                      name
+                      email
+                      password
+                      confirmPassword
+                      status
+                      posts
+                    }
+                    }
+                  }
+                `,
+                variables : {
+                  _id : userId,
+                  token : appContextInstance?.token ?? ""
+                }
+            })
         });
     
-        const data = await result.json();
-    
+        // Get the result from the endpoint
+        const { data : { PostUserDetailsResponse : user } } = await response.json();
+
         // Set the user details so 
-        setUserDetails(data.user);
+        setUserDetails(user);
     };
 
     // Get the chat messages async since we can't do it in our useEffect hook

@@ -204,10 +204,6 @@ export const EditPost : FC = () => {
 
         event.preventDefault();
 
-        console.log("\n", "Submit handler called");
-        console.log(event);
-        console.log("\n");
-
         try {
 
             // Get values
@@ -217,9 +213,6 @@ export const EditPost : FC = () => {
 
             let fileData = {};
             uploadFile && (fileData = await fileUploadHandler(uploadFile));
-
-            console.log("\n", "fileData");
-            console.log(fileData);
 
             // Perform the API request to the backend
             const editPostResponse = await fetch('/graphql/posts', {

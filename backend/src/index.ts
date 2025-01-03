@@ -152,24 +152,16 @@ app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 app.use( feedRoutes, authRoutes, chatRoutes, socketRoutes );
 
 // Handling graphql schemas and creating the endpoints for them
-app.all('/graphql/chat', createHandler({
-    schema : schemas.ChatSchema
-}));
+app.all('/graphql/chat', createHandler({ schema : schemas.ChatSchema }));
 
 // Post resolver graphql
-app.all('/graphql/posts', createHandler({
-   schema : schemas.PostSchema 
-}));
+app.all('/graphql/posts', createHandler({ schema : schemas.PostSchema }));
 
 // Auth resolver graphql
-app.all('/graphql/auth', createHandler({
-    schema : schemas.AuthSchema
-}));
+app.all('/graphql/auth', createHandler({ schema : schemas.AuthSchema }));
 
 // Return a GraphQL error 
-app.all('/graphql/*', createHandler({
-    schema : schemas.ErrorSchema
-}));
+app.all('/graphql/*', createHandler({ schema : schemas.ErrorSchema }));
 
 // Error handling for REST routes
 app.use( errorRoutes );
