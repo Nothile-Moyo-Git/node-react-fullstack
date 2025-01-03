@@ -1,5 +1,6 @@
 /**
  * Date created: 29/01/2024
+ * 
  * Author: Nothile Moyo
  * 
  * The auth route file. Handles all the routes for the requests we will perform from the front end
@@ -13,7 +14,6 @@ import {
     PostLoginController,
     PostSignupController,
     PostUpdateUserStatusController,
-    PostDeleteSessionController,
     PostCheckAndCreateSessionController
 } from "../controllers/auth.ts";
 
@@ -21,7 +21,6 @@ import {
 const authRoutes = express.Router({ strict : true });
 
 // Handle routes
-authRoutes.post("/delete-session/:userId?", PostDeleteSessionController);
 authRoutes.post("/user/:id?", PostGetUserDetailsController);
 authRoutes.get("/user/:id/status", GetUserStatusController);
 authRoutes.post("/login", PostLoginController);

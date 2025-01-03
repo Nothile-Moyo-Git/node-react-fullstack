@@ -359,38 +359,6 @@ export const PostGetUserDetailsController = async (request : AuthRequestInterfac
 };
 
 /**
- * @name PostDeleteSessionController
- * 
- * @description A controller which deletes our session if our user logs out or the session has expired
- * 
- * @param userId : string
- */
-export const PostDeleteSessionController = async (request : AuthRequestInterface, response : Response, next : NextFunction) => {
-
-    // userId
-    const userId = request.body.userId;
-
-    try{
-
-        // Delete the session if it exists
-        await Session.findOneAndDelete({ creator : userId });
-
-        // Send the response 
-        response.status(200).json({
-            success : true,
-            message : "Request successful"
-        });
-
-    }catch(error){
-
-        response.status(202).json({
-            success : false,
-            message : "Error: No userId was provided for this request"
-        });
-    }
-};
-
-/**
  * @name PostCheckAndCreateSessionController
  * 
  * @description A controller which checks the session we have in the backend and creates it if it does
