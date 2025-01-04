@@ -60,18 +60,13 @@ const App : FC = () => {
         })
       });
 
-      const userDetailsResponse = await response.json();
-      const data = userDetailsResponse.data.PostUserDetailsResponse;
-
       // Get the result from the endpoint
-      //const { data2 : { PostUserDetailsResponse : user } } = await response.json();
-
-      // console.log()
+      const { data : { PostUserDetailsResponse : { sessionCreated, sessionExpires, user } } } = await response.json();
 
       // Set the user details so 
-      setUser(data.user);
-      setSessionExpiryDate(data.sessionExpires);
-      setSessionCreationDate(data.sessionCreated);
+      setUser(user);
+      setSessionExpiryDate(sessionExpires);
+      setSessionCreationDate(sessionCreated);
 
     };
 
@@ -80,14 +75,16 @@ const App : FC = () => {
       try {
 
         appContextInstance?.validateAuthentication();
+
         (appContextInstance?.userAuthenticated === true && appContextInstance.userId) && getUserDetails(appContextInstance.userId);
-        (appContextInstance?.userAuthenticated === true && appContextInstance.userId && appContextInstance.token) && 
-          checkSessionValidation(appContextInstance.userId, appContextInstance.token);
+
+        (appContextInstance?.userAuthenticated === true && appContextInstance.userId && appContextInstance.token) 
+          && checkSessionValidation(appContextInstance.userId, appContextInstance.token);
 
       }catch(error){
 
-        console.log("Request failed");
-        console.log(error);
+        console.log("Error: User could not be validated");
+        console.error(error);
       }
 
       // We have a response so we're not loading data anymore
