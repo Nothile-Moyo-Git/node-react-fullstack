@@ -76,19 +76,18 @@ const LiveChat : FC = () => {
             body : JSON.stringify({
               query :`
                 query PostUserDetailsResponse($_id : String!, $token : String!){
-                  PostUserDetailsResponse(_id : $_id, token : $token){
-                    user {
-                      _id
-                      name
-                      email
-                      password
-                      confirmPassword
-                      status
-                      posts
+                    PostUserDetailsResponse(_id : $_id, token : $token){
+                        user {
+                            _id
+                            name
+                            email
+                            password
+                            confirmPassword
+                            status
+                            posts
+                        }
                     }
-                    }
-                  }
-                `,
+                }`,
                 variables : {
                   _id : userId,
                   token : appContextInstance?.token ?? ""
@@ -139,18 +138,14 @@ const LiveChat : FC = () => {
             })
         });
 
-        // Convert the response into a json so we can extract the data from it
-        const dataResponse = await response.json();
-
-        // Extract the data for the messages from the response of the query sent to the front end
-        const data = dataResponse.data.chatMessagesResponse;
+        const { data : { chatMessagesResponse : { success, messages } } } = await response.json();
 
         // Set the messages from the backend if we have them
-        if (data.messages.length !== 0) {
+        if (messages.length !== 0 && success) {
 
             // Here we set it to the messages object in messages since we have properties like userId etc...
-            setChatMessages(data.messages.messages);
-        }
+            setChatMessages(messages.messages);
+        } 
     };
 
     // Get the user details from the backend for the chat
