@@ -70,6 +70,40 @@ export const checkSessionValidation = async (userId : string, token : string) =>
 
     try{
 
+        /*
+        // Perform the signup request
+        const response = await fetch(`http://localhost:4000/graphql/auth`, {
+            method : "POST",
+            headers : {
+                "Content-Type": "application/json",
+                Accept: "application/json", 
+            },
+            body : JSON.stringify({
+                query :`
+                    query chatMessagesResponse($_id : String!, $recipientId : String){
+                        chatMessagesResponse(_id : $_id, recipientId : $recipientId){
+                            success
+                            messages {
+                                userIds
+                                messages {
+                                    _id
+                                    dateSent
+                                    message
+                                    sender
+                                    senderId
+                                }
+                            }
+                            error
+                        }
+                    }
+                `,
+                variables : {
+                    _id : userId,
+                    recipientId : recipientId
+                }
+            })
+        }); */
+
         // Set the userId in FormData so we can send it to the backend
         const fields = new FormData();
         fields.append("userId", userId);
