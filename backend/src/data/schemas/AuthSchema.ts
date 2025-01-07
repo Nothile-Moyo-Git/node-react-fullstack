@@ -7,7 +7,7 @@
  * 
  */
 
-import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean } from 'graphql';
+import { GraphQLSchema, GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean, GraphQLInt } from 'graphql';
 import AuthResolvers from '../resolvers/AuthResolvers.ts';
 
 // Defining the movie type so we have a reference point for the fields
@@ -114,6 +114,20 @@ const AuthMutation = new GraphQLObjectType({
         _id : { type : GraphQLString }
       },
       resolve : AuthResolvers.PostDeleteSessionController
+    },
+    checkCreateSessionResponse : {
+      type : new GraphQLObjectType({
+        name : 'checkCreateSession',
+        fields : {
+          success : { type : GraphQLBoolean },
+          status : { type : GraphQLInt }
+        }
+      }),
+      args : {
+        userId : { type : GraphQLString },
+        token : { type : GraphQLString }
+      },
+      resolve : AuthResolvers.PostCheckCreateSessionResolver
     }
   }
 });

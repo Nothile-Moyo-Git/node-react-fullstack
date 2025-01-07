@@ -70,7 +70,7 @@ export const checkSessionValidation = async (userId : string, token : string) =>
 
     try{
 
-        /*
+        
         // Perform the signup request
         const response = await fetch(`http://localhost:4000/graphql/auth`, {
             method : "POST",
@@ -80,29 +80,33 @@ export const checkSessionValidation = async (userId : string, token : string) =>
             },
             body : JSON.stringify({
                 query :`
-                    query chatMessagesResponse($_id : String!, $recipientId : String){
-                        chatMessagesResponse(_id : $_id, recipientId : $recipientId){
+                    mutation checkCreateSessionResponse($userId : String!, $token : String){
+                        checkCreateSessionResponse(userId : $userId, token : $token){
                             success
-                            messages {
-                                userIds
-                                messages {
-                                    _id
-                                    dateSent
-                                    message
-                                    sender
-                                    senderId
-                                }
-                            }
-                            error
+                            status
                         }
                     }
                 `,
                 variables : {
-                    _id : userId,
-                    recipientId : recipientId
+                    userId,
+                    token
                 }
             })
-        }); */
+        }); 
+
+        console.log("\n", "Response");
+        console.log(response);
+        console.log("\n\n");
+
+        const { data : { checkCreateSessionResponse : { success, status } } } =  await response.json();
+
+        console.log("\n", "Success");
+        console.log(success);
+        console.log("\n\n");
+
+        console.log("\n", "Status");
+        console.log(status);
+        console.log("\n\n");
 
         // Set the userId in FormData so we can send it to the backend
         const fields = new FormData();
