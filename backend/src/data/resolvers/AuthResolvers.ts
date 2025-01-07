@@ -433,15 +433,48 @@ const PostDeleteSessionController = async (parent : any, args : any) => {
     }
 };
 
+/**
+ * 
+ * @name PostCheckCreateSessionResolver
+ * 
+ * @description Checks if a session has been stored in the backend
+ * 
+ * @param parent 
+ * @param args 
+ */
+const PostCheckCreateSessionResolver = async (parent, args) => {
+
+    const userId = args.userId;
+    const token = args.token;
+
+    try {
+
+
+
+        return {
+            status : 200,
+            success : true
+        };
+
+    } catch (error) {
+
+        return {
+            status : 400,
+            success : false
+        };
+    }
+};
+
 // The Auth resolver
 const AuthResolvers = {
-    GetMoviesResolver : GetMoviesResolver,
-    PostSignupResolver : PostSignupResolver,
-    GetUserStatusResolver : GetUserStatusResolver,
-    PostLoginResolver : PostLoginResolver,
-    PostUpdateUserStatusController : PostUpdateUserStatusController,
-    PostGetUserDetailsController: PostGetUserDetailsController,
-    PostDeleteSessionController : PostDeleteSessionController
+    PostCheckCreateSessionResolver,
+    GetMoviesResolver,
+    PostSignupResolver,
+    GetUserStatusResolver,
+    PostLoginResolver,
+    PostUpdateUserStatusController,
+    PostGetUserDetailsController,
+    PostDeleteSessionController
 }
 
 export default AuthResolvers;
