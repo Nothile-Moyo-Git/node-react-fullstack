@@ -72,7 +72,7 @@ export const checkSessionValidation = async (userId : string, token : string) =>
 
         
         // Perform the signup request
-        const response = await fetch(`http://localhost:4000/graphql/auth`, {
+        await fetch(`http://localhost:4000/graphql/auth`, {
             method : "POST",
             headers : {
                 "Content-Type": "application/json",
@@ -84,6 +84,7 @@ export const checkSessionValidation = async (userId : string, token : string) =>
                         checkCreateSessionResponse(userId : $userId, token : $token){
                             success
                             status
+                            message
                         }
                     }
                 `,
@@ -93,34 +94,6 @@ export const checkSessionValidation = async (userId : string, token : string) =>
                 }
             })
         }); 
-
-        console.log("\n", "Response");
-        console.log(response);
-        console.log("\n\n");
-
-        const { data : { checkCreateSessionResponse : { success, status } } } =  await response.json();
-
-        console.log("\n", "Success");
-        console.log(success);
-        console.log("\n\n");
-
-        console.log("\n", "Status");
-        console.log(status);
-        console.log("\n\n");
-
-        // Set the userId in FormData so we can send it to the backend
-        const fields = new FormData();
-        fields.append("userId", userId);
-        fields.append("token", token);
-
-        // Send a request to the backend to check the session 
-        const result = await fetch(`http://localhost:4000/check-create-session/${userId}`, {
-            method : "POST",
-            body : fields
-        }); 
-
-        // Get the data from the result
-        await result.json();
         
     }catch(error){
         

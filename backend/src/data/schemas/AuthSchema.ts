@@ -120,7 +120,8 @@ const AuthMutation = new GraphQLObjectType({
         name : 'checkCreateSession',
         fields : {
           success : { type : GraphQLBoolean },
-          status : { type : GraphQLInt }
+          status : { type : GraphQLInt },
+          message : { type : GraphQLString }
         }
       }),
       args : {

@@ -449,18 +449,52 @@ const PostCheckCreateSessionResolver = async (parent, args) => {
 
     try {
 
+        // Check if the session exists and if it doesn't, then create it
+        const previousSession = await Session.findOne({ creator : new ObjectId(userId) });
 
+        if (!previousSession) {
 
+            // Values to be set once
+            let jwtExpiryDate = "";
+
+                        // Decode the token for the expiry date
+            // Verify the tokens
+            jwt.verify(token, "Adeptus", (error, decoded) => {
+
+                // Get the issued and expiry dates of our token
+                // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                const expiryDate = new Date(decoded["exp"] * 1000);
+
+                // Set the values
+                jwtExpiryDate = createReadableDate(expiryDate);
+
+            });
+
+            // Create the new session object to be saved in the backend
+            const newSession = new Session({
+                expires : jwtExpiryDate,
+                expireAt : new Date(jwtExpiryDate),
+                token : token,
+                creator : new ObjectId(userId)
+            });
+
+            await newSession.save();
+        }
+
+        // Return successful response
         return {
-            status : 200,
-            success : true
+            status : 201,
+            success : true,
+            message : "Session created"
         };
 
     } catch (error) {
 
+        // Return error response
         return {
             status : 400,
-            success : false
+            success : false,
+            message : error
         };
     }
 };
