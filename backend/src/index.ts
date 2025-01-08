@@ -10,7 +10,6 @@
  */
 
 // Main imports in order to run the server
-import authRoutes from "./routes/auth.ts";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
@@ -149,7 +148,7 @@ app.use(
 app.use( '/uploads', express.static( path.join( __dirname, "/uploads" ) ));
 
 // Implement Route handlers here
-app.use( feedRoutes, authRoutes, chatRoutes, socketRoutes );
+app.use( feedRoutes, chatRoutes, socketRoutes );
 
 // Handling graphql schemas and creating the endpoints for them
 app.all('/graphql/chat', createHandler({ schema : schemas.ChatSchema }));
