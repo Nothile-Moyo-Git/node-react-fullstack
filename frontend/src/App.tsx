@@ -6,12 +6,14 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import LoadingSpinner from './components/loader/LoadingSpinner';
-import { checkSessionValidation } from './util/util';
+import { BASENAME, checkSessionValidation } from './util/util';
 import './App.scss';
 import { User } from './@types';
+import { useNavigate } from 'react-router-dom';
 
 const App : FC = () => {
 
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User>();
   const [sessionExpiryDate, setSessionExpiryDate] = useState<string>();
@@ -87,13 +89,15 @@ const App : FC = () => {
         console.error(error);
       }
 
+        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
+
       // We have a response so we're not loading data anymore
       setIsLoading(false);
     };
 
     fetchAuthentication();
 
-  },[appContextInstance]);
+  },[appContextInstance, navigate]);
 
   return (
     <div className="app">

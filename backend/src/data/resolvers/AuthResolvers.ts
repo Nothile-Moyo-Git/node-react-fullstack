@@ -14,23 +14,13 @@ import { createReadableDate, validateEmailAddress, validateInputLength, validate
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Session from "../../models/session.ts";
+import { LoginResolverArgs, SignupResolverArgs } from './resolvers';
 
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);
 const database = client.db('backend');
 const usersCollection = database.collection('users');
 const sessionCollection = database.collection('sessions');
-
-// Handle a get movies mutation from the frontend to the MongoDB database via GraphQL and Mongoose
-const GetMoviesResolver = async (parent : any, args : any) => {
-
-    console.log("\n\n");
-    console.log("Users");
-    console.log(usersCollection);
-    console.log("\n\n");
-
-    return { result : "Hello world!" };
-};
 
 /**
  * @name PostSignupResolver
@@ -39,10 +29,9 @@ const GetMoviesResolver = async (parent : any, args : any) => {
  * and then proceeds to validate the inputs. If they're valid, a user is created, and if not, an error is returned
  * 
  * @param parent : any (this property is ignored)
- * 
  * @param args : SignupResponse
  */
-const PostSignupResolver = async (parent : any, args : any) => {
+const PostSignupResolver = async (parent : any, args : SignupResolverArgs) => {
 
     try{
 
@@ -122,10 +111,9 @@ const PostSignupResolver = async (parent : any, args : any) => {
  * @description My login resolver, this handles login attempts and returns the appropriate response
  * 
  * @param parent : any (this property is ignored)
- * 
  * @param args : SignupResponse
  */
-const PostLoginResolver = async (parent : any, args : any) => {
+const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
 
     try {
 
@@ -302,7 +290,6 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
  * @description Update the status of the user in the backend 
  * 
  * @param parent : any
- *
  * @param args : any
  */
 const PostUpdateUserStatusController = async (parent : any, args : any) => {
@@ -346,11 +333,14 @@ const PostUpdateUserStatusController = async (parent : any, args : any) => {
  * 
  * @description Get the current details of the user session
  * 
- * @param parent : any 
- * 
+ * @param parent : any
  * @param args : any
  */
 const PostGetUserDetailsController = async (parent : any, args : any) => {
+
+    console.log("\n", "Args");
+    console.log(args);
+    console.log("\n");
 
     try{ 
 
@@ -406,7 +396,6 @@ const PostGetUserDetailsController = async (parent : any, args : any) => {
  * @description A controller which deletes our session if our user logs out or the session has expired
  * 
  * @param parent : any
- * 
  * @param args : any
  */
 const PostDeleteSessionController = async (parent : any, args : any) => {
@@ -502,7 +491,6 @@ const PostCheckCreateSessionResolver = async (parent, args) => {
 // The Auth resolver
 const AuthResolvers = {
     PostCheckCreateSessionResolver,
-    GetMoviesResolver,
     PostSignupResolver,
     GetUserStatusResolver,
     PostLoginResolver,
