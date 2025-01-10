@@ -14,7 +14,15 @@ import { createReadableDate, validateEmailAddress, validateInputLength, validate
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Session from "../../models/session.ts";
-import { LoginResolverArgs, SignupResolverArgs } from './resolvers';
+import { 
+    LoginResolverArgs, 
+    SignupResolverArgs, 
+    UpdateUserStatusResolverArgs, 
+    UserStatusResolverArgs,
+    UserDetailsResolverArgs,
+    DeleteSessionResolverArgs,
+    CheckCreateSessionResolverArgs
+} from './resolvers.ts';
 
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);
@@ -240,7 +248,7 @@ const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
  * @param parent : any 
  * @param args : any
  */
-const GetUserStatusResolver = async (parent : any, args : any) => {
+const GetUserStatusResolver = async (parent : any, args : UserStatusResolverArgs) => {
 
     try {
 
@@ -256,11 +264,6 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
                 { projection : { name : 1, status : 1 } }
             );
 
-            console.log("\n");
-            console.log("User status");
-            console.log(user);
-            console.log("\n");
-
             // Return the user details to the front end
             return { user };
 
@@ -272,7 +275,6 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
 
             // Return nothing if there's no user
             return null;
-
         }
 
     }catch(error){
@@ -292,13 +294,13 @@ const GetUserStatusResolver = async (parent : any, args : any) => {
  * @param parent : any
  * @param args : any
  */
-const PostUpdateUserStatusController = async (parent : any, args : any) => {
+const PostUpdateUserStatusController = async (parent : any, args : UpdateUserStatusResolverArgs) => {
+
+    // Create a new status
+    const newStatus = args.status;
+    const userId = new ObjectId(args._id);
 
     try{
-
-        // Create a new status
-        const newStatus = args.status;
-        const userId = args._id;
 
         // Query the users collection and get the name, id and status from it
         const currentUser = await usersCollection.findOne({ _id : userId });
@@ -336,11 +338,7 @@ const PostUpdateUserStatusController = async (parent : any, args : any) => {
  * @param parent : any
  * @param args : any
  */
-const PostGetUserDetailsController = async (parent : any, args : any) => {
-
-    console.log("\n", "Args");
-    console.log(args);
-    console.log("\n");
+const PostGetUserDetailsController = async (parent : any, args : UserDetailsResolverArgs) => {
 
     try{ 
 
@@ -355,14 +353,17 @@ const PostGetUserDetailsController = async (parent : any, args : any) => {
         // Verify the tokens
         jwt.verify(token, "Adeptus", (error, decoded) => {
 
-            // Get the issued and expiry dates of our token
-            // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
-            const expiryDate = new Date(decoded['exp'] * 1000);
-            const issuedAtDate = new Date(decoded['iat'] * 1000);
+            if (decoded) {
 
-            // Set the values
-            jwtExpiryDate = createReadableDate(expiryDate);
-            jwtCreationDate = createReadableDate(issuedAtDate);
+                // Get the issued and expiry dates of our token
+                // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                const expiryDate = new Date(decoded['exp'] * 1000);
+                const issuedAtDate = new Date(decoded['iat'] * 1000);
+
+                // Set the values
+                jwtExpiryDate = createReadableDate(expiryDate);
+                jwtCreationDate = createReadableDate(issuedAtDate);
+            }
         });
 
         // Try to fetch the user using the userId
@@ -398,17 +399,17 @@ const PostGetUserDetailsController = async (parent : any, args : any) => {
  * @param parent : any
  * @param args : any
  */
-const PostDeleteSessionController = async (parent : any, args : any) => {
+const PostDeleteSessionController = async (parent : any, args : DeleteSessionResolverArgs) => {
+
+    // Get the ID from the front end query
+    const _id = new ObjectId(args._id);
 
     try{
-
-        // Get the ID from the front end query
-        const _id = new ObjectId(args._id);
 
         // Find and delete the session in the backend
         await sessionCollection.findOneAndDelete({ creator : _id });
 
-        return {
+        return { 
             success : true,
             message : "Request successful"
         }
@@ -431,7 +432,7 @@ const PostDeleteSessionController = async (parent : any, args : any) => {
  * @param parent 
  * @param args 
  */
-const PostCheckCreateSessionResolver = async (parent, args) => {
+const PostCheckCreateSessionResolver = async (parent : any, args : CheckCreateSessionResolverArgs) => {
 
     const userId = args.userId;
     const token = args.token;
@@ -450,12 +451,15 @@ const PostCheckCreateSessionResolver = async (parent, args) => {
             // Verify the tokens
             jwt.verify(token, "Adeptus", (error, decoded) => {
 
-                // Get the issued and expiry dates of our token
-                // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
-                const expiryDate = new Date(decoded["exp"] * 1000);
+                if (decoded) {
 
-                // Set the values
-                jwtExpiryDate = createReadableDate(expiryDate);
+                    // Get the issued and expiry dates of our token
+                    // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
+                    const expiryDate = new Date(decoded["exp"] * 1000);
+
+                    // Set the values
+                    jwtExpiryDate = createReadableDate(expiryDate);
+                }
 
             });
 
