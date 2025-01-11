@@ -336,11 +336,11 @@ const PostUpdateUserStatusController = async (parent : any, args : UpdateUserSta
  * @description Get the current details of the user session
  * 
  * @param parent : any
- * @param args : any
+ * @param args : UserDetailsResolverArgs
  */
 const PostGetUserDetailsController = async (parent : any, args : UserDetailsResolverArgs) => {
 
-    try{ 
+    try{
 
         // Check if the user exists with the id
         const userId = args._id;
@@ -372,7 +372,8 @@ const PostGetUserDetailsController = async (parent : any, args : UserDetailsReso
         return {  
             user : user,
             sessionExpires : jwtExpiryDate,
-            sessionCreated : jwtCreationDate
+            sessionCreated : jwtCreationDate,
+            success : true
         }
 
     }catch(error){
@@ -385,7 +386,8 @@ const PostGetUserDetailsController = async (parent : any, args : UserDetailsReso
         return { 
             user : null,
             sessionExpires : null,
-            sessionCreated : null
+            sessionCreated : null,
+            success : false
         };
 
     }

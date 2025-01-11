@@ -46,7 +46,8 @@ const AuthQuery = new GraphQLObjectType({
         fields : {
           user : { type : UserType },
           sessionExpires : { type : GraphQLString },
-          sessionCreated : { type : GraphQLString }
+          sessionCreated : { type : GraphQLString },
+          success : { type : GraphQLBoolean }
         }
       }),
       args : {
