@@ -52,6 +52,7 @@ const App : FC = () => {
                 }
                 sessionCreated
                 sessionExpires
+                success
                 }
               }
             `,
@@ -63,7 +64,7 @@ const App : FC = () => {
       });
 
       // Get the result from the endpoint
-      const { data : { PostUserDetailsResponse : { sessionCreated, sessionExpires, user } } } = await response.json();
+      const { data : { PostUserDetailsResponse : { sessionCreated, sessionExpires, user, success } } } = await response.json();
 
       // Set the user details so 
       setUser(user);
