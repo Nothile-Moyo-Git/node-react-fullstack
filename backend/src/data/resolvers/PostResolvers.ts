@@ -15,6 +15,7 @@ import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
 import { PostsInterface } from '../../@types/index.ts';
+import { GetPostsResolverArgs, PostCreatePostResolverArgs } from './resolvers.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -29,10 +30,9 @@ const perPage = 3;
  * @description Get posts from the backend
  * 
  * @param parent : any
- * 
- * @param args : any
+ * @param args : GetPostsResolverArgs
  */
-const GetPostsResolver = async (parent : any, args : any) => {
+const GetPostsResolver = async (parent : any, args : GetPostsResolverArgs) => {
 
     try{
 
@@ -85,9 +85,9 @@ const GetPostsResolver = async (parent : any, args : any) => {
  * @description Create a post in the backend from a GraphQL query
  * 
  * @param parent : any
- * @param args : any
+ * @param args : PostCreatePostResolverArgs
  */
-const PostCreatePostResolver = async (parent : any, args : any) => {
+const PostCreatePostResolver = async (parent : any, args : PostCreatePostResolverArgs) => {
 
     try {
 
@@ -172,9 +172,6 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
         console.log("Request error:", "\n");
         console.error(error);
         console.log("\n");
-        console.log("Arguments");
-        console.log(args);
-        console.log("\n\n");
 
         return {
             post : null,
@@ -196,7 +193,7 @@ const PostCreatePostResolver = async (parent : any, args : any) => {
  * 
  * @description Gets a single post from the backend
  * 
- * @param parent
+ * @param parent : any
  * @param args
  */
 const GetPostResolver = async (parent : any, args : any) => {
