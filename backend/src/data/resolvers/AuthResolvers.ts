@@ -36,8 +36,8 @@ const sessionCollection = database.collection('sessions');
  * @description A resolver (method which handles graphql queries). It takes the information from the signup form
  * and then proceeds to validate the inputs. If they're valid, a user is created, and if not, an error is returned
  * 
- * @param parent : any (this property is ignored)
- * @param args : SignupResponse
+ * @param parent : any
+ * @param args : SignupResolverArgs
  */
 const PostSignupResolver = async (parent : any, args : SignupResolverArgs) => {
 
@@ -118,8 +118,8 @@ const PostSignupResolver = async (parent : any, args : SignupResolverArgs) => {
  * 
  * @description My login resolver, this handles login attempts and returns the appropriate response
  * 
- * @param parent : any (this property is ignored)
- * @param args : SignupResponse
+ * @param parent : any
+ * @param args : LoginResolverArgs
  */
 const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
 
@@ -246,7 +246,7 @@ const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
  * @description : Get user resolver, this retrieves the user status based on the _id provided. This should be passed through the args in the api request
  *  
  * @param parent : any 
- * @param args : any
+ * @param args : UserStatusResolverArgs
  */
 const GetUserStatusResolver = async (parent : any, args : UserStatusResolverArgs) => {
 
@@ -292,7 +292,7 @@ const GetUserStatusResolver = async (parent : any, args : UserStatusResolverArgs
  * @description Update the status of the user in the backend 
  * 
  * @param parent : any
- * @param args : any
+ * @param args : UpdateUserStatusResolverArgs
  */
 const PostUpdateUserStatusController = async (parent : any, args : UpdateUserStatusResolverArgs) => {
 
@@ -399,7 +399,7 @@ const PostGetUserDetailsController = async (parent : any, args : UserDetailsReso
  * @description A controller which deletes our session if our user logs out or the session has expired
  * 
  * @param parent : any
- * @param args : any
+ * @param args : DeleteSessionResolverArgs
  */
 const PostDeleteSessionController = async (parent : any, args : DeleteSessionResolverArgs) => {
 
@@ -431,8 +431,8 @@ const PostDeleteSessionController = async (parent : any, args : DeleteSessionRes
  * 
  * @description Checks if a session has been stored in the backend
  * 
- * @param parent 
- * @param args 
+ * @param parent : any
+ * @param args : CheckCreateSessionResolverArgs
  */
 const PostCheckCreateSessionResolver = async (parent : any, args : CheckCreateSessionResolverArgs) => {
 

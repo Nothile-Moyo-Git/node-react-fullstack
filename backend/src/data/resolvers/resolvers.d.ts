@@ -35,4 +35,28 @@ export interface CheckCreateSessionResolverArgs {
     token : string
 }
 
+// Chat resolver types
+export interface GetChatsResolverArgs {
+    _id : string
+}
 
+// Post Resolver types
+export interface GetPostsResolverArgs {
+    currentPage : number
+}
+
+export interface FileDataResolverArgs {
+    fileName : string,
+    imageUrl : string,
+    isFileValid : boolean,
+    isFileTypeValid : boolean,
+    isImageUrlValid : boolean,
+    isFileSizeValid : boolean
+}
+
+export interface PostCreatePostResolverArgs {
+    title : string,
+    content : string,
+    userId : string,
+    fileData : FileDataResolverArgs
+}

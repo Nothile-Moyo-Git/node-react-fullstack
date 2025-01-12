@@ -9,7 +9,7 @@
 /**
  * @name GetErrorPageResolver
  * 
- * @description REturns a message to the 
+ * @description Returns a message to the 
  */
 const GetErrorPageResolver = () => {
 
