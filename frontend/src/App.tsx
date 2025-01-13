@@ -10,11 +10,13 @@ import { BASENAME, checkSessionValidation } from './util/util';
 import './App.scss';
 import { User } from './@types';
 import { useNavigate } from 'react-router-dom';
+import ErrorModal from './components/modals/ErrorModal';
 
 const App : FC = () => {
 
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
   const [user, setUser] = useState<User>();
   const [sessionExpiryDate, setSessionExpiryDate] = useState<string>();
   const [sessionCreationDate, setSessionCreationDate] = useState<string>();
@@ -66,7 +68,8 @@ const App : FC = () => {
       // Get the result from the endpoint
       const { data : { PostUserDetailsResponse : { sessionCreated, sessionExpires, user, success } } } = await response.json();
 
-      // Set the user details so 
+      // Set the user details so we can render session data
+      setLoadingError(!success);
       setUser(user);
       setSessionExpiryDate(sessionExpires);
       setSessionCreationDate(sessionCreated);
@@ -104,8 +107,11 @@ const App : FC = () => {
     <div className="app">
 
       {
-        isLoading && 
-        <LoadingSpinner/>
+        isLoading && <LoadingSpinner/>
+      }
+
+      {
+        !isLoading && loadingError && <ErrorModal/>
       }
 
       {
