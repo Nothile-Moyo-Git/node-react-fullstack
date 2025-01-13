@@ -15,7 +15,7 @@ import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
 import { PostsInterface } from '../../@types/index.ts';
-import { GetPostsResolverArgs, PostCreatePostResolverArgs } from './resolvers.ts';
+import { GetPostsResolverArgs, GetValidatePostResolverArgs, PostCreatePostResolverArgs, PostGetPostResolverArgs } from './resolvers.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -196,7 +196,7 @@ const PostCreatePostResolver = async (parent : any, args : PostCreatePostResolve
  * @param parent : any
  * @param args
  */
-const GetPostResolver = async (parent : any, args : any) => {
+const GetPostResolver = async (parent : any, args : PostGetPostResolverArgs) => {
 
     try {
 
@@ -242,9 +242,9 @@ const GetPostResolver = async (parent : any, args : any) => {
  * @description Get the post and make sure that there's a user associated with it so the request is valid
  * 
  * @param parent
- * @param args
+ * @param args : GetValidateResolverArgs
  */
-const GetAndValidatePostResolver = async (parent : any, args : any) => {
+const GetAndValidatePostResolver = async (parent : any, args : GetValidatePostResolverArgs) => {
 
     // Get the postId from the url passed through
     const postId = new ObjectId(args.postId);

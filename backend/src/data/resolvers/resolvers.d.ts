@@ -60,3 +60,20 @@ export interface PostCreatePostResolverArgs {
     userId : string,
     fileData : FileDataResolverArgs
 }
+
+export interface PostGetPostResolverArgs {
+    postId : string
+}
+
+export interface GetValidatePostResolverArgs {
+    postId : string,
+    userId : string
+}
+
+export interface PostUpdatePostResolverArgs {
+    title : string,
+    userId : string,
+    content : string,
+    fileData : FileDataResolverArgs,
+    postId : string
+}
