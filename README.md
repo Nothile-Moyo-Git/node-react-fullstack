@@ -6,10 +6,10 @@
 
 ### This application is designed as an exercise in being able to build a full stack application using React + Node.js + TypeScript.
 
-**After having spent a long time working with various TypeScript technologies, I designed to put it all together.** 
+**After having spent a long time working with various TypeScript technologies, I decided to put it all together in a CRUD application where I could playtest all of these.** 
 
-- **NOTE: front end is written in React + SCSS(BEM) TypeScript + Node.js.**
-- **NOTE: The backend is written in Node.js + TypeScript + Express + MongoDB + Mongoose.**
+- **NOTE: front end is written in React, SCSS(BEM), TypeScript, Node.js.**
+- **NOTE: The backend is written in Node.js, SocketIO, TypeScript, Express, MongoDB, Mongoose, GraphQL**
 
 *I wanted to create an application when I could apply the MVC architecture to a de-coupled web application. The front end, backend and database are all handled using REST queries with CORS for security. Sessions are stored locally on the front end and queried once the app is running. The database used for this application is non-relational and an ODM which is done through Mongoose.*
 
@@ -20,6 +20,8 @@
 The version of node used when building this application is v18.12.1 If you need to change your node version for your installation, you can use ```nvm```.
 
 > nvm is known as "node version manager" which allows you manage your node installations to make dependency management easier. You can find it [here](https://github.com/nvm-sh/nvm).
+
+*If you're on Windows, you can use nvm for windows [here](https://github.com/coreybutler/nvm-windows/releases). Download 'nvm.setup.exe' from the releases*.
 
 In order to install the required packages, run ```npm run install``` followed by ```npm audit fix```. The audit fix will automatically fix any issues that can be resolved without breaking the potential build.
 
@@ -99,7 +101,7 @@ The "env" file can be found by request by sending an email to [this](mailto:noth
 
 - Create your pull request by going [here](https://github.com/Nothile-Moyo-Git/express-routing-demo/compare) and comparing your branch to *"develop"*
 
-- I will receive an email that a PR has been raised. Once this is the case, I will review the code and merge it into develop if I approve it.
+- I will receive an email that a PR has been raised. Once this is the case, I will review the code and merge it into develop if I approve it
 
 -----
 

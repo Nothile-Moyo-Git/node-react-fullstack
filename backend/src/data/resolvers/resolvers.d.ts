@@ -77,3 +77,8 @@ export interface PostUpdatePostResolverArgs {
     fileData : FileDataResolverArgs,
     postId : string
 }
+
+export interface PostDeletePostResolverArgs {
+    postId : string,
+    userId : string
+}
