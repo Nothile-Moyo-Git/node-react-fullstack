@@ -13,9 +13,9 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Post from '../../models/post.ts';
 import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
-import { generateUploadDate, createReadableDate, formatPost } from '../../util/utillity-methods.ts';
+import { formatPost } from '../../util/utillity-methods.ts';
 import { PostsInterface } from '../../@types/index.ts';
-import { GetPostsResolverArgs, GetValidatePostResolverArgs, PostCreatePostResolverArgs, PostGetPostResolverArgs } from './resolvers.ts';
+import { GetPostsResolverArgs, GetValidatePostResolverArgs, PostCreatePostResolverArgs, PostDeletePostResolverArgs, PostGetPostResolverArgs, PostUpdatePostResolverArgs } from './resolvers.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -65,9 +65,6 @@ const GetPostsResolver = async (parent : any, args : GetPostsResolverArgs) => {
         console.log("Request error:", "\n");
         console.error(error);
         console.log("\n");
-        console.log("Arguments");
-        console.log(args);
-        console.log("\n\n");
 
         return {
             message : "Error 500 : Request failed, please view the server logs",
@@ -194,7 +191,7 @@ const PostCreatePostResolver = async (parent : any, args : PostCreatePostResolve
  * @description Gets a single post from the backend
  * 
  * @param parent : any
- * @param args
+ * @param args : PostGetPostResolverArgs
  */
 const GetPostResolver = async (parent : any, args : PostGetPostResolverArgs) => {
 
@@ -227,6 +224,11 @@ const GetPostResolver = async (parent : any, args : PostGetPostResolverArgs) => 
         }
 
     }catch(error) {
+
+        console.log("\n\n");
+        console.log("Request error:", "\n");
+        console.error(error);
+        console.log("\n");
 
         return {
             success : false,
@@ -287,8 +289,10 @@ const GetAndValidatePostResolver = async (parent : any, args : GetValidatePostRe
 
     }catch(error){
 
-        console.warn("Request failed");
-        console.log(error);
+        console.log("\n\n");
+        console.log("Request error:", "\n");
+        console.error(error);
+        console.log("\n");
 
         return {
             success : false,
@@ -306,9 +310,9 @@ const GetAndValidatePostResolver = async (parent : any, args : GetValidatePostRe
  * @description Update the post data based on the ID and the EditForm component on the front end
  * 
  * @param parent : any
- * @param args : any
+ * @param args : PostUpdatePostResolverArgs
  */
-const PostUpdatePostResolver = async (parent : any, args : any) => {
+const PostUpdatePostResolver = async (parent : any, args : PostUpdatePostResolverArgs) => {
 
     // Get arguments
     const { title, userId, content, fileData, postId } = args;
@@ -383,6 +387,11 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
 
     }catch(error){
 
+        console.log("\n\n");
+        console.log("Request error:", "\n");
+        console.error(error);
+        console.log("\n");
+
         return {
             post : null,
             status : 500,
@@ -403,9 +412,9 @@ const PostUpdatePostResolver = async (parent : any, args : any) => {
  * @description Delete the post from the backend
  * 
  * @param parent : any
- * @param args : any
+ * @param args : PostDeletePostResolverArgs
  */
-const PostDeletePostResolver = async (parent : any, args : any) => {
+const PostDeletePostResolver = async (parent : any, args : PostDeletePostResolverArgs) => {
 
     // Get arguments
     const postId = args.postId;
@@ -452,6 +461,11 @@ const PostDeletePostResolver = async (parent : any, args : any) => {
         }
 
     } catch (error) {
+
+        console.log("\n\n");
+        console.log("Request error:", "\n");
+        console.error(error);
+        console.log("\n");
 
         return {
             status : 200,
