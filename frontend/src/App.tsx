@@ -3,7 +3,7 @@
  * Author : Nothile Moyo
  */
 
-import { FC, useState, useEffect, useContext } from 'react';
+import React, { FC, useState, useEffect, useContext } from 'react';
 import { AppContext } from './context/AppContext';
 import LoadingSpinner from './components/loader/LoadingSpinner';
 import { BASENAME, checkSessionValidation } from './util/util';
@@ -82,10 +82,13 @@ const App : FC = () => {
 
         appContextInstance?.validateAuthentication();
 
-        (appContextInstance?.userAuthenticated === true && appContextInstance.userId) && getUserDetails(appContextInstance.userId);
+        if(appContextInstance?.userAuthenticated && appContextInstance.userId){
+          getUserDetails(appContextInstance.userId);
+        }
 
-        (appContextInstance?.userAuthenticated === true && appContextInstance.userId && appContextInstance.token) 
-          && checkSessionValidation(appContextInstance.userId, appContextInstance.token);
+        if(appContextInstance?.userAuthenticated && appContextInstance.userId && appContextInstance.token) {
+          checkSessionValidation(appContextInstance.userId, appContextInstance.token);
+        }
 
       }catch(error){
 
@@ -93,7 +96,9 @@ const App : FC = () => {
         console.error(error);
       }
 
-        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
+        if(!appContextInstance?.userAuthenticated){
+          navigate(`${BASENAME}/login`);
+        } 
 
       // We have a response so we're not loading data anymore
       setIsLoading(false);
