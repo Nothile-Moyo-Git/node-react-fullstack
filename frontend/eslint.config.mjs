@@ -12,6 +12,11 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {
+    settings : {
+      react : {
+        version : "detect"
+      }
+    },
     rules : {
       "react/react-in-jsx-scope": 0,
       "no-unused-vars": "error",

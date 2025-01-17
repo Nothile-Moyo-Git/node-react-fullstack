@@ -141,7 +141,21 @@ This also applies to the live chat.
 ------
 
 ### Linting
-TBI
+
+#### ESLint
+**This application uses ESLint version 8.57**. ESLint is used as a code formatter which improves the quality of code through rules set in the config file. These rules can affect formatting rules such as _maximum length of files, no unused variables, ensure imports are handled properly_ and more.
+
+This linter is made for TypeScript and React. 
+
+-ESLint
+>[Learn about eslint](https://eslint.org/)
+
+You can find the config file in _"eslint.config.mjs"_. You have the configs which are the recommended for the dependencies, and the rules which come below. The React version is automatically detected for you. You can override rules by adding them to the rules object. You can find a reference for eslint rules [here](https://eslint.org/docs/latest/rules/)
+
+#### Prettier
+**This application uses **
+
+**Note: eslint is used with prettier and husky for pre-commit hooks. These check the quality of code and fail the commit if they don't pass the standards**
 
 ------
 
