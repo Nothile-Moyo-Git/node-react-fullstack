@@ -1,11 +1,11 @@
 /**
  * Date created : 14/04/2024
- * 
+ *
  * Author : Nothile Moyo
- * 
+ *
  * @name ViewPosts Component
  * @description This component file renders a list of view posts. It applies pagination to this as it does so.
- * 
+ *
  * ?@param /:page - Defines the page we're currently on
  */
 
@@ -24,38 +24,37 @@ import { io } from "socket.io-client";
 import ToastModal from "../../components/modals/ToastModal";
 import ExpiryWrapper from "../../components/expiry/ExpiryWrapper";
 
-export const ViewPosts : FC = () => {
+export const ViewPosts: FC = () => {
+  // Get params to set the initial page so we get the correct post on initial render
+  // If there is no optional parameter, we'll grab the first page of posts as a failsafe
+  const params = useParams();
+  const initialPage = params.page ? Number(params.page) : 1;
 
-    // Get params to set the initial page so we get the correct post on initial render
-    // If there is no optional parameter, we'll grab the first page of posts as a failsafe
-    const params = useParams();
-    const initialPage = params.page ? Number(params.page) : 1;
+  // Instantiate values
+  const appContextInstance = useContext(AppContext);
+  const navigate = useNavigate();
 
-    // Instantiate values
-    const appContextInstance = useContext(AppContext);
-    const navigate = useNavigate();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [page, setPage] = useState<number>(initialPage);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [numberOfPages, setNumberOfPages] = useState<number>(1);
+  const [showErrorText, setShowErrorText] = useState<boolean>(false);
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string>("");
+  const [socketModal, setSocketModal] = useState(<></>);
 
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState<number>(initialPage);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [numberOfPages, setNumberOfPages] = useState<number>(1);
-    const [showErrorText, setShowErrorText] = useState<boolean>(false);
-    const [showConfirmationModal, setShowConfirmationModal] = useState<boolean>(false);
-    const [deleteId, setDeleteId] = useState<string>("");
-    const [socketModal, setSocketModal] = useState(<></>);
-
-    // Get posts method, we define it here so we can call it asynchronously
-    const getPosts = useCallback( async () => {
-
-        // Perform the signup request
-        const response = await fetch(`/graphql/posts`, {
-            method : "POST",
-            headers : {
-                "Content-Type": "application/json",
-                Accept: "application/json", 
-            },
-            body : JSON.stringify({
-                query :`
+  // Get posts method, we define it here so we can call it asynchronously
+  const getPosts = useCallback(async () => {
+    // Perform the signup request
+    const response = await fetch(`/graphql/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        query: `
                     query GetPostsResponse($currentPage : Int!){
                         GetPostsResponse(currentPage : $currentPage){
                             message
@@ -75,81 +74,80 @@ export const ViewPosts : FC = () => {
                         }
                     }
                 `,
-                variables : {
-                    currentPage : params.page ? Number(params.page) : 1,
-                }
-            })
-        });
+        variables: {
+          currentPage: params.page ? Number(params.page) : 1,
+        },
+      }),
+    });
 
-        // Show the error if the request failed
-        if (response.status === 200) {
-            setShowErrorText(false);
-        }else{
-            setShowErrorText(true);
-        }
+    // Show the error if the request failed
+    if (response.status === 200) {
+      setShowErrorText(false);
+    } else {
+      setShowErrorText(true);
+    }
 
-        return response;
-    },[params.page]);
+    return response;
+  }, [params.page]);
 
-    // Method defined here to allow async calls in a useEffect hook
-    const fetchPosts = useCallback( async () => {
+  // Method defined here to allow async calls in a useEffect hook
+  const fetchPosts = useCallback(async () => {
+    const result = await getPosts();
 
-        const result = await getPosts();
+    const dataJSON = await result.json();
 
-        const dataJSON = await result.json();
+    // Convert the response to JSON based on the response received from GraphQL
+    const data = dataJSON.data.GetPostsResponse;
 
-        // Convert the response to JSON based on the response received from GraphQL
-        const data = dataJSON.data.GetPostsResponse;
+    const success = data.success ? data.success : false;
 
-        const success = data.success ? data.success : false;
+    if (success === true) {
+      setPosts(data.posts);
+      setNumberOfPages(data.numberOfPages);
+    }
+  }, [getPosts]);
 
-        if (success === true) {
-            setPosts(data.posts);
-            setNumberOfPages(data.numberOfPages);
-        }
-    },[getPosts]);
+  // Refresh the page after completing a function such as delete and handle edge cases
+  const refreshPosts = useCallback(
+    (maxPages: number, numberOfPosts: number) => {
+      const urlArray = window.location.href.split("/");
+      const arraySize = urlArray.length;
+      const currentPage = parseInt(urlArray[arraySize - 1]);
 
-    // Refresh the page after completing a function such as delete and handle edge cases
-    const refreshPosts = useCallback((maxPages : number, numberOfPosts : number) => { 
+      // Update the page number if we won't have any posts on the page
+      if (currentPage > maxPages) {
+        window.location.href = `${BASENAME}/posts/${maxPages}`;
+      }
 
-        const urlArray = window.location.href.split("/");
-        const arraySize = urlArray.length;
-        const currentPage = parseInt(urlArray[arraySize - 1]);
+      setNumberOfPages(maxPages);
 
-        // Update the page number if we won't have any posts on the page
-        if (currentPage > maxPages) {
-            window.location.href = `${BASENAME}/posts/${maxPages}`;
-        }
+      fetchPosts();
+    },
+    [fetchPosts],
+  );
 
-        setNumberOfPages(maxPages);
+  // Show the confirmation modal when attempting to delete a modal
+  const toggleShowConfirmationModal = (id: string) => {
+    setDeleteId(id);
+    setShowConfirmationModal((previousState) => !previousState);
+  };
 
-        fetchPosts();
-    },[fetchPosts]);
+  // Handle the deletion of a post
+  const deletePost = async () => {
+    // Get values
+    const userId = appContextInstance?.userId ?? "";
+    const postId = deleteId;
 
-    // Show the confirmation modal when attempting to delete a modal
-    const toggleShowConfirmationModal = (id : string) => {        
-        setDeleteId(id);
-        setShowConfirmationModal((previousState) => !previousState);
-    };
-
-    // Handle the deletion of a post
-    const deletePost = async () => {
-
-        // Get values
-        const userId = appContextInstance?.userId ?? "";
-        const postId = deleteId;
-
-        try {
-
-            // Perform the signup request
-            const response = await fetch(`/graphql/posts`, {
-                method : "POST",
-                headers : {
-                    "Content-Type": "application/json",
-                    Accept: "application/json", 
-                },
-                body : JSON.stringify({
-                    query :`
+    try {
+      // Perform the signup request
+      const response = await fetch(`/graphql/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          query: `
                         mutation PostDeletePostResponse($postId : String!, $userId : String!){
                             PostDeletePostResponse(postId : $postId, userId : $userId){
                                 success
@@ -159,162 +157,144 @@ export const ViewPosts : FC = () => {
                             }
                         }
                     `,
-                    variables : {
-                        postId : postId,
-                        userId : userId
-                    }
-                })
-            });
+          variables: {
+            postId: postId,
+            userId: userId,
+          },
+        }),
+      });
 
-            // Get the result from the endpoint
-            const { data : { PostDeletePostResponse : result } } = await response.json();
+      // Get the result from the endpoint
+      const {
+        data: { PostDeletePostResponse: result },
+      } = await response.json();
 
-            // Set the fields for the websocket emit
-            const fields = new FormData();
-            fields.append('numberOfPosts', result.numberOfPosts);
-            fields.append('highestPageNumber', result.highestPageNumber);
+      // Set the fields for the websocket emit
+      const fields = new FormData();
+      fields.append("numberOfPosts", result.numberOfPosts);
+      fields.append("highestPageNumber", result.highestPageNumber);
 
-            // Trigger a modal which informs users that the post has been deleted
-            await fetch('/rest/socket/emit/post-deleted', {
-                method : 'POST',
-                body : fields
-            });
+      // Trigger a modal which informs users that the post has been deleted
+      await fetch("/rest/socket/emit/post-deleted", {
+        method: "POST",
+        body: fields,
+      });
 
-            fetchPosts();
-            setShowConfirmationModal(false);
+      fetchPosts();
+      setShowConfirmationModal(false);
 
-            if (result.status === 200) {
-                alert(`Post ${deleteId} has successfully been deleted`);
-            }
+      if (result.status === 200) {
+        alert(`Post ${deleteId} has successfully been deleted`);
+      }
+    } catch (error: unknown) {
+      console.log("Delete post error");
+      console.log(error);
+    }
+  };
 
-        }catch(error : unknown){
+  useEffect(() => {
+    const client = io("http://localhost:4000");
 
-            console.log("Delete post error");
-            console.log(error);
-        }
+    // Trigger a toastmodal render
+    client.on("post added", (postData) => {
+      setSocketModal(
+        <ExpiryWrapper lengthInSeconds={5}>
+          <ToastModal
+            variant="success"
+            customMessage={`Success : Post ${postData.post.title} added!`}
+          >
+            <Link
+              to={`${BASENAME}/post/${postData.post._id}`}
+              className="viewPosts__modal-link"
+            >
+              View Post
+            </Link>
+          </ToastModal>
+        </ExpiryWrapper>,
+      );
 
+      setTimeout(() => {
+        setSocketModal(<></>);
+      }, 5000);
+
+      fetchPosts();
+    });
+
+    // Update the posts and update the page properly if needed
+    client.on("post deleted", (response) => {
+      refreshPosts(response.highestPageNumber, response.numberOfPosts);
+    });
+
+    return () => {
+      // Remove unncessary event handlers
+      client.removeAllListeners();
     };
+  }, [fetchPosts, refreshPosts]);
 
-    useEffect(() => {
+  useEffect(() => {
+    // Toggle the loading spinner util the request ends
+    setIsLoading(true);
+    appContextInstance?.validateAuthentication();
 
-        const client = io("http://localhost:4000");
-
-        // Trigger a toastmodal render
-        client.on("post added", (postData) => {
-
-            setSocketModal(
-                <ExpiryWrapper lengthInSeconds={5}>
-                    <ToastModal 
-                        variant="success"
-                        customMessage={`Success : Post ${postData.post.title} added!`}
-                    >
-                        <Link 
-                            to={`${BASENAME}/post/${postData.post._id}`}
-                            className="viewPosts__modal-link"
-                        >View Post</Link>
-                    </ToastModal>
-                </ExpiryWrapper>
-            );
-            
-            setTimeout(() => { 
-                setSocketModal(<></>); 
-            }, 5000); 
-            
-            fetchPosts();
-
-        });
-
-        // Update the posts and update the page properly if needed
-        client.on("post deleted", (response) =>  {
-
-            refreshPosts(response.highestPageNumber, response.numberOfPosts);
-        });
-
-        return () => {
-
-            // Remove unncessary event handlers
-            client.removeAllListeners();
+    try {
+      if (appContextInstance?.userAuthenticated === true) {
+        if (appContextInstance?.token !== "") {
+          fetchPosts();
         }
-    },[fetchPosts, refreshPosts]);
+      }
 
-    useEffect(() => {
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
 
-        // Toggle the loading spinner util the request ends
-        setIsLoading(true);
-        appContextInstance?.validateAuthentication();
-        
-        try{
-
-            if (appContextInstance?.userAuthenticated === true) {
-                
-                if (appContextInstance?.token !== '') {
-                    fetchPosts();
-                }
-            }
-            
-            setIsLoading(false);
-
-        }catch(error){
-            console.error(error);
-        }
-
-        // If the user isn't authenticated, redirect this route to the previous page
-        appContextInstance?.userAuthenticated === false && navigate(`${BASENAME}/login`);
+    // If the user isn't authenticated, redirect this route to the previous page
+    appContextInstance?.userAuthenticated === false &&
+      navigate(`${BASENAME}/login`);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[appContextInstance?.userAuthenticated, page]);
+  }, [appContextInstance?.userAuthenticated, page]);
 
-    return(
-        <section className="viewPosts">
-            <h1 className="viewPosts__title">Posts</h1>
+  return (
+    <section className="viewPosts">
+      <h1 className="viewPosts__title">Posts</h1>
 
-            {
-                isLoading && <LoadingSpinner/>
-            }
+      {isLoading && <LoadingSpinner />}
 
-            {
-                showConfirmationModal && 
-                <ConfirmationModal 
-                    toggleConfirmationModal={toggleShowConfirmationModal} 
-                    performAction={deletePost}
-                    id={deleteId}
-                />
-            }
- 
-            {
-                !isLoading && !showErrorText && posts.length > 0 &&
-                <>
-                    <ul className="viewPosts__posts-list">
-                        {
-                            posts.map((post : Post) => {
-                                return (
-                                    <li key={post._id}>
-                                        <PostCard 
-                                            post={post}
-                                            toggleConfirmationModal={toggleShowConfirmationModal}
-                                        />
-                                    </li>
-                                )
-                            })
-                        }
-                    </ul>
-                </>
-            }
+      {showConfirmationModal && (
+        <ConfirmationModal
+          toggleConfirmationModal={toggleShowConfirmationModal}
+          performAction={deletePost}
+          id={deleteId}
+        />
+      )}
 
-            <Paginator
-                currentPage={page}
-                numberOfPages={numberOfPages}
-                setPage={setPage}
-            />
+      {!isLoading && !showErrorText && posts.length > 0 && (
+        <>
+          <ul className="viewPosts__posts-list">
+            {posts.map((post: Post) => {
+              return (
+                <li key={post._id}>
+                  <PostCard
+                    post={post}
+                    toggleConfirmationModal={toggleShowConfirmationModal}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
 
-            {
-                socketModal
-            }
+      <Paginator
+        currentPage={page}
+        numberOfPages={numberOfPages}
+        setPage={setPage}
+      />
 
-            {
-                !isLoading && showErrorText && <ErrorModal/>
-            }
+      {socketModal}
 
-        </section>
-    );
+      {!isLoading && showErrorText && <ErrorModal />}
+    </section>
+  );
 };

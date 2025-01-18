@@ -1,28 +1,27 @@
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 // Set endpoints based on our .env configuration, the NODE_ENV is set in the package.json scripts
-const target = process.env.NODE_ENV === 'development' 
-? process.env.API_URL_DEV 
-: process.env.API_URL_PROD
+const target =
+  process.env.NODE_ENV === "development"
+    ? process.env.API_URL_DEV
+    : process.env.API_URL_PROD;
 
-module.exports = function(app) {
-
+module.exports = function (app) {
   // Handle GraphQL endpoints
   app.use(
-    '/graphql',
+    "/graphql",
     createProxyMiddleware({
       target: `${target}/graphql`,
       changeOrigin: true,
-    })
+    }),
   );
 
   // Handle rest endpoints which aren't handled by GraphQL
   app.use(
-    '/rest',
+    "/rest",
     createProxyMiddleware({
-      target : `${target}/rest`,
-      changeOrigin : true
-    })
+      target: `${target}/rest`,
+      changeOrigin: true,
+    }),
   );
 };
-

@@ -13,7 +13,8 @@ The current technology stack for the front end is:
 
 - React. React is used for the front end due to its increased interactivity with the end user, good performance and a strong ecosystem to support it. React also presents all the advantages of function based components.
 
-> [React](https://react.dev/learn/typescript)
+> [React](https://react.dev)
+> [React With TypeScript](https://react.dev/learn/typescript)
 
 **NOTE:** You can install react by using the following script: 
 ```npm install @types/react @types/react-dom```
@@ -151,6 +152,9 @@ This linter is made for TypeScript and React.
 >[Learn about eslint](https://eslint.org/)
 
 You can find the config file in _"eslint.config.mjs"_. You have the configs which are the recommended for the dependencies, and the rules which come below. The React version is automatically detected for you. You can override rules by adding them to the rules object. You can find a reference for eslint rules [here](https://eslint.org/docs/latest/rules/)
+
+
+>
 
 #### Prettier
 **This application uses **
