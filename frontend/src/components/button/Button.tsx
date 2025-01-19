@@ -17,7 +17,7 @@ interface ComponentProps {
   children: ReactNode;
   variant?: string;
   type?: ButtonType;
-  onClick?: (event: React.MouseEvent) => void;
+  onClick?: () => void;
 }
 
 /**
