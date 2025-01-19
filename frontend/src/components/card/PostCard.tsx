@@ -45,7 +45,6 @@ export const PostCard: FC<ComponentProps> = ({
         // Only fetch the file if we have a filename
         if (post?.fileName && post?.fileLastUpdated) {
           // Fetch the image, if it fails, reload the component
-          // eslint-disable-next-line import/no-unresolved
           setImage(
             await require(
               `../../uploads/${post?.fileLastUpdated}/${post?.fileName}`,

@@ -15,6 +15,7 @@ import Button from "../button/Button";
 import "./ConfirmationModal.scss";
 
 interface ComponentProps {
+  // eslint-disable-next-line no-unused-vars
   toggleConfirmationModal: (id: string) => void;
   performAction?: () => void;
   id: string;
@@ -39,7 +40,7 @@ const ConfirmationModal: FC<ComponentProps> = ({
         <h2 className="confirmationModal__title">Are you sure?</h2>
         <p className="confirmationModal__description">
           If you wish to complete this action, click on the confirm button. If
-          you'd like to cancel, click on cancel
+          you&apos;d like to cancel, click on cancel
         </p>
         <p className="confirmationModal__description">
           Please know that this action is NOT REVERSIBLE.
