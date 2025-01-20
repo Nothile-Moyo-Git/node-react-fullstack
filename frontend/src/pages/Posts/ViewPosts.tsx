@@ -109,7 +109,7 @@ export const ViewPosts: FC = () => {
 
   // Refresh the page after completing a function such as delete and handle edge cases
   const refreshPosts = useCallback(
-    (maxPages: number, numberOfPosts: number) => {
+    (maxPages: number) => {
       const urlArray = window.location.href.split("/");
       const arraySize = urlArray.length;
       const currentPage = parseInt(urlArray[arraySize - 1]);
@@ -222,7 +222,7 @@ export const ViewPosts: FC = () => {
 
     // Update the posts and update the page properly if needed
     client.on("post deleted", (response) => {
-      refreshPosts(response.highestPageNumber, response.numberOfPosts);
+      refreshPosts(response.highestPageNumber);
     });
 
     return () => {
@@ -249,10 +249,9 @@ export const ViewPosts: FC = () => {
     }
 
     // If the user isn't authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated === false &&
+    if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
   }, [appContextInstance?.userAuthenticated, page]);
 
   return (
