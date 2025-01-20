@@ -11,13 +11,13 @@
 import { ButtonType } from "../../@types";
 import "./Button.scss";
 
-import { FC, ReactNode } from "react";
+import React, { FC, ReactNode } from "react";
 
 interface ComponentProps {
   children: ReactNode;
   variant?: string;
   type?: ButtonType;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
 /**

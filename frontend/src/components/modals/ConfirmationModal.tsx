@@ -15,7 +15,6 @@ import Button from "../button/Button";
 import "./ConfirmationModal.scss";
 
 interface ComponentProps {
-  // eslint-disable-next-line no-unused-vars
   toggleConfirmationModal: (id: string) => void;
   performAction?: () => void;
   id: string;
