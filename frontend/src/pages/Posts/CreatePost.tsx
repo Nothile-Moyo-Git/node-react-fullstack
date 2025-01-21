@@ -8,7 +8,14 @@
  * Only logged in users will be able to create posts in the backend
  */
 
-import { FC, FormEvent, useContext, useEffect, useState, useRef } from "react";
+import React, {
+  FC,
+  FormEvent,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { AppContext } from "../../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import { BASENAME } from "../../util/util";
