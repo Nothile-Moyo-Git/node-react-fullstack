@@ -49,15 +49,19 @@ const Input = forwardRef<HTMLInputElement, ComponentProps>(
     // Set the classNames for the input
     const inputClassNames = props.square ? "input__square" : "";
 
+    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (props.onChange) {
+        props.onChange(event);
+      }
+    };
+
     return (
       <input
         aria-labelledby={props.ariaLabelledBy}
         className={`input ${inputClassNames} ${props.error === true && "input__error"}`}
         defaultValue={props.initialValue}
         name={props.name}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          props.onChange && props.onChange(event);
-        }}
+        onChange={changeHandler}
         placeholder={props.placeholder}
         ref={ref}
         type={props.type}

@@ -13,6 +13,16 @@ export default [
   pluginReact.configs.flat.recommended,
   eslintPluginPrettierRecommended,
   {
+    languageOptions: {
+      globals: {
+        global: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+      }
+    },
     settings: {
       react: {
         version: "detect",
