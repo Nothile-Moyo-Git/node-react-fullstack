@@ -82,13 +82,11 @@ export const Select = forwardRef<HTMLSelectElement, ComponentProps>(
         {props.pages &&
           props.pages.length > 0 &&
           props.options === undefined &&
-          props.pages.map((page: number) => {
-            return (
-              <option className="option" value={page}>
-                {page}
-              </option>
-            );
-          })}
+          props.pages.map((page: number) => (
+            <option className="option" value={page} key={`page-${page}`}>
+              {page}
+            </option>
+          ))}
       </select>
     );
   },
