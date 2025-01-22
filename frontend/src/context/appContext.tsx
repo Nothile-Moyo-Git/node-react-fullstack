@@ -26,12 +26,11 @@ interface ContextProps {
 
 interface ComponentProps {
   children?: ReactNode;
-  value?: any;
 }
 
 export const AppContext = React.createContext<ContextProps | null>(null);
 
-const AppContextProvider = ({ children, value }: ComponentProps) => {
+const AppContextProvider = ({ children }: ComponentProps) => {
   // Set our token and expiration states
   const [token, setToken] = useState<string>("");
   const [userId, setUserId] = useState<string>("");
@@ -69,9 +68,17 @@ const AppContextProvider = ({ children, value }: ComponentProps) => {
     const storageExpiresIn: string | null = localStorage.getItem("expiresIn");
 
     // Set the values if we have them
-    storageToken && setToken(storageToken);
-    storageUserId && setUserId(storageUserId);
-    storageExpiresIn && setExpiresIn(storageExpiresIn);
+    if (storageToken) {
+      setToken(storageToken);
+    }
+
+    if (storageUserId) {
+      setUserId(storageUserId);
+    }
+
+    if (storageExpiresIn) {
+      setExpiresIn(storageExpiresIn);
+    }
 
     // If we have a token stored locally and the expiry date hasn't passed, then authenticate the user
     if (storageExpiresIn !== null) {

@@ -9,7 +9,7 @@
 
 import { Link } from "react-router-dom";
 import "./Paginator.scss";
-import { FC, useState, useEffect, FormEvent, useRef } from "react";
+import React, { FC, useState, useEffect, FormEvent, useRef } from "react";
 import { BASENAME } from "../../util/util";
 import { Select } from "../form/Select";
 interface ComponentProps {
@@ -31,14 +31,28 @@ export const Paginator: FC<ComponentProps> = ({
   useEffect(() => {
     // Calculate the previous pages based on whether they can exist, this goes up to 2
     const tempPrevPages = [];
-    currentPage - 1 >= 1 && tempPrevPages.unshift(currentPage - 1);
-    currentPage - 2 >= 1 && tempPrevPages.unshift(currentPage - 2);
+
+    if (currentPage - 1 >= 1) {
+      tempPrevPages.unshift(currentPage - 1);
+    }
+
+    if (currentPage - 2 >= 1) {
+      tempPrevPages.unshift(currentPage - 2);
+    }
+
     setPreviousPages(tempPrevPages);
 
     // Calculate the upcoming pages based on whether they can exist. This also goes up to 2.
     const tempUpcomingPages = [];
-    currentPage + 1 <= numberOfPages && tempUpcomingPages.push(currentPage + 1);
-    currentPage + 2 <= numberOfPages && tempUpcomingPages.push(currentPage + 2);
+
+    if (currentPage + 1 <= numberOfPages) {
+      tempUpcomingPages.push(currentPage + 1);
+    }
+
+    if (currentPage + 2 <= numberOfPages) {
+      tempUpcomingPages.push(currentPage + 2);
+    }
+
     setUpcomingPages(tempUpcomingPages);
   }, [currentPage, numberOfPages]);
 
@@ -58,7 +72,9 @@ export const Paginator: FC<ComponentProps> = ({
     event.preventDefault();
 
     // Update the page prop and trigger a re-render of the parent element
-    pageRef.current && setPage(Number(pageRef.current.value));
+    if (pageRef.current) {
+      setPage(Number(pageRef.current.value));
+    }
   };
 
   return (
