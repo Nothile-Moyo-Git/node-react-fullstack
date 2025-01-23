@@ -31,22 +31,6 @@ import { fileUploadHandler, generateBase64FromImage } from "../../util/file";
 
 import "./CreatePost.scss";
 
-interface Creator {
-  _id: string;
-  name: string;
-}
-interface CreatePostResponse {
-  creator: Creator | null;
-  isContentValid: boolean;
-  isFileValid: boolean;
-  isFileTypeValid: boolean;
-  isImageValid: boolean;
-  isTitleValid: boolean;
-  message: string;
-  mimeType: string | null;
-  success: boolean;
-}
-
 export const CreatePostComponent: FC = () => {
   // Check if the user is authenticated, if they are, then redirect to the previous page
   const appContextInstance = useContext(AppContext);
@@ -72,8 +56,9 @@ export const CreatePostComponent: FC = () => {
     appContextInstance?.validateAuthentication();
 
     // If the user isn't authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated === false &&
+    if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
+    }
   }, [appContextInstance, navigate]);
 
   // Handle the form submission for creating a new post
@@ -95,7 +80,10 @@ export const CreatePostComponent: FC = () => {
       }
 
       let fileData = {};
-      uploadFile && (fileData = await fileUploadHandler(uploadFile));
+
+      if (uploadFile) {
+        fileData = await fileUploadHandler(uploadFile);
+      }
 
       // Perform the API request to the backend
       const createPostResponse = await fetch("/graphql/posts", {
@@ -106,30 +94,30 @@ export const CreatePostComponent: FC = () => {
         },
         body: JSON.stringify({
           query: `
-                        mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
-                            PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
-                                post {
-                                    _id
-                                    fileLastUpdated
-                                    fileName
-                                    title
-                                    imageUrl
-                                    content
-                                    creator
-                                    createdAt
-                                    updatedAt
-                                }
-                                user
-                                status
-                                success
-                                message
-                                isContentValid
-                                isTitleValid
-                                isFileValid
-                                isFileTypeValid
-                                isFileSizeValid
+                    mutation PostCreatePostResponse($title : String!, $content : String!, $userId : String!, $fileData : FileInput!){
+                        PostCreatePostResponse(title : $title, content : $content, userId : $userId, fileData : $fileData) {
+                            post {
+                                _id
+                                fileLastUpdated
+                                fileName
+                                title
+                                imageUrl
+                                content
+                                creator
+                                createdAt
+                                updatedAt
                             }
+                            user
+                            status
+                            success
+                            message
+                            isContentValid
+                            isTitleValid
+                            isFileValid
+                            isFileTypeValid
+                            isFileSizeValid
                         }
+                    }
                     `,
           variables: {
             title: title,
@@ -158,7 +146,9 @@ export const CreatePostComponent: FC = () => {
 
         for (const property in data.post) {
           // Pass through non null or undefined values as FormData can only take strings or blobs
-          data.post[property] && fields.append(property, data.post[property]);
+          if (data.post[property]) {
+            fields.append(property, data.post[property]);
+          }
         }
 
         // Trigger a modal which informs users that the post has been created

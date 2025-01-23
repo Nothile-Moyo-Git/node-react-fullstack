@@ -8,7 +8,7 @@
  *
  */
 
-import { FC, FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import Button from "../../components/button/Button";
 import Form from "../../components/form/Form";
 import Field from "../../components/form/Field";
@@ -17,9 +17,7 @@ import Input from "../../components/form/Input";
 import { generateBase64FromImage } from "../../util/file";
 import ImagePreview from "../../components/form/ImagePreview";
 
-interface GraphQLInterfaceProps {}
-
-const GraphQLInterface: FC<GraphQLInterfaceProps> = () => {
+const GraphQLInterface = () => {
   // Dummy refs and states
   const [uploadFile, setUploadFile] = useState<File>();
   const [imagePreview, setImagePreview] = useState<unknown | null>();
@@ -55,19 +53,15 @@ const GraphQLInterface: FC<GraphQLInterfaceProps> = () => {
 
     // Setting the fields
     const fields = new FormData();
-    uploadFile && fields.append("image", uploadFile);
+    if (uploadFile) {
+      fields.append("image", uploadFile);
+    }
 
     // Upload the file
-    const response = await fetch(`/rest/post/file-upload`, {
+    await fetch(`/rest/post/file-upload`, {
       method: "POST",
       body: fields,
     });
-
-    const data = await response.json();
-
-    console.log("\n\n");
-    console.log("Data");
-    console.log(data);
   };
 
   // Signup request

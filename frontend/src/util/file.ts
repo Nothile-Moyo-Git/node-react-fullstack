@@ -24,7 +24,9 @@ export const generateBase64FromImage = (imageFile: File) => {
   // Read the file and encode it in base 64
   const promise = new Promise((resolve, reject) => {
     reader.onload = (event: ProgressEvent<FileReader>) => {
-      event.target && resolve(event.target.result);
+      if (event.target) {
+        resolve(event.target.result);
+      }
     };
 
     reader.onerror = (err) => reject(err);
@@ -42,10 +44,7 @@ export const generateBase64FromImage = (imageFile: File) => {
  *
  * @description This method finds the upload folder and the appropriate month and year
  */
-export const findImagePathFromPostData = (
-  filename: string,
-  uploadPath: string,
-) => {
+export const findImagePathFromPostData = () => {
   return "hello world";
 };
 

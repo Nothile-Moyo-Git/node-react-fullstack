@@ -116,7 +116,9 @@ export const LoginPage: FC = () => {
     appContextInstance?.validateAuthentication();
 
     // If the user is authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated && navigate(-1);
+    if (appContextInstance?.userAuthenticated) {
+      navigate(-1);
+    }
   }, [appContextInstance, navigate]);
 
   return (
