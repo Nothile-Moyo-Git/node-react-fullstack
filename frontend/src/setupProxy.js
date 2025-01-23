@@ -24,4 +24,4 @@ export default function (app) {
       changeOrigin: true,
     }),
   );
-};
+}

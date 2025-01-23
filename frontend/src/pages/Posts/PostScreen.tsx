@@ -111,10 +111,9 @@ const PostScreen: FC = () => {
     }
 
     // If the user isn't authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated === false &&
+    if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
   }, [appContextInstance, postId]);
 
   useEffect(() => {
@@ -122,7 +121,6 @@ const PostScreen: FC = () => {
       try {
         if (postData?.fileName && postData?.fileLastUpdated) {
           // Fetch the image, if it fails, reload the component
-          // eslint-disable-next-line import/no-unresolved
           setImage(
             await require(
               `../../uploads/${postData.fileLastUpdated}/${postData?.fileName}`,

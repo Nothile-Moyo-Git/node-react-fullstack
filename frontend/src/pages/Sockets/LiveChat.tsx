@@ -151,7 +151,9 @@ const LiveChat: FC = () => {
 
     try {
       // Get the user information so we can share it in the post
-      appContextInstance?.userId && getUserDetails(appContextInstance.userId);
+      if (appContextInstance?.userId) {
+        getUserDetails(appContextInstance.userId);
+      }
 
       const recipientId = "6656382efb54b1949e66bae2";
 
@@ -163,10 +165,9 @@ const LiveChat: FC = () => {
     }
 
     // If the user isn't authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated === false &&
+    if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
   }, [appContextInstance]);
 
   // Submit handler, this allows messages to be sent between clients
@@ -192,8 +193,9 @@ const LiveChat: FC = () => {
       });
 
       // Send the message to the websocket
-      socketClientRef.current &&
+      if (socketClientRef.current) {
         socketClientRef.current.emit("chat message", json);
+      }
 
       // Set the fields on the form
       const fields = new FormData();

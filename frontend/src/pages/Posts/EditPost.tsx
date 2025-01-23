@@ -9,7 +9,14 @@
  * This is a view screen which will take the postId in order to find the data required
  */
 
-import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FC,
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./EditPost.scss";
 import { Post } from "../../@types";
@@ -189,10 +196,9 @@ export const EditPost: FC = () => {
     setIsLoading(false);
 
     // If the user isn't authenticated, redirect this route to the previous page
-    appContextInstance?.userAuthenticated === false &&
+    if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
   }, [postId, appContextInstance, isPostCreatorValid]);
 
   // Update the post data, and return an error if required
@@ -206,7 +212,9 @@ export const EditPost: FC = () => {
       const content = contentRef.current?.value || "";
 
       let fileData = {};
-      uploadFile && (fileData = await fileUploadHandler(uploadFile));
+      if (uploadFile) {
+        fileData = await fileUploadHandler(uploadFile);
+      }
 
       // Perform the API request to the backend
       const editPostResponse = await fetch("/graphql/posts", {
@@ -268,7 +276,9 @@ export const EditPost: FC = () => {
         response.fileValidProps.isImageUrlValid;
 
       // Apply validation on the fields so we can show errors if needed
-      uploadFile && setIsFileValid(isFileValid);
+      if (uploadFile) {
+        setIsFileValid(isFileValid);
+      }
       setIsFormValid(response.success);
       setIsTitleValid(response.isTitleValid);
       setIsContentValid(response.isContentValid);
@@ -285,7 +295,9 @@ export const EditPost: FC = () => {
         setUploadFile(undefined);
         setImagePreview(null);
         setShowImagePreview(false);
-        imageUrlRef.current && (imageUrlRef.current.value = "");
+        if (imageUrlRef.current) {
+          imageUrlRef.current.value = "";
+        }
       }
     } catch (error) {
       console.log("Request failed");
