@@ -1,4 +1,5 @@
-import { createProxyMiddleware } from "http-proxy-middleware";
+/* eslint-disable prettier/prettier */
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 // Set endpoints based on our .env configuration, the NODE_ENV is set in the package.json scripts
 const target =
@@ -6,7 +7,7 @@ const target =
     ? process.env.API_URL_DEV
     : process.env.API_URL_PROD;
 
-export default function (app) {
+module.exports = function (app) {
   // Handle GraphQL endpoints
   app.use(
     "/graphql",
@@ -24,4 +25,4 @@ export default function (app) {
       changeOrigin: true,
     }),
   );
-}
+};

@@ -4,11 +4,11 @@
   },
   "scripts": {
     "frontend": "npm run start:clean --prefix frontend",
+    "lint-frontend": "npm run lint --prefix frontend",
+    "lint-frontend:fix": "npm run lint:fix --prefix frontend",
     "backend": "npm run start --experimental-modules --prefix backend",
+    "lint-backend": "npm run lint --prefix backend",
+    "lint-backend:fix": "npm run lint:fix --prefix backend",
     "application": "concurrently \"npm run frontend\" \"npm run backend\""
-  },
-  "dependencies": {
-    "graphql": "^16.9.0",
-    "graphql-request": "^7.1.0"
   }
 }
