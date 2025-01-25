@@ -12,7 +12,7 @@
  */
 
 import { FeedRequestInterface } from "../@types/index.ts";
-import { NextFunction, Response } from "express";
+import { Response } from "express";
 import { deleteFile, checkFileType } from "../util/file.ts";
 
 /**
@@ -115,7 +115,7 @@ export const PostUploadFileController = async (request : FeedRequestInterface, r
  * @param response : Response
  * @param next : NextFunction
  */
-export const testEndpoint = (request : FeedRequestInterface, response : Response, next : NextFunction) => {
+export const testEndpoint = (request : FeedRequestInterface, response : Response) => {
 
     // Send a response to the browser or the frontend
     response.status(201);

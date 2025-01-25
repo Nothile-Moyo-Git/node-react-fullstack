@@ -9,7 +9,7 @@
  * This is supposed to replicate a chat between two users, not multiple users all at once
  */
 
-import { Response, NextFunction } from "express";
+import { Response } from "express";
 import { ChatMessage, ChatRequestInterface } from "../@types/index.ts";
 import Chat from "../models/chat.ts";
 import { createReadableDate } from "../util/utillity-methods.ts";
@@ -24,7 +24,7 @@ import { getIO } from "../socket.ts";
  * @param response : Response
  * @param next : NextFunction
  */
-export const PostSendMessageController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
+export const PostSendMessageController = async (request : ChatRequestInterface, response : Response) => {
 
     try{
 
@@ -108,7 +108,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
  * @param response : Response
  * @param next : NextFunction
  */
-export const PostCurrentChatController = async (request : ChatRequestInterface, response : Response, next : NextFunction) => {
+export const PostCurrentChatController = async (request : ChatRequestInterface, response : Response) => {
 
     try {
 

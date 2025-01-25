@@ -5,7 +5,7 @@
  * The error route file, contains the fallback route which leads to the 404 page in the front end
  */
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 
 /**
  * @name Handle404Response
@@ -16,7 +16,7 @@ import { Request, Response, NextFunction } from "express";
  * @param response : Response
  * @param next : NextFunction
  */
-export const Handle404Response = (request : Request, response : Response, next : NextFunction) => {
+export const Handle404Response = (request : Request, response : Response) => {
 
     // Return a 404 response for a URL that doesn't exist
     response.status(404).json({message : "Error 404: This endpoint does not exist, please check your routing."});

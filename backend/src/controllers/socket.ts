@@ -9,7 +9,7 @@
  */
 
 import { SocketRequest } from '../@types/index.ts';
-import { NextFunction, Response } from 'express';
+import { Response } from 'express';
 import { getIO } from '../socket.ts';
 
 /**
@@ -23,7 +23,7 @@ import { getIO } from '../socket.ts';
  * @param next : NextFunction
  * 
  */
-export const PostEmitPostCreation = (request : SocketRequest, response : Response, next : NextFunction) => {
+export const PostEmitPostCreation = (request : SocketRequest, response : Response) => {
     
     // Get the post body of the request
     const post = request.body
@@ -50,7 +50,7 @@ export const PostEmitPostCreation = (request : SocketRequest, response : Respons
  * @param response : Response
  * @param next : NextFunction
  */
-export const PostEmitPostDeletion = (request : SocketRequest, response : Response, next : NextFunction) => {
+export const PostEmitPostDeletion = (request : SocketRequest, response : Response) => {
 
     // Get the post body of the request
     const { numberOfPosts, highestPageNumber } = request.body
