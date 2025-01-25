@@ -1,4 +1,8 @@
 // Auth resolver types
+export interface ParentType {
+    postId : string
+}
+
 export interface SignupResolverArgs {
     name : string,
     email : string,

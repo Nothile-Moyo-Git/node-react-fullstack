@@ -21,7 +21,8 @@ import {
     UserStatusResolverArgs,
     UserDetailsResolverArgs,
     DeleteSessionResolverArgs,
-    CheckCreateSessionResolverArgs
+    CheckCreateSessionResolverArgs,
+    ParentType
 } from './resolvers.ts';
 
 // Set up client and database
@@ -39,7 +40,7 @@ const sessionCollection = database.collection('sessions');
  * @param parent : any
  * @param args : SignupResolverArgs
  */
-const PostSignupResolver = async (parent : any, args : SignupResolverArgs) => {
+const PostSignupResolver = async (parent: ParentType, args: SignupResolverArgs) => {
 
     try{
 
@@ -121,7 +122,7 @@ const PostSignupResolver = async (parent : any, args : SignupResolverArgs) => {
  * @param parent : any
  * @param args : LoginResolverArgs
  */
-const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
+const PostLoginResolver = async (parent: ParentType, args: LoginResolverArgs) => {
 
     try {
 
@@ -192,7 +193,7 @@ const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
                 });
 
                 // Check if we already have a session, if we do, then update it
-                let previousSession = await Session.findOne({
+                const previousSession = await Session.findOne({
                     creator : new ObjectId(user._id)
                 });
 
@@ -248,7 +249,7 @@ const PostLoginResolver = async (parent : any, args : LoginResolverArgs) => {
  * @param parent : any 
  * @param args : UserStatusResolverArgs
  */
-const GetUserStatusResolver = async (parent : any, args : UserStatusResolverArgs) => {
+const GetUserStatusResolver = async (parent: ParentType, args : UserStatusResolverArgs) => {
 
     try {
 
@@ -294,7 +295,7 @@ const GetUserStatusResolver = async (parent : any, args : UserStatusResolverArgs
  * @param parent : any
  * @param args : UpdateUserStatusResolverArgs
  */
-const PostUpdateUserStatusController = async (parent : any, args : UpdateUserStatusResolverArgs) => {
+const PostUpdateUserStatusController = async (parent: ParentType, args: UpdateUserStatusResolverArgs) => {
 
     // Create a new status
     const newStatus = args.status;
@@ -338,7 +339,7 @@ const PostUpdateUserStatusController = async (parent : any, args : UpdateUserSta
  * @param parent : any
  * @param args : UserDetailsResolverArgs
  */
-const PostGetUserDetailsController = async (parent : any, args : UserDetailsResolverArgs) => {
+const PostGetUserDetailsController = async (parent: ParentType, args: UserDetailsResolverArgs) => {
 
     try{
 
@@ -401,7 +402,7 @@ const PostGetUserDetailsController = async (parent : any, args : UserDetailsReso
  * @param parent : any
  * @param args : DeleteSessionResolverArgs
  */
-const PostDeleteSessionController = async (parent : any, args : DeleteSessionResolverArgs) => {
+const PostDeleteSessionController = async (parent : ParentType, args : DeleteSessionResolverArgs) => {
 
     // Get the ID from the front end query
     const _id = new ObjectId(args._id);
@@ -420,7 +421,7 @@ const PostDeleteSessionController = async (parent : any, args : DeleteSessionRes
 
         return {
             success : false,
-            message : "Error: No _id was provided for this request"
+            message : `Error: ${error}`
         }
     }
 };
@@ -434,7 +435,7 @@ const PostDeleteSessionController = async (parent : any, args : DeleteSessionRes
  * @param parent : any
  * @param args : CheckCreateSessionResolverArgs
  */
-const PostCheckCreateSessionResolver = async (parent : any, args : CheckCreateSessionResolverArgs) => {
+const PostCheckCreateSessionResolver = async (parent : ParentType, args : CheckCreateSessionResolverArgs) => {
 
     const userId = args.userId;
     const token = args.token;

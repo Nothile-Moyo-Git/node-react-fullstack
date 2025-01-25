@@ -1,6 +1,7 @@
 // Importing dependencies or generics or interfaces we're going to extend
 import { ObjectId } from 'mongodb';
-import { Request } from 'express';
+import { Express, Request } from 'express';
+import { Buffer } from 'buffer';
 
 // Declare our modules to allow us to use files
 declare module "*.svg" {
