@@ -22,7 +22,7 @@ import {
     UserDetailsResolverArgs,
     DeleteSessionResolverArgs,
     CheckCreateSessionResolverArgs,
-    ParentType
+    ParentParam,
 } from './resolvers.ts';
 
 // Set up client and database
@@ -40,7 +40,7 @@ const sessionCollection = database.collection('sessions');
  * @param parent : any
  * @param args : SignupResolverArgs
  */
-const PostSignupResolver = async (parent: ParentType, args: SignupResolverArgs) => {
+const PostSignupResolver = async (parent: ParentParam, args: SignupResolverArgs) => {
 
     try{
 
@@ -122,7 +122,7 @@ const PostSignupResolver = async (parent: ParentType, args: SignupResolverArgs) 
  * @param parent : any
  * @param args : LoginResolverArgs
  */
-const PostLoginResolver = async (parent: ParentType, args: LoginResolverArgs) => {
+const PostLoginResolver = async (parent: ParentParam, args: LoginResolverArgs) => {
 
     try {
 
@@ -249,7 +249,7 @@ const PostLoginResolver = async (parent: ParentType, args: LoginResolverArgs) =>
  * @param parent : any 
  * @param args : UserStatusResolverArgs
  */
-const GetUserStatusResolver = async (parent: ParentType, args : UserStatusResolverArgs) => {
+const GetUserStatusResolver = async (parent: ParentParam, args : UserStatusResolverArgs) => {
 
     try {
 
@@ -295,7 +295,7 @@ const GetUserStatusResolver = async (parent: ParentType, args : UserStatusResolv
  * @param parent : any
  * @param args : UpdateUserStatusResolverArgs
  */
-const PostUpdateUserStatusController = async (parent: ParentType, args: UpdateUserStatusResolverArgs) => {
+const PostUpdateUserStatusController = async (parent: ParentParam, args: UpdateUserStatusResolverArgs) => {
 
     // Create a new status
     const newStatus = args.status;
@@ -339,7 +339,7 @@ const PostUpdateUserStatusController = async (parent: ParentType, args: UpdateUs
  * @param parent : any
  * @param args : UserDetailsResolverArgs
  */
-const PostGetUserDetailsController = async (parent: ParentType, args: UserDetailsResolverArgs) => {
+const PostGetUserDetailsController = async (parent: ParentParam, args: UserDetailsResolverArgs) => {
 
     try{
 
@@ -355,6 +355,10 @@ const PostGetUserDetailsController = async (parent: ParentType, args: UserDetail
         jwt.verify(token, "Adeptus", (error, decoded) => {
 
             if (decoded) {
+
+                console.log("\n\n");
+                console.log(decoded);
+                console.log("\n\n");
 
                 // Get the issued and expiry dates of our token
                 // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
@@ -402,7 +406,7 @@ const PostGetUserDetailsController = async (parent: ParentType, args: UserDetail
  * @param parent : any
  * @param args : DeleteSessionResolverArgs
  */
-const PostDeleteSessionController = async (parent : ParentType, args : DeleteSessionResolverArgs) => {
+const PostDeleteSessionController = async (parent : ParentParam, args : DeleteSessionResolverArgs) => {
 
     // Get the ID from the front end query
     const _id = new ObjectId(args._id);
@@ -435,7 +439,7 @@ const PostDeleteSessionController = async (parent : ParentType, args : DeleteSes
  * @param parent : any
  * @param args : CheckCreateSessionResolverArgs
  */
-const PostCheckCreateSessionResolver = async (parent : ParentType, args : CheckCreateSessionResolverArgs) => {
+const PostCheckCreateSessionResolver = async (parent : ParentParam, args : CheckCreateSessionResolverArgs) => {
 
     const userId = args.userId;
     const token = args.token;
