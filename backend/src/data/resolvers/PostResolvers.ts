@@ -15,7 +15,7 @@ import User from '../../models/user.ts';
 import { deleteFile, getCurrentMonthAndYear } from '../../util/file.ts';
 import { formatPost } from '../../util/utillity-methods.ts';
 import { PostsInterface } from '../../@types/index.ts';
-import { GetPostsResolverArgs, GetValidatePostResolverArgs, PostCreatePostResolverArgs, PostDeletePostResolverArgs, PostGetPostResolverArgs, PostUpdatePostResolverArgs } from './resolvers.ts';
+import { GetPostsResolverArgs, GetValidatePostResolverArgs, ParentParam, PostCreatePostResolverArgs, PostDeletePostResolverArgs, PostGetPostResolverArgs, PostUpdatePostResolverArgs } from './resolvers.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -32,7 +32,7 @@ const perPage = 3;
  * @param parent : any
  * @param args : GetPostsResolverArgs
  */
-const GetPostsResolver = async (parent : any, args : GetPostsResolverArgs) => {
+const GetPostsResolver = async (parent: ParentParam, args : GetPostsResolverArgs) => {
 
     try{
 
@@ -84,7 +84,7 @@ const GetPostsResolver = async (parent : any, args : GetPostsResolverArgs) => {
  * @param parent : any
  * @param args : PostCreatePostResolverArgs
  */
-const PostCreatePostResolver = async (parent : any, args : PostCreatePostResolverArgs) => {
+const PostCreatePostResolver = async (parent: ParentParam, args : PostCreatePostResolverArgs) => {
 
     try {
 
@@ -193,7 +193,7 @@ const PostCreatePostResolver = async (parent : any, args : PostCreatePostResolve
  * @param parent : any
  * @param args : PostGetPostResolverArgs
  */
-const GetPostResolver = async (parent : any, args : PostGetPostResolverArgs) => {
+const GetPostResolver = async (parent: ParentParam, args : PostGetPostResolverArgs) => {
 
     try {
 
@@ -246,7 +246,7 @@ const GetPostResolver = async (parent : any, args : PostGetPostResolverArgs) => 
  * @param parent
  * @param args : GetValidateResolverArgs
  */
-const GetAndValidatePostResolver = async (parent : any, args : GetValidatePostResolverArgs) => {
+const GetAndValidatePostResolver = async (parent: ParentParam, args : GetValidatePostResolverArgs) => {
 
     // Get the postId from the url passed through
     const postId = new ObjectId(args.postId);
@@ -312,7 +312,7 @@ const GetAndValidatePostResolver = async (parent : any, args : GetValidatePostRe
  * @param parent : any
  * @param args : PostUpdatePostResolverArgs
  */
-const PostUpdatePostResolver = async (parent : any, args : PostUpdatePostResolverArgs) => {
+const PostUpdatePostResolver = async (parent: ParentParam, args : PostUpdatePostResolverArgs) => {
 
     // Get arguments
     const { title, userId, content, fileData, postId } = args;
@@ -352,9 +352,13 @@ const PostUpdatePostResolver = async (parent : any, args : PostUpdatePostResolve
 
             // Validate the creator since only they should be able to edit their posts
             // This is done comparing the ID's, one using a reference in Mongoose so that the array that is created in the users collection is updated effectively
-            user && user.posts && user.posts.map((userPostId : PostsInterface) => {
-                userPostId.toString() === postId.toString() && (isPostCreator = true);  
-            });
+            if (user && user.posts) {
+                user.posts.map((userPostId : PostsInterface) => {
+                    if (userPostId.toString() === postId.toString()) {
+                        isPostCreator = true;
+                    }
+                });
+            }
 
             if (post && isPostCreator) {
 
@@ -414,7 +418,7 @@ const PostUpdatePostResolver = async (parent : any, args : PostUpdatePostResolve
  * @param parent : any
  * @param args : PostDeletePostResolverArgs
  */
-const PostDeletePostResolver = async (parent : any, args : PostDeletePostResolverArgs) => {
+const PostDeletePostResolver = async (parent: ParentParam, args : PostDeletePostResolverArgs) => {
 
     // Get arguments
     const postId = args.postId;

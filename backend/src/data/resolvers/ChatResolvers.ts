@@ -10,7 +10,7 @@
 
 import { MONGODB_URI } from '../connection.ts';
 import { MongoClient, ObjectId } from 'mongodb';
-import { GetChatsResolverArgs } from './resolvers.ts';
+import { GetChatsResolverArgs, ParentParam } from './resolvers.ts';
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);
@@ -25,7 +25,7 @@ const chatCollection = database.collection('chats');
  * @param parent : any
  * @param args : GetChatsResolverArgs
  */
-const GetChatsResolver = async (parent : any, args : GetChatsResolverArgs) => {
+const GetChatsResolver = async (parent: ParentParam, args : GetChatsResolverArgs) => {
 
     try{
 

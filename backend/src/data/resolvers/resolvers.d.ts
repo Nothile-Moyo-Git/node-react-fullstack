@@ -1,5 +1,5 @@
 // Auth resolver types
-export interface ParentType {
+export interface ParentParam {
     postId : string
 }
 
