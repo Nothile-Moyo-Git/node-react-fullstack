@@ -20,7 +20,7 @@ import socketRoutes from "./routes/socket.ts";
 import chatRoutes from "./routes/chat.ts";
 import { RequestInterface } from "./@types/index.ts";
 import session from "express-session";
-import express, { Request } from "express";
+import express, { Express, Request } from "express";
 import dotenv from "dotenv";
 import { createMongooseConnection, SESSION_URI } from "./data/connection.ts";
 import cookieParser from "cookie-parser";
