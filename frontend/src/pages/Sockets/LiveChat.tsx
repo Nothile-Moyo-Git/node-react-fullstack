@@ -7,7 +7,6 @@
  * Live chat component, shows the current live chat being active by use of socket IO
  * This will apply to both the front and the backend
  */
-
 import "./LiveChat.scss";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
@@ -93,8 +92,13 @@ const LiveChat: FC = () => {
       data: { PostUserDetailsResponse: user },
     } = await response.json();
 
+    console.log("\n\n");
+    console.log("user");
+    console.log(user);
+    console.log("\n\n");
+
     // Set the user details so
-    setUserDetails(user);
+    setUserDetails(user.user);
   };
 
   // Get the chat messages async since we can't do it in our useEffect hook
@@ -144,7 +148,6 @@ const LiveChat: FC = () => {
       setChatMessages(messages.messages);
     }
   };
-
   // Get the user details from the backend for the chat
   useEffect(() => {
     appContextInstance?.validateAuthentication();
@@ -204,6 +207,10 @@ const LiveChat: FC = () => {
       fields.append("recipientId", recipientId);
       fields.append("messages", JSON.stringify(chatMessages));
       fields.append("newMessage", contentRef.current.value);
+
+      console.log("\n\n", "Sender");
+      console.log(userDetails);
+      console.log("\n\n");
 
       await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
         method: "POST",

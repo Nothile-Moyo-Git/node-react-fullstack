@@ -356,10 +356,6 @@ const PostGetUserDetailsController = async (parent: ParentParam, args: UserDetai
 
             if (decoded) {
 
-                console.log("\n\n");
-                console.log(decoded);
-                console.log("\n\n");
-
                 // Get the issued and expiry dates of our token
                 // We multiply it by 1000 so that we convert this value into milliseconds which JavaScript uses
                 const expiryDate = new Date(decoded['exp'] * 1000);

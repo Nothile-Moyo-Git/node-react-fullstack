@@ -15,7 +15,7 @@ import mongoose, { Model } from "mongoose";
 import { PostsInterface, PostsMethodsInterface } from "../@types/index.ts";
 
 // Setting our types to be used in Mongoose
-type PostModel = Model<PostsInterface, {}, PostsMethodsInterface>
+type PostModel = Model<PostsInterface, object, PostsMethodsInterface>
 
 // Define our schema for the Posts collection in the backend using Mongoose
 const postSchema = new mongoose.Schema<PostsInterface>({

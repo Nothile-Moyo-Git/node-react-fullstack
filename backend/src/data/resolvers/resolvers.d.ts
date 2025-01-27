@@ -1,6 +1,17 @@
+import { JwtPayload } from "jsonwebtoken"
+import { ObjectId } from "mongodb"
+
 // Auth resolver types
 export interface ParentParam {
     postId : string
+}
+
+export interface Decoded {
+    email?: string,
+    name?: string,
+    userId?: string | ObjectId,
+    exp?: number,
+    iat?: number
 }
 
 export interface SignupResolverArgs {
@@ -27,7 +38,7 @@ export interface UpdateUserStatusResolverArgs {
 export interface UserDetailsResolverArgs {
     _id : string,
     token : string,
-    decoded : any
+    decoded : Decoded | string | JwtPayload
 }
 
 export interface DeleteSessionResolverArgs {
