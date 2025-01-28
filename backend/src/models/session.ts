@@ -15,7 +15,7 @@ import mongoose, { Model } from "mongoose";
 import { SessionsInterface } from "../@types/index.ts";
 
 // Setting our types to be used in Mongoose
-type SessionModel = Model<SessionsInterface, {}, {}>
+type SessionModel = Model<SessionsInterface, object, object>
 
 // Define our schema for the sessions collection in the backend using Mongoose
 const sessionSchema = new mongoose.Schema<SessionsInterface>({

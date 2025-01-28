@@ -17,16 +17,16 @@
 
 import { PostsInterface } from "../@types/index.js";
 
-export const isInt = (number : any) => {
+export const isInt = (number : number | string) => {
     return Number(number) === number && number % 1 === 0;
 };
 
-export const isFloat = (number : any) => {
+export const isFloat = (number : number | string) => {
     return Number(number) === number && number % 1 !== 0;
 };
 
 export const isValidUrl = (url : string) => {
-    var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
+    const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))'+ // validate OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
@@ -73,13 +73,10 @@ export const getFolderPathFromDate = () => {
     // Get date values
     const yyyy = today.getFullYear();
     const mm = today.getMonth() + 1;
-    const dd = today.getDate();
 
-    let stringDay = dd.toString();
     let stringMonth = mm.toString();
 
     // Formatting the date values to include 0 if it's less than 10
-    if (dd < 10) { stringDay = '0' + dd.toString(); };
     if (mm < 10) { stringMonth = '0' + mm.toString(); };
 
     // Set the folder path structure
@@ -284,7 +281,7 @@ export const validateEmailAddress = (email : string) => {
 export const validatePassword = (password : string) => {
 
     // Regular expression to compare our passwords to
-    let pattern = /^(?=.*\d)(?=.*[a-z]).{6,20}$/;
+    const pattern = /^(?=.*\d)(?=.*[a-z]).{6,20}$/;
 
     // Match the inputs
     if (password.match(pattern)) {

@@ -64,7 +64,7 @@ export const PostSendMessageController = async (request : ChatRequestInterface, 
             getIO().emit('message sent', newMessage);
 
             // Save it to the backend
-            // await chat.save();
+            await chat.save();
 
         }else{
 
