@@ -128,6 +128,10 @@ export const ViewPosts: FC = () => {
 
   // Show the confirmation modal when attempting to delete a modal
   const toggleShowConfirmationModal = (id: string) => {
+    console.log("\n", "id");
+    console.log(id);
+    console.log("\n");
+
     setDeleteId(id);
     setShowConfirmationModal((previousState) => !previousState);
   };
