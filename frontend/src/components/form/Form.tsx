@@ -22,7 +22,7 @@ interface ComponentProps {
   size?: string;
   children: ReactNode;
   isFormValid?: boolean;
-  onSubmit: (event: FormEvent) => void;
+  onSubmit: (_event: FormEvent) => void;
 }
 
 /**

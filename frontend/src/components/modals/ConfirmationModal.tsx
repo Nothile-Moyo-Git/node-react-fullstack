@@ -15,7 +15,7 @@ import Button from "../button/Button";
 import "./ConfirmationModal.scss";
 
 interface ComponentProps {
-  toggleConfirmationModal: (id: string) => void;
+  toggleConfirmationModal: (_id: string) => void;
   performAction?: () => void;
   id: string;
 }

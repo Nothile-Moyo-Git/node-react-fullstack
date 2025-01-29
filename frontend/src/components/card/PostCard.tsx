@@ -19,7 +19,7 @@ import { AppContext } from "../../context/AppContext";
 interface ComponentProps {
   children?: ReactNode;
   post: Post;
-  toggleConfirmationModal: (id: string) => void;
+  toggleConfirmationModal: (_id: string) => void;
 }
 
 export const PostCard: FC<ComponentProps> = ({

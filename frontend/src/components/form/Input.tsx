@@ -18,7 +18,7 @@ interface ComponentProps {
   error: boolean;
   initialValue?: string;
   name: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (_event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   ref: React.RefObject<HTMLInputElement>;
   required?: boolean;

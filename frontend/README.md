@@ -151,13 +151,24 @@ This linter is made for TypeScript and React.
 -ESLint
 >[Learn about eslint](https://eslint.org/)
 
-You can find the config file in _"eslint.config.mjs"_. You have the configs which are the recommended for the dependencies, and the rules which come below. The React version is automatically detected for you. You can override rules by adding them to the rules object. You can find a reference for eslint rules [here](https://eslint.org/docs/latest/rules/)
+_If you wish to install eslint on your machine without a specific version you wish to use, copy the following command and pick your options_
 
+```
+npm init @eslint/config@latest
+```
 
->
+You can find the config file in _"frontend/eslint.config.mjs"_. You have the configs which are the recommended for the dependencies, and the rules which come below. The React version is automatically detected for you. You can override rules by adding them to the rules object. You can find a reference for eslint rules [here](https://eslint.org/docs/latest/rules/)
+
+ESLint comes with a few depencendies in order for it to work with our React codebase.
+
+> eslint-config-prettier
+> eslint-plugin-prettier
+> eslint-plugin-react
 
 #### Prettier
-**This application uses **
+**This application uses Prettier version 3.4.2**. Prettier is a code formatter which often works alongside ESLint in order to improve the readability of code.
+
+_Prettier and ESLint share the same config file_, so if you wish to edit your prettier options, go to _"frontend/eslint.config.mjs"_
 
 **Note: eslint is used with prettier and husky for pre-commit hooks. These check the quality of code and fail the commit if they don't pass the standards**
 

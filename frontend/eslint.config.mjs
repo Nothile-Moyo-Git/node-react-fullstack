@@ -40,7 +40,13 @@ export default [
     rules: {
       "prettier/prettier": ["error", { "endOfLine": "auto" }],
       "react/react-in-jsx-scope": "off",
-      "no-unused-vars": "off",
+      "no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_"
+        }
+      ],
       "no-undef": "error",
       "@typescript-eslint/no-require-imports": "off",
       "@typescript-eslint/no-unused-vars": [
