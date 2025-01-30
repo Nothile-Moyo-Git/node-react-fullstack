@@ -41,7 +41,7 @@ export default [
       "prettier/prettier": ["error", { "endOfLine": "auto" }],
       "react/react-in-jsx-scope": "off",
       "no-unused-vars": [
-        "error",
+        "warn",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_"
