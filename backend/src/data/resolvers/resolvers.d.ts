@@ -1,99 +1,99 @@
-import { JwtPayload } from "jsonwebtoken"
-import { ObjectId } from "mongodb"
+import { JwtPayload } from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 
 // Auth resolver types
 export interface ParentParam {
-    postId : string
+  postId: string;
 }
 
 export interface Decoded {
-    email?: string,
-    name?: string,
-    userId?: string | ObjectId,
-    exp?: number,
-    iat?: number
+  email?: string;
+  name?: string;
+  userId?: string | ObjectId;
+  exp?: number;
+  iat?: number;
 }
 
 export interface SignupResolverArgs {
-    name : string,
-    email : string,
-    password : string,
-    confirmPassword : string,
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface LoginResolverArgs {
-    emailAddress : string,
-    password : string
+  emailAddress: string;
+  password: string;
 }
 
 export interface UserStatusResolverArgs {
-    _id : string
+  _id: string;
 }
 
 export interface UpdateUserStatusResolverArgs {
-    status : string,
-    _id : string
+  status: string;
+  _id: string;
 }
 
 export interface UserDetailsResolverArgs {
-    _id : string,
-    token : string,
-    decoded : Decoded | string | JwtPayload
+  _id: string;
+  token: string;
+  decoded: Decoded | string | JwtPayload;
 }
 
 export interface DeleteSessionResolverArgs {
-    _id : string
+  _id: string;
 }
 
 export interface CheckCreateSessionResolverArgs {
-    userId : string,
-    token : string
+  userId: string;
+  token: string;
 }
 
 // Chat resolver types
 export interface GetChatsResolverArgs {
-    _id : string
+  _id: string;
 }
 
 // Post Resolver types
 export interface GetPostsResolverArgs {
-    currentPage : number
+  currentPage: number;
 }
 
 export interface FileDataResolverArgs {
-    fileName : string,
-    imageUrl : string,
-    isFileValid : boolean,
-    isFileTypeValid : boolean,
-    isImageUrlValid : boolean,
-    isFileSizeValid : boolean
+  fileName: string;
+  imageUrl: string;
+  isFileValid: boolean;
+  isFileTypeValid: boolean;
+  isImageUrlValid: boolean;
+  isFileSizeValid: boolean;
 }
 
 export interface PostCreatePostResolverArgs {
-    title : string,
-    content : string,
-    userId : string,
-    fileData : FileDataResolverArgs
+  title: string;
+  content: string;
+  userId: string;
+  fileData: FileDataResolverArgs;
 }
 
 export interface PostGetPostResolverArgs {
-    postId : string
+  postId: string;
 }
 
 export interface GetValidatePostResolverArgs {
-    postId : string,
-    userId : string
+  postId: string;
+  userId: string;
 }
 
 export interface PostUpdatePostResolverArgs {
-    title : string,
-    userId : string,
-    content : string,
-    fileData : FileDataResolverArgs,
-    postId : string
+  title: string;
+  userId: string;
+  content: string;
+  fileData: FileDataResolverArgs;
+  postId: string;
 }
 
 export interface PostDeletePostResolverArgs {
-    postId : string,
-    userId : string
+  postId: string;
+  userId: string;
 }
