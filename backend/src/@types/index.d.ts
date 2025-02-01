@@ -130,7 +130,7 @@ export interface AuthRequestInterface extends Request {
 
 export interface SocketRequest extends Request {
   fileLastUpdated?: string;
-  fileName?: string;
+  fileName: string;
   _id?: ObjectId;
   title?: string;
   imageUrl?: string;

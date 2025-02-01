@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * 
  * Date created : 28/01/2025
