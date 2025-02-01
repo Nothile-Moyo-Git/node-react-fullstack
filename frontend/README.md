@@ -162,7 +162,9 @@ You can find the config file in _"frontend/eslint.config.mjs"_. You have the con
 ESLint comes with a few depencendies in order for it to work with our React codebase.
 
 > eslint-config-prettier
+
 > eslint-plugin-prettier
+
 > eslint-plugin-react
 
 #### Prettier

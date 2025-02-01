@@ -35,6 +35,9 @@ import { createHandler } from "graphql-http/lib/use/express";
 import schemas from "./data/graphql.ts";
 import { init } from "./socket.ts";
 
+// Import the .env variables
+dotenv.config();
+
 // Module augmentation for the request
 declare module "express-serve-static-core" {
   interface Request {
@@ -49,9 +52,6 @@ declare module "express-serve-static-core" {
 // We define our __dirname and __filename here since we wouldn't be able to reference them since we're using type : module in our package.json
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Import the .env variables
-dotenv.config();
 
 // Be able to instantiate our express server
 const app = express();

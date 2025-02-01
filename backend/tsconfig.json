@@ -22,10 +22,9 @@
     "experimentalSpecifierResolution": "node",
   },
   "exclude" : [
-    "node_modules", "../frontend/src/uploads"
+    "node_modules"
   ],
   "include":[
-    "src/routes"
-  ],
-  "files" : ["./src/@types/index.d.ts"]
+    "src/*"
+  ]
 }
