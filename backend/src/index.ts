@@ -43,12 +43,14 @@ declare module "express-serve-static-core" {
   interface Request {
     fileName: string;
     isAuthenticated: boolean;
-    session: {
-      csrfToken: string;
-    };
   }
 }
 
+declare module "express-session" {
+  interface Session {
+    csrfToken?: string;
+  }
+}
 // We define our __dirname and __filename here since we wouldn't be able to reference them since we're using type : module in our package.json
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
