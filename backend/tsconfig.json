@@ -10,7 +10,7 @@
     "moduleResolution": "NodeNext",
     "lib": ["es5","DOM"],                     
     "allowJs": true,
-    "outDir": "build",                          
+    "outDir": "build/",                      
     "rootDir": "src",       
     "esModuleInterop": true,
     "resolveJsonModule": true,
