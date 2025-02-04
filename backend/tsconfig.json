@@ -10,12 +10,13 @@
     "moduleResolution": "NodeNext",
     "lib": ["es5","DOM"],                     
     "allowJs": true,
-    "outDir": "build/",                      
+    "outDir": "build",                      
     "rootDir": "src",       
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowImportingTsExtensions" : true,
-    "noEmit" : true
+    "noEmit" : false,
+    "declaration": true
   },
   "ts-node": {
     "esm": true,
@@ -25,6 +26,6 @@
     "node_modules"
   ],
   "include":[
-    "src/*"
+    "src/**/*"
   ]
 }
