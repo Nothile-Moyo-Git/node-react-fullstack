@@ -14,9 +14,9 @@
     "rootDir": "src",       
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "allowImportingTsExtensions" : true,
+    "allowImportingTsExtensions": true,
     "noEmit" : false,
-    "declaration": true
+    "allowSyntheticDefaultImports": true
   },
   "ts-node": {
     "esm": true,
