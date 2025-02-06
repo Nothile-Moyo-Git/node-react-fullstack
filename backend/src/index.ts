@@ -32,7 +32,7 @@ import {
   getFileNamePrefixWithDate,
 } from "./util/utillity-methods.ts";
 import { createHandler } from "graphql-http/lib/use/express";
-import schemas from "./data/graphql.ts";
+import schemas from "./data/graphql";
 import { init } from "./socket.ts";
 
 // Import the .env variables
