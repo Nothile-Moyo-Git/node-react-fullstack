@@ -8,7 +8,7 @@
  */
 
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from "graphql";
-import errorResolvers from "../resolvers/ErrorResolvers.ts";
+import errorResolvers from "../resolvers/ErrorResolvers";
 
 const ErrorQuery = new GraphQLObjectType({
   name: "ErrorQuery",

@@ -15,7 +15,7 @@ import {
   GraphQLBoolean,
   GraphQLInt,
 } from "graphql";
-import AuthResolvers from "../resolvers/AuthResolvers.ts";
+import AuthResolvers from "../resolvers/AuthResolvers";
 
 // Defining the movie type so we have a reference point for the fields
 const UserType = new GraphQLObjectType({

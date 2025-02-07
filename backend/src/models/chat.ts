@@ -14,7 +14,7 @@
  */
 
 import mongoose, { Model } from "mongoose";
-import { ChatInterface } from "../@types/index.ts";
+import { ChatInterface } from "../@types/index";
 
 // Setting our types to be used in Mongoose
 type ChatModel = Model<ChatInterface, object, object>;

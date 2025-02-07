@@ -7,10 +7,10 @@
  *
  */
 
-import AuthSchema from "./schemas/AuthSchema.ts";
-import ChatSchema from "./schemas/ChatSchema.ts";
-import PostSchema from "./schemas/PostSchema.ts";
-import ErrorSchema from "./schemas/ErrorSchema.ts";
+import AuthSchema from "./schemas/AuthSchema";
+import ChatSchema from "./schemas/ChatSchema";
+import PostSchema from "./schemas/PostSchema";
+import ErrorSchema from "./schemas/ErrorSchema";
 
 const schemas = {
   AuthSchema: AuthSchema,

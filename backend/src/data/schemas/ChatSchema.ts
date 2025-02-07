@@ -14,7 +14,7 @@ import {
   GraphQLList,
   GraphQLBoolean,
 } from "graphql";
-import chatResolvers from "../resolvers/ChatResolvers.ts";
+import chatResolvers from "../resolvers/ChatResolvers";
 
 // Defining a type for our chat messages
 const MessageType = new GraphQLObjectType({

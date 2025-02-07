@@ -12,7 +12,7 @@
  */
 
 import mongoose, { Model } from "mongoose";
-import { SessionsInterface } from "../@types/index.ts";
+import { SessionsInterface } from "../@types/index";
 
 // Setting our types to be used in Mongoose
 type SessionModel = Model<SessionsInterface, object, object>;

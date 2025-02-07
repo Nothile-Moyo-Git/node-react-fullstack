@@ -8,17 +8,17 @@
  *
  */
 
-import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from "../connection.ts";
+import { API_ENDPOINT, DATA_API_KEY, MONGODB_URI } from "../connection";
 import { MongoClient, ObjectId } from "mongodb";
 import {
   createReadableDate,
   validateEmailAddress,
   validateInputLength,
   validatePassword,
-} from "../../util/utillity-methods.ts";
+} from "../../util/utillity-methods";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import Session from "../../models/session.ts";
+import Session from "../../models/session";
 import {
   LoginResolverArgs,
   SignupResolverArgs,
@@ -28,7 +28,7 @@ import {
   DeleteSessionResolverArgs,
   CheckCreateSessionResolverArgs,
   ParentParam,
-} from "./resolvers.ts";
+} from "./resolvers";
 
 // Set up client and database
 const client = new MongoClient(MONGODB_URI);

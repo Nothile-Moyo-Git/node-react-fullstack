@@ -10,10 +10,10 @@
  */
 
 import { Response } from "express";
-import { ChatMessage, ChatRequestInterface } from "../@types/index.ts";
-import Chat from "../models/chat.ts";
-import { createReadableDate } from "../util/utillity-methods.ts";
-import { getIO } from "../socket.ts";
+import { ChatMessage, ChatRequestInterface } from "../@types/index";
+import Chat from "../models/chat";
+import { createReadableDate } from "../util/utillity-methods";
+import { getIO } from "../socket";
 
 /**
  * @name PostSendMessageController
