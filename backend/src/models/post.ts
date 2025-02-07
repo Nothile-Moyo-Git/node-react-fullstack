@@ -12,7 +12,7 @@
  */
 
 import mongoose, { Model } from "mongoose";
-import { PostsInterface, PostsMethodsInterface } from "../@types/index.ts";
+import { PostsInterface, PostsMethodsInterface } from "../@types/index";
 
 // Setting our types to be used in Mongoose
 type PostModel = Model<PostsInterface, object, PostsMethodsInterface>;

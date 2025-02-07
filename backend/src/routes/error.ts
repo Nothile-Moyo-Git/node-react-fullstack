@@ -8,7 +8,7 @@
 
 import express from "express";
 
-import { Handle404Response } from "../controllers/error.ts";
+import { Handle404Response } from "../controllers/error";
 
 const errorRoutes = express.Router({ strict: true });
 

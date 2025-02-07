@@ -13,7 +13,7 @@ import express from "express";
 import {
   PostCurrentChatController,
   PostSendMessageController,
-} from "../controllers/chat.ts";
+} from "../controllers/chat";
 
 // Define our router object
 const chatRoutes = express.Router({ strict: true });

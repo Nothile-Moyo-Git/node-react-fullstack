@@ -11,9 +11,9 @@
  *
  */
 
-import { FeedRequestInterface } from "../@types/index.ts";
+import { FeedRequestInterface } from "../@types/index";
 import { Response } from "express";
-import { deleteFile, checkFileType } from "../util/file.ts";
+import { deleteFile, checkFileType } from "../util/file";
 
 /**
  * @name PostUploadFileController

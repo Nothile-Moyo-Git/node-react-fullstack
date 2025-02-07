@@ -17,7 +17,7 @@ import {
   GraphQLList,
   GraphQLInputObjectType,
 } from "graphql";
-import postResolvers from "../resolvers/PostResolvers.ts";
+import postResolvers from "../resolvers/PostResolvers";
 
 // Create the post type definition
 const PostType = new GraphQLObjectType({

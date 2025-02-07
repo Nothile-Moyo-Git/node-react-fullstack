@@ -10,7 +10,7 @@ import express from "express";
 import {
   PostEmitPostCreation,
   PostEmitPostDeletion,
-} from "../controllers/socket.ts";
+} from "../controllers/socket";
 
 // Setting strict API routes
 const socketRoutes = express.Router({ strict: true });

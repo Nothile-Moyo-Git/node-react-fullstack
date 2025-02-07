@@ -7,7 +7,7 @@
  */
 
 import express from "express";
-import { testEndpoint, PostUploadFileController } from "../controllers/feed.ts";
+import { testEndpoint, PostUploadFileController } from "../controllers/feed";
 
 const feedRoutes = express.Router({ strict: true });
 

@@ -8,9 +8,9 @@
  *
  */
 
-import { SocketRequest } from "../@types/index.ts";
+import { SocketRequest } from "../@types/index";
 import { Response } from "express";
-import { getIO } from "../socket.ts";
+import { getIO } from "../socket";
 
 /**
  *

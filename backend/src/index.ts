@@ -14,15 +14,15 @@ import cors from "cors";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import feedRoutes from "./routes/feed.ts";
-import errorRoutes from "./routes/error.ts";
-import socketRoutes from "./routes/socket.ts";
-import chatRoutes from "./routes/chat.ts";
-import { RequestInterface } from "./@types/index.ts";
+import feedRoutes from "./routes/feed";
+import errorRoutes from "./routes/error";
+import socketRoutes from "./routes/socket";
+import chatRoutes from "./routes/chat";
+import { RequestInterface } from "./@types/index";
 import session from "express-session";
 import express, { Express, Request } from "express";
 import dotenv from "dotenv";
-import { createMongooseConnection, SESSION_URI } from "./data/connection.ts";
+import { createMongooseConnection, SESSION_URI } from "./data/connection";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import flash from "connect-flash";
@@ -30,10 +30,10 @@ import multer from "multer";
 import {
   getFolderPathFromDate,
   getFileNamePrefixWithDate,
-} from "./util/utillity-methods.ts";
+} from "./util/utillity-methods";
 import { createHandler } from "graphql-http/lib/use/express";
 import schemas from "./data/graphql";
-import { init } from "./socket.ts";
+import { init } from "./socket";
 
 // Import the .env variables
 dotenv.config();

@@ -8,9 +8,9 @@
  *
  */
 
-import { MONGODB_URI } from "../connection.ts";
+import { MONGODB_URI } from "../connection";
 import { MongoClient, ObjectId } from "mongodb";
-import { GetChatsResolverArgs, ParentParam } from "./resolvers.ts";
+import { GetChatsResolverArgs, ParentParam } from "./resolvers";
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);

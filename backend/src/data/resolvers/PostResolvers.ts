@@ -8,13 +8,13 @@
  *
  */
 
-import { MONGODB_URI } from "../connection.ts";
+import { MONGODB_URI } from "../connection";
 import { MongoClient, ObjectId } from "mongodb";
-import Post from "../../models/post.ts";
-import User from "../../models/user.ts";
-import { deleteFile, getCurrentMonthAndYear } from "../../util/file.ts";
-import { formatPost } from "../../util/utillity-methods.ts";
-import { PostsInterface } from "../../@types/index.ts";
+import Post from "../../models/post";
+import User from "../../models/user";
+import { deleteFile, getCurrentMonthAndYear } from "../../util/file";
+import { formatPost } from "../../util/utillity-methods";
+import { PostsInterface } from "../../@types/index";
 import {
   GetPostsResolverArgs,
   GetValidatePostResolverArgs,
@@ -23,7 +23,7 @@ import {
   PostDeletePostResolverArgs,
   PostGetPostResolverArgs,
   PostUpdatePostResolverArgs,
-} from "./resolvers.ts";
+} from "./resolvers";
 
 // Set up client and database connection
 const client = new MongoClient(MONGODB_URI);

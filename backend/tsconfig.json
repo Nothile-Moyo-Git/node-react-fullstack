@@ -14,7 +14,6 @@
     "rootDir": "src",       
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
     "noEmit" : false,
     "allowSyntheticDefaultImports": true
   },
