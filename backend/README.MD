@@ -60,6 +60,10 @@ You can send me an email by request [here](mailto:nothile1@gmail.com)
 
 -----
 
+### Production and deployment
+
+-----
+
 ### MVC Architecture
 
 The backend uses the MVC architecture. MVC stands for _"Model View Controller"_. 
@@ -94,7 +98,31 @@ Multer is used to handle file uploads. This works by using an event handler on t
 
 The socket.io implemention acts as an extension to the express server found in _"index.ts"_. You can find the socket code in _"socket.ts"_. This code uses a module export so that the socket functionality (mostly emitting and broadcasting) can be reused on individual controllers as opposed to just the main index file. 
 
-Regarding the livechat, it both uses the live server but also stores the messages in the "messages" collection found in MongoDB.
+Regarding the livechat, it both uses the live server but also stores the messages in the "chats" collection found in MongoDB.
+
+-----
+
+### GraphQL Endpoints
+
+GraphQL is a query language that is used to make specific requests which improves performance and flexibility when requesting data from the backend.
+
+Some of the features that make it popular are it's flexible queries which promote efficient data fetching, only fetching the _resources_ that you actually need, instead of all the results from a relational query.
+
+It also allows you request multiple resources from one location, reducing the number of frequent queries required to extract data.
+
+On the other hand, writing **GraphQL** queries in the frontend can be more complicated than using REST, and functionality such as file uploads are best completed in REST and not GraphQL. Data fetching tends to be ideal.
+
+**Note: You can query GraphQL endpoints with the uri '/graphql/*'.**
+
+_Note: You can find your schemas in "/src/data/schemas". The schema houses type definitions, queries (requests for data) and mutations (requests and modifications for data)._
+
+_Note: You can find your resolvers in "/src/data/resolvers". The resolvers handle the queries to the backend for the mutations and queries from MongoDB_
+
+-----
+
+### REST Endpoints
+
+The endpoints that can't be handled by GraphQL are handled by REST queries. This is for chats and 
 
 -----
 
@@ -119,15 +147,6 @@ Regarding requests, cors is implemented which allows only specified domains to q
 For passwords in the backend, they are encrypted using _"bcrypt"_ which are stored on the server. The password is then compared to the password entered by the user after it's decrypted. We use bcrypt instead of md5 because md5 has been decrypted in many servers and is thus unsafe.
 
 Regarding controllers, queries check if the user is logged in and also return responses regarding this. This response is used by the front end to determine what should happen, which is usually a redirect onto the login page.
-
------
-
-### GraphQL
-
-GraphQL is a query language that is used to make specific requests which improves performance and simplicity when requesting data from the backend.
-
-This makes it a popular choice when building scalable platforms.
-
 
 
 
