@@ -8,10 +8,39 @@ This is the back end documentation for the application. You can find more in dep
 
 -----
 
+### Commands
+
+> Start local backend server
+```
+npm run start
+```
+
+> Check lint
+```
+npm run lint
+```
+
+> Run tests
+```
+npm run test
+```
+
+> Create a production build
+```
+npm run build
+```
+
+> Deploy a production build
+```
+npm run deploy
+```
+
+-----
+
 ### Tech Stack
 The current tech stack for the backend is:
 
-**Node.js**. Node.js is a runtime created based on the _"V8 Engine"_ by Google. This allows us to run our server and also use back end packages. It also provides us with .
+**Node.js**. Node.js is a runtime created based on the _"V8 Engine"_ by Google. This allows us to run our server and also use back end packages. It's also used to create production builds.
 >[Node.js](https://nodejs.org/en)
 
 **Expressjs**. Expressjs allows us to run a local server for development. It also is pivotal in helping to develop endpoints on the application.
@@ -58,9 +87,21 @@ You can send me an email by request [here](mailto:nothile1@gmail.com)
 
 >[JWT](https://jwt.io/)
 
+**GraphQL**. GraphQL is "Graph Query Language". You can find more information about this on the "GraphQL Endpoints" section of this document.
+
+>[GraphQL](https://graphql.org/)
+
 -----
 
 ### Production and deployment
+
+When running the local server, navigate to the following endpoint. It will return a JSON with a message inside it.
+
+```
+http://localhost:4000/test
+```
+
+Production builds can be found in the _"build"_ folder. The production is your compiled javascript code found from _"src"_
 
 -----
 
@@ -122,7 +163,11 @@ _Note: You can find your resolvers in "/src/data/resolvers". The resolvers handl
 
 ### REST Endpoints
 
-The endpoints that can't be handled by GraphQL are handled by REST queries. This is for chats and 
+The endpoints that can't be handled by GraphQL are handled by REST queries. These are for chats, websockets and file uploads. This is because GraphQL doesn't natively support file uploads, and that websockets don't work alongside GraphQL either. 
+
+**Note: The base endpoint for rest is _/rest/uri_, if a route isn't handled, an error is returned**
+
+_Note: You can find the routes in "/src/routes"._
 
 -----
 
