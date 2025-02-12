@@ -4,9 +4,11 @@
   },
   "scripts": {
     "frontend": "npm run start:clean --prefix frontend",
+    "build-frontend:fix": "npm run build --prefix frontend",
     "lint-frontend": "npm run lint --prefix frontend",
     "lint-frontend:fix": "npm run lint:fix --prefix frontend",
     "backend": "npm run start --experimental-modules --prefix backend",
+    "build-backend": "npm run build --prefix backend",
     "lint-backend": "npm run lint --prefix backend",
     "lint-backend:fix": "npm run lint:fix --prefix backend",
     "application": "concurrently \"npm run frontend\" \"npm run backend\""
