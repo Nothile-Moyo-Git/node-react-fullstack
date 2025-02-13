@@ -101,7 +101,9 @@ When running the local server, navigate to the following endpoint. It will retur
 http://localhost:4000/test
 ```
 
-Production builds can be found in the _"build"_ folder. The production is your compiled javascript code found from _"src"_
+Production builds can be found in the _"build"_ folder. The production is your compiled javascript code found from _"src"_.
+
+**This application is deployed on Vercel for the backend only. The .env files have been copied on vercel and have *NOT* been pushed to git**
 
 -----
 
