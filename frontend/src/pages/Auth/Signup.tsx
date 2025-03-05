@@ -70,7 +70,7 @@ export const SignupPage: FC = () => {
     // Perform the signup request to the backend
     try {
       // Perform the signup request
-      const result = await fetch(`http://localhost:4000/graphql/auth`, {
+      const result = await fetch(`/graphql/auth`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
