@@ -43,7 +43,7 @@ const Menu: FC<ComponentProps> = ({ isMenuOpen, toggleMenu }) => {
     );
 
     // Perform the logout request
-    await fetch(`http://localhost:4000/graphql/auth`, {
+    await fetch(`/graphql/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

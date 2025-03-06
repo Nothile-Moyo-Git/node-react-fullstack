@@ -36,8 +36,14 @@ const LiveChat: FC = () => {
   const [userDetails, setUserDetails] = useState<User>();
   const socketClientRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
+  // Get the endpoint
+  const liveChatEndpoint =
+    process.env.NODE_ENV === "development"
+      ? process.env.API_URL_DEV
+      : process.env.API_URL_PROD;
+
   useEffect(() => {
-    const client = io("http://localhost:4000");
+    const client = io(String(liveChatEndpoint));
 
     // Add a message to the chat
     client.on("message sent", (message) => {
@@ -104,7 +110,7 @@ const LiveChat: FC = () => {
   // Get the chat messages async since we can't do it in our useEffect hook
   const getChatMessages = async (userId: string, recipientId: string) => {
     // Perform the signup request
-    const response = await fetch(`http://localhost:4000/graphql/chat`, {
+    const response = await fetch(`/graphql/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -212,7 +218,7 @@ const LiveChat: FC = () => {
       console.log(userDetails);
       console.log("\n\n");
 
-      await fetch(`http://localhost:4000/chat/send-message/${userId}`, {
+      await fetch(`/chat/send-message/${userId}`, {
         method: "POST",
         body: fields,
       });

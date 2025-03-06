@@ -3,7 +3,7 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "frontend": "npm run start:clean --prefix frontend",
+    "frontend": "npm run dev:clean --prefix frontend",
     "build-frontend:fix": "npm run build --prefix frontend",
     "lint-frontend": "npm run lint --prefix frontend",
     "lint-frontend:fix": "npm run lint:fix --prefix frontend",
