@@ -73,7 +73,7 @@ const GraphQLInterface = () => {
     const confirmPassword = "3rdFisherman";
 
     // Perform the signup request
-    const result = await fetch(`http://localhost:4000/graphql/auth`, {
+    const result = await fetch(`/graphql/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -118,7 +118,7 @@ const GraphQLInterface = () => {
     const _id = "6656382efb54b1949e66bae2";
 
     // Perform the signup request
-    const result = await fetch(`http://localhost:4000/graphql/auth`, {
+    const result = await fetch(`/graphql/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
