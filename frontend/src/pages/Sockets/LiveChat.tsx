@@ -38,7 +38,7 @@ const LiveChat: FC = () => {
 
   // Get the endpoint
   const liveChatEndpoint =
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV.trim() === "development"
       ? process.env.API_URL_DEV
       : process.env.API_URL_PROD;
 
