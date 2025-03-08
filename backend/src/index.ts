@@ -59,7 +59,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Get our port number from our environment file
-const port = process.env.EXPRESS_PORT;
+const port = process.env.EXPRESS_PORT.trim();
 
 // Set the type of view engine we want to use
 // We can use pug or EJS since it's supported out of the box
