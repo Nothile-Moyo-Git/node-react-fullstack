@@ -4,8 +4,8 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 // Set endpoints based on our .env configuration, the NODE_ENV is set in the package.json scripts
 const target =
   process.env.NODE_ENV.trim() === "development"
-    ? process.env.API_URL_DEV
-    : process.env.API_URL_PROD;
+    ? process.env.REACT_APP_API_DEV
+    : process.env.REACT_APP_API_PROD;
 
 module.exports = function (app) {
   // Handle GraphQL endpoints
@@ -25,4 +25,13 @@ module.exports = function (app) {
       changeOrigin: true,
     }),
   );
+
+  // Handle websocket endpoints for socketIO
+  app.use(
+    "/chat",
+    createProxyMiddleware({
+      target: `${target}/chat`,
+      changeOrigin: true
+    }),
+  )
 };

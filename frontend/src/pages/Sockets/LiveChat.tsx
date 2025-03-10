@@ -39,8 +39,8 @@ const LiveChat: FC = () => {
   // Get the endpoint
   const liveChatEndpoint =
     process.env.NODE_ENV.trim() === "development"
-      ? process.env.API_URL_DEV
-      : process.env.API_URL_PROD;
+      ? process.env.REACT_APP_API_DEV
+      : process.env.REACT_APP_API_PROD;
 
   useEffect(() => {
     const client = io(String(liveChatEndpoint));
@@ -97,11 +97,6 @@ const LiveChat: FC = () => {
     const {
       data: { PostUserDetailsResponse: user },
     } = await response.json();
-
-    console.log("\n\n");
-    console.log("user");
-    console.log(user);
-    console.log("\n\n");
 
     // Set the user details so
     setUserDetails(user.user);
@@ -218,10 +213,16 @@ const LiveChat: FC = () => {
       console.log(userDetails);
       console.log("\n\n");
 
-      await fetch(`/chat/send-message/${userId}`, {
-        method: "POST",
-        body: fields,
-      });
+      const result = await fetch(
+        `http://localhost:4000/chat/send-message/${userId}`,
+        {
+          method: "POST",
+          body: fields,
+        },
+      );
+
+      console.log("Result");
+      console.log(result);
 
       // Reset our input after we've posted a new message to the chat and backend
       contentRef.current.value = "";
