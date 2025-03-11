@@ -9,7 +9,15 @@
  */
 import "./LiveChat.scss";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { FC, FormEvent, useContext, useEffect, useRef, useState } from "react";
+import {
+  FC,
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
 import { io, Socket } from "socket.io-client";
 import Title from "../../components/form/Title";
 import Form from "../../components/form/Form";
@@ -61,18 +69,19 @@ const LiveChat: FC = () => {
       // Remove unncessary event handlers
       client.removeAllListeners();
     };
-  }, []);
+  }, [liveChatEndpoint]);
 
   // Get user details if the user is authenticated from the backend
-  const getUserDetails = async (userId: string) => {
-    const response = await fetch(`/graphql/auth`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        query: `
+  const getUserDetails = useCallback(
+    async (userId: string) => {
+      const response = await fetch(`/graphql/auth`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          query: `
                 query PostUserDetailsResponse($_id : String!, $token : String!){
                     PostUserDetailsResponse(_id : $_id, token : $token){
                         user {
@@ -86,21 +95,23 @@ const LiveChat: FC = () => {
                         }
                     }
                 }`,
-        variables: {
-          _id: userId,
-          token: appContextInstance?.token ?? "",
-        },
-      }),
-    });
+          variables: {
+            _id: userId,
+            token: appContextInstance?.token ?? "",
+          },
+        }),
+      });
 
-    // Get the result from the endpoint
-    const {
-      data: { PostUserDetailsResponse: user },
-    } = await response.json();
+      // Get the result from the endpoint
+      const {
+        data: { PostUserDetailsResponse: user },
+      } = await response.json();
 
-    // Set the user details so
-    setUserDetails(user.user);
-  };
+      // Set the user details so
+      setUserDetails(user.user);
+    },
+    [appContextInstance?.token],
+  );
 
   // Get the chat messages async since we can't do it in our useEffect hook
   const getChatMessages = async (userId: string, recipientId: string) => {
@@ -172,7 +183,7 @@ const LiveChat: FC = () => {
     if (!appContextInstance?.userAuthenticated) {
       navigate(`${BASENAME}/login`);
     }
-  }, [appContextInstance]);
+  }, [appContextInstance, getUserDetails, navigate]);
 
   // Submit handler, this allows messages to be sent between clients
   const onSubmit = async (event: FormEvent) => {
@@ -213,13 +224,10 @@ const LiveChat: FC = () => {
       console.log(userDetails);
       console.log("\n\n");
 
-      const result = await fetch(
-        `http://localhost:4000/chat/send-message/${userId}`,
-        {
-          method: "POST",
-          body: fields,
-        },
-      );
+      const result = await fetch(`/chat/send-message/${userId}`, {
+        method: "POST",
+        body: fields,
+      });
 
       console.log("Result");
       console.log(result);

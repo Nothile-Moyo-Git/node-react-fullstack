@@ -196,13 +196,13 @@ export const ViewPosts: FC = () => {
     }
   };
 
-  /* const liveChatEndpoint =
+  const liveChatEndpoint =
     process.env.NODE_ENV.trim() === "development"
       ? process.env.API_URL_DEV
-      : process.env.API_URL_PROD; */
+      : process.env.API_URL_PROD;
 
   useEffect(() => {
-    const client = io("http://localhost:4000");
+    const client = io(String(liveChatEndpoint));
 
     // Trigger a toastmodal render
     client.on("post added", (postData) => {
