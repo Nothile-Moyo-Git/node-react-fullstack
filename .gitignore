@@ -1,0 +1,12 @@
+// Backend files
+backend/node_modules
+backend/src/data/connection.ts
+backend/.env
+backend/build
+
+// Frontend files
+frontend/node_modules
+frontend/.env
+
+// Full stack files
+node_modules
