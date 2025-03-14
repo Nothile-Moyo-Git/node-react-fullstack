@@ -1,5 +1,5 @@
 {
-  "name": "node-frontend",
+  "name": "node-react-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
